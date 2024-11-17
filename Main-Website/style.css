@@ -1,11 +1,14 @@
 * {
     box-sizing: border-box;
 }
+body {
+    background-color: #492f09;
+  }
 /* ------------------- Header Styles ------------------- */
 .link-header{
     display: flex;
     width: 100%;
-    padding: 15px;
+    padding: 20px;
     background-color: antiquewhite;
 }
 .link-header .left      {
@@ -63,36 +66,23 @@
     right: 0;
     border-bottom-color: #333;
 }
-
+/* ------------------------- Canvas --------------------- */
+.canvas-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+canvas {
+    border: 5px solid black;
+    background-color: white;
+}
 .stick{
     z-index: 10;
     top: 0;
     position: sticky;
 }
-.link_header {
-    display: flex;
-    width: 100%;
-    padding: px;
-    background-color: antiquewhite;
-    align-items:center;
-}
-
-.image_section {
-    background-image: url(PNG/PNG_car_front.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-    width: 100%;
-    height: 100vh;
-}
-
-.image_section p {
-    color: rgb(255, 17, 0);
-    line-height: 3px;
-    font: italic bold 24px/30px Arial, sans-serif;
-    text-indent: 30px;
-    line-height: 1.5;
-}
-
+/* ------------------------- Grid --------------------- */
 .grid-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -105,23 +95,11 @@
 .content {
     background-color: red;
 }
-
 .content img {
     width: 100%;
     height: auto;
 }
-
-.CAP {
-    text-transform: uppercase;
-    text-decoration-line: underline;
-}
-
-.BOR {
-    border-width: 5px;
-    border-color: chartreuse;
-    border-style: solid;
-}
-
+/* ------------------- @media srágory ----------------- */
 @media (max-width: 780px) {
     .grid-layout {
         grid-template-columns: 1fr;

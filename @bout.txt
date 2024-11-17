@@ -1,0 +1,36 @@
+Vykreslování Spritů
+
+    Sprite
+        -SpriteAnim
+            -DynamicSprite
+                -CharacterSprite
+                -CharacterSprite2
+                -
+
+Sprite
+.vykresuluje prostý obrázek
+.využití třeba pro pozadí
+
+SpriteAnim
+.potomek Sprite
+.místo obrázku vykresluje sekvenci obrázků
+.využití třeba pro animované pozadí
+
+DynamicSprite
+.potomek SpriteAnim
+.umožnuje se obrázku hýbat
+.zachovává možnost sekvence obrázku
+.využitý pro prostý pohyb třeba i animovaných střel
+
+CharacterSprite
+.potomek DynamicSprite
+.rozděluje sprity k jednotlivým animacím
+.pohyb zůstává prostý
+.dovoluje pro různé směry různé animace
+.využití pro jednoduché characrery třebaže na minimapě
+
+CharacterSprite2
+.potomek DynamicSpritu
+.pohyb kontroluje fyzika
+.při skoku i kontrola nad dopadem
+
