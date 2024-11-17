@@ -1,0 +1,133 @@
+* {
+    box-sizing: border-box;
+}
+/* ------------------- Header Styles ------------------- */
+.link-header{
+    display: flex;
+    width: 100%;
+    padding: 15px;
+    background-color: antiquewhite;
+}
+.link-header .left      {
+    flex-basis: 15%;
+    display: flex;
+    justify-content:flex-start;
+    align-items: center; 
+}
+.link-header .left img  {
+    width: 100%;
+    max-width: 120px;
+    min-width: 70px;
+}
+.link-header .mid       {
+    flex-basis: 80%;
+    justify-content: center; 
+    display: flex;
+    align-items: center;
+}
+.link-header .mid a     {
+    width: 100%;
+    max-width: 170px;
+    margin: 15px;
+/*  border: 2px solid red;  */
+}
+.link-header .mid img   {
+    width: 100%;
+    max-width: 170px;
+}
+.link-header .right     {
+    align-items: center;
+    display: flex;
+    flex-basis: 15%;
+    justify-content:end;
+}
+.link-header .right img {
+    width: 100%; 
+    max-width: 50px;
+
+}
+
+/* ------------------- Gallery Styles ------------------ */
+.gallery {
+    display: grid;
+    justify-content: space-evenly;
+    grid-template-columns: auto auto auto;
+    gap: 40px;
+}
+.gallery .image {
+    position: relative;
+}
+.gallery .image p {
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-bottom-color: #333;
+}
+
+.stick{
+    z-index: 10;
+    top: 0;
+    position: sticky;
+}
+.link_header {
+    display: flex;
+    width: 100%;
+    padding: px;
+    background-color: antiquewhite;
+    align-items:center;
+}
+
+.image_section {
+    background-image: url(PNG/PNG_car_front.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 100vh;
+}
+
+.image_section p {
+    color: rgb(255, 17, 0);
+    line-height: 3px;
+    font: italic bold 24px/30px Arial, sans-serif;
+    text-indent: 30px;
+    line-height: 1.5;
+}
+
+.grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    background-color: black;
+    padding: 50px;
+    gap: 50px;
+}
+
+.content {
+    background-color: red;
+}
+
+.content img {
+    width: 100%;
+    height: auto;
+}
+
+.CAP {
+    text-transform: uppercase;
+    text-decoration-line: underline;
+}
+
+.BOR {
+    border-width: 5px;
+    border-color: chartreuse;
+    border-style: solid;
+}
+
+@media (max-width: 780px) {
+    .grid-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .link-header{
+        flex-direction: column;
+    }
+}
