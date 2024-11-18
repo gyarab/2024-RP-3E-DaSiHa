@@ -26,6 +26,9 @@ export class CharacterSprite2 extends DynamicSprite{
         this._framesJumpRight    = this._frames.slice(1, 5);
 
         this._floor = y;
+
+        this.Rbox = false;
+        this.Rinfo = true;
     }
     //posouvá objekt podle probíhající akce
     updatePos(){
@@ -103,14 +106,8 @@ export class CharacterSprite2 extends DynamicSprite{
     }
     //vykresluje sprite podle probíhající akce  
     render(ctx) {
-        //info o CharacterSprite
-        ctx.font = '20px Arial';
-        ctx.fillStyle = 'black';
-        ctx.fillText('isGoLeft  = ' + this._isGoLeft,  10,  50);
-        ctx.fillText('isGoRight = ' + this._isGoRight, 10,  75);
-        ctx.fillText('isJumping = ' + this._isJumping, 10, 100);
-        ctx.fillText('isBothWay = ' + this._isBothWay, 10, 125);
-        
+        if(this.Rbox){this.renderHitbox(ctx)}
+        if(this.Rinfo){this.renderInfo(ctx)}
         //pokud CharacterSprite má pole Spritů
         if (this._frames.length > 0) {
             let img = null;
@@ -134,6 +131,20 @@ export class CharacterSprite2 extends DynamicSprite{
             super.render(ctx);
             console.log("něco se posralo");
         } 
+    }
+    renderInfo(ctx){
+        //info o CharacterSprite
+        ctx.font = '20px Arial';
+        ctx.fillStyle = 'black';
+        ctx.fillText('isGoLeft  = ' + this._isGoLeft,  10,  50);
+        ctx.fillText('isGoRight = ' + this._isGoRight, 10,  75);
+        ctx.fillText('isJumping = ' + this._isJumping, 10, 100);
+        ctx.fillText('isBothWay = ' + this._isBothWay, 10, 125);
+        
+    }
+    renderHitbox(ctx){
+        ctx.fillStyle = 'pink';
+        ctx.fillRect(this._x, this._y, this._width, this._height);
     }
     updateImage(){
         this._currentFrame = (this._currentFrame + 1) % this._frames.length;
