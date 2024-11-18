@@ -1,4 +1,3 @@
-
 import { CharacterSprite2} from './CharacterSprite2.js';
 //inicializace canvasu a ctx
 const canvas = document.getElementById('herniRozhraní');

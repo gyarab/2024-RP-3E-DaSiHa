@@ -8,7 +8,7 @@ export class DynamicSprite extends SpriteAnim{
         this._isGoRight  = false;
         this._isGoUp     = false;
         this._isGoDown   = false;
-        this._isGoBothWay= false;
+        this._isBothWay  = false;
         //rychlosti 
         this._ySpeed  = 0.1;
         this._xSpeed  = 2;
