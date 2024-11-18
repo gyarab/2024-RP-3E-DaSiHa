@@ -57,6 +57,7 @@ export class CharacterSprite2 extends DynamicSprite{
                 this.isGoRight = true;
             }else{
                 this._xVelocity += this._xSpeed /90;
+                this.isGoRight = true;
             }
         }
         /*-----------------------pokud chce doleva-------------------- */
@@ -67,6 +68,7 @@ export class CharacterSprite2 extends DynamicSprite{
                 this.isGoLeft   = true;
             }else{
                 this._xVelocity -= this._xSpeed /90;
+                this.isGoLeft   = true;
             }
         }
         /*-------------pokud nechci ani doleva ani doprava------------ */
@@ -114,12 +116,14 @@ export class CharacterSprite2 extends DynamicSprite{
             let img = null;
             if(this._isGoRight) { 
                 img =  this._framesRunRight[(this._currentFrame + this._timeOfAction )% this._framesRunRight.length];
-            }  
+            }else  
             if (this._isGoLeft) {
                  img = this._framesRunLeft [(this._currentFrame + this._timeOfAction )% this._framesRunLeft.length];
-            } 
+            }else 
             if (this._isBothWay) {
                  img = this._framesStanding[this._currentFrame];
+            }else{
+                console.log("zmizel")
             }
 
             if (img && img.complete) {

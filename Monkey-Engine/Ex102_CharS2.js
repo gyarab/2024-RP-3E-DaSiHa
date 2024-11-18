@@ -7,15 +7,15 @@ window.addEventListener('keydown', event => handleKey(event, true));
 window.addEventListener('keyup', event => handleKey(event, false));
 //inicializace všech objektů
 const SA = new CharacterSprite2(50, 500, 85, 155,[
-    "/Game_01_Ledvadva/ledva_sprites/stand.png",
-    "/Game_01_Ledvadva/ledva_sprites/runRight_0.png",
-    "/Game_01_Ledvadva/ledva_sprites/runRight_1.png",
-    "/Game_01_Ledvadva/ledva_sprites/runRight_2.png",
-    "/Game_01_Ledvadva/ledva_sprites/runRight_3.png",
-    "/Game_01_Ledvadva/ledva_sprites/runLeft_0.png",
-    "/Game_01_Ledvadva/ledva_sprites/runLeft_1.png",
-    "/Game_01_Ledvadva/ledva_sprites/runLeft_2.png",
-    "/Game_01_Ledvadva/ledva_sprites/runLeft_3.png"
+    "/Game_01_Ledvadva/sprites/stand.png",
+    "/Game_01_Ledvadva/sprites/runRight_0.png",
+    "/Game_01_Ledvadva/sprites/runRight_1.png",
+    "/Game_01_Ledvadva/sprites/runRight_2.png",
+    "/Game_01_Ledvadva/sprites/runRight_3.png",
+    "/Game_01_Ledvadva/sprites/runLeft_0.png",
+    "/Game_01_Ledvadva/sprites/runLeft_1.png",
+    "/Game_01_Ledvadva/sprites/runLeft_2.png",
+    "/Game_01_Ledvadva/sprites/runLeft_3.png"
 ]);
 //hlavní herní smyčka
  function Mainloop(){

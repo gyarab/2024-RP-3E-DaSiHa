@@ -18,13 +18,12 @@ export class SpriteAnim extends Sprite{
         this._currentFrame = (this._currentFrame + 1) % this._frames.length;
     }
     render(ctx) {
-        console.log(this._frames.length + ' number of frames')
         if (this._frames.length > 0) {
             const img = this._frames[this._currentFrame];
             if (img.complete) {
                 ctx.drawImage(img, this._x, this._y, this._width, this._height);
             }
-        //}else{
+        }else{
             console.log('superrender')
             super.render(ctx)
         }

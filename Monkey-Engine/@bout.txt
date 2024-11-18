@@ -5,7 +5,6 @@ Vykreslování Spritů
             -DynamicSprite
                 -CharacterSprite
                 -CharacterSprite2
-                -
 
 Sprite
 .vykresuluje prostý obrázek
@@ -31,6 +30,7 @@ CharacterSprite
 
 CharacterSprite2
 .potomek DynamicSpritu
+.složitější pohyb i se skokem
 .pohyb kontroluje fyzika
 .při skoku i kontrola nad dopadem
-
+.
