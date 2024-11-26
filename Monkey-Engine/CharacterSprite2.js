@@ -13,18 +13,18 @@ export class CharacterSprite2 extends DynamicSprite{
         this._xVelocity = 0;
         this._dirOfJump = 0;
         //jednotlivé pole pro animace
-        this._framesStanding = [this._frames[0]];
-        this._framesRunRight = this._frames.slice(1, 5);
-        this._framesRunLeft  = this._frames.slice(5, 9);
-        this._framesJumpUp   = this._frames.slice(1, 5)
-        //
-        this._framesJumpFarLeft  = this._frames.slice(5, 5);
-        this._framesJumpLigLeft  = this._frames.slice(1, 5);
-        this._framesJumpLeft     = this._frames.slice(1, 5);
-        this._framesJumpFarRight = this._frames.slice(1, 5);
-        this._framesJumpLigRight = this._frames.slice(1, 5);
-        this._framesJumpRight    = this._frames.slice(1, 5);
+        this._framesStanding = [];
+        this._framesRunRight = [];
+        this._framesRunLeft  = [];
+        this._framesJumpUp   = [];
+        this._framesJumpFarLeft  = [];
+        this._framesJumpLigLeft  = [];
+        this._framesJumpLeft     = [];
+        this._framesJumpFarRight = [];
+        this._framesJumpLigRight = [];
+        this._framesJumpRight    = [];
 
+        
         this._floor = y;
 
         this.Rbox = false;
