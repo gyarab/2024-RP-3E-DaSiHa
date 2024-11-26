@@ -1,5 +1,5 @@
 import { DynamicSprite} from './DynamicSprite.js';
-export class CharacterSprite extends DynamicSprite{
+export class CharacterSprite0 extends DynamicSprite{
     constructor(x, y, width, height, spritePaths = null) {
         super(x, y, width, height, spritePaths);
 
