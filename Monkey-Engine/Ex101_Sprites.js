@@ -8,6 +8,7 @@ const s1 = new Sprite(10,10,500,500,null,'green');
 s1.render(ctx);
 
 const s2 = new Sprite(700,20,100,100,"/Game_01_Ledvadva/sprites/stand.png");
+
 s2.render(ctx);
 
 const s3 = new SpriteAnim(20,20,100,100,[
