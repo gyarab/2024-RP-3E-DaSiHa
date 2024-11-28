@@ -28,7 +28,7 @@ export class Sprite {
             if(this._color){
                 ctx.fillStyle = this._color;
             }else{
-                ctx.fillStyle = 'purple';
+                ctx.fillStyle = 'magenta';
             }
             ctx.fillRect(this._x, this._y, this._width, this._height);
         }
