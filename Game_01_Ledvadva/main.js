@@ -17,6 +17,13 @@ const player1 = new CharacterSprite2(50, 500, 85, 155,[
     "/Game_01_Ledvadva/sprites/rR/6.png",
     "/Game_01_Ledvadva/sprites/rR/7.png",
     "/Game_01_Ledvadva/sprites/rR/8.png",
+    "/Game_01_Ledvadva/sprites/rR/7.png",
+    "/Game_01_Ledvadva/sprites/rR/6.png",
+    "/Game_01_Ledvadva/sprites/rR/5.png",
+    "/Game_01_Ledvadva/sprites/rR/4.png",
+    "/Game_01_Ledvadva/sprites/rR/3.png",
+    "/Game_01_Ledvadva/sprites/rR/2.png",
+
 
     "/Game_01_Ledvadva/sprites/rL/1.png",
     "/Game_01_Ledvadva/sprites/rL/2.png",
@@ -26,14 +33,19 @@ const player1 = new CharacterSprite2(50, 500, 85, 155,[
     "/Game_01_Ledvadva/sprites/rL/6.png",
     "/Game_01_Ledvadva/sprites/rL/7.png",
     "/Game_01_Ledvadva/sprites/rL/8.png",
+    "/Game_01_Ledvadva/sprites/rL/7.png",
+    "/Game_01_Ledvadva/sprites/rL/6.png",
+    "/Game_01_Ledvadva/sprites/rL/5.png",
+    "/Game_01_Ledvadva/sprites/rL/4.png",
+    "/Game_01_Ledvadva/sprites/rL/3.png",
+    "/Game_01_Ledvadva/sprites/rL/2.png",
+
 
 ]);
 //
 player1._framesStanding = [player1._frames[0]];
-player1._framesRunRight = player1._frames.slice(1, 9);
-player1._framesRunLeft  = player1._frames.slice(9, 17);
-player1._framesJumpUp   = player1._frames.slice(17, 20);
-
+player1._framesRunRight = player1._frames.slice(1, 15);
+player1._
 
 //hlavní herní smyčka
  function Mainloop(){
@@ -41,7 +53,7 @@ player1._framesJumpUp   = player1._frames.slice(17, 20);
     ctx.clearRect(0,0,canvas.width, canvas.height);
     player1.render(ctx);       
 }
-window.setInterval(Mainloop, 2 , true);
+window.setInterval(Mainloop, 1 , true);
 
 //nastavení kláves
 function handleKey(event, isDown) {
