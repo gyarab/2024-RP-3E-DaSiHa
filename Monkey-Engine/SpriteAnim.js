@@ -73,9 +73,11 @@ function SpriteAnimLoop (){
 
     sA3.render(ctx);
     sA3.updateImage();
+
+    if(sA1.colides(bluescreen)){
+        console.log("bazíruju si to na bluescreenu");
+    }
 }
 window.setInterval(SpriteAnimLoop, 1);
-if(sA1.RectColide(bluescreen)){
-    console.log("bazíruju si to na bluescreenu");
-}
+
 /**/ 
