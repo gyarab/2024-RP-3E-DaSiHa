@@ -1,12 +1,8 @@
 // Autor: Bendl Šimon
 export class Tetragon{
-    constructor(p1, p2, p3, p4, color){
-        this._points = [p1, p2, p3, p4];
-        this._color = color;
-        
-        if (this._color == null){
-            this._color = 'magenta';
-        }
+    constructor(p1, p2, p3, p4, color = 'magenta'){
+        this._points = [p1, p2, p3, p4]
+        this._color  = color
     }
     render(ctx, fill) {
         ctx.beginPath();
@@ -16,37 +12,32 @@ export class Tetragon{
         ctx.lineTo(this._points[3].x, this._points[3].y);
         ctx.closePath();
         ctx.stroke();
-        if (fill){
-            ctx.fillStyle = this._color;
-            ctx.fill();
-        }
+        if (fill){ctx.fillStyle = this._color;ctx.fill();}
     }
-    //funguje tak na půl
-    colides(tetragon2){
-        const tetragon1 = this;
-        function pointInPolygon(point, polygon) {
-            let x = point.x, y = point.y;
-            let inside = false;
-            for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-                let xi = polygon[i].x, yi = polygon[i].y;
-                let xj = polygon[j].x, yj = polygon[j].y;
-                let intersect = ((yi > y) != (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-                if (intersect) inside = !inside;
-            }
-            return inside;
-        }
-        for (let point of tetragon1._points) {
-            if (pointInPolygon(point, tetragon2._points)) {
-                return true;
-            }
-        }
-        for (let point of tetragon2._points) {
-            if (pointInPolygon(point, tetragon1._points)) {
-                return true;
-            }
-        }
-        return false;
+    /*----------------------------Setters------------------------- */
+    set color  (newColor ){ this._color  = newColor }
+    set points (newPoints){ this._points = newPoints}
+}
+//funguje tak na půl
+export function colides(tetragon1, tetragon2){
+    for (let point of tetragon1._points) {
+        if (pointInPolygon(point, tetragon2._points)) {return true;}
     }
+    for (let point of tetragon2._points) {
+        if (pointInPolygon(point, tetragon1._points)) {return true;}
+    }
+    return false;
+}
+function pointInPolygon(point, polygon) {
+    let x = point.x, y = point.y;
+    let inside = false;
+    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+        let xi = polygon[i].x, yi = polygon[i].y;
+        let xj = polygon[j].x, yj = polygon[j].y;
+        let intersect = ((yi > y) != (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+    }
+    return inside;
 }
 /*-----------------------------Tetragon----------------------------------- *
 const canvas = document.getElementById('herniRozhraní');
