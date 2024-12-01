@@ -36,6 +36,21 @@ export class SpriteDyna extends SpriteAnim{
         this.updatePos();
         this.updateImage();
     }
+    colides(Sprite) {
+        this._points = [
+            { x: this._x, y: this._y },
+            { x: this._x + this._width, y: this._y },
+            { x: this._x + this._width, y: this._y + this._height },
+            { x: this._x, y: this._y + this._height }
+        ];
+        Sprite._points = [
+            { x: Sprite._x, y: Sprite._y },
+            { x: Sprite._x + Sprite._width, y: Sprite._y },
+            { x: Sprite._x + Sprite._width, y: Sprite._y + Sprite._height },
+            { x: Sprite._x, y: Sprite._y + Sprite._height }
+        ];
+        return super.colides(Sprite);
+    }
     /*--------------------------Setters-------------------------------*/ 
 
     set isGoRight(newIsGoRight) {
@@ -69,9 +84,7 @@ function SpriteAnimLoop (){
     sD1.render(ctx,true);
     sD1.updateImage();
     sD1.updatePos();
-    if(!sD1.RectColide(bluescreen)){
-        console.log("vrať se zpátky před bluescreen")
-    }
+    console.log(sD1.colides(bluescreen));
 }
 window.setInterval(SpriteAnimLoop, 1);
 
