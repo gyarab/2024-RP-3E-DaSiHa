@@ -102,7 +102,9 @@ export class CharacterSprite2 extends SpriteDyna{
     }
     //vykresluje sprite podle probíhající akce  
     render(ctx, Rinfo = null, Rbox = null){ 
-        if(Rbox  != null){this.renderHitbox(ctx, Rbox)}
+        if(Rbox  != null){
+            super.render_Hitbox(ctx)
+        }
         if(Rinfo != null){this.renderInfo (ctx, Rinfo)}  
         //pokud CharacterSprite má pole Spritů
         if (this._frames.length > 0) {
@@ -142,13 +144,8 @@ export class CharacterSprite2 extends SpriteDyna{
         ctx.fillText('----------------------------'  , 10 + numOfInfo * 200, 135);
         
     }
-    renderHitbox(ctx, color){
-        ctx.fillStyle = color;
-        ctx.fillRect(this._x, this._y, this._width, this._height);
-    }
     updateImage(){
         this._currentFrame = (this._currentFrame + 1) % this._frames.length;
-        console.log ("zgakufdgsa")
     }
 }
 /*---------------------------CharacterSprite2-------------------------------

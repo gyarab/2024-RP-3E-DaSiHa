@@ -28,7 +28,7 @@ export class SpriteAnim extends Sprite{
         }
     }
     render(ctx,Rbox) {
-        if (Rbox  != null){super.render_Hitbox(ctx, Rbox)}
+        if (Rbox  != null){super.render_Hitbox(ctx)}
         if (this._frames.length > 0){
                 const img = this._frames[this._currentFrame];
                 if (img.complete) {
