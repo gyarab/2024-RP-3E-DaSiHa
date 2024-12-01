@@ -88,11 +88,32 @@ player2._framesRunLeft = player2._frames.slice(15, 30);
 
 //hlavní herní smyčka
  function Mainloop(){
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+
     player1.updatePos();
     player2.updatePos();
-    ctx.clearRect(0,0,canvas.width, canvas.height);
-    player1.render(ctx, 0);       
-    player2.render(ctx, 1);
+    
+    player1.render(ctx, 0, true);       
+    player2.render(ctx, 1, true);
+
+    if(player1.colides(player2)){
+        player1._xVelocity = 0;
+        player2._xVelocity = 0;
+
+        player1._yVelocity = 0;
+        player2._yVelocity = 0;
+
+        if (player1._x < player2._x){
+            player1._x -= 1;
+            player2._x += 1;
+        }
+        if (player1._x > player2._x){
+            player1._x += 1;
+            player2._x -= 1;
+        }
+        console.log("uhni");
+    }
+
 }
 window.setInterval(Mainloop, 1 , true);
 
