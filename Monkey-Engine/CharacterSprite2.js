@@ -1,5 +1,5 @@
-import { DynamicSprite} from './DynamicSprite.js';
-export class CharacterSprite2 extends DynamicSprite{
+import { SpriteDyna } from "./SpriteDyna.js";
+export class CharacterSprite2 extends SpriteDyna{
     constructor(x, y, width, height, spritePaths) {
         super  (x, y, width, height, spritePaths);
 
@@ -23,12 +23,8 @@ export class CharacterSprite2 extends DynamicSprite{
         this._framesJumpFarRight = [];
         this._framesJumpLigRight = [];
         this._framesJumpRight    = [];
-
         
         this._floor = y;
-
-        this.Rbox = false;
-        this.Rinfo = true;
     }
     //posouvá objekt podle probíhající akce
     updatePos(){
@@ -105,9 +101,9 @@ export class CharacterSprite2 extends DynamicSprite{
         }
     }
     //vykresluje sprite podle probíhající akce  
-    render(ctx) {
-        if(this.Rbox){this.renderHitbox(ctx)}
-        if(this.Rinfo){this.renderInfo(ctx)}
+    render(ctx, Rinfo = null, Rbox = null){ 
+        if(Rbox  != null){this.renderHitbox(ctx, Rbox)}
+        if(Rinfo != null){this.renderInfo (ctx, Rinfo)}  
         //pokud CharacterSprite má pole Spritů
         if (this._frames.length > 0) {
             let img = null;
@@ -132,21 +128,29 @@ export class CharacterSprite2 extends DynamicSprite{
             console.log("něco se posralo");
         } 
     }
-    renderInfo(ctx){
+    renderInfo(ctx, numOfInfo = 0){
         //info o CharacterSprite
-        ctx.font = '20px Arial';
+        ctx.font = '25px Arial';
         ctx.fillStyle = 'black';
-        ctx.fillText('isGoLeft  = ' + this._isGoLeft,  10,  50);
-        ctx.fillText('isGoRight = ' + this._isGoRight, 10,  75);
-        ctx.fillText('isJumping = ' + this._isJumping, 10, 100);
-        ctx.fillText('isBothWay = ' + this._isBothWay, 10, 125);
+        ctx.fillText( this._id + ' :', 10 + numOfInfo * 200,  20);
+        ctx.font = '20px Arial';
+        ctx.fillText('----------------------------'  , 10 + numOfInfo * 200,  35);
+        ctx.fillText('isGoLeft  = ' + this._isGoLeft , 10 + numOfInfo * 200,  50);
+        ctx.fillText('isGoRight = ' + this._isGoRight, 10 + numOfInfo * 200,  75);
+        ctx.fillText('isJumping = ' + this._isJumping, 10 + numOfInfo * 200, 100);
+        ctx.fillText('isBothWay = ' + this._isBothWay, 10 + numOfInfo * 200, 125);
+        ctx.fillText('----------------------------'  , 10 + numOfInfo * 200, 135);
         
     }
-    renderHitbox(ctx){
-        ctx.fillStyle = 'pink';
+    renderHitbox(ctx, color){
+        ctx.fillStyle = color;
         ctx.fillRect(this._x, this._y, this._width, this._height);
     }
     updateImage(){
         this._currentFrame = (this._currentFrame + 1) % this._frames.length;
+        console.log ("zgakufdgsa")
     }
 }
+/*---------------------------CharacterSprite2-------------------------------
+podívejte se do mainu Game_01_Ledvadva na ukázku použití
+/**/
