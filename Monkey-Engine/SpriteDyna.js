@@ -1,8 +1,8 @@
 // Autor: Bendl Šimon
 import { SpriteAnim } from './SpriteAnim.js';
 export class SpriteDyna extends SpriteAnim{
-    constructor(x, y, width, height, spritePath = [], color = null){
-        super  (x, y, width, height, spritePath, color); 
+    constructor(x, y, width, height, spritePath = []){
+        super  (x, y, width, height, spritePath); 
 
         //probíhající akce
         this._isGoLeft   = false;
@@ -20,36 +20,22 @@ export class SpriteDyna extends SpriteAnim{
     updatePos(){
         // Update position
         if (this._isGoRight && !this._isGoLeft) {
-            this._x     += this._xSpeed;
+            this.x = this._x + this._xSpeed;
         }
-        else if (this._isGoLeft && !this._isGoRight) {
-            this._x     -= this._xSpeed;
+        if (this._isGoLeft && !this._isGoRight) {
+            this.x = this._x - this._xSpeed;
         }
         if (this._isGoUp && !this._isGoDown) {
-            this._y -= this._ySpeed;
-        } else if (this._isGoDown && !this._isGoUp) {
-            this._y += this._ySpeed;
+            this.y = this._y - this._ySpeed;
+        }
+        if (this._isGoDown && !this._isGoUp) {
+            this.y = this._y + this._ySpeed;
         }
     }
     updateAll(){
         this.updateImage();
         this.updatePos();
         this.updateImage();
-    }
-    colides(Sprite) {
-        this._points = [
-            { x: this._x, y: this._y },
-            { x: this._x + this._width, y: this._y },
-            { x: this._x + this._width, y: this._y + this._height },
-            { x: this._x, y: this._y + this._height }
-        ];
-        Sprite._points = [
-            { x: Sprite._x, y: Sprite._y },
-            { x: Sprite._x + Sprite._width, y: Sprite._y },
-            { x: Sprite._x + Sprite._width, y: Sprite._y + Sprite._height },
-            { x: Sprite._x, y: Sprite._y + Sprite._height }
-        ];
-        return super.colides(Sprite);
     }
     /*--------------------------Setters-------------------------------*/ 
 
@@ -67,37 +53,46 @@ export class SpriteDyna extends SpriteAnim{
     }
 }
 /*---------------------------SpriteDyna-------------------------------
+import { Tetragon , colides } from './Tetragon.js';
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
+const bluescreen = new Tetragon(
+    {x:0,y:0},
+    {x:800,y:0},
+    {x:800,y:400},
+    {x:0,y:150}
+)
 
-const bluescreen = new SpriteDyna (10,200,750,500,null,'blue');
-const sD1 = new SpriteDyna(20,250,150,150)
-sD1.loadImg([
-    "/Game_01_Ledvadva/sprites/runRight_0.png",
-    "/Game_01_Ledvadva/sprites/runRight_1.png",
-    "/Game_01_Ledvadva/sprites/runRight_2.png",
-    "/Game_01_Ledvadva/sprites/runRight_3.png",
-]);
+const c = new SpriteDyna(10,10,90,160)
+c._animSlow = 40;
+c.loadImgs([ 
+    "/Game_01_Ledvadva/sprites/BLU/stand.png",
+    "/Game_01_Ledvadva/sprites/RED/stand.png"
+])
 
 function SpriteAnimLoop (){
-    bluescreen.render(ctx);
-    sD1.render(ctx,true);
-    sD1.updateImage();
-    sD1.updatePos();
-    console.log(sD1.colides(bluescreen));
+    bluescreen.render(ctx,true)
+    c.render(ctx,true);
+    c.updateImage();
+    c.updatePos();
+    if (colides(c,bluescreen)){
+        bluescreen.color = 'blue'
+    }else{
+        bluescreen.color = 'red'
+    }
+
 }
 window.setInterval(SpriteAnimLoop, 1);
 
 window.addEventListener('keydown', event => handleKey(event, true));
 window.addEventListener('keyup', event => handleKey(event, false));
-
 function handleKey(event, isDown) {
     const { key } = event;
     const actions = {
-        'w': () => sD1._isGoUp    = isDown ,
-        's': () => sD1._isGoDown  = isDown , 
-        'a': () => sD1._isGoLeft  = isDown ,
-        'd': () => sD1._isGoRight = isDown ,
+        'w': () => c.isGoUp    = isDown ,
+        's': () => c.isGoDown  = isDown , 
+        'a': () => c.isGoLeft  = isDown ,
+        'd': () => c.isGoRight = isDown ,
 
     };
     if (actions[key]) actions[key]();

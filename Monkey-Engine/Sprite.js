@@ -1,7 +1,5 @@
 // Autor: Bendl Šimon
 import {Rectangle} from './Rectangle.js'; 
-import {colides} from './Tetragon.js';  
-
 export class Sprite extends Rectangle{
     constructor(x, y, width, height, spritePath = "texture.png") {
         super  (x, y, width, height,null);
@@ -40,14 +38,15 @@ export class Sprite extends Rectangle{
         ctx.strokeRect(this._x, this._y, this._width, this._height);
     }
     /*---------------------------Setters-----------------------------*/
-    set sprite(newSprite){this.loadImg(newSprite);}
-    set id    (newId    ){
-        console.log('this._id changed from ' + this._id + ' to ' + newId);
+    set id (newId){
+        console.log('id changed from ' + this._id + ' to ' + newId);
         this._id= newId;
-    }   
+}     
 }
-/*-----------------------------Sprite-----------------------------------*/ 
 
+/*-----------------------------Sprite-----------------------------------
+
+import { colides } from './Tetragon.js';
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 
@@ -64,10 +63,12 @@ s2.render(ctx);
 //Sprite se načte i v případě donačtení obrázku
 const s3 = new Sprite(290,10,100,100);
 s3.render(ctx);
-s3.sprite = "/Game_01_Ledvadva/sprites/BLU/stand.png";
+s3.loadImg("/Game_01_Ledvadva/sprites/stand.png")
+
 const s4 = new Sprite(430,10,100,100);
-s4.render(ctx);
-s4.sprite = "/Game_01_Ledvadva/sprites/stand.png";
+s4.loadImg("/Game_01_Ledvadva/sprites/stand.png")
+s4.render(ctx)
+
 
 //jde i vykreslit hitbox
 const s5 = new Sprite(570,10,100,100);
@@ -76,6 +77,7 @@ s5.render(ctx,true);
 
 const s6 = new Sprite(670,10,100,100);
 s6.loadImg("/Game_01_Ledvadva/sprites/BLU/rL/6.png");
+console.log(colides(s5,s6))
 if(colides(s5,s6)){s6.render(ctx,true);}
 
 /**/
