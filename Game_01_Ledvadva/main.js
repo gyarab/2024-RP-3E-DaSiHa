@@ -1,4 +1,5 @@
 import { CharacterSprite2} from '../Monkey-Engine/CharacterSprite2.js';
+import { colides, Tetragon } from '../Monkey-Engine/Tetragon.js';
 
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
@@ -75,47 +76,32 @@ const player2 = new CharacterSprite2(250, 500, 85, 155,[
     "/Game_01_Ledvadva/sprites/RED/rL/3.png",
     "/Game_01_Ledvadva/sprites/RED/rL/2.png"
 ]);
-//
+
 player1._id = "player1";
 player1._framesStanding = [player1._frames[0]];
-player1._framesRunRight = player1._frames.slice(1, 15);
-player1._framesRunLeft = player1._frames.slice(15, 30);
+player1._framesRunRight = [player1._frames[0]];
+player1._framesRunLeft  = [player1._frames[0]];
 
 player2._id = "player2";
 player2._framesStanding = [player2._frames[0]];
 player2._framesRunRight = player2._frames.slice(1, 15);
 player2._framesRunLeft = player2._frames.slice(15, 30);
 
+const screen = new Tetragon(
+    {x:0   , y:0   },
+    {x:750 , y:0   },
+    {x:750 , y:400 },
+    {x:0   , y:400 }
+)
 //hlavní herní smyčka
  function Mainloop(){
     ctx.clearRect(0,0,canvas.width, canvas.height);
-
+    screen.render(ctx,true)
     player1.updatePos();
-    player2.updatePos();
-    
-    player1.render(ctx, 0, true);       
-    player2.render(ctx, 1, true);
-
-    if(player1.colides(player2)){
-        player1._xVelocity = 0;
-        player2._xVelocity = 0;
-
-        player1._yVelocity = 0;
-        player2._yVelocity = 0;
-
-        if (player1._x < player2._x){
-            player1._x -= 1;
-            player2._x += 1;
-        }
-        if (player1._x > player2._x){
-            player1._x += 1;
-            player2._x -= 1;
-        }
-        console.log("uhni");
-    }
-
+    player1.render(ctx, 0);    
+    console.log(player1._xVelocity)
 }
-window.setInterval(Mainloop, 1 , true);
+window.setInterval(Mainloop, 1, true);
 
 //nastavení kláves
 function handleKey(event, isDown) {

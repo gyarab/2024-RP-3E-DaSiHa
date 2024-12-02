@@ -33,8 +33,8 @@ export class CharacterSprite2 extends SpriteDyna{
         const jumpVelocity = -15;
 
         //vždy
-        this._x += this._xVelocity;
-        this._y += this._yVelocity;
+        this.x = this._x + this._xVelocity;
+        this.y = this._y + this._yVelocity;
         //nad zemí
         if ((this._y <  this._floor) && this._isJumping){
             this._yVelocity += gravity;
@@ -43,7 +43,7 @@ export class CharacterSprite2 extends SpriteDyna{
         if ((this._y > this._floor) && this._isJumping){
             this._yVelocity = 0;
             this._xVelocity = 0;
-            this._y = this._floor;
+            this.y = this._floor;
             this._isJumping = false;
             if(!this._wantGoLeft ){this._isGoLeft = false}
             if(!this._wantGoRight){this._isGoRight = false}
