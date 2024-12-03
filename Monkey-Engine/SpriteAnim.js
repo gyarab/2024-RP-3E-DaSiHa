@@ -1,12 +1,14 @@
 // Autor: Bendl Šimon
 import { Sprite } from './Sprite.js';
 export class SpriteAnim extends Sprite{
-    constructor(x, y, width, height,spritePaths = [], color = null){
-        super  (x, y, width, height,null, color); 
+    constructor(x, y, width, height,spritePaths = []){
+        super  (x, y, width, height,null); 
         
         this._frames = [];
-        this._currentFrame = 0;
         this._animTick = 0;
+        this._animSlow = 100;
+        this._currentFrame = 0;
+        
 
         if (spritePaths){
             this.loadImg(spritePaths);
@@ -20,9 +22,8 @@ export class SpriteAnim extends Sprite{
         });
     }
     updateImage(){
-        const animSlow = 100;
         this._animTick += 1;
-        if (this._animTick > animSlow){
+        if (this._animTick > this._animSlow){
             this._currentFrame = (this._currentFrame + 1) % this._frames.length;
             this._animTick = 0;
         }
@@ -37,47 +38,39 @@ export class SpriteAnim extends Sprite{
         }else{
             super.render(ctx);
         }
-        
+    }
+    /*---------------------------Setters------------------------------*/
+    set frames(newFrames){
+        console.error("použij loadImg() degeši")
+    }
+    set animSlow(newAnimSlow){
+        this._animSlow = newAnimSlow;
     }
 }
 /*---------------------------SpriteAnim-------------------------------
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 
-const bluescreen = new Sprite (10,200,750,500,null,'blue');
-const sA1 = new SpriteAnim(20,250,150,150,[
-    "/Game_01_Ledvadva/sprites/runRight_0.png",
-    "/Game_01_Ledvadva/sprites/runRight_1.png",
-    "/Game_01_Ledvadva/sprites/runRight_2.png",
-    "/Game_01_Ledvadva/sprites/runRight_3.png",
+
+const bluescreen = new Tetragon(
+    {x:0,y:0},
+    {x:800,y:0},
+    {x:800,y:400},
+    {x:0,y:150}
+)
+const sA = new SpriteAnim(10,10,90,160)
+sA.id = "sA"
+//sA.y = 300;
+sA._animSlow = 40;
+sA.loadImgs([ 
+    "/Game_01_Ledvadva/sprites/BLU/stand.png",
+    "/Game_01_Ledvadva/sprites/RED/stand.png"
 ])
-const sA2 = new SpriteAnim(250,250,150,150,["/Game_01_Ledvadva/sprites/runLeft_0.png"])
-
-const sA3 = new SpriteAnim(500,250,150,150,null,'red');
-
-// "opravit" sA3  
-//sA3.loadImg([
-//    "/Game_01_Ledvadva/sprites/runLeft_0.png",
-//    "/Game_01_Ledvadva/sprites/runLeft_1.png",
-//    "/Game_01_Ledvadva/sprites/runLeft_2.png",
-//    "/Game_01_Ledvadva/sprites/runLeft_3.png"
-//])
-
 function SpriteAnimLoop (){
-    bluescreen.render(ctx);
-    sA1.render(ctx);
-    sA1.updateImage();
-
-    sA2.render(ctx,true);
-    sA2.updateImage();
-
-    sA3.render(ctx);
-    sA3.updateImage();
-
-    if(sA1.colides(bluescreen)){
-        console.log("bazíruju si to na bluescreenu");
-    }
+    bluescreen.render(ctx,true)
+    sA.render(ctx,true);
+    sA.updateImage();
+    if (colides(sA,bluescreen)){console.log("šahaj na sebe")}
 }
 window.setInterval(SpriteAnimLoop, 1);
-
 /**/ 

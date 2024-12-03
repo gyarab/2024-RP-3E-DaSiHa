@@ -9,7 +9,9 @@ export class Sprite extends Rectangle{
         this._isLoaded = false;
 
         this._id = Math.floor(Math.random() * 9000) + 1000;
-        this.loadImg(spritePath);
+        if (spritePath){
+            this.loadImg(spritePath);
+        }
     }
     
     
