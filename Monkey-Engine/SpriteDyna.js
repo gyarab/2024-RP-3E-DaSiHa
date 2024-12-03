@@ -63,13 +63,23 @@ const bluescreen = new Tetragon(
     {x:0,y:150}
 )
 
-const c = new SpriteDyna(10,10,90,160)
-c._animSlow = 40;
-c.loadImgs([ 
-    "/Game_01_Ledvadva/sprites/BLU/stand.png",
-    "/Game_01_Ledvadva/sprites/RED/stand.png"
+const c = new SpriteDyna(10,10,90,160,[ 
+   "/Game_01_Ledvadva/sprites/BLU/rR/1.png",
+    "/Game_01_Ledvadva/sprites/BLU/rR/2.png",
+    "/Game_01_Ledvadva/sprites/BLU/rR/3.png",
+    "/Game_01_Ledvadva/sprites/BLU/rR/4.png",
+    "/Game_01_Ledvadva/sprites/BLU/rR/5.png",
+    "/Game_01_Ledvadva/sprites/BLU/rR/6.png",
+    "/Game_01_Ledvadva/sprites/BLU/rR/7.png",
+    "/Game_01_Ledvadva/sprites/BLU/rR/8.png",
+    "/Game_01_Ledvadva/sprites/BLU/rR/7.png",
+    "/Game_01_Ledvadva/sprites/BLU/rR/6.png",
+    "/Game_01_Ledvadva/sprites/BLU/rR/5.png",
+    "/Game_01_Ledvadva/sprites/BLU/rR/4.png",
+    "/Game_01_Ledvadva/sprites/BLU/rR/3.png",
+    "/Game_01_Ledvadva/sprites/BLU/rR/2.png"
 ])
-
+c._animSlow = 4;
 function SpriteAnimLoop (){
     bluescreen.render(ctx,true)
     c.render(ctx,true);

@@ -27,10 +27,10 @@ export class CharacterSprite2 extends SpriteDyna{
         this._floor = y;
     }
     //posouvá objekt podle probíhající akce
-    updatePos(){
+    updatePos(Obsticles = []){
         // poměr gravity:jumpVelocity určuje výší a délku skoku 
-        const gravity = 0.3;
-        const jumpVelocity = -15;
+        const gravity = 0.1;
+        const jumpVelocity = -10;
 
         //vždy
         this.x = this._x + this._xVelocity;
@@ -107,7 +107,6 @@ export class CharacterSprite2 extends SpriteDyna{
         }
         if(Rinfo != null){this.renderInfo (ctx, Rinfo)}  
         //pokud CharacterSprite má pole Spritů
-        if (this._frames.length > 0) {
             let img = null;
             if(this._isGoRight) { 
                 img =  this._framesRunRight[(this._currentFrame + this._timeOfAction )% this._framesRunRight.length];
@@ -124,11 +123,6 @@ export class CharacterSprite2 extends SpriteDyna{
             if (img && img.complete) {
                 ctx.drawImage(img, this._x, this._y, this._width, this._height);
             }
-        //pokud CharacterSprite nemá pole Spritů
-        } else {
-            super.render(ctx);
-            console.log("něco se posralo");
-        } 
     }
     renderInfo(ctx, numOfInfo = 0){
         //info o CharacterSprite
@@ -143,9 +137,6 @@ export class CharacterSprite2 extends SpriteDyna{
         ctx.fillText('isBothWay = ' + this._isBothWay, 10 + numOfInfo * 200, 125);
         ctx.fillText('----------------------------'  , 10 + numOfInfo * 200, 135);
         
-    }
-    updateImage(){
-        this._currentFrame = (this._currentFrame + 1) % this._frames.length;
     }
 }
 /*---------------------------CharacterSprite2-------------------------------
