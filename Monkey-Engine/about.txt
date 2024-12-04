@@ -1,0 +1,48 @@
+------------------Hiararchie--------------------
+Tetragon
+    -Sprite
+        -SpriteAnim
+            -SpriteDyna
+                -CharacterSprite0
+                -CharacterSprite1
+                -CharacterSprite2
+------------------------------------------------
+Tetragon
+.vykresluje libovolný čtyřuhelník
+.základ pro všechny plošiny, zdi, stropy, i charaktery
+.řeší hitboxy vcelku prostě jde to obejít a řeší pouze rohy objektů
+------------------------------------------------
+Sprite
+.vykresuluje prostý obrázek
+.využití třeba pro pozadí
+------------------------------------------------
+SpriteAnim
+=potomek Sprite
+.místo obrázku vykresluje sekvenci obrázků
+.využití třeba pro animované pozadí
+------------------------------------------------
+SpriteDyna
+=potomek SpriteAnim
+.umožnuje se obrázku hýbat
+.zachovává možnost sekvence obrázku
+.využitý pro prostý pohyb třeba i animovaných střel
+------------------------------------------------
+CharacterSprite0
+=potomek DynamicSprite
+.rozděluje sprity k jednotlivým animacím
+.pohyb zůstává prostý
+.dovoluje pro různé směry různé animace
+.využití pro jednoduché charaktery (např. na minimapě)
+------------------------------------------------
+CharacterSprite1
+=potomek DynamicSprite
+.animace jen jedna a jediné co umí je skákat
+.využití pro simpltonské charaktery(např. dinosaurus)
+------------------------------------------------
+CharacterSprite2
+=potomek DynamicSpritu
+.složitější pohyb i se skokem
+.pohyb kontroluje fyzika
+.při skoku i kontrola nad dopadem
+.využití pro složitější charaktery (např. oheň a voda)
+------------------------------------------------
