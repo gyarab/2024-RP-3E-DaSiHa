@@ -20,8 +20,8 @@ export class CharacterSprite1 extends SpriteDyna{
             
     }
     updatePos(){
-        const gravity = 0.3;
-        const jumpVelocity = -15;
+        const gravity = 0.2;
+        const jumpVelocity = -10;
 
         this._y += this._yVelocity;
 
@@ -62,7 +62,7 @@ EX._framesRunning = [
 ]
 const CA = new SpriteDyna(1000,555,100,100,null,'green');
 CA._isGoLeft = true;
-
+CA._xSpeed = 2;
 function Mainloop(){
     EX.updatePos();
     CA.updatePos();
@@ -75,7 +75,7 @@ function Mainloop(){
     }
       
 }
-window.setInterval(Mainloop, 10 , true);
+window.setInterval(Mainloop, 5 , true);
 
 function handleKey(event, isDown) {
     const { key } = event;
