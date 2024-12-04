@@ -8,7 +8,7 @@ Ročníková práce z Programovaní 3. ročníků, Gymnázium Arabská
  - Hana Hajná
 
 ## Plány, sny a cíle
-Chceme vytvořit pěkně zpracovanou webovou stránku kde bude možnost si zahrát různé typy her. Na stránce samotné chceme mít tlačítka na spuštění her a také nějaké to info o samotných hrách. Hry chceme udělat takové aby vám doplnili dopamin na maximum. Hry budou psány pomocí JavaScriptu. Nudit se určitě nebudete!!
+Chceme vytvořit pěkně zpracovanou webovou stránku, kde bude možnost si zahrát různé typy her. Na stránce samotné chceme mít tlačítka na spuštění her a také nějaké to info o samotných hrách. Hry chceme udělat takové, aby vám doplnili dopamin na maximum. Gamesy samotné budou psány pomocí JavaScriptu. Nudit se určitě nebudete!!
 
 
 ## Rozděl práce
