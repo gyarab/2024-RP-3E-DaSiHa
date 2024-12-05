@@ -31,7 +31,6 @@ export class CharacterSprite2 extends SpriteDyna{
         // poměr gravity:jumpVelocity určuje výší a délku skoku 
         const gravity = 0.1;
         const jumpVelocity = -10;
-
         //vždy
         this.x = this._x + this._xVelocity;
         this.y = this._y + this._yVelocity;
@@ -49,25 +48,27 @@ export class CharacterSprite2 extends SpriteDyna{
             if(!this._wantGoRight){this._isGoRight = false}
         }
         /*-----------------------pokud chce doprava------------------ */
-        if(this._wantGoRight && !this._wantGoLeft){
-            this._isBothWay = false;
+        const maxRunVelocity = 2;
+        const maxJumpVelocity   = 4;
+        if(this._wantGoRight && !this._wantGoLeft ){
             if(!this._isJumping){
-                this._xVelocity = this._xSpeed;
+                this._xVelocity = maxRunVelocity;
                 this.isGoRight = true;
+            }else if(this._xVelocity < maxJumpVelocity){
+                this._xVelocity +=  maxRunVelocity /90;
             }else{
-                this._xVelocity += this._xSpeed /90;
-                this.isGoRight = true;
+                this._xVelocity = maxJumpVelocity;
             }
         }
         /*-----------------------pokud chce doleva-------------------- */
         if(this._wantGoLeft  && !this._wantGoRight){
-            this._isBothWay = false;
             if(!this._isJumping){
-                this._xVelocity = -this._xSpeed;
-                this.isGoLeft   = true;
+                this._xVelocity = -maxRunVelocity;
+                this.isGoLeft = true;
+            }else if(this._xVelocity > -maxJumpVelocity){
+                this._xVelocity -=  maxRunVelocity /90;
             }else{
-                this._xVelocity -= this._xSpeed /90;
-                this.isGoLeft   = true;
+                this._xVelocity = -maxJumpVelocity;
             }
         }
         /*-------------pokud nechci ani doleva ani doprava------------ */
@@ -91,7 +92,8 @@ export class CharacterSprite2 extends SpriteDyna{
             this._yVelocity = jumpVelocity;
             this._isJumping = true;
         }
-        /*---------------------------animace-------------------------- */
+    }
+    updateImage(){
         if (this._isGoLeft || this._isGoRight) {
             this._counterAnim +=  1;
             if (this._counterAnim > 9){
@@ -101,25 +103,52 @@ export class CharacterSprite2 extends SpriteDyna{
         }
     }
     //vykresluje sprite podle probíhající akce  
-    render(ctx, Rinfo = null, Rbox = null){ 
+    render(ctx, Rinfo = null, Rbox = null){
+
+        const maxJumpVelocity   = 4;
+
         if(Rbox  != null){
             super.render_Hitbox(ctx)
         }
         if(Rinfo != null){this.renderInfo (ctx, Rinfo)}  
         //pokud CharacterSprite má pole Spritů
             let img = null;
-            if(this._isGoRight) { 
-                img =  this._framesRunRight[(this._currentFrame + this._timeOfAction )% this._framesRunRight.length];
-            }else  
-            if (this._isGoLeft) {
-                 img = this._framesRunLeft [(this._currentFrame + this._timeOfAction )% this._framesRunLeft.length];
-            }else 
-            if (this._isBothWay) {
-                 img = this._framesStanding[this._currentFrame];
+            /*---------------------pokud je ve skoku---------------------- */
+            if (this._isJumping) {
+                /*----------------skok doprava---------------------------- */
+                if (this._dirOfJump == 1){
+                    if ( this._wantGoRight){
+                        img = this._framesJumpFarRight[1];
+                    }else if(this._wantGoLeft){
+                        img = this._framesJumpFarRight[2];
+                    }else{
+                        img = this._framesJumpFarRight[0];
+                    }  
+                }
+                /*-----------------skok doleva---------------------------- */
+                if (this._dirOfJump == -1){
+                    if (this._wantGoLeft){
+                        img = this._framesJumpFarLeft[1];
+                    }else if(this._wantGoRight){
+                        img = this._framesJumpFarLeft[2];
+                    }else{
+                        img = this._framesJumpFarLeft[0];
+                    }  
+                }
+                /*-----------------skok nahoru---------------------------- */
+                if (this._dirOfJump == 0){
+                    img = this._framesStanding[0];
+                }
             }else{
-                console.log("zmizel")
+            /*---------------------pokud neni ve skoku---------------------- */
+                if(this._isGoRight){  
+                    img =  this._framesRunRight[(this._currentFrame + this._timeOfAction )% this._framesRunRight.length];
+                }else if(this._isGoLeft){ 
+                    img = this._framesRunLeft [(this._currentFrame + this._timeOfAction )% this._framesRunLeft.length];
+                }else{
+                    img = this._framesStanding[0];
+                }
             }
-
             if (img && img.complete) {
                 ctx.drawImage(img, this._x, this._y, this._width, this._height);
             }
@@ -130,12 +159,14 @@ export class CharacterSprite2 extends SpriteDyna{
         ctx.fillStyle = 'black';
         ctx.fillText( this._id + ' :', 10 + numOfInfo * 200,  20);
         ctx.font = '20px Arial';
-        ctx.fillText('----------------------------'  , 10 + numOfInfo * 200,  35);
-        ctx.fillText('isGoLeft  = ' + this._isGoLeft , 10 + numOfInfo * 200,  50);
-        ctx.fillText('isGoRight = ' + this._isGoRight, 10 + numOfInfo * 200,  75);
-        ctx.fillText('isJumping = ' + this._isJumping, 10 + numOfInfo * 200, 100);
-        ctx.fillText('isBothWay = ' + this._isBothWay, 10 + numOfInfo * 200, 125);
-        ctx.fillText('----------------------------'  , 10 + numOfInfo * 200, 135);
+        ctx.fillText('----------------------------'      , 10 + numOfInfo * 200,  35);
+
+        ctx.fillText('isGoRight   = ' + this._isGoRight  , 10 + numOfInfo * 200,  50);
+        ctx.fillText('wantGoRight = ' + this._wantGoRight, 10 + numOfInfo * 200,  75);
+        ctx.fillText('isGoLeft  = ' + this._isGoLeft   , 10 + numOfInfo * 200, 100);
+        ctx.fillText('wantGoLeft  = ' + this._wantGoLeft , 10 + numOfInfo * 200, 125);
+        
+        ctx.fillText('----------------------------'      , 10 + numOfInfo * 200, 135);
         
     }
 }

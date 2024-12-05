@@ -7,7 +7,7 @@ const ctx = canvas.getContext('2d');
 window.addEventListener('keydown', event => handleKey(event, true));
 window.addEventListener('keyup', event => handleKey(event, false));
 
-const player1 = new CharacterSprite2(50, 500, 85, 155,[
+const player1 = new CharacterSprite2(50, 500, 68, 124,[
     //0
     "/Game_01_Ledvadva/sprites/BLU/stand.png",
     //1-14
@@ -25,7 +25,7 @@ const player1 = new CharacterSprite2(50, 500, 85, 155,[
     "/Game_01_Ledvadva/sprites/BLU/rR/4.png",
     "/Game_01_Ledvadva/sprites/BLU/rR/3.png",
     "/Game_01_Ledvadva/sprites/BLU/rR/2.png",
-    //15-29
+    //15-28
     "/Game_01_Ledvadva/sprites/BLU/rL/1.png",
     "/Game_01_Ledvadva/sprites/BLU/rL/2.png",
     "/Game_01_Ledvadva/sprites/BLU/rL/3.png",
@@ -39,43 +39,68 @@ const player1 = new CharacterSprite2(50, 500, 85, 155,[
     "/Game_01_Ledvadva/sprites/BLU/rL/5.png",
     "/Game_01_Ledvadva/sprites/BLU/rL/4.png",
     "/Game_01_Ledvadva/sprites/BLU/rL/3.png",
-    "/Game_01_Ledvadva/sprites/BLU/rL/2.png"
+    "/Game_01_Ledvadva/sprites/BLU/rL/2.png",
+    //29-31
+    "/Game_01_Ledvadva/sprites/BLU/jR/1.png",
+    "/Game_01_Ledvadva/sprites/BLU/jR/2.png",
+    "/Game_01_Ledvadva/sprites/BLU/jR/3.png",
+    //32-34
+    "/Game_01_Ledvadva/sprites/BLU/jL/1.png",
+    "/Game_01_Ledvadva/sprites/BLU/jL/2.png",
+    "/Game_01_Ledvadva/sprites/BLU/jL/3.png",
 
 ]);
 
 player1._id = "player1";
 player1._framesStanding = [player1._frames[0]];
 player1._framesRunRight = player1._frames.slice(1, 15);
-player1._framesRunLeft  = player1._frames.slice(15, 30);
+player1._framesRunLeft  = player1._frames.slice(15, 29);
+player1._framesJumpFarRight = player1._frames.slice(29, 32);
+player1._framesJumpFarLeft  = player1._frames.slice(32, 35);
 
-const screen = new Tetragon(
-    {x:0   , y:0   },
-    {x:750 , y:0   },
-    {x:750 , y:400 },
-    {x:0   , y:400 }
+const wall = new Tetragon(
+    {x: 500, y:  50}, 
+    {x: 550, y:  50}, 
+    {x: 550, y: 400}, 
+    {x: 500, y: 400},
+    "red"
 );
 
+const celing = new Tetragon(
+    {x: 200, y:  50}, 
+    {x: 600, y:  50}, 
+    {x: 600, y: 100}, 
+    {x: 200, y: 100},
+    "orange"
+);
+const floor = new Tetragon(
+    {x: 200, y: 250}, 
+    {x: 600, y: 250}, 
+    {x: 600, y: 275}, 
+    {x: 200, y: 275},
+    "green"
+);
 //hlavní herní smyčka
  function Mainloop(){
     ctx.clearRect(0,0,canvas.width, canvas.height);
-    screen.render(ctx, true);
-    
-    player1.updatePos();
-    player1.render(ctx,0,true)
+
+    wall.render(ctx,true);
+    celing.render(ctx,true);
+    floor.render(ctx,true);
+
+    player1.updatePos([wall,celing,floor]);
+    player1.updateImage();
+    player1.render(ctx,true);
 }
-window.setInterval(Mainloop, 1, true);
+window.setInterval(Mainloop, 10, true);
 
 //nastavení kláves
 function handleKey(event, isDown) {
     const { key } = event;
     const actions = {
-        'w': () => player1._wantJump    = isDown,
+        ' ': () => player1._wantJump    = isDown,
         'a': () => player1._wantGoLeft  = isDown ,
         'd': () => player1._wantGoRight = isDown ,
-  
-        'ArrowUp'   : () => player2._wantJump    = isDown,
-        'ArrowLeft' : () => player2._wantGoLeft  = isDown ,
-        'ArrowRight': () => player2._wantGoRight = isDown ,
     };
     if (actions[key]) actions[key]();
 }
