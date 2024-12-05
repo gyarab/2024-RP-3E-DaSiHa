@@ -1,11 +1,13 @@
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
-import { Sprite } from '../Monkey-Engine/Sprite.js';
+import { Sprite }           from '../Monkey-Engine/Sprite.js';
+import { CharacterSprite1 } from '../Monkey-Engine/CharacterSprite1.js';
 
-const s1 = new Sprite(0, 0, 100, 100);
+const pozadi = new Sprite(0, 0, 1080, 720);
+pozadi.loadImg("hra.jpg");
 
-s1.render(ctx);
+const character = new Sprite(100, 500, 120, 100);
 
-
-//poynamkas
+pozadi.render(ctx);
+character.render(ctx);
