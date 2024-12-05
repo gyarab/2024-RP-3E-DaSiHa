@@ -11,3 +11,4 @@ img.src = 'hra.jpg';
 img.onload = function() {
     ctx.drawImage(img, 0, 0, 700, 600);
 };
+//poynamkas
