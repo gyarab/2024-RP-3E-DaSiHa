@@ -1,14 +1,11 @@
-const canvas = document.createElement('canvas');
-canvas.width = 700;
-canvas.height = 600;
-
-document.body.appendChild(canvas);
+const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
-const img = new Image();
 
-img.src = 'hra.jpg';
+import { Sprite } from '../Monkey-Engine/Sprite.js';
 
-img.onload = function() {
-    ctx.drawImage(img, 0, 0, 700, 600);
-};
+const s1 = new Sprite(0, 0, 100, 100);
+
+s1.render(ctx);
+
+
 //poynamkas
