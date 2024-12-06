@@ -29,7 +29,7 @@ export class CharacterSprite2 extends SpriteDyna{
     //posouvá objekt podle probíhající akce
     updatePos(Obsticles = []){
         // poměr gravity:jumpVelocity určuje výší a délku skoku 
-        const gravity = 0.1;
+        const gravity = 0.3;
         const jumpVelocity = -10;
         //vždy
         this.x = this._x + this._xVelocity;
