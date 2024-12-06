@@ -14,6 +14,17 @@ export class Tetragon{
         ctx.stroke();
         if (fill){ctx.fillStyle = this._color;ctx.fill();}
     }
+    moveTo(newX, newY) {
+        let v1 = vectorBetween(this._points[0],this._points[1]) 
+        let v2 = vectorBetween(this._points[0],this._points[2])
+        let v3 = vectorBetween(this._points[0],this._points[3])
+        this.points = [ 
+            {x: newX       , y: newY},
+            {x: newX + v1.x, y: newY + v1.y},
+            {x: newX + v2.x, y: newY + v2.y},
+            {x: newX + v3.x, y: newY + v3.y}
+        ]
+    }
     /*----------------------------Setters------------------------- */
     set color  (newColor ){ this._color  = newColor }
     set points (newPoints){ this._points = newPoints}
@@ -28,6 +39,32 @@ export function colides(tetragon1, tetragon2){
     }
     return false;
 }
+export function colidesTop(tetragonTop, tetragon){
+    if (pointInPolygon(tetragonTop._points[0], tetragon._points)){return true;}
+    if (pointInPolygon(tetragonTop._points[1], tetragon._points)){return true;}
+    return false;
+}
+export function colidesRight(tetragonRight, tetragon){
+    if (pointInPolygon(tetragonRight._points[1], tetragon._points)){return true;}
+    if (pointInPolygon(tetragonRight._points[2], tetragon._points)){return true;}
+    return false;
+}
+export function colidesBottom(tetragonBot, tetragon){
+    if (pointInPolygon(tetragonBot._points[2], tetragon._points)){return true;}
+    if (pointInPolygon(tetragonBot._points[3], tetragon._points)){return true;}
+    return false;
+}
+export function colidesLeft(tetragonLeft, tetragon){
+    if (pointInPolygon(tetragonLeft._points[3], tetragon._points)){return true;}
+    if (pointInPolygon(tetragonLeft._points[0], tetragon._points)){return true;}
+    return false;
+}
+function vectorBetween(p1 , p2){
+    let vectorX = p2.x - p1.x;
+    let vectorY = p2.y - p1.y;
+    return {x: vectorX, y: vectorY}
+
+}
 function pointInPolygon(point, polygon) {
     let x = point.x, y = point.y;
     let inside = false;
@@ -39,16 +76,32 @@ function pointInPolygon(point, polygon) {
     }
     return inside;
 }
-/*-----------------------------Tetragon----------------------------------- *
+
+/*-----------------------------Tetragon-----------------------------------*/
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 
-const t1 = new Tetragon({x: 10, y: 10}, {x: 200, y: 200}, {x: 300, y: 350}, {x: 10, y: 300}, 'red');
-t1.render(ctx,true);
+const t1 = new Tetragon(
+    {x:  50, y: 200},
+    {x: 100, y: 200},
+    {x: 100, y: 300},
+    {x:  50, y: 300}, 
+    'red'
+);
 
-const t2 = new Tetragon({x: 250, y: 40}, {x: 350, y: 40}, {x: 350, y: 140}, {x: 250, y: 290}, 'blue');    
+const t2 = new Tetragon(
+    {x: 250, y: 40},
+    {x: 350, y: 40},
+    {x: 350, y: 240},
+    {x: 250, y: 240},
+     'blue'
+);    
+
+t2.moveTo(500,400)
+t1.moveTo(475,599)
+
 t2.render(ctx,true);
-
-console.log(t1.colides(t2));
-console.log(t2.colides(t1));
+t1.render(ctx,true);
+console.log(t1._points[0])
+console.log(colidesTop(t1,t2))
 /**/
