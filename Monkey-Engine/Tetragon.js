@@ -44,19 +44,46 @@ export function colidesTop(tetragonTop, tetragon){
     if (pointInPolygon(tetragonTop._points[1], tetragon._points)){return true;}
     return false;
 }
-export function colidesRight(tetragonRight, tetragon){
-    if (pointInPolygon(tetragonRight._points[1], tetragon._points)){return true;}
-    if (pointInPolygon(tetragonRight._points[2], tetragon._points)){return true;}
+export function colidesRight(tetragonCollider, tetragon, vicinity = 0){
+    const v = vectorBetween(tetragonCollider._points[1], tetragonCollider._points[2])
+    const pointA = {
+        x: tetragonCollider._points[1].x ,
+        y: tetragonCollider._points[1].y + (v.y / 2) + vicinity
+    }
+    const pointB = {
+        x: tetragonCollider._points[1].x ,
+        y: tetragonCollider._points[1].y + (v.y / 2) - vicinity
+    }
+    if (pointInPolygon(pointA, tetragon._points)){return true;}
+    if (pointInPolygon(pointB, tetragon._points)){return true;}
     return false;
 }
-export function colidesBottom(tetragonBot, tetragon){
-    if (pointInPolygon(tetragonBot._points[2], tetragon._points)){return true;}
-    if (pointInPolygon(tetragonBot._points[3], tetragon._points)){return true;}
+export function colidesBottom(tetragonCollider, tetragon, vicinity = 0){
+    const v = vectorBetween(tetragonCollider._points[2], tetragonCollider._points[3])
+    const pointA = {
+        x: tetragonCollider._points[2].x + (v.x / 2) + vicinity,
+        y: tetragonCollider._points[2].y 
+    }
+    const pointB = {
+        x: tetragonCollider._points[2].x + (v.x / 2) - vicinity,
+        y: tetragonCollider._points[2].y 
+    }
+    if (pointInPolygon(pointA, tetragon._points)){return true;}
+    if (pointInPolygon(pointB, tetragon._points)){return true;}
     return false;
 }
-export function colidesLeft(tetragonLeft, tetragon){
-    if (pointInPolygon(tetragonLeft._points[3], tetragon._points)){return true;}
-    if (pointInPolygon(tetragonLeft._points[0], tetragon._points)){return true;}
+export function colidesLeft(tetragonCollider, tetragon, vicinity){
+    const v = vectorBetween(tetragonCollider._points[0],tetragonCollider._points[3])
+    const pointA = {
+        x: tetragonCollider._points[0].x ,
+        y: tetragonCollider._points[0].y + (v.y / 2) + vicinity
+    }
+    const pointB = {
+        x: tetragonCollider._points[0].x ,
+        y: tetragonCollider._points[0].y + (v.y / 2) - vicinity
+    }
+    if (pointInPolygon(pointA, tetragon._points)){return true;}
+    if (pointInPolygon(pointB, tetragon._points)){return true;}
     return false;
 }
 function vectorBetween(p1 , p2){
@@ -77,7 +104,7 @@ function pointInPolygon(point, polygon) {
     return inside;
 }
 
-/*-----------------------------Tetragon-----------------------------------*/
+/*-----------------------------Tetragon-----------------------------------
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 
