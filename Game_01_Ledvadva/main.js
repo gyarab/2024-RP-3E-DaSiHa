@@ -7,7 +7,7 @@ const ctx = canvas.getContext('2d');
 window.addEventListener('keydown', event => handleKey(event, true));
 window.addEventListener('keyup', event => handleKey(event, false));
 
-const player1 = new CharacterSprite2(50, 500, 68, 124,[
+const player1 = new CharacterSprite2(50, 100, 68, 124,[
     //0
     "/Game_01_Ledvadva/sprites/BLU/stand.png",
     //1-14
@@ -58,39 +58,24 @@ player1._framesRunLeft  = player1._frames.slice(15, 29);
 player1._framesJumpFarRight = player1._frames.slice(29, 32);
 player1._framesJumpFarLeft  = player1._frames.slice(32, 35);
 
-const wall = new Tetragon(
-    {x: 500, y:  50}, 
-    {x: 550, y:  50}, 
-    {x: 550, y: 400}, 
-    {x: 500, y: 400},
-    "red"
-);
 
-const celing = new Tetragon(
-    {x: 200, y:  50}, 
-    {x: 600, y:  50}, 
-    {x: 600, y: 100}, 
-    {x: 200, y: 100},
+const wall = new Tetragon(
+    {x: 200, y:  50},
+    {x: 600, y:  50},
+    {x: 600, y: 500},
+    {x: 200, y: 500},
     "orange"
-);
-const floor = new Tetragon(
-    {x: 200, y: 250}, 
-    {x: 600, y: 250}, 
-    {x: 600, y: 275}, 
-    {x: 200, y: 275},
-    "green"
-);
+)
+
+wall.moveTo(50, 400);
+
 //hlavní herní smyčka
  function Mainloop(){
     ctx.clearRect(0,0,canvas.width, canvas.height);
-
-    wall.render(ctx,true);
-    celing.render(ctx,true);
-    floor.render(ctx,true);
-
-    player1.updatePos([wall,celing,floor]);
+    wall.render(ctx , true);
+    player1.updatePos(wall);
     player1.updateImage();
-    player1.render(ctx,true);
+    player1.render(ctx,0);
 }
 window.setInterval(Mainloop, 10, true);
 
