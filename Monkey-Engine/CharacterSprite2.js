@@ -1,4 +1,6 @@
+import { Rectangle } from "./Rectangle.js";
 import { SpriteDyna } from "./SpriteDyna.js";
+import { colidesBottom, colidesLeft , colidesRight} from "./Tetragon.js";
 export class CharacterSprite2 extends SpriteDyna{
     constructor(x, y, width, height, spritePaths) {
         super  (x, y, width, height, spritePaths);
@@ -7,6 +9,8 @@ export class CharacterSprite2 extends SpriteDyna{
         this._wantGoRight = false;
         this._wantGoLeft  = false;
         this._wantJump    = false;
+
+        this._isOnGround = false;
         this._isJumping  = false;
         //vlastnosti akcí
         this._yVelocity = 0;
@@ -24,26 +28,49 @@ export class CharacterSprite2 extends SpriteDyna{
         this._framesJumpLigRight = [];
         this._framesJumpRight    = [];
         
-        this._floor = y;
+        this._floor = 720 - this._height;
     }
     //posouvá objekt podle probíhající akce
-    updatePos(Obsticles = []){
+    updatePos(Obsticles){
         // poměr gravity:jumpVelocity určuje výší a délku skoku 
         const gravity = 0.3;
         const jumpVelocity = -10;
+
         //vždy
-        this.x = this._x + this._xVelocity;
         this.y = this._y + this._yVelocity;
-        //nad zemí
-        if ((this._y <  this._floor) && this._isJumping){
-            this._yVelocity += gravity;
+
+        //kolize s podlahou
+        const NextFrame = new Rectangle(this._x + this._xVelocity,this._y + this._yVelocity,this._width, this._height,null);
+        if (colidesRight(NextFrame , Obsticles, 15)){
+            this._xVelocity = 0
+            if (colidesRight(this , Obsticles, 15)){
+                this.x = this._x - 1;
+            }
+        }else if (colidesLeft(NextFrame , Obsticles, 15)){
+            this._xVelocity = 0
+            if (colidesLeft(this , Obsticles, 15)){
+                this.x = this._x + 1;
+            }
+        }else{
+            this.x = this._x + this._xVelocity;
         }
-        //pod zemí (kontola dopadu)
-        if ((this._y > this._floor) && this._isJumping){
+        if (colidesBottom(NextFrame, Obsticles, 10)){
+            this._floor = Obsticles._points[0].y - this._height;
+            this._isOnGround = true;
+        //padání z podlahy
+        }else{
+            this._floor = 720 - this._height;
+            this._isOnGround = false;
+        }
+        //padání
+        if (this._y <  this._floor){
+            this._yVelocity += gravity;
+        }else{
             this._yVelocity = 0;
             this._xVelocity = 0;
+            this._isJumping  = false;
+            this._isOnGround = true ;
             this.y = this._floor;
-            this._isJumping = false;
             if(!this._wantGoLeft ){this._isGoLeft = false}
             if(!this._wantGoRight){this._isGoRight = false}
         }
