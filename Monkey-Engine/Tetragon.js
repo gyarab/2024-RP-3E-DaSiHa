@@ -39,9 +39,18 @@ export function colides(tetragon1, tetragon2){
     }
     return false;
 }
-export function colidesTop(tetragonTop, tetragon){
-    if (pointInPolygon(tetragonTop._points[0], tetragon._points)){return true;}
-    if (pointInPolygon(tetragonTop._points[1], tetragon._points)){return true;}
+export function colidesTop(tetragonCollider, tetragon, vicinity){
+    const v = vectorBetween(tetragonCollider._points[0], tetragonCollider._points[1])
+    const pointA = {
+        x: tetragonCollider._points[0].x + (v.x / 2) + vicinity,
+        y: tetragonCollider._points[0].y 
+    }
+    const pointB = {
+        x: tetragonCollider._points[0].x + (v.x / 2) - vicinity,
+        y: tetragonCollider._points[0].y 
+    }
+    if (pointInPolygon(pointA, tetragon._points)){return true;}
+    if (pointInPolygon(pointB, tetragon._points)){return true;}
     return false;
 }
 export function colidesRight(tetragonCollider, tetragon, vicinity = 0){
