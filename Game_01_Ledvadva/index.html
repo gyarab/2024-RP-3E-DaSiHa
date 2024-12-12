@@ -4,16 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ledva dva </title>
+  <link rel = "stylesheet" href = "../Main-Website/style_header.css" >
   <style>
      body {
+      display: block;
+      justify-content: center;
+      align-items: center;
+      background-color:#492f09;
+      margin: 0;
+    }
+    .gameSection {
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #282c34;
-      margin: 0;
-      height: 100vh;
     }
-
     canvas {
       border: 5px solid black;
       background-color: white;
@@ -26,7 +30,20 @@
   <script type="module" src="/Game_01_Ledvadva/main.js"></script>
 </head>
 <body>
-
-  <canvas  id="herniRozhraní" width="1080" height="720"></canvas>
+  <div id="external-Header" class = "stick"></div>
+      <script>
+          fetch('../Main-Website/Header.html')
+              .then(response => response.text())
+              .then(data => {
+                  document.getElementById('external-Header').innerHTML = data;
+              })
+              .catch(error => {
+                  console.error('Error fetching HTML:', error);
+              });
+      </script>
+      <div class = "gameSection">
+        <canvas  id="herniRozhraní" width="1080" height="720"></canvas>
+      </div>
+  
 </body>
 </html>
