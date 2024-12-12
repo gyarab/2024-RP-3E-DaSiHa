@@ -1,0 +1,35 @@
+body {
+display: block;
+justify-content: center;
+align-items: center;
+background-color:#492f09;
+margin: 0;
+}
+main {
+    margin: 0;
+    display: flex;
+    background-color: green;
+}
+.gameSection {
+    background-color: orange;
+    align-items: center;
+    justify-content:center ;
+    display: flex;
+    flex-basis: 60%;
+}
+.ad-Panel{
+    margin: 0;
+    flex-basis: 20%;
+}
+.ad-Panel img{
+    width: 100%;
+    height: auto;
+}
+canvas {
+    border: 1px solid black;
+    background-color: white;
+    width: 100%;
+    height: auto;
+    max-width: 1080px;
+    max-height: 720px;
+}

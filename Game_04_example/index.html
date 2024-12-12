@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Example</title>
+  <link rel = "stylesheet" href = "../Main-Website/style_header.css"     >
+  <link rel = "stylesheet" href = "../Game_04_example/style_gameSec.css" >
+  <style>
+     
+  </style>
+  <script type="module" src="..."></script>
+</head>
+<body>
+  <div id="external-Header" class = "stick"></div>
+      <script>
+          fetch('../Main-Website/Header.html')
+              .then(response => response.text())
+              .then(data => {
+                  document.getElementById('external-Header').innerHTML = data;
+              })
+              .catch(error => {
+                  console.error('Error fetching HTML:', error);
+              });
+      </script>
+      <main>
+        <div class = "ad-Panel" >
+          <img src="addL.png" alt="AD">
+        </div>
+        <div class = "gameSection">
+          <canvas id="herniRozhraní" width="1080" height="720"></canvas>
+        </div>
+        <div class = "ad-Panel">
+          <img src="addR.png" alt="AD">
+        <div>
+      </main>
+      
+  
+</body>
+</html>
