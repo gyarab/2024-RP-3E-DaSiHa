@@ -3,13 +3,13 @@
 .link-header{
     display: flex;
     width: 100%;
-    padding: 20px;
     background-color: antiquewhite;
 }
 .link-header .left      {
     flex-basis: 15%;
     display: flex;
     justify-content:flex-start;
+    padding: 20px;
     align-items: center; 
 }
 .link-header .left img  {
@@ -38,6 +38,7 @@
     display: flex;
     flex-basis: 15%;
     justify-content:end;
+    padding: 20px;
 }
 .link-header .right img {
     width: 100%; 
