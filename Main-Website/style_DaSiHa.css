@@ -26,29 +26,3 @@ body {
     top: 0;
     position: sticky;
 }
-/* ------------------------- Grid --------------------- */
-.grid-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    background-color: black;
-    gap: 10px;
-}
-
-.content {
-    background-color: red;
-}
-.content img {
-    width: 100%;
-    height: auto;
-}
-/* ------------------- @media srágory ----------------- */
-@media (max-width: 780px) {
-    .grid-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .link-header{
-        flex-direction: column;
-    }
-}

@@ -1,0 +1,29 @@
+/* ------------------------- Grid --------------------- */
+.gameGallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr ;
+    grid-template-rows: auto auto;
+    margin-top:   50px;
+    margin-left:  10px;
+    margin-right: 10px;
+    gap: 20px;
+}
+
+.content {
+ margin: 0px;
+}
+.content img {
+    width: 100%;
+    height: auto;
+}
+
+/* ------------------- @media srágory ----------------- */
+@media (max-width: 780px) {
+    .grid-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .link-header{
+        flex-direction: column;
+    }
+}
