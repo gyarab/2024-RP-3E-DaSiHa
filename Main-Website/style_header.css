@@ -14,7 +14,7 @@
 }
 .link-header .left img  {
     width: 100%;
-    max-width: 120px;
+    max-width: 80px;
     min-width: 70px;
 }
 .link-header .mid       {
@@ -25,13 +25,12 @@
 }
 .link-header .mid a     {
     width: 100%;
-    max-width: 170px;
+    max-width: 80px;
     margin: 15px;
 /*  border: 2px solid red;  */
 }
 .link-header .mid img   {
     width: 100%;
-    max-width: 170px;
 }
 .link-header .right     {
     align-items: center;
@@ -42,6 +41,6 @@
 }
 .link-header .right img {
     width: 100%; 
-    max-width: 50px;
+    max-width: 40px;
 
 }
