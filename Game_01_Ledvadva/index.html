@@ -21,24 +21,28 @@
 <body>
   <div id="externalCode"></div>
   <script>
-    fetch('../Main-Website/Header.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('externalCode').innerHTML = data;
-        return fetch('../Main-Website/GameSection.html');
-      })
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('externalCode').innerHTML += data;
-        return fetch('../Main-Website/GameGallery.html');
-      })
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('externalCode').innerHTML += data;
-      })
-      .catch(error => {
-        console.error('Error fetching HTML:', error);
-      });
+    function loadExternalHTML(url) {
+          return fetch(url)
+            .then(response => response.text())
+            .then(data => {
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = data;
+              document.getElementById('externalCode').appendChild(tempDiv);
+              const scripts = tempDiv.getElementsByTagName('script');
+              for (let script of scripts) {
+          const newScript = document.createElement('script');
+          newScript.text = script.text;
+          document.body.appendChild(newScript);
+              }
+            });
+        }
+
+        loadExternalHTML('../Main-Website/Header.html')
+          .then(() => loadExternalHTML('../Main-Website/GameSection.html'))
+          .then(() => loadExternalHTML('../Main-Website/GameGallery.html'))
+          .catch(error => {
+            console.error('Error fetching HTML:', error);
+          });
   </script>
 </body>
 </html>
