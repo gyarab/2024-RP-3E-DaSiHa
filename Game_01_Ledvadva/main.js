@@ -1,4 +1,5 @@
 import { CharacterSprite2} from '../Monkey-Engine/CharacterSprite2.js';
+import { SpriteDyna } from '../Monkey-Engine/SpriteDyna.js';
 import { Tetragon } from '../Monkey-Engine/Tetragon.js';
 
 const canvas = document.getElementById('herniRozhraní');
@@ -7,7 +8,7 @@ const ctx = canvas.getContext('2d');
 window.addEventListener('keydown', event => handleKey(event, true));
 window.addEventListener('keyup', event => handleKey(event, false));
 
-const player1 = new CharacterSprite2(50, 100, 68, 124,[
+const player1 = new CharacterSprite2(150, 100, 68, 124,[
     //0
     "/Game_01_Ledvadva/sprites/BLU/stand.png",
     //1-14
@@ -65,7 +66,7 @@ player1._framesJumpFarLeft  = player1._frames.slice(32, 35);
 player1._framesPushRight    = [player1._frames[35]];
 player1._framesPushLeft     = [player1._frames[36]];
 
-const player2 = new CharacterSprite2(50, 100, 68, 124,[
+const player2 = new CharacterSprite2(200, 100, 68, 124,[
     //0
     "/Game_01_Ledvadva/sprites/RED/stand.png",
     //1-14
@@ -122,6 +123,23 @@ player2._framesJumpFarLeft  = player2._frames.slice(32, 35);
 player2._framesPushRight    = [player2._frames[35]];
 player2._framesPushLeft     = [player2._frames[36]];
 
+const player3 = new SpriteDyna( 0, 1080 - 224, 120, 224, [
+    "/Game_01_Ledvadva/sprites/Alexa/1.png",
+    "/Game_01_Ledvadva/sprites/Alexa/2.png",
+    "/Game_01_Ledvadva/sprites/Alexa/3.png",
+    "/Game_01_Ledvadva/sprites/Alexa/4.png",
+    "/Game_01_Ledvadva/sprites/Alexa/5.png",
+    "/Game_01_Ledvadva/sprites/Alexa/6.png",
+    "/Game_01_Ledvadva/sprites/Alexa/7.png",
+    "/Game_01_Ledvadva/sprites/Alexa/8.png",
+    "/Game_01_Ledvadva/sprites/Alexa/7.png",
+    "/Game_01_Ledvadva/sprites/Alexa/6.png",
+    "/Game_01_Ledvadva/sprites/Alexa/5.png",
+    "/Game_01_Ledvadva/sprites/Alexa/4.png",
+    "/Game_01_Ledvadva/sprites/Alexa/3.png",
+    "/Game_01_Ledvadva/sprites/Alexa/2.png"
+]);
+player3.animSlow = 30;
 const w1 = new Tetragon(
     {x: 200, y:  50},
     {x: 600, y:  50},
@@ -156,10 +174,15 @@ w3.moveTo(950   ,   500);
 w4.moveTo(650   ,   300);
 
 const obsticles  = [w1, w2, w3, w4];
+player3._isGoRight= true;
 //hlavní herní smyčka
 function Mainloop() {
     ctx.clearRect(0,0,canvas.width, canvas.height);
     obsticles.forEach(obsticle => obsticle.render(ctx, true));
+
+    player3.render(ctx);
+    player3.updateAll();
+    if (player3._x > 1920) player3._x = -120;
     player1.updatePos(obsticles);
     player1.updateImage();
     player1.render(ctx,0);
@@ -177,6 +200,7 @@ function handleKey(event, isDown) {
         'w': () => player1._wantJump    = isDown,
         'a': () => player1._wantGoLeft  = isDown ,
         'd': () => player1._wantGoRight = isDown ,
+        'r': () => player3._isGoRight   = isDown,
 
         'ArrowUp'   : () => player2._wantJump    = isDown,   
         'ArrowLeft' : () => player2._wantGoLeft  = isDown,
