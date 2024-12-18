@@ -13,7 +13,6 @@ canvas {
     border: 6px solid rgb(226, 75, 246);
     height: 70%;
     width: 70%;
-    background: url('bowling.png') no-repeat center center;
     background-size: cover;
 }
 
