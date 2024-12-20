@@ -1,30 +1,27 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Endless Run</title>
-    <link rel="stylesheet" href="style.css">
-    <script type="module" src="script.js"></script>
-    <link rel = "stylesheet" href = "../Main-Website/style_header.css"     >
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Runner</title>
+  <link rel = "stylesheet" href = "../Main-Website/style_header.css"     >
   <link rel = "stylesheet" href = "../Main-Website/style_GameSection.css" >
   <link rel = "stylesheet" href = "../Main-Website/style_GameGallery.css" >
+  <style>
+     body {
+      display: block;
+      justify-content: center;
+      align-items: center;
+      background-color:#492f09;
+      margin: 0;
+    }
+  </style>
+  <script type="module" src="/Game_03_runner/script.js"></script>
 </head>
-<style>
-    body {
-        display: block;
-        justify-content: center;
-        align-items: center;
-        background-color:#492f09;
-        margin: 0;
-      }
-</style>
 <body>
-    <script type="module" src="script.js"></script>
-    <div id="externalCode"></div>
-      <script>
-        function loadExternalHTML(url) {
+  <div id="externalCode"></div>
+  <script>
+    function loadExternalHTML(url) {
           return fetch(url)
             .then(response => response.text())
             .then(data => {
@@ -46,7 +43,6 @@
           .catch(error => {
             console.error('Error fetching HTML:', error);
           });
-      </script>
-   
+  </script>
 </body>
 </html>
