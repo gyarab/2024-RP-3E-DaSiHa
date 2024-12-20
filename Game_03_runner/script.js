@@ -13,7 +13,7 @@ character._id = "dinosaurus";
 character._framesRunning = [
     "/Game_03_runner/sprites/runner1.png",
     "/Game_03_runner/sprites/runner2.png",
-    "/Game_01_Ledvadva/sprites/runRight_2.png",
+    "/Game_03_runner/sprites/runner3.png",
     "/Game_01_Ledvadva/sprites/runRight_3.png"
 ]
 
