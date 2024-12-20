@@ -14,7 +14,8 @@ character._framesRunning = [
     "/Game_03_runner/sprites/runner1.png",
     "/Game_03_runner/sprites/runner2.png",
     "/Game_03_runner/sprites/runner3.png",
-    "/Game_03_runner/sprites/runner4.png"
+    "/Game_03_runner/sprites/runner4.png",
+    "/Game_03_runner/sprites/runner5.png",
 ]
 
 //hlavní herní smyčka
