@@ -28,8 +28,22 @@ kuzelka8.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
 const kuzelka10 = new Sprite(1013, 145, 100, 90);
 kuzelka10.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
 
+const cudlik = new Sprite(1150, 700, 1500, 1500);
+cudlik.loadImg("/Game_02_dakynovyKoule/cudlas.png");
+
 
 const character = new CharacterSprite1(790, 600, 350, 400);
+
+canvas.addEventListener('click', function(event) {
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    if (x >= cudlik.x && x <= cudlik.x + cudlik.width && y >= cudlik.y && y <= cudlik.y + cudlik.height) {
+        console.log('Boom picture clicked!');
+        // Add your desired action here
+    }
+});
 
 character._id = "sipka";
 character._framesRunning = [
@@ -65,6 +79,7 @@ function Mainloop(){
     kuzelka10.render(ctx);
     character.render(ctx);
     character.updatePos();
+    cudlik.render(ctx);
 }
 window.setInterval(Mainloop, 6, true);
 
