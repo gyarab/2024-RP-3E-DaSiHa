@@ -23,6 +23,10 @@ export class Rectangle extends Tetragon{
             ctx.strokeRect(this._x, this._y, this._width, this._height);
         }
     }
+    moveTo(x, y){   
+        this.x = x;
+        this.y = y;
+    }
     /*--------------------------Setters-------------------------------*/
     set x(newX){
         this._x = newX,

@@ -95,7 +95,7 @@ export class CharacterSprite2 extends SpriteDyna{
             this._floor = floorOb._points[0].y - this._height;
             this._isOnGround = true;
         }else           {
-            this._floor = 720 - this._height;
+            this._floor = 1080 - this._height;
             this._isOnGround = false;
         }  
         if (!canGoUp){
