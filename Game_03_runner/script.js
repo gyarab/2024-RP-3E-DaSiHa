@@ -1,4 +1,4 @@
-const canvas = document.getElementById('game');
+const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 
 import { Sprite }           from '../Monkey-Engine/Sprite.js';
