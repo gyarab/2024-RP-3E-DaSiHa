@@ -173,7 +173,7 @@ export class CharacterSprite2 extends SpriteDyna{
     }
     //vykresluje sprite podle probíhající akce  
     render(ctx, Rinfo = null, Rbox = null){
-        if(Rbox  != null){
+        if(Rbox){
             super.render_Hitbox(ctx)
         }
         if(Rinfo != null){

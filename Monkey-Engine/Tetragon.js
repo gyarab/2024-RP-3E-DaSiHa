@@ -11,8 +11,10 @@ export class Tetragon{
         ctx.lineTo(this._points[2].x, this._points[2].y);
         ctx.lineTo(this._points[3].x, this._points[3].y);
         ctx.closePath();
-        ctx.stroke();
-        if (fill){ctx.fillStyle = this._color;ctx.fill();}
+        //ctx.stroke();
+        //if (fill){
+            ctx.fillStyle = this._color;ctx.fill();
+        //}
     }
     moveTo(newX, newY) {
         let v1 = vectorBetween(this._points[0],this._points[1]) 
