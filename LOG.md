@@ -43,15 +43,20 @@ odevzdala pozdě a kromě zkopírovaného ne uplně funkčního kódu přidala j
 **David**
 
 má (do 15.1.) :
-+ vylepšit plynulost animace šipky
-+ zprovoznit tlačítko nechť děla "aspoň něco"
-+ ...
++ vytvořit (pixelart) sprite pro kuželku
++ pře/vytvořit pozadí do pixelového artstylu 
++ zprovoznit tlačítko nechť děla "aspoň něco" (opravit pngčko)
++ vytvořit sprite/y pro bowlingovou kouli
++ zkusit rozpohybovat bowlingovou kouli
 
 **Hana**
 
-uspěšně předělala přes prázdniny sprity pro ustřední postavu své hry 
+uspěšně předělala přes prázdniny sprity pro ustřední postavu své hry.
+
 má (do 15.1.) :
-+ ...
-+ ...
-+ ...
++ vytvořit texturu/y pro překážky
++ vytvořit sprity pro motýle 
++ vytvořit sprity pro překážky (zkusit vícero)
++ vytvořit pozadí (zkusit vícero lokací)
++ vytvořit sprity pro potencionální colectables (coiny,kosti nebo tak něco)
 
