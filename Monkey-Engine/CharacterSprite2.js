@@ -172,13 +172,11 @@ export class CharacterSprite2 extends SpriteDyna{
         }
     }
     //vykresluje sprite podle probíhající akce  
-    render(ctx, Rinfo = null, Rbox = null){
+    render(ctx, Rbox = null){
         if(Rbox){
             super.render_Hitbox(ctx)
         }
-        if(Rinfo != null){
-            this.renderInfo (ctx, Rinfo)
-        }  
+
         //pokud CharacterSprite má pole Spritů
         let img = null;
         /*---------------------pokud je ve skoku---------------------- */

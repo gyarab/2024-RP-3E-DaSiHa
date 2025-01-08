@@ -37,7 +37,8 @@ export class Sprite extends Rectangle{
             } 
     }
     render_Hitbox(ctx){
-        ctx.strokeStyle = "red";
+        ctx.strokeStyle = "magenta";
+        ctx.lineWidth = 3;
         ctx.strokeRect(this._x, this._y, this._width, this._height);
     }
     /*---------------------------Setters-----------------------------*/

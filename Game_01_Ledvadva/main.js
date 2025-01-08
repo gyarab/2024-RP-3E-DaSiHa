@@ -227,15 +227,13 @@ window.addEventListener('load', () => {
     /*--------------------------infoMode--------------------------------*/
     let infoMode = false;
     let infoBox = new Rectangle();
-    /*--------------------------selectMode--------------------------------*/
+    /*--------------------------selectMode------------------------------*/
     let selectMode = true;
     let selected = 0;
     const none = "none";
-    const selectABLE = { none, player1, player2, npc};
-    
-    /*--------------------------Swiches---------------------------------*/
+    const selectABLE = { none, player1, player2};
+    /*------------------------Swiches fo modes--------------------------*/
     window.addEventListener('keypress', event => { handleKeyPressed(event)});
-
     function handleKeyPressed(event) {
         const { key } = event;
         if (key === 'i') { 
@@ -251,7 +249,16 @@ window.addEventListener('load', () => {
             console.log(`Selected: ${Object.keys(selectABLE)[selected]}`);
         }
     }
+    /*------------------------OnClick--------------------------*/
+    const rect = canvas.getBoundingClientRect();
+    handleClick(event.clientX - rect.left, event.clientY - rect.top);
+    function handleClick(mouseX, mouseY) {
+        if (selected > 0){
+            selectABLE[Object.keys(selectABLE)[selected]].moveTo(mouseX, mouseY);
+        }
+    }
     /*--------------------------Mainloop--------------------------------*/
+    
     function Mainloop() {
 
         ctx.clearRect(0,0,canvas.width, canvas.height);
@@ -259,25 +266,22 @@ window.addEventListener('load', () => {
         if (infoMode) {
             infoBox.render(ctx, true);
         }
-        console.log((selectMode&& selected === 3));
         obsticles.forEach(obsticle => obsticle.render(ctx, true));
 
-        npc.render(ctx,(selectMode && selected === 3));
+        //npc.render(ctx,(selectMode && selected === 3));
         npc.updateAll();
         if (npc._x > 1920) npc._x = -120;
 
         bottles.forEach(bottles => bottles.render(ctx));
         
-
         player1.updatePos(obsticles);
         player1.updateImage();
-
-        player1.render(ctx,0,(selectMode && selected === 1));
+        player1.render(ctx,(selectMode && selected === 1));
 
         
         player2.updatePos(obsticles);
         player2.updateImage();
-        player2.render(ctx,1,(selectMode && selected === 2));
+        player2.render(ctx, (selectMode && selected === 2));
         
     }
     window.setInterval(Mainloop, 6, true);
