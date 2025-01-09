@@ -186,24 +186,24 @@ window.addEventListener('load', () => {
     npc.animSlow = 30;
     npc._isGoRight= true;
     /*------------------------Bottles---------------------------------*/
-    const bottleBLU = new Sprite( null, null, 100, 100,
-        "/Game_01_Ledvadva/sprites/BLU/b.png"
+    const bottleBLU = new Sprite( null, null, 64, 64,
+        "/Game_01_Ledvadva/sprites/BLU/b7.png"
     );
     bottleBLU.moveTo(720, 220);
-    const bottleRED = new Sprite( null, null, 100, 100,
-        "/Game_01_Ledvadva/sprites/BLU/b.png"
+    const bottleRED = new Sprite( null, null, 64, 64,
+        "/Game_01_Ledvadva/sprites/BLU/b7.png"
     );
     bottleRED.moveTo(400, 800);
-    const bottleORA = new Sprite( null, null, 100, 100,
-        "/Game_01_Ledvadva/sprites/BLU/b.png"
+    const bottleORA = new Sprite( null, null, 64, 64,
+        "/Game_01_Ledvadva/sprites/BLU/b7.png"
     );
     bottleORA.moveTo( 1000, 400);
-    const bottleGRE = new Sprite( null, null, 100, 100,
-        "/Game_01_Ledvadva/sprites/BLU/b.png"
+    const bottleGRE = new Sprite( null, null, 64, 64,
+        "/Game_01_Ledvadva/sprites/BLU/b1.png"
     );
     bottleGRE.moveTo( 500, 800);
-    const bottleGRY = new Sprite( null, null, 100, 100,
-        "/Game_01_Ledvadva/sprites/BLU/b.png"
+    const bottleGRY = new Sprite( null, null, 64, 64,
+        "/Game_01_Ledvadva/sprites/BLU/b7.png"
     );
     bottleGRY.moveTo( 1000, 800);
     const bottles = [bottleBLU, bottleRED, bottleORA, bottleGRE, bottleGRY];
