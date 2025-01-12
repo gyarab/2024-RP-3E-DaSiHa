@@ -197,16 +197,22 @@ window.addEventListener('load', () => {
     const bottleORA = new Sprite( null, null, 64, 64,
         "/Game_01_Ledvadva/sprites/BLU/b7.png"
     );
-    bottleORA.moveTo( 1000, 400);
-    const bottleGRE = new Sprite( null, null, 64, 64,
-        "/Game_01_Ledvadva/sprites/BLU/b1.png"
-    );
-    bottleGRE.moveTo( 500, 800);
-    const bottleGRY = new Sprite( null, null, 64, 64,
-        "/Game_01_Ledvadva/sprites/BLU/b7.png"
-    );
-    bottleGRY.moveTo( 1000, 800);
-    const bottles = [bottleBLU, bottleRED, bottleORA, bottleGRE, bottleGRY];
+    bottleORA.moveTo(1000, 800);
+    const bottles = [bottleBLU, bottleRED, bottleORA];
+    /*----------------------------Basketball--------------------------*/
+    const basketball = new SpriteDyna( 0, 1080 - 64, 64, 64, [
+        "/Game_01_Ledvadva/sprites/Basketball/1.png",
+        "/Game_01_Ledvadva/sprites/Basketball/2.png",
+        "/Game_01_Ledvadva/sprites/Basketball/3.png",
+        "/Game_01_Ledvadva/sprites/Basketball/4.png",
+        "/Game_01_Ledvadva/sprites/Basketball/5.png",
+        "/Game_01_Ledvadva/sprites/Basketball/6.png",
+        "/Game_01_Ledvadva/sprites/Basketball/7.png",
+        "/Game_01_Ledvadva/sprites/Basketball/8.png"
+    ]);
+    basketball.animSlow = 50;
+    basketball.isGoRight = true;
+    basketball._xSpeed = 1;
     /*------------------------nastavení kláves------------------------*/
     window.addEventListener('keydown', event => handleKeyUpAndDown(event,  true));
     window.addEventListener('keyup'  , event => handleKeyUpAndDown(event, false));
@@ -225,36 +231,77 @@ window.addEventListener('load', () => {
         if (actions[key]) actions[key]();
     }
     /*--------------------------infoMode--------------------------------*/
-    let infoMode = false;
-    let infoBox = new Rectangle();
+    let infoMode = false; 
+    let infoEdge = new Sprite   (0,0,1920,1080,"../Game_01_Ledvadva/sprites/info.png");
+    let infoBox  = new Sprite (0,0,0,0,"../Game_01_Ledvadva/sprites/infobox.png");
+    let info;
+    let object = [player1, player2, npc, bottleBLU, bottleRED, bottleORA, basketball];
+    
     /*--------------------------selectMode------------------------------*/
-    let selectMode = true;
-    let selected = 0;
+    let selectEdge = new Sprite   (0,0,1920,1080,"../Game_01_Ledvadva/sprites/select.png");
+    let selected = 0; // selected = 0 => selectedMode is
     const none = "none";
     const selectABLE = { none, player1, player2};
     /*------------------------Swiches fo modes--------------------------*/
     window.addEventListener('keypress', event => { handleKeyPressed(event)});
     function handleKeyPressed(event) {
         const { key } = event;
+        infoBox._width = 0;//schová infoBox
         if (key === 'i') { 
             infoMode = !infoMode;
-            selectMode = false;
             selected = 0;
+            console.log("--------------Mode-Info-----------------")
         }
         if (key === 't') { 
             infoMode = false;
             selected = (selected + 1) % Object.keys(selectABLE).length;
-            if  (selected === 0){ selectMode = false;}
-            else(selectMode = true);
+            console.log("--------------Mode-Select-----------------")
             console.log(`Selected: ${Object.keys(selectABLE)[selected]}`);
         }
     }
     /*------------------------OnClick--------------------------*/
-    const rect = canvas.getBoundingClientRect();
-    handleClick(event.clientX - rect.left, event.clientY - rect.top);
-    function handleClick(mouseX, mouseY) {
+    
+    window.addEventListener('click', event => handleClick(event));
+    function handleClick(event) {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const mouseX = (event.clientX - rect.left) * scaleX;
+        const mouseY = (event.clientY - rect.top) * scaleY;
+        
         if (selected > 0){
             selectABLE[Object.keys(selectABLE)[selected]].moveTo(mouseX, mouseY);
+        }
+        if(infoMode){
+            const newX = Math.min(Math.max(mouseX, 0), canvas.width - infoBox._width);
+            const newY = Math.min(Math.max(mouseY, 0), canvas.height - infoBox._height);
+            
+            info = null;
+            let numOfObj = 0;
+            object.forEach(obj => {
+                if (mouseX >= obj._x && mouseX <= obj._x + obj._width &&
+                    mouseY >= obj._y && mouseY <= obj._y + obj._height) {
+                    info = {
+                    id: obj._id,
+                    position: obj._x + "x" + obj._y,
+                    size: obj._width + "x" + obj._height,
+                    typeof: obj.constructor.name
+                    }
+
+                    numOfObj = numOfObj + 1;
+                }
+            });
+            if (numOfObj > 0) {
+                infoBox.moveTo(newX, newY);
+                infoBox._width = 360;
+                infoBox._height = 280;
+                console.log(info)
+
+            }else{
+                infoBox._width = 0;
+            }
+
+            
         }
     }
     /*--------------------------Mainloop--------------------------------*/
@@ -263,25 +310,35 @@ window.addEventListener('load', () => {
 
         ctx.clearRect(0,0,canvas.width, canvas.height);
 
-        if (infoMode) {
-            infoBox.render(ctx, true);
-        }
+        
         obsticles.forEach(obsticle => obsticle.render(ctx, true));
 
-        //npc.render(ctx,(selectMode && selected === 3));
-        npc.updateAll();
-        if (npc._x > 1920) npc._x = -120;
+        //npc.render(ctx,(selected === 3));
+        //npc.updateAll();
+        //if (npc._x > 1920) npc._x = -120;
 
         bottles.forEach(bottles => bottles.render(ctx));
-        
+
+        basketball.render(ctx);
+        basketball.updateAll();
+        if (basketball._x > 1920) basketball._x = -100;
+
         player1.updatePos(obsticles);
         player1.updateImage();
-        player1.render(ctx,(selectMode && selected === 1));
+        player1.render(ctx,(selected === 1));
 
         
         player2.updatePos(obsticles);
         player2.updateImage();
-        player2.render(ctx, (selectMode && selected === 2));
+        player2.render(ctx, (selected === 2));
+
+        if (infoMode) {
+            infoEdge.render(ctx);
+            infoBox.render(ctx);
+        }
+        if (selected > 0) {
+            selectEdge.render(ctx);
+        }
         
     }
     window.setInterval(Mainloop, 6, true);
