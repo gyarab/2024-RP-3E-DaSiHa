@@ -48,6 +48,7 @@ export class SpriteAnim extends Sprite{
     }
 }
 /*---------------------------SpriteAnim-------------------------------
+import { Tetragon, colides } from '../Monkey-Engine/Tetragon.js';
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 
@@ -56,21 +57,19 @@ const bluescreen = new Tetragon(
     {x:0,y:0},
     {x:800,y:0},
     {x:800,y:400},
-    {x:0,y:150}
+    {x:0,y:400}
 )
-const sA = new SpriteAnim(10,10,90,160)
-sA.id = "sA"
-//sA.y = 300;
-sA._animSlow = 40;
-sA.loadImgs([ 
+const sA = new SpriteAnim(10,150,90,160, [ 
     "/Game_01_Ledvadva/sprites/BLU/stand.png",
-    "/Game_01_Ledvadva/sprites/RED/stand.png"
+    "/Game_01_Ledvadva/sprites/BLU/rR/5.png"
 ])
+
+sA.id = "spriteAnim"
+sA.animSlow = 40;
 function SpriteAnimLoop (){
     bluescreen.render(ctx,true)
     sA.render(ctx,true);
     sA.updateImage();
-    if (colides(sA,bluescreen)){console.log("šahaj na sebe")}
 }
 window.setInterval(SpriteAnimLoop, 1);
 /**/ 
