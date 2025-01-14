@@ -3,6 +3,7 @@ import {       SpriteDyna } from  '../Monkey-Engine/SpriteDyna.js';
 import {        Rectangle } from  '../Monkey-Engine/Rectangle.js';
 import {         Tetragon } from  '../Monkey-Engine/Tetragon.js';
 import {           Sprite } from  '../Monkey-Engine/Sprite.js';
+import {             Menu } from '../Monkey-Engine/Menu.js';
 
 window.addEventListener('load', () => {
     const canvas = document.getElementById('herniRozhraní');
@@ -233,16 +234,16 @@ window.addEventListener('load', () => {
     /*--------------------------infoMode--------------------------------*/
     let infoMode = false; 
     let infoEdge = new Sprite   (0,0,1920,1080,"../Game_01_Ledvadva/sprites/info.png");
-    let infoBox  = new Sprite (0,0,0,0,"../Game_01_Ledvadva/sprites/infobox.png");
+    let infoBox  = new Sprite (0,0,0,0,"../Monkey-Engine/defaultTextures/infobox.png");
     let info;
     let object = [player1, player2, npc, bottleBLU, bottleRED, bottleORA, basketball];
     
-    /*--------------------------selectMode------------------------------*/
+    /*--------------------------selectMode------------------------------*
     let selectEdge = new Sprite   (0,0,1920,1080,"../Game_01_Ledvadva/sprites/select.png");
     let selected = 0; // selected = 0 => selectedMode is
     const none = "none";
     const selectABLE = { none, player1, player2};
-    /*------------------------Swiches fo modes--------------------------*/
+    /*------------------------Swiches fo modes--------------------------*
     window.addEventListener('keypress', event => { handleKeyPressed(event)});
     function handleKeyPressed(event) {
         const { key } = event;
@@ -268,7 +269,7 @@ window.addEventListener('load', () => {
         const scaleY = canvas.height / rect.height;
         const mouseX = (event.clientX - rect.left) * scaleX;
         const mouseY = (event.clientY - rect.top) * scaleY;
-        
+        /*
         if (selected > 0){
             selectABLE[Object.keys(selectABLE)[selected]].moveTo(mouseX, mouseY);
         }
@@ -301,9 +302,66 @@ window.addEventListener('load', () => {
                 infoBox._width = 0;
             }
 
-            
-        }
+           
+        }*/
     }
+    /*------------------------------------------------------------------*/
+    window.addEventListener('contextmenu', event => {
+        event.preventDefault();
+        handleRClick(event);
+    });
+    let ObjMenu     = new Menu();
+    let NonObjMenu  = new Menu();
+    function handleRClick(event){
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const mouseX = (event.clientX - rect.left) * scaleX;
+        const mouseY = (event.clientY - rect.top) * scaleY;
+        const canvasX = Math.min(Math.max(mouseX, 0), canvas.width - infoBox._width);
+        const canvasY = Math.min(Math.max(mouseY, 0), canvas.height - infoBox._height);
+        NonObjMenu = null;
+        ObjMenu    = null;
+        let isObject = false
+        object.forEach(obj => {
+            if(
+                mouseX >= obj._x && mouseX <= obj._x + obj._width &&
+                mouseY >= obj._y && mouseY <= obj._y + obj._height
+              ){
+                isObject = true;
+            }
+        });
+        if (isObject){
+            ObjMenu    = new Menu(canvasX, canvasY, 360, 80, 4);
+            ObjMenu.rearange("socket");
+            ObjMenu.fontSize = 50;
+            ObjMenu._boxes[0].text = "select";    
+            ObjMenu._boxes[1].text = "info";
+            ObjMenu._boxes[2].text = "refactor";
+            ObjMenu._boxes[3].text = "delete";
+
+            ObjMenu._boxes[0].foldable = true
+            ObjMenu._boxes[1].foldable = true
+            ObjMenu._boxes[2].foldable = true
+        }else{
+            NonObjMenu = new Menu(canvasX, canvasY, 360, 80, 2);
+            NonObjMenu.rearange("socket");
+            NonObjMenu.fontSize = 40;
+            NonObjMenu._boxes[0].text = "new";    
+            NonObjMenu._boxes[1].text = Math.floor(canvasX) + "x" + Math.floor(canvasY);
+
+        }
+        
+            
+        
+    
+
+
+
+
+
+    }
+
     /*--------------------------Mainloop--------------------------------*/
     
     function Mainloop() {
@@ -325,21 +383,15 @@ window.addEventListener('load', () => {
 
         player1.updatePos(obsticles);
         player1.updateImage();
-        player1.render(ctx,(selected === 1));
+        player1.render(ctx);
 
         
         player2.updatePos(obsticles);
         player2.updateImage();
-        player2.render(ctx, (selected === 2));
+        player2.render(ctx);
 
-        if (infoMode) {
-            infoEdge.render(ctx);
-            infoBox.render(ctx);
-        }
-        if (selected > 0) {
-            selectEdge.render(ctx);
-        }
-        
+        if (ObjMenu) {ObjMenu.render(ctx)}
+        if (NonObjMenu) {NonObjMenu.render(ctx)}
     }
     window.setInterval(Mainloop, 6, true);
 });
