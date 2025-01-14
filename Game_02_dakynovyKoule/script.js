@@ -7,46 +7,46 @@ import { CharacterSprite1 } from '../Monkey-Engine/CharacterSprite1.js';
 const background = new Sprite(0, 0, 1920, 1100);
 background.loadImg("/Game_02_dakynovyKoule/bowling.png");
 
-const kuzelka1 = new Sprite(896, 155, 100, 90);
+const kuzelka1 = new Sprite(920, 594, 100, 90);
 kuzelka1.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
 
-const kuzelka2 = new Sprite(857, 152, 100, 90);
+const kuzelka2 = new Sprite(900, 583, 100, 90);
 kuzelka2.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
 
-const kuzelka3 = new Sprite(935, 152, 100, 90);
+const kuzelka3 = new Sprite(940, 583, 100, 90);
 kuzelka3.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
 
-const kuzelka4 = new Sprite(818, 150, 100, 90);
+const kuzelka4 = new Sprite(880, 572, 100, 90);
 kuzelka4.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
 
-const kuzelka7 = new Sprite(974, 150, 100, 90);
+const kuzelka5 = new Sprite(920, 572, 100, 90);
+kuzelka5.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
+
+const kuzelka6 = new Sprite(960, 572, 100, 90);
+kuzelka6.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
+
+const kuzelka7 = new Sprite(860, 561, 100, 90);
 kuzelka7.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
 
-const kuzelka8 = new Sprite(779, 145, 100, 90);
+const kuzelka8 = new Sprite(900, 561, 100, 90);
 kuzelka8.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
 
-const kuzelka10 = new Sprite(1013, 145, 100, 90);
+const kuzelka9 = new Sprite(940, 561, 100, 90);
+kuzelka9.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
+
+const kuzelka10 = new Sprite(980, 561, 100, 90);
 kuzelka10.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
 
 const cudlik = new Sprite(1150, 700, 1500, 1500);
 cudlik.loadImg("/Game_02_dakynovyKoule/cudlas.png");
 
+const koule = new Sprite(1150, 700, 150, 150);
+koule.loadImg("/Game_02_dakynovyKoule/gula.png");
 
-const character = new CharacterSprite1(790, 600, 350, 400);
 
-canvas.addEventListener('click', function(event) {
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    if (x >= cudlik.x && x <= cudlik.x + cudlik.width && y >= cudlik.y && y <= cudlik.y + cudlik.height) {
-        console.log('Boom picture clicked!');
-        // Add your desired action here
-    }
-});
-
-character._id = "sipka";
-character._framesRunning = [
+const sipecka = new CharacterSprite1(900, 840, 150, 200);
+sipecka._id = "sipka";
+sipecka._framesRunning = [
     "/Game_02_dakynovyKoule/sipecka.png",
     "/Game_02_dakynovyKoule/sipecka-1.png", 
     "/Game_02_dakynovyKoule/sipecka-2.png", 
@@ -64,22 +64,29 @@ character._framesRunning = [
     "/Game_02_dakynovyKoule/sipecka2.png",
     "/Game_02_dakynovyKoule/sipecka1.png",
     "/Game_02_dakynovyKoule/sipecka.png"
-
 ]
 
 
 function Mainloop(){
     background.render(ctx);
-    kuzelka1.render(ctx);
-    kuzelka2.render(ctx);
-    kuzelka3.render(ctx);
-    kuzelka4.render(ctx);
-    kuzelka7.render(ctx);
-    kuzelka8.render(ctx);
     kuzelka10.render(ctx);
-    character.render(ctx);
-    character.updatePos();
+    kuzelka9.render(ctx);
+    kuzelka8.render(ctx);
+    kuzelka7.render(ctx);
+    kuzelka6.render(ctx);
+    kuzelka5.render(ctx);
+    kuzelka4.render(ctx);
+    kuzelka3.render(ctx);
+    kuzelka2.render(ctx);
+    kuzelka1.render(ctx);
     cudlik.render(ctx);
+    koule.render(ctx);
+    sipecka.render(ctx);
+    sipecka.updatePos();
 }
-window.setInterval(Mainloop, 6, true);
+window.setInterval(Mainloop, 5, true);
+
+
+
+
 
