@@ -9,7 +9,7 @@ import { SpriteDyna }       from '../Monkey-Engine/SpriteDyna.js';
 const pozadi = new Sprite(0, 0, 1915, 1080);
 pozadi.loadImg("/Game_03_runner/sprites/pozadi_les.jpg");
 
-const character = new CharacterSprite1(100, 590, 250, 310);
+const character = new CharacterSprite1(100, 690, 250, 310);
 
 character._id = "pes";
 character._framesRunning = [
@@ -31,17 +31,17 @@ const motyl = new SpriteDyna(1300,400,150,110,[
  ])
  motyl._animSlow = 35;
 
- const hrib = new SpriteDyna(500,650,200,220, [ 
+ const hrib = new SpriteDyna(600,750,200,220, [ 
     "/Game_03_runner/sprites/hrib.png",
 ])
 hrib.id = "hrib"
 
-const muchomurka = new SpriteDyna(1100,650,200,220, [ 
+const muchomurka = new SpriteDyna(1100,750,200,220, [ 
     "/Game_03_runner/sprites/muchomurka.png",
 ])
 muchomurka.id = "muchomurka"
 
-const kost = new SpriteDyna(850,720,100,110, [ 
+const kost = new SpriteDyna(900,820,100,110, [ 
     "/Game_03_runner/sprites/kost.png",
 ])
 kost.id = "kost"
