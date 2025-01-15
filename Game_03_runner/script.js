@@ -31,15 +31,21 @@ const motyl = new SpriteDyna(1300,400,150,110,[
  ])
  motyl._animSlow = 35;
 
- const hrib = new SpriteAnim(500,650,200,220, [ 
+ const hrib = new SpriteDyna(500,650,200,220, [ 
     "/Game_03_runner/sprites/hrib.png",
 ])
 hrib.id = "hrib"
 
-const muchomurka = new SpriteAnim(1100,650,200,220, [ 
+const muchomurka = new SpriteDyna(1100,650,200,220, [ 
     "/Game_03_runner/sprites/muchomurka.png",
 ])
 muchomurka.id = "muchomurka"
+
+const kost = new SpriteDyna(850,720,100,110, [ 
+    "/Game_03_runner/sprites/kost.png",
+])
+kost.id = "kost"
+
 
 //hlavní herní smyčka
 function Mainloop(){
@@ -52,5 +58,7 @@ function Mainloop(){
     hrib.updateImage();
     muchomurka.render(ctx,true);
     muchomurka.updateImage();
+    kost.render(ctx,true);
+    kost.updateImage();
 }
 window.setInterval(Mainloop, 1, true);
