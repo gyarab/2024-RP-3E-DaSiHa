@@ -3,12 +3,13 @@ const ctx = canvas.getContext('2d');
 
 import { Sprite }           from '../Monkey-Engine/Sprite.js';
 import { CharacterSprite1 } from '../Monkey-Engine/CharacterSprite1.js';
+import { SpriteAnim }       from '../Monkey-Engine/SpriteAnim.js';
+import { SpriteDyna }       from '../Monkey-Engine/SpriteDyna.js';
 
 const pozadi = new Sprite(0, 0, 1915, 1080);
-pozadi.loadImg("hra.jpg");
+pozadi.loadImg("/Game_03_runner/sprites/pozadi_les.jpg");
 
-const character = new CharacterSprite1(120, 690, 185, 210);
-const motyl = new CharacterSprite1(1520, 490, 100, 110);
+const character = new CharacterSprite1(100, 590, 250, 310);
 
 character._id = "pes";
 character._framesRunning = [
@@ -24,19 +25,32 @@ character._framesRunning = [
     "/Game_03_runner/sprites/faze1.png",
 ]
 
-motyl._id = "motyl";
-motyl._framesRunning = [
+const motyl = new SpriteDyna(1300,400,150,110,[ 
     "/Game_03_runner/sprites/motyl_faze1.png",
     "/Game_03_runner/sprites/motyl_faze2.png",
-]
+ ])
+ motyl._animSlow = 35;
 
+ const hrib = new SpriteAnim(500,650,200,220, [ 
+    "/Game_03_runner/sprites/hrib.png",
+])
+hrib.id = "hrib"
+
+const muchomurka = new SpriteAnim(1100,650,200,220, [ 
+    "/Game_03_runner/sprites/muchomurka.png",
+])
+muchomurka.id = "muchomurka"
 
 //hlavní herní smyčka
 function Mainloop(){
     pozadi.render(ctx);
     character.render(ctx);
     character.updatePos();
-    motyl.render(ctx);
-    motyl.updatePos();
+    motyl.render(ctx, true);
+    motyl.updateImage();
+    hrib.render(ctx,true);
+    hrib.updateImage();
+    muchomurka.render(ctx,true);
+    muchomurka.updateImage();
 }
 window.setInterval(Mainloop, 1, true);
