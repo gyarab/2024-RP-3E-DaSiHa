@@ -232,36 +232,51 @@ window.addEventListener('load', () => {
         if (actions[key]) actions[key]();
     }
     /*--------------------------infoMode--------------------------------*/
-    let infoMode = false; 
-    let infoEdge = new Sprite   (0,0,1920,1080,"../Game_01_Ledvadva/sprites/info.png");
-    let infoBox  = new Sprite (0,0,0,0,"../Monkey-Engine/defaultTextures/infobox.png");
-    let info;
+    
     let object = [player1, player2, npc, bottleBLU, bottleRED, bottleORA, basketball];
+
+    let ObjMenu   = new Menu(0, 0, 360, 80, 4);
+        ObjMenu.rearange("socket");
+        ObjMenu.fontSize = 50;
+        ObjMenu._boxes[0].text = "select";    
+        ObjMenu._boxes[1].text = "info";
+        ObjMenu._boxes[2].text = "refactor";
+        ObjMenu._boxes[3].text = "delete";
+        ObjMenu._boxes[0].foldable = true
+        ObjMenu._boxes[1].foldable = true
+        ObjMenu._boxes[2].foldable = true
+
+    let NonObjMenu = new Menu(0, 0, 360, 80, 2);
+        NonObjMenu.rearange("socket");
+        NonObjMenu.fontSize = 50;
+        NonObjMenu._boxes[0].text = "new";    
+        NonObjMenu._boxes[1].text = "...";
+        NonObjMenu._boxes[0].foldable = true
+
+    let SelectMenu = new Menu(0,0,180,40,2);
+        SelectMenu.rearange("socket");
+        SelectMenu.fontSize = 25;
+        SelectMenu._boxes[0].text = "drag";
+        SelectMenu._boxes[1].text = "moveTo";
+
+    let InfoMenu   = new Menu(0, 0, 300, 40, 4);
+        InfoMenu.rearange("plain");
+        InfoMenu.fontSize = 25;
+
+    let RefactMenu  = new Menu(0,0,180,40,2);
+        RefactMenu.rearange("socket");  
+        RefactMenu._boxes[0].text = "rename";
+        RefactMenu._boxes[1].text = "recolor";
     
-    /*--------------------------selectMode------------------------------*
-    let selectEdge = new Sprite   (0,0,1920,1080,"../Game_01_Ledvadva/sprites/select.png");
-    let selected = 0; // selected = 0 => selectedMode is
-    const none = "none";
-    const selectABLE = { none, player1, player2};
-    /*------------------------Swiches fo modes--------------------------*
-    window.addEventListener('keypress', event => { handleKeyPressed(event)});
-    function handleKeyPressed(event) {
-        const { key } = event;
-        infoBox._width = 0;//schová infoBox
-        if (key === 'i') { 
-            infoMode = !infoMode;
-            selected = 0;
-            console.log("--------------Mode-Info-----------------")
-        }
-        if (key === 't') { 
-            infoMode = false;
-            selected = (selected + 1) % Object.keys(selectABLE).length;
-            console.log("--------------Mode-Select-----------------")
-            console.log(`Selected: ${Object.keys(selectABLE)[selected]}`);
-        }
-    }
-    /*------------------------OnClick--------------------------*/
-    
+    let NewMenu     = new Menu(0,0,180,40,6);
+        NewMenu.rearange("socket");
+        NewMenu._boxes[0].text = "player1";
+        NewMenu._boxes[1].text = "...";
+
+
+    let AllMenus     = [];
+    let pressedObj = null;
+
     window.addEventListener('click', event => handleClick(event));
     function handleClick(event) {
         const rect = canvas.getBoundingClientRect();
@@ -269,97 +284,108 @@ window.addEventListener('load', () => {
         const scaleY = canvas.height / rect.height;
         const mouseX = (event.clientX - rect.left) * scaleX;
         const mouseY = (event.clientY - rect.top) * scaleY;
-        /*
-        if (selected > 0){
-            selectABLE[Object.keys(selectABLE)[selected]].moveTo(mouseX, mouseY);
-        }
-        if(infoMode){
-            const newX = Math.min(Math.max(mouseX, 0), canvas.width - infoBox._width);
-            const newY = Math.min(Math.max(mouseY, 0), canvas.height - infoBox._height);
-            
-            info = null;
-            let numOfObj = 0;
-            object.forEach(obj => {
-                if (mouseX >= obj._x && mouseX <= obj._x + obj._width &&
-                    mouseY >= obj._y && mouseY <= obj._y + obj._height) {
-                    info = {
-                    id: obj._id,
-                    position: obj._x + "x" + obj._y,
-                    size: obj._width + "x" + obj._height,
-                    typeof: obj.constructor.name
-                    }
 
-                    numOfObj = numOfObj + 1;
+        SelectMenu.isVisable = false;
+        InfoMenu.isVisable   = false;
+        RefactMenu.isVisable = false;
+        NewMenu.isVisable    = false;
+        let pressedBox = null;
+            
+        let menusBoxes = [];
+
+        if (ObjMenu._isVisable && !NonObjMenu._isVisable) {
+            for (let i = 0; i < ObjMenu._boxes.length; i++) {
+                menusBoxes.push(ObjMenu._boxes[i]);
+            }
+            menusBoxes.forEach(box => {
+                if (
+                    mouseX >= box._x && mouseX <= box._x + box._width &&
+                    mouseY >= box._y && mouseY <= box._y + box._height
+                ) {
+                    pressedBox = box;
                 }
             });
-            if (numOfObj > 0) {
-                infoBox.moveTo(newX, newY);
-                infoBox._width = 360;
-                infoBox._height = 280;
-                console.log(info)
-
-            }else{
-                infoBox._width = 0;
+        }
+        if (NonObjMenu._isVisable  && !ObjMenu._isVisable) {
+            for (let i = 0; i < NonObjMenu._boxes.length; i++) {
+                menusBoxes.push(NonObjMenu._boxes[i]);
             }
-
-           
-        }*/
+            menusBoxes.forEach(box => {
+                if (
+                    mouseX >= box._x && mouseX <= box._x + box._width &&
+                    mouseY >= box._y && mouseY <= box._y + box._height
+                ) {
+                    pressedBox = box;
+                    console.log(pressedBox)
+                }
+            });
+        }
+        
+        if (pressedBox) {
+            switch (pressedBox._text) {
+            case "select":
+                SelectMenu.isVisable = true;
+                SelectMenu.moveTo(pressedBox._x + pressedBox._width, pressedBox._y)
+                break;
+            case "info":
+                InfoMenu.isVisable = true;
+                InfoMenu.moveTo(pressedBox._x + pressedBox._width, pressedBox._y)
+                InfoMenu._boxes[0].text = "ID: " + pressedObj._id;
+                InfoMenu._boxes[1].text = "Type: " + pressedObj.constructor.name;
+                InfoMenu._boxes[2].text = "Position: " + Math.floor(pressedObj._x) + "x" + Math.floor(pressedObj._y);
+                InfoMenu._boxes[3].text = "Size: " + Math.floor(pressedObj._width) + "x" + Math.floor(pressedObj._height);
+                break;
+            case "refactor":
+                RefactMenu.isVisable = true;
+                RefactMenu.moveTo(pressedBox._x + pressedBox._width, pressedBox._y)
+                break;
+            case "delete":
+                console.log("delete")
+                break;
+            case "new":
+                NewMenu.isVisable = true;
+                NewMenu.moveTo(pressedBox._x + pressedBox._width, pressedBox._y)
+                break;
+            default:
+            }
+        }else{
+            ObjMenu.isVisable = false;
+            NonObjMenu.isVisable = false;
+        }
     }
     /*------------------------------------------------------------------*/
     window.addEventListener('contextmenu', event => {
         event.preventDefault();
         handleRClick(event);
     });
-    let ObjMenu     = new Menu();
-    let NonObjMenu  = new Menu();
+    
     function handleRClick(event){
         const rect = canvas.getBoundingClientRect();
         const scaleX = canvas.width / rect.width;
         const scaleY = canvas.height / rect.height;
         const mouseX = (event.clientX - rect.left) * scaleX;
         const mouseY = (event.clientY - rect.top) * scaleY;
-        const canvasX = Math.min(Math.max(mouseX, 0), canvas.width - infoBox._width);
-        const canvasY = Math.min(Math.max(mouseY, 0), canvas.height - infoBox._height);
-        NonObjMenu = null;
-        ObjMenu    = null;
+        const canvasX = Math.min(Math.max(mouseX, 0), canvas.width);
+        const canvasY = Math.min(Math.max(mouseY, 0), canvas.height);
         let isObject = false
         object.forEach(obj => {
             if(
                 mouseX >= obj._x && mouseX <= obj._x + obj._width &&
                 mouseY >= obj._y && mouseY <= obj._y + obj._height
               ){
-                isObject = true;
+                isObject   = true;
+                pressedObj = obj;
             }
         });
         if (isObject){
-            ObjMenu    = new Menu(canvasX, canvasY, 360, 80, 4);
-            ObjMenu.rearange("socket");
-            ObjMenu.fontSize = 50;
-            ObjMenu._boxes[0].text = "select";    
-            ObjMenu._boxes[1].text = "info";
-            ObjMenu._boxes[2].text = "refactor";
-            ObjMenu._boxes[3].text = "delete";
-
-            ObjMenu._boxes[0].foldable = true
-            ObjMenu._boxes[1].foldable = true
-            ObjMenu._boxes[2].foldable = true
+            ObjMenu.moveTo(canvasX, canvasY);
+            ObjMenu.isVisable = true;
+            NonObjMenu.isVisable = false;
         }else{
-            NonObjMenu = new Menu(canvasX, canvasY, 360, 80, 2);
-            NonObjMenu.rearange("socket");
-            NonObjMenu.fontSize = 40;
-            NonObjMenu._boxes[0].text = "new";    
-            NonObjMenu._boxes[1].text = Math.floor(canvasX) + "x" + Math.floor(canvasY);
-
+            NonObjMenu.moveTo(canvasX, canvasY);
+            NonObjMenu.isVisable = true;
+            ObjMenu.isVisable = false;
         }
-        
-            
-        
-    
-
-
-
-
-
     }
 
     /*--------------------------Mainloop--------------------------------*/
@@ -371,7 +397,7 @@ window.addEventListener('load', () => {
         
         obsticles.forEach(obsticle => obsticle.render(ctx, true));
 
-        //npc.render(ctx,(selected === 3));
+        //npc.render(ctx);
         //npc.updateAll();
         //if (npc._x > 1920) npc._x = -120;
 
@@ -390,8 +416,13 @@ window.addEventListener('load', () => {
         player2.updateImage();
         player2.render(ctx);
 
-        if (ObjMenu) {ObjMenu.render(ctx)}
-        if (NonObjMenu) {NonObjMenu.render(ctx)}
+        if (    ObjMenu._isVisable ) {    ObjMenu.render(ctx) };
+        if ( NonObjMenu._isVisable ) { NonObjMenu.render(ctx) };
+        if ( SelectMenu._isVisable ) { SelectMenu.render(ctx) };
+        if (   InfoMenu._isVisable ) {   InfoMenu.render(ctx) };
+        if ( RefactMenu._isVisable ) { RefactMenu.render(ctx) };
+        if (    NewMenu._isVisable ) {    NewMenu.render(ctx) };
+
     }
     window.setInterval(Mainloop, 6, true);
 });

@@ -10,6 +10,7 @@ export class Menu {
         this._style  = "plane";
         this._boxes = [];
         this._fontSize = 30;
+        this._isVisable = false;
 
         for (let i = 0; i < rows + 1; i++){
             this._boxes.push(new MenuBox(x,y + i * height,width,height));
@@ -45,12 +46,21 @@ export class Menu {
         }
     
     }
+    moveTo(x,y){
+        this._x = x;
+        this._y = y;
+        for (let i = 0; i < this._boxes.length; i++){
+            this._boxes[i].x = x;
+            this._boxes[i].y = y + i * this._height;
+        }
+    }
     set fontSize(newFontSize){
         this._fontSize = newFontSize;
         for (let i = 0; i < this._boxes.length; i++){
             this._boxes[i].fontSize = newFontSize
         }
     }
+    set isVisable(newIsVisable){this._isVisable = newIsVisable;}
 }
 /*-----------------------------------------------------------
 const canvas = document.getElementById('herniRozhraní');
