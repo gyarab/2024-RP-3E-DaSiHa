@@ -6,6 +6,17 @@ import { CharacterSprite1 } from '../Monkey-Engine/CharacterSprite1.js';
 import { SpriteAnim }       from '../Monkey-Engine/SpriteAnim.js';
 import { SpriteDyna }       from '../Monkey-Engine/SpriteDyna.js';
 
+window.addEventListener('keydown', event => handleKey(event, true));
+window.addEventListener('keyup', event => handleKey(event, false));
+
+
+ const hrib = new SpriteDyna(600,750,200,220, [ 
+    "/Game_03_runner/sprites/hrib.png",
+]);
+hrib.id = "hrib"
+hrib._isGoLeft = true;
+hrib._xSpeed = 2;
+
 const pozadi = new Sprite(0, 0, 1915, 1080);
 pozadi.loadImg("/Game_03_runner/sprites/pozadi_les.jpg");
 
@@ -31,10 +42,7 @@ const motyl = new SpriteDyna(1300,400,150,110,[
  ])
  motyl._animSlow = 35;
 
- const hrib = new SpriteDyna(600,750,200,220, [ 
-    "/Game_03_runner/sprites/hrib.png",
-])
-hrib.id = "hrib"
+
 
 const muchomurka = new SpriteDyna(1100,750,200,220, [ 
     "/Game_03_runner/sprites/muchomurka.png",
@@ -50,7 +58,7 @@ kost.id = "kost"
 //hlavní herní smyčka
 function Mainloop(){
     pozadi.render(ctx);
-    character.render(ctx);
+    character.render(ctx, true);
     character.updatePos();
     motyl.render(ctx, true);
     motyl.updateImage();
@@ -60,5 +68,20 @@ function Mainloop(){
     muchomurka.updateImage();
     kost.render(ctx,true);
     kost.updateImage();
+
+    if(hrib._x < (0 - hrib._width)){
+        hrib._x = 1000;
+    }
+      
 }
-window.setInterval(Mainloop, 1, true);
+window.setInterval(Mainloop, 4, true);
+function handleKey(event, isDown) {
+    const { key } = event;
+    if (key === ' ') {
+        event.preventDefault();
+    }
+    const actions = {
+        ' ': () => character._wantJump = isDown
+    };
+    if (actions[key]) actions[key]();
+}
