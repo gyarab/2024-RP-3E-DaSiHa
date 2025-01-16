@@ -19,23 +19,24 @@ export class Menu {
     rearange(style){
         this._style = style;
 
-        if (style == "plain" ) {        
-            for (let i = 1; i < this._boxes.length; i++){
-                this._boxes[i].loadImg("../Monkey-Engine/defaultTextures/menu_mid.png");
-            }
-            this._boxes[0].loadImg("../Monkey-Engine/defaultTextures/menu_top.png");
-            this._boxes[this._boxes.length - 1].loadImg("../Monkey-Engine/defaultTextures/menu_bot.png");
-            this._boxes[this._boxes.length - 1].height = this._height/10;
-        }
-        else if (style == "socket") {
-            for (let i = 0; i < this._boxes.length; i++){
-                this._boxes[i].loadImg("../Monkey-Engine/defaultTextures/menu_top.png");
-            }
-            this._boxes[this._boxes.length - 1].loadImg("../Monkey-Engine/defaultTextures/menu_bot.png");
-            this._boxes[this._boxes.length - 1].height = this._height/10;       
-        }
-        else {
-            return;
+        switch (style) {
+            case "plain":
+                for (let i = 1; i < this._boxes.length; i++) {
+                    this._boxes[i].loadImg("../Monkey-Engine/defaultTextures/menu/m_mid.png");
+                }
+                this._boxes[0].loadImg("../Monkey-Engine/defaultTextures/menu_top.png");
+                this._boxes[this._boxes.length - 1].loadImg("../Monkey-Engine/defaultTextures/menu_bot.png");
+                this._boxes[this._boxes.length - 1].height = this._height / 10;
+                break;
+            case "socket":
+                for (let i = 0; i < this._boxes.length; i++) {
+                    this._boxes[i].loadImg("../Monkey-Engine/defaultTextures/menu_top.png");
+                }
+                this._boxes[this._boxes.length - 1].loadImg("../Monkey-Engine/defaultTextures/menu_bot.png");
+                this._boxes[this._boxes.length - 1].height = this._height / 10;
+                break;
+            default:
+                return;
         }
     }
     render(ctx){

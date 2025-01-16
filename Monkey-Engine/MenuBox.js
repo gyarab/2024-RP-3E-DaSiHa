@@ -2,7 +2,7 @@
 import { Sprite } from "./Sprite.js";
 
 export class MenuBox extends Sprite {
-    constructor(x = 0, y = 0, width, height, texture = "../Monkey-Engine/defaultTextures/infobox.png") {
+    constructor(x = 0, y = 0, width, height, texture = "") {
         super(x, y, width, height, texture);
         this._text      = "";
         this._font      = "Arial";
