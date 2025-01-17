@@ -64,7 +64,7 @@ export class Menu {
                 this._boxes[numOfLastBox].loadImg("../Monkey-Engine/defaultTextures/menu/m_bot_1.png");
                 this._boxes[numOfLastBox].height = this._height / 10;
                 break;
-            //
+            //* DONE
             case "socket-small":
                 for (let i = 1; i < this._boxes.length; i++) {
                     if (  i % 2 ==0 ){this._boxes[i-1].loadImg("../Monkey-Engine/defaultTextures/menu/s_top_2.png");}
