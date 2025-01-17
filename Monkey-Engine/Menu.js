@@ -1,6 +1,8 @@
 import {MenuBox} from './MenuBox.js';
-import { Sprite } from './Sprite.js';
+
 export class Menu {
+    // TODO: make new styles, create new textures if need be ("socket-long", ...)
+    // TODO: creates variables for shortaning of the last "MenuBox"
     constructor(x,y,width,height,rows){
         this._x = x;
         this._y = y;
@@ -18,30 +20,65 @@ export class Menu {
     }
     rearange(style){
         this._style = style;
-
+        let numOfRows = this._rows;
+        let areRowOdd = (!(numOfRows % 2 ==0 ));
+        let numOfLastBox = this._boxes.length - 1
         switch (style) {
+            //* DONE
             case "plain":
-                for (let i = 1; i < this._boxes.length; i++) {
+                for (let i = 1; i < numOfRows; i++) {
                     this._boxes[i].loadImg("../Monkey-Engine/defaultTextures/menu/m_mid.png");
                 }
-                this._boxes[0].loadImg("../Monkey-Engine/defaultTextures/menu_top.png");
-                this._boxes[this._boxes.length - 1].loadImg("../Monkey-Engine/defaultTextures/menu_bot.png");
-                this._boxes[this._boxes.length - 1].height = this._height / 10;
+                this._boxes[0].loadImg("../Monkey-Engine/defaultTextures/menu/m_top.png");
+                this._boxes[numOfLastBox].loadImg("../Monkey-Engine/defaultTextures/menu/m_bot_1.png");
+                this._boxes[numOfLastBox].height = this._height / 10;
                 break;
-            case "socket":
-                for (let i = 0; i < this._boxes.length; i++) {
-                    this._boxes[i].loadImg("../Monkey-Engine/defaultTextures/menu_top.png");
+            //* DONE
+            case "plain-small":
+                
+                for (let i = 1; i < numOfRows ;i++) {
+                    if (  i % 2 ==0 ){this._boxes[i].loadImg("../Monkey-Engine/defaultTextures/menu/s_mid_1.png");}
+                    if (!(i % 2 ==0)){this._boxes[i].loadImg("../Monkey-Engine/defaultTextures/menu/s_mid_2.png");}
                 }
-                this._boxes[this._boxes.length - 1].loadImg("../Monkey-Engine/defaultTextures/menu_bot.png");
-                this._boxes[this._boxes.length - 1].height = this._height / 10;
+                this._boxes[0].loadImg("../Monkey-Engine/defaultTextures/menu/s_top_1.png");
+                if ( areRowOdd){this._boxes[numOfLastBox].loadImg("../Monkey-Engine/defaultTextures/menu/s_bot_1.png");}
+                if (!areRowOdd){this._boxes[numOfLastBox].loadImg("../Monkey-Engine/defaultTextures/menu/s_bot_2.png");}
+                this._boxes[numOfLastBox].height = this._height / 5;
                 break;
+            // * DONE
+            case "plain-long":
+                for (let i = 1; i < numOfRows; i++ ){
+                    if (  i % 2 ==0 ){this._boxes[i].loadImg("../Monkey-Engine/defaultTextures/menu/l_mid_2.png");}
+                    if (!(i % 2 ==0)){this._boxes[i].loadImg("../Monkey-Engine/defaultTextures/menu/l_mid_1.png");}
+                }
+                if ( areRowOdd){this._boxes[numOfLastBox].loadImg("../Monkey-Engine/defaultTextures/menu/m_bot_1.png");}
+                if (!areRowOdd){this._boxes[numOfLastBox].loadImg("../Monkey-Engine/defaultTextures/menu/m_bot_2.png");}
+                this._boxes[0].loadImg("../Monkey-Engine/defaultTextures/menu/l_top_1.png")              
+                this._boxes[this._boxes.length - 1].height = this._height / 5;
+                break;
+            //* DONE
+            case "socket":
+                for (let i = 0; i < numOfRows; i++) {
+                    this._boxes[i].loadImg("../Monkey-Engine/defaultTextures/menu/m_top.png");
+                }
+                this._boxes[numOfLastBox].loadImg("../Monkey-Engine/defaultTextures/menu/m_bot_1.png");
+                this._boxes[numOfLastBox].height = this._height / 10;
+                break;
+            //
+            case "socket-small":
+                for (let i = 1; i < this._boxes.length; i++) {
+                    if (  i % 2 ==0 ){this._boxes[i-1].loadImg("../Monkey-Engine/defaultTextures/menu/s_top_2.png");}
+                    if (!(i % 2 ==0)){this._boxes[i-1].loadImg("../Monkey-Engine/defaultTextures/menu/s_top_1.png");}
+                }
+                if ( areRowOdd){this._boxes[numOfLastBox].loadImg("../Monkey-Engine/defaultTextures/menu/s_bot_1.png");}
+                if (!areRowOdd){this._boxes[numOfLastBox].loadImg("../Monkey-Engine/defaultTextures/menu/s_bot_2.png");}
+                this._boxes[numOfLastBox].height = this._height / 5;
+
             default:
                 return;
         }
     }
     render(ctx){
-        const end = new Sprite(this._x,this.y + (this._y * this.rows),this.width,this.height/10,"../Monkey-Engine/defaultTextures/menu_bot.png");
-        end.render(ctx);
         for (let i = 0; i < this._boxes.length; i++){
             this._boxes[i].render(ctx);
         }
@@ -55,13 +92,16 @@ export class Menu {
             this._boxes[i].y = y + i * this._height;
         }
     }
+    
+    set isVisable(newIsVisable){
+        this._isVisable = newIsVisable;
+    }
     set fontSize(newFontSize){
         this._fontSize = newFontSize;
         for (let i = 0; i < this._boxes.length; i++){
             this._boxes[i].fontSize = newFontSize
         }
     }
-    set isVisable(newIsVisable){this._isVisable = newIsVisable;}
 }
 /*-----------------------------------------------------------
 const canvas = document.getElementById('herniRozhraní');

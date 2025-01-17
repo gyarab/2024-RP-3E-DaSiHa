@@ -253,23 +253,24 @@ window.addEventListener('load', () => {
         NonObjMenu._boxes[1].text = "...";
         NonObjMenu._boxes[0].foldable = true
 
-    let SelectMenu = new Menu(0,0,180,40,2);
-        SelectMenu.rearange("socket");
+    let SelectMenu = new Menu(0,0,176,40,3);
+        SelectMenu.rearange("socket-small");
         SelectMenu.fontSize = 25;
         SelectMenu._boxes[0].text = "drag";
         SelectMenu._boxes[1].text = "moveTo";
+        SelectMenu._boxes[2].text = "...";
 
-    let InfoMenu   = new Menu(0, 0, 300, 40, 4);
-        InfoMenu.rearange("plain");
+    let InfoMenu   = new Menu(0, 0, 360, 40, 4);
+        InfoMenu.rearange("plain-long");
         InfoMenu.fontSize = 25;
 
-    let RefactMenu  = new Menu(0,0,180,40,2);
-        RefactMenu.rearange("socket");  
+    let RefactMenu  = new Menu(0,0,176,40,2);
+        RefactMenu.rearange("socket-small");  
         RefactMenu._boxes[0].text = "rename";
         RefactMenu._boxes[1].text = "recolor";
     
-    let NewMenu     = new Menu(0,0,180,40,6);
-        NewMenu.rearange("socket");
+    let NewMenu     = new Menu(0,0,176,40,3);
+        NewMenu.rearange("socket-small");
         NewMenu._boxes[0].text = "player1";
         NewMenu._boxes[1].text = "...";
 
@@ -368,6 +369,12 @@ window.addEventListener('load', () => {
         const canvasX = Math.min(Math.max(mouseX, 0), canvas.width);
         const canvasY = Math.min(Math.max(mouseY, 0), canvas.height);
         let isObject = false
+
+        SelectMenu.isVisable = false;
+        InfoMenu.isVisable   = false;
+        RefactMenu.isVisable = false;
+        NewMenu.isVisable    = false;
+
         object.forEach(obj => {
             if(
                 mouseX >= obj._x && mouseX <= obj._x + obj._width &&
