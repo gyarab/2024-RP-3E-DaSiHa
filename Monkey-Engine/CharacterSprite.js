@@ -52,71 +52,8 @@ export class CharacterSprite extends SpriteDyna{
         // poměr gravity:jumpVelocity určuje výší a délku skoku 
         const gravity = 0.07;
         const jumpVelocity = - 3.5;
+
         this.y = this._y + this._yVelocity
-        //kolize
-        const NextFrameX = new CharacterSprite(this._x + this._xVelocity, this._y, this._width, this._height);
-        const NextFrameY = new CharacterSprite(this._x, this._y + this._yVelocity, this._width, this._height);
-        let canGoRight = true;
-        let canGoLeft  = true;
-        let canGoUp    = true;
-        let canGoDown  = true;
-        
-        for (let ob of obsticles) {
-            if (NextFrameX.doesColideWith(ob)){
-                if (this._xVelocity > 0){
-                    canGoRight = false;
-                }
-                if(this._xVelocity < 0){
-                    canGoLeft = false; 
-                }
-            }else
-            if (NextFrameY.doesColideWith(ob)){
-                if (this._yVelocity > 0){
-                    canGoDown = false;
-                }
-                if (this._yVelocity < 0){
-                    canGoUp = false;
-                }
-            }
-        }
-        
-        if(!canGoRight) {
-            this._xVelocity = 0
-            this._isPushRight = true;
-        }else 
-        if(!canGoLeft)  {
-            this._xVelocity = 0
-            this._isPushLeft = true;
-        }else           {
-            this.x = this._x + this._xVelocity;
-            this._isPushRight = false;
-            this._isPushLeft  = false;
-        }
-        if(!canGoDown){
-            this._floor = Math.floor(this._y) -1;
-            this._isOnGround = true;
-            this._yVelocity = 0;
-        }else           {
-            this._floor = 1080 - this._height;
-            this._isOnGround = false;
-            this._yVelocity += gravity;
-        }  
-        if (!canGoUp){
-            this._yVelocity = 0; 
-        } 
-        /* padání
-        if (this._isOnGround){
-        console.log(this._yVelocity)
-            
-        }else{
-            this._yVelocity = 0;
-            this._xVelocity = 0;
-            this._isJumping  = false;
-            this._isOnGround = true ;
-            this.y = this._floor;
-            if(!this._wantGoLeft ){this._isGoLeft = false}
-            if(!this._wantGoRight){this._isGoRight = false}
-        }
         const maxRunVelocity = 1.5;
         const maxJumpVelocity   = 2;
         /*-----------------------pokud chce doprava------------------ */
@@ -162,6 +99,68 @@ export class CharacterSprite extends SpriteDyna{
             this._yVelocity = jumpVelocity;
             this._isJumping = true;
         }
+
+        //kolize
+        const NextFrameDown  = new CharacterSprite(this._x , this._y + this._yVelocity + gravity, this._width, this._height);
+        const NextFrameRight = new CharacterSprite(this._x + this._xSpeed, this._y , this._width, this._height);
+        const NextFrameLeft  = new CharacterSprite(this._x - this._xSpeed, this._y , this._width, this._height);
+
+
+        let canGoRight = true;
+        let canGoLeft  = true;
+        let canGoUp    = true;
+        let canGoDown  = true;
+
+        const NextFrame = new CharacterSprite(this._x + this._xVelocity, this._y + this._yVelocity, this._width, this._height);
+        
+        for (let ob of obsticles) {
+            
+            if (NextFrameDown.doesColideWith(ob)){
+                canGoDown = false;
+            }
+            if (NextFrameRight.doesColideWith(ob)){
+                console.log("WOULD COLIDE on right")
+                canGoRight = false;
+            }
+            if (NextFrameLeft.doesColideWith(ob)){
+                console.log("WOULD COLIDE on left")
+                canGoLeft = false;
+            }
+            if(NextFrame.doesColideWith(obsticles[ob]) && ! this._isOnGround){
+                console.log(this._isOnGround)
+                this._xVelocity = 0;
+            }
+        }
+        if(!canGoRight) {
+            this._xVelocity = 0
+            this._isPushRight = true;
+        }else 
+        if(!canGoLeft)  {
+            this._xVelocity = 0
+            this._isPushLeft = true;
+        }else{
+            console.log(this._xVelocity)
+            this.x = this._x + this._xVelocity;
+            this._isPushRight = false;
+            this._isPushLeft  = false;
+        }
+        if(!canGoDown){
+            this._floor = Math.floor(this._y) ;
+            this._isOnGround = true;
+            this._yVelocity = 0;
+            this._isJumping = false;
+        }else           {
+            this._floor = 1080 - this._height;
+            this._isOnGround = false;
+            this._yVelocity += gravity;
+        }  
+        if (!canGoUp){
+            this._yVelocity = 0; 
+        } 
+        
+        if (this._isOnGround){
+            this._isJumping = false;
+        }
     }
     // * cyklí mezi jednotlivými snímky animací
     updateImage(){
@@ -178,7 +177,6 @@ export class CharacterSprite extends SpriteDyna{
         if(Rbox){
             super.render_Hitbox(ctx)
         }
-
         //pokud CharacterSprite má pole Spritů
         let img = null;
         /*---------------------pokud je ve skoku---------------------- */
@@ -227,9 +225,10 @@ export class CharacterSprite extends SpriteDyna{
             ctx.drawImage(img, this._x, this._y, this._width, this._height);
         }
     }
-    // ! USELESS
+    // ! USELESS (was used for getting info about the object)
     renderInfo(ctx, numOfInfo = 0){
-        //info o CharacterSprite
+        console.log("renderInfo() is useless and should be deleted.")
+        /* 
         ctx.font = '25px Arial';
         ctx.fillStyle = 'black';
         ctx.fillText( this._id + ' :', 10 + numOfInfo * 200,  20);
@@ -242,6 +241,7 @@ export class CharacterSprite extends SpriteDyna{
         ctx.fillText('isPushLeft  = ' + this._isPushLeft , 10 + numOfInfo * 200, 125);
         
         ctx.fillText('----------------------------'      , 10 + numOfInfo * 200, 135);
+        */
     }
     // * WORKS FLAWLESSLY (for other = Tetragon) 
     doesColideWith(other) {
@@ -326,19 +326,32 @@ player1._framesJumpFarRight = player1._frames.slice(29, 32);
 player1._framesJumpFarLeft  = player1._frames.slice(32, 35);
 player1._framesPushRight    = [player1._frames[35]];
 player1._framesPushLeft     = [player1._frames[36]];
+/*------------------------nastavení kláves------------------------*/
+window.addEventListener('keydown', event => handleKeyUpAndDown(event,  true));
+window.addEventListener('keyup'  , event => handleKeyUpAndDown(event, false));
 
+function handleKeyUpAndDown(event, isDown) {
+    const { key } = event;
+    const actions = {
+        'w': () => player1._wantJump    = isDown,
+        'a': () => player1._wantGoLeft  = isDown,
+        'd': () => player1._wantGoRight = isDown,
+
+    };
+    if (actions[key]) actions[key]();
+}
 
 const w1 = new Rectangle(10, 300, 500, 500, "grey");
+const w2 = new Rectangle(10, 1000, 1900, 16, "grey");
+const w3 = new Rectangle(600, 800, 200, 200, "grey");
 
-let walls = [w1];
+let walls = [w1, w2, w3];
     function Mainloop() {
         ctx.clearRect(0,0,canvas.width, canvas.height);
-        w1.render(ctx, true);
+        for (let wall of walls){wall.render(ctx, true);}
         player1.updatePos(walls);
         player1.updateImage();
         player1.render(ctx, true);
-        
-
-        
+        console.log(player1.doesColideWith(w1));    
     }
-window.setInterval(Mainloop, 60, true);
+window.setInterval(Mainloop,6,true);
