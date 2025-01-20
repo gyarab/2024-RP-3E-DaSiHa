@@ -12,6 +12,7 @@ export class CharacterSprite extends SpriteDyna{
         this._wantGoRight = false;
         this._wantGoLeft  = false;
         this._wantJump    = false;
+        this._wantGoDown = false;
 
         this._isOnGround = false;
         this._isJumping  = false;
@@ -94,15 +95,17 @@ export class CharacterSprite extends SpriteDyna{
         }
         /*---------------------pokud chce skočit---------------------- */
         if(this._wantJump  && !this._isJumping && this._isOnGround){
+
             if( this._isGoRight && !this._isGoLeft){this._dirOfJump =  1}
             if(!this._isGoRight &&  this._isGoLeft){this._dirOfJump = -1}
             this._yVelocity = jumpVelocity;
             this._isJumping = true;
         }
+
         const ratioOfLegs = 9/10
         //kolize
         const NextFrameDown  = new CharacterSprite(this._x , this._y + this._yVelocity + gravity, this._width, this._height);
-        const NextFrmeUp     = new CharacterSprite(this._x , this._y + this._yVelocity - this._ySpeed, this._width, this._height)
+        const NextFrameUp     = new CharacterSprite(this._x , this._y + this._yVelocity - this._ySpeed, this._width, this._height)
         const NextFrameRight = new CharacterSprite(this._x + this._xSpeed, this._y , this._width, this._height * ratioOfLegs );
         const NextFrameLeft  = new CharacterSprite(this._x - this._xSpeed, this._y , this._width, this._height * ratioOfLegs );
 
@@ -113,8 +116,16 @@ export class CharacterSprite extends SpriteDyna{
         let canGoDown  = true;
 
         const NextFrame = new CharacterSprite(this._x + this._xVelocity, this._y + this._yVelocity, this._width, this._height);
-        
+        console.log(this._wantGoDown)
         for (let ob of obsticles) {
+            if(ob._color == 'orange'){
+                if (NextFrameDown.doesColideWith(ob)  && !this.doesColideWith(ob)){
+                    canGoDown = false;
+                } 
+                if(!this._isJumping && this._wantGoDown){
+                    canGoDown = true; this._wantGoDown = false;
+                }
+            }
             if (ob._color == 'red'){
                 if (NextFrameDown.doesColideWith(ob)){
                     canGoDown = false;
@@ -125,7 +136,7 @@ export class CharacterSprite extends SpriteDyna{
                 if (NextFrameLeft.doesColideWith(ob) && (this._xVelocity < 0)){
                     canGoLeft = false;
                 }
-                if (NextFrmeUp.doesColideWith(ob) && (this._yVelocity < 0)){
+                if (NextFrameUp.doesColideWith(ob) && (this._yVelocity < 0)){
                     canGoUp = false;
                 }
                 if (this.doesColideWith(ob)){
@@ -133,9 +144,7 @@ export class CharacterSprite extends SpriteDyna{
                     this._xVelocity = this._xVelocity / 10;
                 }
              }
-            if(ob._color == 'orange'){
-               
-            }
+            
         }
 
         if(!canGoRight) {
@@ -166,7 +175,6 @@ export class CharacterSprite extends SpriteDyna{
             this._yVelocity = - this._yVelocity; 
             this._y = this._y + gravity;
         } 
-        
         if (this._isOnGround){
             this._isJumping = false;
         }
@@ -351,14 +359,15 @@ function handleKeyUpAndDown(event, isDown) {
         'w': () => player1._wantJump    = isDown,
         'a': () => player1._wantGoLeft  = isDown,
         'd': () => player1._wantGoRight = isDown,
-
+        's': () => player1._wantGoDown  = isDown,
     };
     if (actions[key]) actions[key]();
 }
 
-const w1 = new Rectangle( 10, 300, 500, 500, "red");
-const w2 = new Rectangle(10, 1000, 1900, 16, "red");
-const w3 = new Rectangle(600, 800, 200, 200, "grey");
+const w1 = new Rectangle(  10, 300, 500, 500, "red");
+const w2 = new Rectangle(  10, 1000, 1900, 16, "red");
+const w3 = new Rectangle( 600, 800, 200, 200, "grey");
+const w5 = new Rectangle( 800, 950, 200, 50, "orange");
 const w4 = new Tetragon(
     {x: 200, y: 150},
     {x: 900, y:  0},
@@ -368,7 +377,7 @@ const w4 = new Tetragon(
 )
 w4.moveTo(1000,1000)
 
-let walls = [w1, w2, w3, w4];
+let walls = [w1, w2, w3, w4,w5];
     function Mainloop() {
         ctx.clearRect(0,0,canvas.width, canvas.height);
         for (let wall of walls){wall.render(ctx, true);}
