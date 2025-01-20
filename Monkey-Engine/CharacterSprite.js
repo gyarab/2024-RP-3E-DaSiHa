@@ -99,11 +99,12 @@ export class CharacterSprite extends SpriteDyna{
             this._yVelocity = jumpVelocity;
             this._isJumping = true;
         }
-
+        const ratioOfLegs = 9/10
         //kolize
         const NextFrameDown  = new CharacterSprite(this._x , this._y + this._yVelocity + gravity, this._width, this._height);
-        const NextFrameRight = new CharacterSprite(this._x + this._xSpeed, this._y , this._width, this._height);
-        const NextFrameLeft  = new CharacterSprite(this._x - this._xSpeed, this._y , this._width, this._height);
+        const NextFrmeUp     = new CharacterSprite(this._x , this._y + this._yVelocity - this._ySpeed, this._width, this._height)
+        const NextFrameRight = new CharacterSprite(this._x + this._xSpeed, this._y , this._width, this._height * ratioOfLegs );
+        const NextFrameLeft  = new CharacterSprite(this._x - this._xSpeed, this._y , this._width, this._height * ratioOfLegs );
 
 
         let canGoRight = true;
@@ -114,32 +115,37 @@ export class CharacterSprite extends SpriteDyna{
         const NextFrame = new CharacterSprite(this._x + this._xVelocity, this._y + this._yVelocity, this._width, this._height);
         
         for (let ob of obsticles) {
-            
-            if (NextFrameDown.doesColideWith(ob)){
-                canGoDown = false;
-            }
-            if (NextFrameRight.doesColideWith(ob)){
-                console.log("WOULD COLIDE on right")
-                canGoRight = false;
-            }
-            if (NextFrameLeft.doesColideWith(ob)){
-                console.log("WOULD COLIDE on left")
-                canGoLeft = false;
-            }
-            if(NextFrame.doesColideWith(obsticles[ob]) && ! this._isOnGround){
-                console.log(this._isOnGround)
-                this._xVelocity = 0;
+            if (ob._color == 'red'){
+                if (NextFrameDown.doesColideWith(ob)){
+                    canGoDown = false;
+                }
+                if (NextFrameRight.doesColideWith(ob) && (this._xVelocity > 0)){
+                    canGoRight = false;
+                }
+                if (NextFrameLeft.doesColideWith(ob) && (this._xVelocity < 0)){
+                    canGoLeft = false;
+                }
+                if (NextFrmeUp.doesColideWith(ob) && (this._yVelocity < 0)){
+                    canGoUp = false;
+                }
+                if (this.doesColideWith(ob)){
+                    this.y = this._y - 0.5;
+                    this._xVelocity = this._xVelocity / 10;
+                }
+             }
+            if(ob._color == 'orange'){
+               
             }
         }
+
         if(!canGoRight) {
             this._xVelocity = 0
             this._isPushRight = true;
-        }else 
-        if(!canGoLeft)  {
+        }
+        else if(!canGoLeft)  {
             this._xVelocity = 0
             this._isPushLeft = true;
         }else{
-            console.log(this._xVelocity)
             this.x = this._x + this._xVelocity;
             this._isPushRight = false;
             this._isPushLeft  = false;
@@ -149,13 +155,16 @@ export class CharacterSprite extends SpriteDyna{
             this._isOnGround = true;
             this._yVelocity = 0;
             this._isJumping = false;
+            if(!this._wantGoLeft ){this._isGoLeft = false}
+            if(!this._wantGoRight){this._isGoRight = false}
         }else           {
             this._floor = 1080 - this._height;
             this._isOnGround = false;
             this._yVelocity += gravity;
         }  
         if (!canGoUp){
-            this._yVelocity = 0; 
+            this._yVelocity = - this._yVelocity; 
+            this._y = this._y + gravity;
         } 
         
         if (this._isOnGround){
@@ -174,14 +183,12 @@ export class CharacterSprite extends SpriteDyna{
     }
     // * vykresluje sprite podle probíhající akce  
     render(ctx, Rbox = null){
-        if(Rbox){
-            super.render_Hitbox(ctx)
-        }
-        //pokud CharacterSprite má pole Spritů
+        //
+        if(Rbox){super.render_Hitbox(ctx)}
         let img = null;
-        /*---------------------pokud je ve skoku---------------------- */
+        /*------------Sprite-for-jumping---------------------- */
         if (this._isJumping) {
-            /*----------------skok doprava---------------------------- */
+            /*---------------------------right-----------------*/
             if (this._dirOfJump == 1){
                 if ( this._wantGoRight){
                     img = this._framesJumpFarRight[1];
@@ -191,7 +198,7 @@ export class CharacterSprite extends SpriteDyna{
                     img = this._framesJumpFarRight[0];
                 }  
             }
-            /*-----------------skok doleva---------------------------- */
+            /*---------------------------left------------------*/
             if (this._dirOfJump == -1){
                 if (this._wantGoLeft){
                     img = this._framesJumpFarLeft[1];
@@ -201,28 +208,36 @@ export class CharacterSprite extends SpriteDyna{
                     img = this._framesJumpFarLeft[0];
                 }  
             }
-            /*-----------------skok nahoru---------------------------- */
+            /*---------------------------up--------------------*/
             if (this._dirOfJump == 0){
                 img = this._framesStanding[0];
             }
         }
-        /*---------------------pokud neni ve skoku---------------------- */
+        /*------------Sprite-for-nonjumping--------------------*/
         else{
+            /*----------------------------running-right--------*/
             if(this._isGoRight && !this._isPushRight){  
                 img =  this._framesRunRight[(this._currentFrame + this._timeOfAction )% this._framesRunRight.length];
-            }else if (this._isPushRight){
+            }
+            /*----------------------------pushing-right--------*/
+            else if (this._isPushRight){
                 img = this._framesPushRight[0];
-            }else if(this._isGoLeft && !this._isPushLeft){ 
+            }
+            /*----------------------------running-left---------*/
+            else if(this._isGoLeft && !this._isPushLeft){ 
                 img = this._framesRunLeft [(this._currentFrame + this._timeOfAction )% this._framesRunLeft.length];
-            }else if (this._isPushLeft){
+            }
+            /*----------------------------pushing-left----------*/
+            else if (this._isPushLeft){
                 img = this._framesPushLeft[0];
-            }else{
+            }
+            /*----------------------------standing------------- */
+            else{
                 img = this._framesStanding[0];
             }
         }
-
         if (img && img.complete) {
-            ctx.drawImage(img, this._x, this._y, this._width, this._height);
+            ctx.drawImage(img, this._x -8, this._y, this._width +16, this._height);
         }
     }
     // ! USELESS (was used for getting info about the object)
@@ -270,7 +285,7 @@ const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 
 /*-------------------------player1--------------------------------*/
-const player1 = new CharacterSprite(150, 100, 68, 124,[
+const player1 = new CharacterSprite(150, 100, 68 - 16, 124,[
     //0
     "/Game_01_Ledvadva/sprites/BLU/stand.png",
     //1-14
@@ -341,17 +356,24 @@ function handleKeyUpAndDown(event, isDown) {
     if (actions[key]) actions[key]();
 }
 
-const w1 = new Rectangle(10, 300, 500, 500, "grey");
-const w2 = new Rectangle(10, 1000, 1900, 16, "grey");
+const w1 = new Rectangle( 10, 300, 500, 500, "red");
+const w2 = new Rectangle(10, 1000, 1900, 16, "red");
 const w3 = new Rectangle(600, 800, 200, 200, "grey");
+const w4 = new Tetragon(
+    {x: 200, y: 150},
+    {x: 900, y:  0},
+    {x: 900, y: 150},
+    {x: 200, y: 150},
+    "red"
+)
+w4.moveTo(1000,1000)
 
-let walls = [w1, w2, w3];
+let walls = [w1, w2, w3, w4];
     function Mainloop() {
         ctx.clearRect(0,0,canvas.width, canvas.height);
         for (let wall of walls){wall.render(ctx, true);}
         player1.updatePos(walls);
         player1.updateImage();
         player1.render(ctx, true);
-        console.log(player1.doesColideWith(w1));    
     }
 window.setInterval(Mainloop,6,true);
