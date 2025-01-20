@@ -4,7 +4,6 @@ const ctx = canvas.getContext('2d');
 import { Sprite } from '../Monkey-Engine/Sprite.js';
 import { CharacterSprite1 } from '../Monkey-Engine/CharacterSprite1.js';
 
-// Load background and sprites
 const background = new Sprite(0, 0, 1920, 1100);
 background.loadImg("/Game_02_dakynovyKoule/bowling.png");
 
@@ -66,23 +65,7 @@ sipecka._framesRunning = [
     "/Game_02_dakynovyKoule/sipecka.png",
 ];
 
-let mouseX = 0;
-let mouseY = 0;
-
-canvas.addEventListener('mousemove', (event) => {
-    const rect = canvas.getBoundingClientRect();
-    mouseX = event.clientX - rect.left;
-    mouseY = event.clientY - rect.top;
-});
-
-function isMouseOverButton() {
-    return (
-        mouseX >= cudlik.x &&
-        mouseX <= cudlik.x + cudlik.width &&
-        mouseY >= cudlik.y &&
-        mouseY <= cudlik.y + cudlik.height
-    );
-}
+let showKoule = false;
 
 function Mainloop() {
     background.render(ctx);
@@ -99,13 +82,24 @@ function Mainloop() {
     kuzelka1.render(ctx);
     sipecka.render(ctx);
     sipecka.updatePos();
-}
-
-canvas.addEventListener('click', () => {
-    if (isMouseOverButton()) {
+    if (showKoule) {
         koule.render(ctx);
     }
-});
+}
 
+window.addEventListener('click', event => handleClick(event));
+
+function handleClick(event) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const mouseX = (event.clientX - rect.left) * scaleX;
+    const mouseY = (event.clientY - rect.top) * scaleY;
+    if(mouseX >= cudlik._x && mouseX <= cudlik._x + cudlik._width &&
+        mouseY >= cudlik._y && mouseY <= cudlik._y + cudlik._height) {
+        showKoule = true;
+        }
+
+}
 
 window.setInterval(Mainloop, 5, true);
