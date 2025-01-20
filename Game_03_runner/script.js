@@ -19,6 +19,11 @@ hrib._xSpeed = 2;
 
 const pozadi = new Sprite(0, 0, 1915, 1080);
 pozadi.loadImg("/Game_03_runner/sprites/pozadi_les.jpg");
+pozadi._xSpeed = 1;
+
+const pozadi2 = new Sprite(pozadi._width, 0, 1915, 1080);
+pozadi2.loadImg("/Game_03_runner/sprites/pozadi_les.jpg");
+pozadi2._xSpeed = 1;
 
 const character = new CharacterSprite1(100, 690, 250, 310);
 
@@ -35,6 +40,9 @@ character._framesRunning = [
     "/Game_03_runner/sprites/faze2.png",
     "/Game_03_runner/sprites/faze1.png",
 ]
+character._framesJumping = [
+    "/Game_03_runner/sprites/faze10.png",
+];
 
 const motyl = new SpriteDyna(1300,400,150,110,[ 
     "/Game_03_runner/sprites/motyl_faze1.png",
@@ -44,7 +52,7 @@ const motyl = new SpriteDyna(1300,400,150,110,[
 
 
 
-const muchomurka = new SpriteDyna(1100,750,200,220, [ 
+const muchomurka = new SpriteDyna(1400,750,200,220, [ 
     "/Game_03_runner/sprites/muchomurka.png",
 ])
 muchomurka.id = "muchomurka"
@@ -57,11 +65,24 @@ kost.id = "kost"
 
 //hlavní herní smyčka
 function Mainloop(){
+    pozadi._x -= pozadi._xSpeed;
+    pozadi2._x -= pozadi2._xSpeed;
+
+    if (pozadi._x <= -pozadi._width) {
+        pozadi._x = pozadi2._x + pozadi2._width;
+    }
+    if (pozadi2._x <= -pozadi2._width) {
+        pozadi2._x = pozadi._x + pozadi._width;
+    }
+
     pozadi.render(ctx);
+    pozadi2.render(ctx);
     character.render(ctx, true);
     character.updatePos();
     motyl.render(ctx, true);
     motyl.updateImage();
+    hrib._x -= hrib._xSpeed;
+    muchomurka._x -= muchomurka._xSpeed;
     hrib.render(ctx,true);
     hrib.updateImage();
     muchomurka.render(ctx,true);
@@ -70,11 +91,14 @@ function Mainloop(){
     kost.updateImage();
 
     if(hrib._x < (0 - hrib._width)){
-        hrib._x = 1000;
+        hrib._x = 1500;
+    }
+    if (muchomurka._x < (0 - muchomurka._width)) {
+        muchomurka._x = 1500;
     }
       
 }
-window.setInterval(Mainloop, 4, true);
+window.setInterval(Mainloop, 5, true);
 function handleKey(event, isDown) {
     const { key } = event;
     if (key === ' ') {
@@ -83,5 +107,11 @@ function handleKey(event, isDown) {
     const actions = {
         ' ': () => character._wantJump = isDown
     };
+    if (isDown && key === ' ') {
+        character._currentFrame = 0;
+        character._frames = character._framesJumping;
+    } else if (!isDown && key === ' ') {
+        character._frames = character._framesRunning;
+    }
     if (actions[key]) actions[key]();
 }
