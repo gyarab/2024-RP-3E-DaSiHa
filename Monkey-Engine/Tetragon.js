@@ -31,7 +31,7 @@ export class Tetragon{
     set color  (newColor ){ this._color  = newColor }
     set points (newPoints){ this._points = newPoints}
 }
-//funguje tak na půl
+// TODO: Sakum pikum předělat
 export function colides(tetragon1, tetragon2){
     for (let point of tetragon1._points) {
         if (pointInPolygon(point, tetragon2._points)) {return true;}
@@ -41,6 +41,7 @@ export function colides(tetragon1, tetragon2){
     }
     return false;
 }
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BULLSHIT JE TO VŠECHNO CHYBNÝ A NEFUNGUJE TO
 export function colidesTop(tetragonCollider, tetragon, vicinity){
     const v = vectorBetween(tetragonCollider._points[0], tetragonCollider._points[1])
     const pointA = {

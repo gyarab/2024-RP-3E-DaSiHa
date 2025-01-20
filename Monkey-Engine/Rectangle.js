@@ -20,7 +20,9 @@ export class Rectangle extends Tetragon{
             ctx.fillRect(this._x, this._y, this._width, this._height);
         }else{
             ctx.strokeStyle = this._color;
-            ctx.strokeRect(this._x, this._y, this._width, this._height);
+            ctx.lineWidth = 4;
+            const offset = ctx.lineWidth / 2;
+            ctx.strokeRect(this._x + offset, this._y + offset, this._width - ctx.lineWidth, this._height - ctx.lineWidth);
         }
     }
     moveTo(x, y){   

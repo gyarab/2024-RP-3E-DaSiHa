@@ -1,7 +1,7 @@
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 
-import { Sprite }           from '../Monkey-Engine/Sprite.js';
+import { Sprite } from '../Monkey-Engine/Sprite.js';
 import { CharacterSprite1 } from '../Monkey-Engine/CharacterSprite1.js';
 
 const background = new Sprite(0, 0, 1920, 1100);
@@ -37,25 +37,24 @@ kuzelka9.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
 const kuzelka10 = new Sprite(980, 561, 100, 90);
 kuzelka10.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
 
-const cudlik = new Sprite(1150, 700, 1500, 1500);
+const cudlik = new Sprite(1300, 770, 1200, 1200);
 cudlik.loadImg("/Game_02_dakynovyKoule/cudlas.png");
 
 const koule = new Sprite(1150, 700, 150, 150);
 koule.loadImg("/Game_02_dakynovyKoule/gula.png");
 
-
 const sipecka = new CharacterSprite1(900, 840, 150, 200);
 sipecka._id = "sipka";
 sipecka._framesRunning = [
     "/Game_02_dakynovyKoule/sipecka.png",
-    "/Game_02_dakynovyKoule/sipecka-1.png", 
-    "/Game_02_dakynovyKoule/sipecka-2.png", 
+    "/Game_02_dakynovyKoule/sipecka-1.png",
+    "/Game_02_dakynovyKoule/sipecka-2.png",
     "/Game_02_dakynovyKoule/sipecka-3.png",
-    "/Game_02_dakynovyKoule/sipecka-4.png", 
+    "/Game_02_dakynovyKoule/sipecka-4.png",
     "/Game_02_dakynovyKoule/sipecka-3.png",
     "/Game_02_dakynovyKoule/sipecka-2.png",
-    "/Game_02_dakynovyKoule/sipecka-1.png", 
-    "/Game_02_dakynovyKoule/sipecka.png", 
+    "/Game_02_dakynovyKoule/sipecka-1.png",
+    "/Game_02_dakynovyKoule/sipecka.png",
     "/Game_02_dakynovyKoule/sipecka1.png",
     "/Game_02_dakynovyKoule/sipecka2.png",
     "/Game_02_dakynovyKoule/sipecka3.png",
@@ -63,12 +62,14 @@ sipecka._framesRunning = [
     "/Game_02_dakynovyKoule/sipecka3.png",
     "/Game_02_dakynovyKoule/sipecka2.png",
     "/Game_02_dakynovyKoule/sipecka1.png",
-    "/Game_02_dakynovyKoule/sipecka.png"
-]
+    "/Game_02_dakynovyKoule/sipecka.png",
+];
 
+let showKoule = false;
 
-function Mainloop(){
+function Mainloop() {
     background.render(ctx);
+    cudlik.render(ctx);
     kuzelka10.render(ctx);
     kuzelka9.render(ctx);
     kuzelka8.render(ctx);
@@ -79,14 +80,26 @@ function Mainloop(){
     kuzelka3.render(ctx);
     kuzelka2.render(ctx);
     kuzelka1.render(ctx);
-    cudlik.render(ctx);
-    koule.render(ctx);
     sipecka.render(ctx);
     sipecka.updatePos();
+    if (showKoule) {
+        koule.render(ctx);
+    }
 }
+
+window.addEventListener('click', event => handleClick(event));
+
+function handleClick(event) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const mouseX = (event.clientX - rect.left) * scaleX;
+    const mouseY = (event.clientY - rect.top) * scaleY;
+    if(mouseX >= cudlik._x && mouseX <= cudlik._x + cudlik._width &&
+        mouseY >= cudlik._y && mouseY <= cudlik._y + cudlik._height) {
+        showKoule = true;
+        }
+
+}
+
 window.setInterval(Mainloop, 5, true);
-
-
-
-
-

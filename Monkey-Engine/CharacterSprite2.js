@@ -34,13 +34,13 @@ export class CharacterSprite2 extends SpriteDyna{
         this._framesPushRight    = [];
         
         
-        this._floor = 720 - this._height;
+        this._floor = 1080 - this._height;
     }
     //posouvá objekt podle probíhající akce
     updatePos(obsticles){
         // poměr gravity:jumpVelocity určuje výší a délku skoku 
-        const gravity = 0.14;
-        const jumpVelocity = -7;
+        const gravity = 0.07;
+        const jumpVelocity = - 3.5;
         //vždy
         this.y = this._y + this._yVelocity
         //kolize
@@ -116,8 +116,8 @@ export class CharacterSprite2 extends SpriteDyna{
             if(!this._wantGoLeft ){this._isGoLeft = false}
             if(!this._wantGoRight){this._isGoRight = false}
         }
-        const maxRunVelocity = 2;
-        const maxJumpVelocity   = 4;
+        const maxRunVelocity = 1.5;
+        const maxJumpVelocity   = 2;
         /*-----------------------pokud chce doprava------------------ */
         if(this._wantGoRight && !this._wantGoLeft ){
             if(!this._isJumping){

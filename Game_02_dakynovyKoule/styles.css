@@ -1,21 +1,3 @@
-body {
-    background-color: lightblue;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-}
-
-canvas {
-    border: 6px solid rgb(226, 75, 246);
-    height: 70%;
-    width: 70%;
-    background-size: cover;
-}
-
 button {
     background-color: #4CAF50;
     border: none;

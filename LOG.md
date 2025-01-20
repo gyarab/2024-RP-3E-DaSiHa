@@ -54,9 +54,27 @@ má (do 15.1.) :
 uspěšně předělala přes prázdniny sprity pro ustřední postavu své hry.
 
 má (do 15.1.) :
-+ vytvořit texturu/y pro překážky
 + vytvořit sprity pro motýle 
 + vytvořit sprity pro překážky (zkusit vícero)
 + vytvořit pozadí (zkusit vícero lokací)
 + vytvořit sprity pro potencionální colectables (coiny,kosti nebo tak něco)
+
+## 15.1 Třetí schůzka 
+**David**
+
+uspěšně vytvořil sprity pro kuželky, přetvořil pozadí a vytvořil první ze spritů pro bowlingovou kouli. Pokus o rozpohybování koule a zprovoznění tlačítka proběhl (neuspěšně). Dále to tedy zadám jako jeden z úkolů na následující týden,
+(do 22.1) tedy má:
++ rozpracovat galerku her (HTML stránku)
++ nakreslit si sprity pro koulející se bowlingovou kouli
++ zprovoznit tlačítko 
++ rozhejbat kouli při tisku tlačítka
+
+**Hana**
+
+uspěšně vytvořila sprity pro několik překážek, pro motýla, pro potencionální colectable a hned pro dvě pozadí. Dále uvedla v provoz skákání hlavního charakteru (psa).
+(Do 22.1) má:
++ rozpohybovat překážky a pozadí
++ upravit pozadí ať samo na sebe navazuje
++ kontolovat kolize psa a překážek
++ změnit vykreslování spritu psa při skoku
 
