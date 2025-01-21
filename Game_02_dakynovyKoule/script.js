@@ -37,7 +37,7 @@ kuzelka9.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
 const kuzelka10 = new Sprite(980, 561, 100, 90);
 kuzelka10.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
 
-const cudlik = new Sprite(1300, 770, 1200, 1200);
+const cudlik = new Sprite(1450, 850, 420, 180);
 cudlik.loadImg("/Game_02_dakynovyKoule/cudlas.png");
 
 const koule = new Sprite(1150, 700, 150, 150);
@@ -102,4 +102,21 @@ function handleClick(event) {
 
 }
 
-window.setInterval(Mainloop, 5, true);
+let ballY = koule._y;
+let ballSpeed = -5; 
+
+function moveBall() {
+    if (showKoule) {
+        ballY += ballSpeed;
+        if (ballY <= 0) { 
+            ballY = 0;
+            showKoule = false;
+        }
+        koule._y = ballY;
+    }
+}
+
+window.setInterval(() => {
+    Mainloop();
+    moveBall();
+}, 4);
