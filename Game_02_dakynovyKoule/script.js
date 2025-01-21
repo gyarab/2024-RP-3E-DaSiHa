@@ -40,7 +40,7 @@ kuzelka10.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
 const cudlik = new Sprite(1450, 850, 420, 180);
 cudlik.loadImg("/Game_02_dakynovyKoule/cudlas.png");
 
-const koule = new Sprite(1150, 700, 150, 150);
+const koule = new Sprite(900, 840, 150, 150);
 koule.loadImg("/Game_02_dakynovyKoule/gula.png");
 
 const sipecka = new CharacterSprite1(900, 840, 150, 200);
@@ -80,8 +80,10 @@ function Mainloop() {
     kuzelka3.render(ctx);
     kuzelka2.render(ctx);
     kuzelka1.render(ctx);
-    sipecka.render(ctx);
-    sipecka.updatePos();
+    if (showKoule == false) {
+        sipecka.render(ctx);
+        sipecka.updatePos();
+    }
     if (showKoule) {
         koule.render(ctx);
     }
@@ -103,20 +105,26 @@ function handleClick(event) {
 }
 
 let ballY = koule._y;
-let ballSpeed = -5; 
+let ballSpeed = -1;
+let ballScale = 1;
+let ballShrinkSpeed = 0.002;
 
 function moveBall() {
     if (showKoule) {
         ballY += ballSpeed;
-        if (ballY <= 0) { 
-            ballY = 0;
+        ballScale -= ballShrinkSpeed;
+        if (ballY <= 561) {
             showKoule = false;
+            ballY = 840;
+            ballScale = 1;
         }
         koule._y = ballY;
+        koule._width = 150 * ballScale;
+        koule._height = 150 * ballScale;
     }
 }
 
 window.setInterval(() => {
     Mainloop();
     moveBall();
-}, 4);
+}, 2);
