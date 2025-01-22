@@ -5,70 +5,72 @@ import { Sprite } from '../Monkey-Engine/Sprite.js';
 import { CharacterSprite1 } from '../Monkey-Engine/CharacterSprite1.js';
 
 const background = new Sprite(0, 0, 1920, 1100);
-background.loadImg("/Game_02_dakynovyKoule/bowling.png");
+background.loadImg("/Game_02_dakynovyKoule/foto/bowling.png");
 
 const kuzelka1 = new Sprite(920, 594, 100, 90);
-kuzelka1.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
+kuzelka1.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
 
 const kuzelka2 = new Sprite(900, 583, 100, 90);
-kuzelka2.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
+kuzelka2.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
 
 const kuzelka3 = new Sprite(940, 583, 100, 90);
-kuzelka3.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
+kuzelka3.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
 
 const kuzelka4 = new Sprite(880, 572, 100, 90);
-kuzelka4.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
+kuzelka4.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
 
 const kuzelka5 = new Sprite(920, 572, 100, 90);
-kuzelka5.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
+kuzelka5.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
 
 const kuzelka6 = new Sprite(960, 572, 100, 90);
-kuzelka6.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
+kuzelka6.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
 
 const kuzelka7 = new Sprite(860, 561, 100, 90);
-kuzelka7.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
+kuzelka7.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
 
 const kuzelka8 = new Sprite(900, 561, 100, 90);
-kuzelka8.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
+kuzelka8.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
 
 const kuzelka9 = new Sprite(940, 561, 100, 90);
-kuzelka9.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
+kuzelka9.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
 
 const kuzelka10 = new Sprite(980, 561, 100, 90);
-kuzelka10.loadImg("/Game_02_dakynovyKoule/kuzelka.png");
+kuzelka10.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
 
 const cudlik = new Sprite(1450, 850, 420, 180);
-cudlik.loadImg("/Game_02_dakynovyKoule/cudlas.png");
+cudlik.loadImg("/Game_02_dakynovyKoule/foto/cudlas.png");
 
 const koule = new CharacterSprite1(900, 840, 150, 150);
-//koule.loadImg("/Game_02_dakynovyKoule/gula.png");
 koule._framesRunning = [
-    "/Game_02_dakynovyKoule/gula.png",
-    "/Game_02_dakynovyKoule/gula2.png",
-    "/Game_02_dakynovyKoule/gula3.png"
+    "/Game_02_dakynovyKoule/foto/gula.png",
+    "/Game_02_dakynovyKoule/foto/gula2.png",
+    "/Game_02_dakynovyKoule/foto/gula_zada.png",
+    "/Game_02_dakynovyKoule/foto/gula_zada.png",
+    "/Game_02_dakynovyKoule/foto/gula_zada.png",
+    "/Game_02_dakynovyKoule/foto/gula3.png"
 ];
 
 
 
 const sipecka = new CharacterSprite1(900, 840, 150, 200);
 sipecka._framesRunning = [
-    "/Game_02_dakynovyKoule/sipecka.png",
-    "/Game_02_dakynovyKoule/sipecka-1.png",
-    "/Game_02_dakynovyKoule/sipecka-2.png",
-    "/Game_02_dakynovyKoule/sipecka-3.png",
-    "/Game_02_dakynovyKoule/sipecka-4.png",
-    "/Game_02_dakynovyKoule/sipecka-3.png",
-    "/Game_02_dakynovyKoule/sipecka-2.png",
-    "/Game_02_dakynovyKoule/sipecka-1.png",
-    "/Game_02_dakynovyKoule/sipecka.png",
-    "/Game_02_dakynovyKoule/sipecka1.png",
-    "/Game_02_dakynovyKoule/sipecka2.png",
-    "/Game_02_dakynovyKoule/sipecka3.png",
-    "/Game_02_dakynovyKoule/sipecka4.png",
-    "/Game_02_dakynovyKoule/sipecka3.png",
-    "/Game_02_dakynovyKoule/sipecka2.png",
-    "/Game_02_dakynovyKoule/sipecka1.png",
-    "/Game_02_dakynovyKoule/sipecka.png",
+    "/Game_02_dakynovyKoule/foto/sipecka.png",
+    "/Game_02_dakynovyKoule/foto/sipecka-1.png",
+    "/Game_02_dakynovyKoule/foto/sipecka-2.png",
+    "/Game_02_dakynovyKoule/foto/sipecka-3.png",
+    "/Game_02_dakynovyKoule/foto/sipecka-4.png",
+    "/Game_02_dakynovyKoule/foto/sipecka-3.png",
+    "/Game_02_dakynovyKoule/foto/sipecka-2.png",
+    "/Game_02_dakynovyKoule/foto/sipecka-1.png",
+    "/Game_02_dakynovyKoule/foto/sipecka.png",
+    "/Game_02_dakynovyKoule/foto/sipecka1.png",
+    "/Game_02_dakynovyKoule/foto/sipecka2.png",
+    "/Game_02_dakynovyKoule/foto/sipecka3.png",
+    "/Game_02_dakynovyKoule/foto/sipecka4.png",
+    "/Game_02_dakynovyKoule/foto/sipecka3.png",
+    "/Game_02_dakynovyKoule/foto/sipecka2.png",
+    "/Game_02_dakynovyKoule/foto/sipecka1.png",
+    "/Game_02_dakynovyKoule/foto/sipecka.png",
 ];
 
 let showKoule = false;
@@ -112,13 +114,13 @@ function handleClick(event) {
 }
 
 let ballY = koule._y;
-let ballSpeed = -1;
+let ballSpeed = 0.8;
 let ballScale = 1;
-let ballShrinkSpeed = 0.002;
+let ballShrinkSpeed = 0.0016;
 
 function moveBall() {
     if (showKoule) {
-        ballY += ballSpeed;
+        ballY -= ballSpeed;
         ballScale -= ballShrinkSpeed;
         if (ballY <= 561) {
             showKoule = false;
