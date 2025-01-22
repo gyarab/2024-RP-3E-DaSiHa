@@ -78,3 +78,27 @@ uspěšně vytvořila sprity pro několik překážek, pro motýla, pro potencio
 + kontolovat kolize psa a překážek
 + změnit vykreslování spritu psa při skoku
 
+
+## 15.1 Třetí schůzka 
+**David**
+uspěšne nakreslil sprity pro kouli, rozhýbal jí, a zprovoznil tlačítko na její ovládání. Samotná animace potřebuje krapet lásky s načasování ale to je drobnůstka. K galerii her se nedostal a tak tento ůkol dále trvá. Dále
+(do 29.1) má:
++ opravit animaci koule (podržet na spritu kde nejsou dirky koule vidět) a vycentrovat ji
++ opravit šipku:
+    + nový sprite/y v pixelart stylu 
+    + točení šipky nesmí šipku deformovat
+    + přidat bar představující sílu hodu nebo vyzobrazit sílu hodu samotnou šipkou
+    + točení šipky co nejplynulejší
++ různé trajektorie koule
++ vzorec na výpočet výsledného hodu podle směru a síly hodu kouleuest
+
+
+**Hana**
+uspěšně opravila pozadí takže na sebe samo (jakžtakž) navazuje, dále ho roztočila a zozhejbala samotné překážky. Kolize s překážky a vykreslování psa ve skoku neztihla, dále tyto úkoly trvají. Dále
+(do 29.1) má:
++ nastavit rycholsti a délku skoku tak aby hra byla "hratelná"
++ možnost interakce s colectables
++ počítání skóre a alespoň do konzole vypisovat
++ využít i alternativní scenérie
++ něco v HTML (hledač her nebo přepínač kategorijí klidně oboje ☺)
+
