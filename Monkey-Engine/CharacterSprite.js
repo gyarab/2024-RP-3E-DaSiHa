@@ -2,6 +2,7 @@ import { Tetragon } from "./Tetragon.js";
 import { Rectangle } from "./Rectangle.js";
 import { SpriteDyna } from "./SpriteDyna.js";
 import { colides } from "./Tetragon.js";
+import { Sprite } from "./Sprite.js";
 import { intersectionOfLineSegments } from "./LineSection.js";
 
 export class CharacterSprite extends SpriteDyna{
@@ -44,7 +45,6 @@ export class CharacterSprite extends SpriteDyna{
 
         this._framesPushLeft     = [];
         this._framesPushRight    = [];
-        
         
         this._floor = 1080 - this._height;
     }
@@ -104,27 +104,27 @@ export class CharacterSprite extends SpriteDyna{
 
         const ratioOfLegs = 9/10
         //kolize
+        //NextFrameDown a NextFrameUp jsous skoro stejné a proto si plete kolizi s podlahou a stropem
         const NextFrameDown  = new CharacterSprite(this._x , this._y + this._yVelocity + gravity, this._width, this._height);
         const NextFrameUp     = new CharacterSprite(this._x , this._y + this._yVelocity - this._ySpeed, this._width, this._height)
         const NextFrameRight = new CharacterSprite(this._x + this._xSpeed, this._y , this._width, this._height * ratioOfLegs );
         const NextFrameLeft  = new CharacterSprite(this._x - this._xSpeed, this._y , this._width, this._height * ratioOfLegs );
-
-
+        const NextFrameY     = new CharacterSprite(this._x, this._y + this._yVelocity + 1, this._width, this._height);
+        
         let canGoRight = true;
         let canGoLeft  = true;
         let canGoUp    = true;
         let canGoDown  = true;
+        let isOnOrange = false;
 
-        const NextFrame = new CharacterSprite(this._x + this._xVelocity, this._y + this._yVelocity, this._width, this._height);
-        console.log(this._wantGoDown)
+        
         for (let ob of obsticles) {
-            if(ob._color == 'orange'){
-                if (NextFrameDown.doesColideWith(ob)  && !this.doesColideWith(ob)){
+            console.log(this._yVelocity >= 0)
+            if(ob._color == 'orange' && !this._wantGoDown){
+                if (NextFrameY.doesColideWith(ob)  && !this.doesColideWith(ob) && (this._yVelocity >= 0)){
+                    console.log(ob._id)
                     canGoDown = false;
                 } 
-                if(!this._isJumping && this._wantGoDown){
-                    canGoDown = true; this._wantGoDown = false;
-                }
             }
             if (ob._color == 'red'){
                 if (NextFrameDown.doesColideWith(ob)){
@@ -146,7 +146,7 @@ export class CharacterSprite extends SpriteDyna{
              }
             
         }
-
+        if(isOnOrange){canGoDown = false}
         if(!canGoRight) {
             this._xVelocity = 0
             this._isPushRight = true;
@@ -159,21 +159,22 @@ export class CharacterSprite extends SpriteDyna{
             this._isPushRight = false;
             this._isPushLeft  = false;
         }
-        if(!canGoDown){
+        if(canGoDown){
+            this._floor = 1080 - this._height;
+            this._isOnGround = false;
+            this._yVelocity += gravity;
+            
+        }if (!canGoDown){
             this._floor = Math.floor(this._y) ;
             this._isOnGround = true;
             this._yVelocity = 0;
             this._isJumping = false;
             if(!this._wantGoLeft ){this._isGoLeft = false}
             if(!this._wantGoRight){this._isGoRight = false}
-        }else           {
-            this._floor = 1080 - this._height;
-            this._isOnGround = false;
-            this._yVelocity += gravity;
         }  
-        if (!canGoUp){
+        if (!canGoUp || isOnOrange && !this._wantJumpd){
             this._yVelocity = - this._yVelocity; 
-            this._y = this._y + gravity;
+            this.y = this._y + gravity;
         } 
         if (this._isOnGround){
             this._isJumping = false;
@@ -288,12 +289,12 @@ export class CharacterSprite extends SpriteDyna{
         return false;
     }
 }
-/*---------------------------CharacterSprite-------------------------------*/
+/*---------------------------CharacterSprite-------------------------------
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 
-/*-------------------------player1--------------------------------*/
-const player1 = new CharacterSprite(150, 100, 68 - 16, 124,[
+/*-------------------------player1--------------------------------
+const player1 = new CharacterSprite(100, 150, 68 - 16, 124,[
     //0
     "/Game_01_Ledvadva/sprites/BLU/stand.png",
     //1-14
@@ -349,7 +350,7 @@ player1._framesJumpFarRight = player1._frames.slice(29, 32);
 player1._framesJumpFarLeft  = player1._frames.slice(32, 35);
 player1._framesPushRight    = [player1._frames[35]];
 player1._framesPushLeft     = [player1._frames[36]];
-/*------------------------nastavení kláves------------------------*/
+/*------------------------nastavení kláves------------------------
 window.addEventListener('keydown', event => handleKeyUpAndDown(event,  true));
 window.addEventListener('keyup'  , event => handleKeyUpAndDown(event, false));
 
@@ -363,21 +364,25 @@ function handleKeyUpAndDown(event, isDown) {
     };
     if (actions[key]) actions[key]();
 }
-
-const w1 = new Rectangle(  10, 300, 500, 500, "red");
-const w2 = new Rectangle(  10, 1000, 1900, 16, "red");
-const w3 = new Rectangle( 600, 800, 200, 200, "grey");
-const w5 = new Rectangle( 800, 950, 200, 50, "orange");
+const w0 = new Rectangle(  10, 50, 200, 50, "orange"); w0.id = "w0";
+const w1 = new Rectangle(  10, 300, 500, 500, "red"); w1.id = "w1";
+const w2 = new Rectangle(  10, 1000, 1900, 16, "red"); w2.id = "w2";
+const w3 = new Rectangle( 600, 800, 200, 200, "grey"); w3.id = "w3";
+const w5 = new Rectangle( 800, 950, 200, 50, "orange"); w5.id = "w5"; 
+const w6 = new Rectangle( 1200, 950 -124, 200, 50, "orange"); w6.id = "w6";
+const w7 = new Rectangle( 1600, 950, 200, 50, "orange"); w7.id = "w7";
+const w8 = new Rectangle( 1600, 756, 200 , 50, "orange"); w8.id = "w8";
 const w4 = new Tetragon(
     {x: 200, y: 150},
     {x: 900, y:  0},
     {x: 900, y: 150},
     {x: 200, y: 150},
-    "red"
+    "grey"
 )
 w4.moveTo(1000,1000)
 
-let walls = [w1, w2, w3, w4,w5];
+//console.log(player1.doesColideWith(w0));
+let walls = [w0,w1, w2, w3, w4,w5,w6,w7,w8];
     function Mainloop() {
         ctx.clearRect(0,0,canvas.width, canvas.height);
         for (let wall of walls){wall.render(ctx, true);}
@@ -386,3 +391,4 @@ let walls = [w1, w2, w3, w4,w5];
         player1.render(ctx, true);
     }
 window.setInterval(Mainloop,6,true);
+/**/ 

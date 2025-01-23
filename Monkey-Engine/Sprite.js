@@ -8,7 +8,7 @@ export class Sprite extends Rectangle{
         this._ctxCache = null; 
         this._isLoaded = false;
 
-        this._id = Math.floor(Math.random() * 9000) + 1000;
+        
         if (spritePath){
             this.loadImg(spritePath);
         }
@@ -40,12 +40,7 @@ export class Sprite extends Rectangle{
         ctx.strokeStyle = "magenta";
         ctx.lineWidth = 3;
         ctx.strokeRect(this._x, this._y, this._width, this._height);
-    }
-    /*---------------------------Setters-----------------------------*/
-    set id (newId){
-        console.log('id changed from ' + this._id + ' to ' + newId);
-        this._id= newId;
-}     
+    }   
 }
 
 /*-----------------------------Sprite-----------------------------------

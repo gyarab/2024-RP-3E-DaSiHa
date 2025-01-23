@@ -3,6 +3,7 @@ export class Tetragon{
     constructor(p1, p2, p3, p4, color = 'magenta'){
         this._points = [p1, p2, p3, p4]
         this._color  = color
+        this._id = Math.floor(Math.random() * 9000) + 1000;
     }
     render(ctx, fill) {
         ctx.beginPath();
@@ -30,6 +31,10 @@ export class Tetragon{
     /*----------------------------Setters------------------------- */
     set color  (newColor ){ this._color  = newColor }
     set points (newPoints){ this._points = newPoints}
+    set id (newId){
+        console.log('id changed from ' + this._id + ' to ' + newId);
+        this._id= newId;
+    }  
 }
 // TODO: Sakum pikum předělat
 export function colides(tetragon1, tetragon2){
