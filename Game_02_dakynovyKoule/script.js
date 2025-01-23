@@ -54,7 +54,7 @@ koule._framesRunning = [
 
 const sipecka = new CharacterSprite1(900, 840, 150, 200);
 sipecka._framesRunning = [
-    "/Game_02_dakynovyKoule/foto/sipecka.png",
+    "/Game_02_dakynovyKoule/foto/sipka.png",
     "/Game_02_dakynovyKoule/foto/sipecka-1.png",
     "/Game_02_dakynovyKoule/foto/sipecka-2.png",
     "/Game_02_dakynovyKoule/foto/sipecka-3.png",
@@ -90,7 +90,7 @@ function Mainloop() {
     kuzelka1.render(ctx);
     if (showKoule == false) {
         sipecka.render(ctx);
-        sipecka.updatePos();
+        //sipecka.updatePos();
     }
     if (showKoule) {
         koule.render(ctx);
@@ -114,20 +114,24 @@ function handleClick(event) {
 }
 
 let ballY = koule._y;
+let ballX = koule._x;
 let ballSpeed = 0.8;
 let ballScale = 1;
-let ballShrinkSpeed = 0.0016;
+let ballShrinkSpeed = 0.0020;
 
 function moveBall() {
     if (showKoule) {
         ballY -= ballSpeed;
+        ballX += 0.14;
         ballScale -= ballShrinkSpeed;
         if (ballY <= 561) {
             showKoule = false;
             ballY = 840;
+            ballX = 900;
             ballScale = 1;
         }
         koule._y = ballY;
+        koule._x = ballX;
         koule._width = 150 * ballScale;
         koule._height = 150 * ballScale;
     }
