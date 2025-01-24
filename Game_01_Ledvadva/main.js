@@ -59,7 +59,7 @@ window.addEventListener('load', () => {
     ]);
 
     player1._id = "player1";
-    player1.moveTo(1500, 1080 - 124);
+    player1.moveTo(100, 20);
     player1._framesStanding     = [player1._frames[0]];
     player1._framesRunRight     = player1._frames.slice(1, 15);
     player1._framesRunLeft      = player1._frames.slice(15, 29);
@@ -81,20 +81,29 @@ window.addEventListener('load', () => {
         };
         if (actions[key]) actions[key]();
     }
-    /*-----------------------------Blue Print----------------------------------- */
-    const Blue = new Rectangle(0,0,1920,1080,"blue")
-    const Print = new Sprite(0,0,1920,1080,"../Game_01_Ledvadva/sprites/Hub/hub01.png")
+    /*-----------------------------Blue Prints----------------------------------- */
+    const Blue = new Rectangle(0,0,1920,1080,"grey")
+    const Print = new Sprite(0,0,1920,1080,"../Game_01_Ledvadva/sprites/Hub/hub01.png");
+    const furniture = new Sprite(0,0,1920,1080,"../Game_01_Ledvadva/sprites/Hub/furniture.png")
+    const shelf1 = new Sprite(128,916,720,136,"../Game_01_Ledvadva/sprites/Hub/shelf_01.png")
+    const shelf2 = new Sprite(128,756,696,136,"../Game_01_Ledvadva/sprites/Hub/shelf_02.png")
     /*--------------------------Mainloop--------------------------------*/
 
     function Mainloop() {
         ctx.clearRect(0,0,canvas.width, canvas.height);
-        //Blue.render(ctx,true)
-        //Print.render(ctx)
-        barriers.forEach(obsticle => obsticle.render(ctx, true));
+
+        Blue.render(ctx,true);
+        Print.render(ctx);
+
+        furniture.render(ctx);
+        shelf1.render(ctx);
+        shelf2.render(ctx);
+
+        barriers.forEach(obsticle => obsticle.render(ctx));
 
         player1.updatePos(barriers);
         player1.updateImage();
-        player1.render(ctx, true);
+        player1.render(ctx);
     }
     window.setInterval(Mainloop, 6, true);
 });
