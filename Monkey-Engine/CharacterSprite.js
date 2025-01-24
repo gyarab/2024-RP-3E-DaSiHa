@@ -119,10 +119,8 @@ export class CharacterSprite extends SpriteDyna{
 
         
         for (let ob of obsticles) {
-            console.log(this._yVelocity >= 0)
             if(ob._color == 'orange' && !this._wantGoDown){
                 if (NextFrameY.doesColideWith(ob)  && !this.doesColideWith(ob) && (this._yVelocity >= 0)){
-                    console.log(ob._id)
                     canGoDown = false;
                 } 
             }
@@ -146,7 +144,6 @@ export class CharacterSprite extends SpriteDyna{
              }
             
         }
-        if(isOnOrange){canGoDown = false}
         if(!canGoRight) {
             this._xVelocity = 0
             this._isPushRight = true;
@@ -172,8 +169,8 @@ export class CharacterSprite extends SpriteDyna{
             if(!this._wantGoLeft ){this._isGoLeft = false}
             if(!this._wantGoRight){this._isGoRight = false}
         }  
-        if (!canGoUp || isOnOrange && !this._wantJumpd){
-            this._yVelocity = - this._yVelocity; 
+        if (!canGoUp){
+            this._yVelocity = 0; 
             this.y = this._y + gravity;
         } 
         if (this._isOnGround){
@@ -274,8 +271,11 @@ export class CharacterSprite extends SpriteDyna{
                 for (let i = 0; i < this._points.length; i++) {
                     let A = this._points[i];
                     let B = this._points[(i + 1) % this._points.length];
+                    let C = other._points[j];
+                    let D = other._points[(j + 1) % other._points.length]
 
-                    const intersection = intersectionOfLineSegments(A, B, other._points[j], other._points[(j + 1) % other._points.length]);
+
+                    const intersection = intersectionOfLineSegments(A, B, C, D);
                     if (intersection) {
                         if (intersection === null) {throw new Error("intersectionOfLineSegments() returned null.")}
                         return true;
@@ -289,11 +289,11 @@ export class CharacterSprite extends SpriteDyna{
         return false;
     }
 }
-/*---------------------------CharacterSprite-------------------------------
+/*---------------------------CharacterSprite----------------------
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 
-/*-------------------------player1--------------------------------
+/*-------------------------player1-------------------------------
 const player1 = new CharacterSprite(100, 150, 68 - 16, 124,[
     //0
     "/Game_01_Ledvadva/sprites/BLU/stand.png",
@@ -364,7 +364,7 @@ function handleKeyUpAndDown(event, isDown) {
     };
     if (actions[key]) actions[key]();
 }
-const w0 = new Rectangle(  10, 50, 200, 50, "orange"); w0.id = "w0";
+const w0 = new Rectangle(  1600, 400, 200, 50, "orange"); w0.id = "w0";
 const w1 = new Rectangle(  10, 300, 500, 500, "red"); w1.id = "w1";
 const w2 = new Rectangle(  10, 1000, 1900, 16, "red"); w2.id = "w2";
 const w3 = new Rectangle( 600, 800, 200, 200, "grey"); w3.id = "w3";
@@ -380,8 +380,6 @@ const w4 = new Tetragon(
     "grey"
 )
 w4.moveTo(1000,1000)
-
-//console.log(player1.doesColideWith(w0));
 let walls = [w0,w1, w2, w3, w4,w5,w6,w7,w8];
     function Mainloop() {
         ctx.clearRect(0,0,canvas.width, canvas.height);
