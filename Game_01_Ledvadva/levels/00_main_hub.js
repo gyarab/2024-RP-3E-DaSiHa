@@ -35,15 +35,21 @@ const _3008 = new Rectangle(1104,  720, 188,   36, "orange") // drawers
 const _3013 = new Rectangle(1104,  784, 188,    8, "orange") // -//-
 const _3009 = new Rectangle(1104,  836, 188,    8, "orange") // -//-
 const _3010 = new Rectangle(1104, 1044, 188,   28, "orange") // -//-
-const _3011 = new Rectangle( 132,  920, 392,  128, "orange");//folders
-const _3014 = new Rectangle( 704,  968, 128,   80, "orange");//nike
-const _3015 = new Rectangle( 396,  764, 428,  128, "orange");//folders
+const _3014 = new Rectangle( 704,  972, 128,   76, "orange");//nike
 const _3016 = new Rectangle( 240,  816, 156,   76, "orange");//games
+const _3012 = new Rectangle( 142,  856,  92,   36, "orange");//contoler
+const _3011 = new Rectangle( 488,  516, 100,   64, "orange");//fairytalebook
+const _3015 = new Rectangle( 364,  704, 104,   32, "orange");//study
+const _3017 = new Rectangle( 384,  676, 76,   28, "orange");//study
+
+//const _3011 = new Rectangle( 132,  920, 392,  128, "orange");//folders
+//const _3015 = new Rectangle( 396,  764, 428,  128, "orange");//folders
+
 export const barriers = [
     _0001,
     _1001,_1002,_1003,_1004,_1005,_1006,_1007,_1008,_1009,_1010,
     _2001,_2002,_2003,
-    _3001,_3002,_3003,_3004,_3005,_3006,_3007,_3008,_3009,_3010,_3011,_3013,_3014,_3015,_3016,
+    _3001,_3002,_3003,_3004,_3005,_3006,_3007,_3008,_3009,_3010,_3013,_3014,_3016,_3012,_3011,_3015,_3017
 ];
 /*-----------------------------Blue Print--------------------------------
 const canvas = document.getElementById('herniRozhraní');

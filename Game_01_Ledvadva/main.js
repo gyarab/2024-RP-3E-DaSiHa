@@ -68,7 +68,7 @@ window.addEventListener('load', () => {
     player1._framesPushRight    = [player1._frames[35]];
     player1._framesPushLeft     = [player1._frames[36]];
     /*------------------------nastavení kláves------------------------*/
-    let infoMode = true;
+    let infoMode = false;
     const infoBor = new Sprite (0,0,1920,1080,"../Game_01_Ledvadva/sprites/info.png");
     
     
@@ -107,25 +107,52 @@ window.addEventListener('load', () => {
     const Blue = new Rectangle(0,0,1920,1080,"grey")
     const Print = new Sprite(0,0,1920,1080,"../Game_01_Ledvadva/sprites/Hub/hub01.png");
     const furniture = new Sprite(0,0,1920,1080,"../Game_01_Ledvadva/sprites/Hub/furniture.png")
-    const shelf1 = new Sprite(128,916,720,136,"../Game_01_Ledvadva/sprites/Hub/shelf_01.png")
-    const shelf2 = new Sprite(128,756,696,136,"../Game_01_Ledvadva/sprites/Hub/shelf_02.png")
+
+    const shelf1 = new Sprite(124,912,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-1.png");
+    const shelf2 = new Sprite(124,754,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-2.png");
+    const shelf3 = new Sprite(124,600,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-3.png");
+    const shelf4 = new Sprite(124,444,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-4.png");
+    const shelf5 = new Sprite(124,288,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-5.png");
+
+    const nike = new Sprite(704,972,128,76,"../Game_01_Ledvadva/sprites/Hub/nike.png");
+    const control = new Sprite(142,852,92,40,"../Game_01_Ledvadva/sprites/Hub/control.png");
+    const games = new Sprite(240,812,152,76,"../Game_01_Ledvadva/sprites/Hub/games.png");
+    const fairy = new Sprite(488,516,100,64,"../Game_01_Ledvadva/sprites/Hub/fairytale.png");
+    const study = new Sprite(364,676,104,60,"../Game_01_Ledvadva/sprites/Hub/study.png");
+    const dark  = new Sprite(324,336,144,88,"../Game_01_Ledvadva/sprites/Hub/dark.png");
+
+    const shadow1 = new Sprite(124,912,716,136,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
+    const shadow2 = new Sprite(124,756,716,136,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
+    const shadow3 = new Sprite(124,600,716,136,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
+    const shadow4 = new Sprite(124,444,716,136,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
+    const shadow5 = new Sprite(124,288,716,136,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
+    const shadow6 = new Sprite(124,124,716,144,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
     /*--------------------------Mainloop--------------------------------*/
 
     function Mainloop() {
-        ctx.clearRect(0,0,canvas.width, canvas.height);
-
         Blue.render(ctx,true);
-        Print.render(ctx);
 
         furniture.render(ctx);
         
-        shelf1.render(ctx);
-        shelf2.render(ctx);
-        
+        shelf1.render(ctx); shadow1.render(ctx);
+        shelf2.render(ctx); shadow2.render(ctx);
+        shelf3.render(ctx); shadow3.render(ctx);
+        shelf4.render(ctx); shadow4.render(ctx);
+        shelf5.render(ctx); shadow5.render(ctx);
+                            shadow6.render(ctx);
+
+        nike.render(ctx);
+        control.render(ctx);
+        games.render(ctx);
+        fairy.render(ctx);
+        study.render(ctx);
+        dark.render(ctx);
 
         player1.updatePos(barriers);
         player1.updateImage();
         player1.render(ctx);
+
+        
 
         if (infoMode){
             barriers.forEach(
