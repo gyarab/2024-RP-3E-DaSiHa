@@ -68,8 +68,22 @@ window.addEventListener('load', () => {
     player1._framesPushRight    = [player1._frames[35]];
     player1._framesPushLeft     = [player1._frames[36]];
     /*------------------------nastavení kláves------------------------*/
-    window.addEventListener('keydown', event => handleKeyUpAndDown(event,  true));
-    window.addEventListener('keyup'  , event => handleKeyUpAndDown(event, false));
+    let infoMode = true;
+    const infoBor = new Sprite (0,0,1920,1080,"../Game_01_Ledvadva/sprites/info.png");
+    
+    
+    /*------------------------nastavení kláves------------------------*/
+    window.addEventListener(
+        'keydown', event => (
+            handleKeyUpAndDown(event,  true),
+            handleKeyDown(event)
+        )
+    ); 
+    window.addEventListener(
+        'keyup'  , event => (
+            handleKeyUpAndDown(event, false)
+        )
+    );
     
     function handleKeyUpAndDown(event, isDown) {
         const { key } = event;
@@ -78,6 +92,14 @@ window.addEventListener('load', () => {
             'a': () => player1._wantGoLeft  = isDown,
             'd': () => player1._wantGoRight = isDown,
             's': () => player1._wantGoDown  = isDown,
+        };
+        if (actions[key]) actions[key]();
+    }
+    
+    function handleKeyDown(event) {
+        const { key } = event;
+        const actions = {
+            'i': () => infoMode = !infoMode,
         };
         if (actions[key]) actions[key]();
     }
@@ -96,14 +118,22 @@ window.addEventListener('load', () => {
         Print.render(ctx);
 
         furniture.render(ctx);
+        
         shelf1.render(ctx);
         shelf2.render(ctx);
-
-        barriers.forEach(obsticle => obsticle.render(ctx));
+        
 
         player1.updatePos(barriers);
         player1.updateImage();
         player1.render(ctx);
+
+        if (infoMode){
+            barriers.forEach(
+                obsticle => obsticle.render(ctx)
+            );
+            infoBor.render(ctx);
+        }
+        
     }
     window.setInterval(Mainloop, 6, true);
 });
