@@ -52,7 +52,7 @@ export class CharacterSprite extends SpriteDyna{
     updatePos(obsticles){
         // poměr gravity:jumpVelocity určuje výší a délku skoku 
         const gravity = 0.07;
-        const jumpVelocity = - 3.5;
+        const jumpVelocity = - 3.7;
 
         this.y = this._y + this._yVelocity
         const maxRunVelocity = 1.5;

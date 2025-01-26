@@ -68,7 +68,7 @@ window.addEventListener('load', () => {
     player1._framesPushRight    = [player1._frames[35]];
     player1._framesPushLeft     = [player1._frames[36]];
     /*------------------------nastavení kláves------------------------*/
-    let infoMode = false;
+    let infoMode = true;
     const infoBor = new Sprite (0,0,1920,1080,"../Game_01_Ledvadva/sprites/info.png");
     
     
