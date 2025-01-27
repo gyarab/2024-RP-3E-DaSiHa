@@ -120,6 +120,7 @@ window.addEventListener('load', () => {
     const fairy = new Sprite(488,516,100,64,"../Game_01_Ledvadva/sprites/Hub/fairytale.png");
     const study = new Sprite(364,676,104,60,"../Game_01_Ledvadva/sprites/Hub/study.png");
     const dark  = new Sprite(324,336,144,88,"../Game_01_Ledvadva/sprites/Hub/dark.png");
+    const dark2 = new Sprite(416,332,28,64,"../Game_01_Ledvadva/sprites/Hub/dark2.png");
 
     const shadow1 = new Sprite(124,912,716,136,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
     const shadow2 = new Sprite(124,756,716,136,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
@@ -147,11 +148,16 @@ window.addEventListener('load', () => {
         fairy.render(ctx);
         study.render(ctx);
         dark.render(ctx);
+        
 
         player1.updatePos(barriers);
         player1.updateImage();
         player1.render(ctx);
 
+        if (player1._points[2].y < dark2._points[2].y){
+            dark2.render(ctx);
+        }
+        
         
 
         if (infoMode){

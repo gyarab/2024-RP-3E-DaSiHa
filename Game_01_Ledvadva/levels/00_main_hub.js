@@ -5,7 +5,7 @@ const path = "../../Game_01_Ledvadva/sprites/Hub/"
 
 
 /*-----------------------------barriers----------------------------------- */
-const _1001 = new Rectangle(1624,  480,  128,  240,"red"); _1001._id = "pc" 
+//const _1001 = new Rectangle(1624,  480,  128,  240,"red"); _1001._id = "pc" 
 const _1002 = new Rectangle( 920,  276,  604,   52,"red"); _1002._id = "shelf"  
 const _1003 = new Rectangle(   0, 1072, 1920,   16,"red"); _1003._id = "floor"
 const _1004 = new Rectangle( 112,  124,   20,  948,"red"); _1004._id = "library-wall-1"
@@ -42,16 +42,16 @@ const _3011 = new Rectangle( 488,  516, 100,   64, "orange");//fairytalebook
 const _3015 = new Rectangle( 364,  704, 104,   32, "orange");//study
 const _3017 = new Rectangle( 384,  676, 76,   28, "orange");//study
 const _3018 = new Rectangle( 324,  396, 144,   28, "orange");//dark
-const _3019 = new Rectangle( 132,  920, 396,  128, "orange");//dark
+const _3019 = new Rectangle( 356,  364, 104,  32, "orange");//dark
 
 //const _3011 = new Rectangle( 132,  920, 392,  128, "orange");//folders
 //const _3015 = new Rectangle( 396,  764, 428,  128, "orange");//folders
 
 export const barriers = [
     _0001,
-    _1001,_1002,_1003,_1004,_1005,_1006,_1007,_1008,_1009,_1010,
+    _1002,_1003,_1004,_1005,_1006,_1007,_1008,_1009,_1010,
     _2001,_2002,_2003,
-    _3001,_3002,_3003,_3004,_3005,_3006,_3007,_3008,_3009,_3010,_3013,_3014,_3016,_3012,_3011,_3015,_3017, _3018,
+    _3001,_3002,_3003,_3004,_3005,_3006,_3007,_3008,_3009,_3010,_3013,_3014,_3016,_3012,_3011,_3015,_3017, _3018,_3019
 ];
 /*-----------------------------Blue Print--------------------------------
 const canvas = document.getElementById('herniRozhraní');
