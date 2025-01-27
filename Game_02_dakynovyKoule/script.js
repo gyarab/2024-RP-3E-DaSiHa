@@ -136,17 +136,13 @@ let ballY = koule._y;
 let ballX = koule._x;
 let ballSpeed = 0.8;
 let ballScale = 1;
-let ballShrinkSpeed = 0.0020;
+let ballShrinkSpeed = 0.0018;
 
 function moveBall() {
     if (showKoule) {
         ballY -= ballSpeed;
         ballScale -= ballShrinkSpeed;
         ballX += 0.14;
-        
-        if (sipecka._currentFrame == 0 || sipecka._currentFrame == 18) {
-            ballX += 0;
-        }
         if (sipecka._currentFrame == 1 || sipecka._currentFrame == 17) {
             ballX -= 0.07;
         }
@@ -183,7 +179,25 @@ function moveBall() {
         if (sipecka._currentFrame == 21 || sipecka._currentFrame == 33) {
             ballX += 0.21;
         }
-        
+        if (sipecka._currentFrame == 22 || sipecka._currentFrame == 32) {
+            ballX += 0.31;
+        }
+        if (sipecka._currentFrame == 23 || sipecka._currentFrame == 31) {
+            ballX += 0.43;
+        }
+        if (sipecka._currentFrame == 24 || sipecka._currentFrame == 30) {
+            ballX += 0.54;
+        }
+        if (sipecka._currentFrame == 25 || sipecka._currentFrame == 29) {
+            ballX += 0.68;
+        }
+        if (sipecka._currentFrame == 26 || sipecka._currentFrame == 28) {
+            ballX += 0.79;
+        }
+        if (sipecka._currentFrame == 27) {
+            ballX += 0.89;
+        }
+
 
         if (ballY <= 561) {
             showKoule = false;
