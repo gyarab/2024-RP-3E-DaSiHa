@@ -107,7 +107,7 @@ function Mainloop() {
     kuzelka1.render(ctx);
     if (showKoule == false) {
         sipecka.render(ctx);
-        //sipecka.updatePos();
+        sipecka.updatePos();
     }
     if (showKoule) {
         koule.render(ctx);
@@ -171,6 +171,16 @@ function moveBall() {
         if (sipecka._framesRunning[9]){
             ballX -= 0.89;
         }
+        if(sipecka._framesRunning[19] || sipecka._framesRunning[35]){
+            ballX += 0.07;
+        }
+        if(sipecka._framesRunning[20] || sipecka._framesRunning[34]){
+            ballX += 0.14;
+        }
+        if(sipecka._framesRunning[21] || sipecka._framesRunning[33]){
+            ballX += 0.21;
+        }
+        
 
         if (ballY <= 561) {
             showKoule = false;
@@ -189,3 +199,4 @@ window.setInterval(() => {
     Mainloop();
     moveBall();
 }, 1);
+
