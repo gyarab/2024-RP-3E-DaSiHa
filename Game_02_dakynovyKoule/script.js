@@ -40,7 +40,7 @@ kuzelka10.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
 const cudlik = new Sprite(1450, 850, 420, 180);
 cudlik.loadImg("/Game_02_dakynovyKoule/foto/cudlas.png");
 
-const koule = new CharacterSprite1(900, 840, 150, 150);
+const koule = new CharacterSprite1(900, 890, 150, 150);
 koule._framesRunning = [
     "/Game_02_dakynovyKoule/foto/gula.png",
     "/Game_02_dakynovyKoule/foto/gula2.png",
@@ -50,27 +50,44 @@ koule._framesRunning = [
     "/Game_02_dakynovyKoule/foto/gula3.png"
 ];
 
-
-
-const sipecka = new CharacterSprite1(900, 840, 150, 200);
+const sipecka = new CharacterSprite1(850, 840, 250, 250);
 sipecka._framesRunning = [
     "/Game_02_dakynovyKoule/foto/sipka.png",
-    "/Game_02_dakynovyKoule/foto/sipecka-1.png",
-    "/Game_02_dakynovyKoule/foto/sipecka-2.png",
-    "/Game_02_dakynovyKoule/foto/sipecka-3.png",
-    "/Game_02_dakynovyKoule/foto/sipecka-4.png",
-    "/Game_02_dakynovyKoule/foto/sipecka-3.png",
-    "/Game_02_dakynovyKoule/foto/sipecka-2.png",
-    "/Game_02_dakynovyKoule/foto/sipecka-1.png",
-    "/Game_02_dakynovyKoule/foto/sipecka.png",
-    "/Game_02_dakynovyKoule/foto/sipecka1.png",
-    "/Game_02_dakynovyKoule/foto/sipecka2.png",
-    "/Game_02_dakynovyKoule/foto/sipecka3.png",
-    "/Game_02_dakynovyKoule/foto/sipecka4.png",
-    "/Game_02_dakynovyKoule/foto/sipecka3.png",
-    "/Game_02_dakynovyKoule/foto/sipecka2.png",
-    "/Game_02_dakynovyKoule/foto/sipecka1.png",
-    "/Game_02_dakynovyKoule/foto/sipecka.png",
+    "/Game_02_dakynovyKoule/foto/sipka-1.png",
+    "/Game_02_dakynovyKoule/foto/sipka-2.png",
+    "/Game_02_dakynovyKoule/foto/sipka-3.png",
+    "/Game_02_dakynovyKoule/foto/sipka-4.png",
+    "/Game_02_dakynovyKoule/foto/sipka-5.png",
+    "/Game_02_dakynovyKoule/foto/sipka-6.png",
+    "/Game_02_dakynovyKoule/foto/sipka-7.png",
+    "/Game_02_dakynovyKoule/foto/sipka-8.png",
+    "/Game_02_dakynovyKoule/foto/sipka-9.png",
+    "/Game_02_dakynovyKoule/foto/sipka-8.png",
+    "/Game_02_dakynovyKoule/foto/sipka-7.png",
+    "/Game_02_dakynovyKoule/foto/sipka-6.png",
+    "/Game_02_dakynovyKoule/foto/sipka-5.png",
+    "/Game_02_dakynovyKoule/foto/sipka-4.png",
+    "/Game_02_dakynovyKoule/foto/sipka-3.png",
+    "/Game_02_dakynovyKoule/foto/sipka-2.png",
+    "/Game_02_dakynovyKoule/foto/sipka-1.png",
+    "/Game_02_dakynovyKoule/foto/sipka.png",
+    "/Game_02_dakynovyKoule/foto/sipka1.png",
+    "/Game_02_dakynovyKoule/foto/sipka2.png",
+    "/Game_02_dakynovyKoule/foto/sipka3.png",
+    "/Game_02_dakynovyKoule/foto/sipka4.png",
+    "/Game_02_dakynovyKoule/foto/sipka5.png",
+    "/Game_02_dakynovyKoule/foto/sipka6.png",
+    "/Game_02_dakynovyKoule/foto/sipka7.png",
+    "/Game_02_dakynovyKoule/foto/sipka8.png",
+    "/Game_02_dakynovyKoule/foto/sipka9.png",
+    "/Game_02_dakynovyKoule/foto/sipka8.png",
+    "/Game_02_dakynovyKoule/foto/sipka7.png",
+    "/Game_02_dakynovyKoule/foto/sipka6.png",
+    "/Game_02_dakynovyKoule/foto/sipka5.png",
+    "/Game_02_dakynovyKoule/foto/sipka4.png",
+    "/Game_02_dakynovyKoule/foto/sipka3.png",
+    "/Game_02_dakynovyKoule/foto/sipka2.png",
+    "/Game_02_dakynovyKoule/foto/sipka1.png"
 ];
 
 let showKoule = false;
@@ -122,11 +139,42 @@ let ballShrinkSpeed = 0.0020;
 function moveBall() {
     if (showKoule) {
         ballY -= ballSpeed;
-        ballX += 0.14;
         ballScale -= ballShrinkSpeed;
+        ballX += 0.14;
+        if (sipecka._framesRunning[0] || sipecka._framesRunning[18]){
+            ballX += 0;
+        }
+        if (sipecka._framesRunning[1] || sipecka._framesRunning[17]){
+            ballX -= 0.07;
+        }
+        if (sipecka._framesRunning[2] || sipecka._framesRunning[16]){ 
+            ballX -= 0.14;
+        }
+        if (sipecka._framesRunning[3] || sipecka._framesRunning[15]){
+            ballX -= 0.21;
+        }
+        if (sipecka._framesRunning[4] || sipecka._framesRunning[14]){
+            ballX -= 0.31;
+        }
+        if (sipecka._framesRunning[5] || sipecka._framesRunning[13]){
+            ballX -= 0.43;
+        }
+        if (sipecka._framesRunning[6] || sipecka._framesRunning[12]){
+            ballX -= 0.54;
+        }
+        if (sipecka._framesRunning[7] || sipecka._framesRunning[11]){
+            ballX -= 0.68;
+        }
+        if (sipecka._framesRunning[8] || sipecka._framesRunning[10]){
+            ballX -= 0.79;
+        }
+        if (sipecka._framesRunning[9]){
+            ballX -= 0.89;
+        }
+
         if (ballY <= 561) {
             showKoule = false;
-            ballY = 840;
+            ballY = 890;
             ballX = 900;
             ballScale = 1;
         }
@@ -140,4 +188,4 @@ function moveBall() {
 window.setInterval(() => {
     Mainloop();
     moveBall();
-}, 5);
+}, 1);
