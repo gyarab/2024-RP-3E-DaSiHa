@@ -93,7 +93,6 @@ sipecka.animSlow = 5;
 let showKoule = false;
 
 function Mainloop() {
-    console.log(sipecka._currentFrame);
     background.render(ctx);
     cudlik.render(ctx);
     kuzelka10.render(ctx);
@@ -109,7 +108,6 @@ function Mainloop() {
     if (showKoule == false) {
         sipecka.render(ctx);
         sipecka.updateImage();
-        console.log(sipecka._currentFrame);
     }
     if (showKoule) {
         koule.render(ctx);
@@ -198,6 +196,15 @@ function moveBall() {
             ballX += 0.89;
         }
 
+        //console.log(sipecka._currentFrame);
+
+        //zkusebni
+        /*if (sipecka._currentFrame == 1) {
+        ballX += 0.89;
+        }*/
+
+        //console.log(ballX);
+        //console.log(ballY);
 
         if (ballY <= 561) {
             showKoule = false;
