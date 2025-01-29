@@ -41,15 +41,36 @@ kuzelka10.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
 const cudlik = new Sprite(1450, 850, 420, 180);
 cudlik.loadImg("/Game_02_dakynovyKoule/foto/cudlas.png");
 
-const koule = new CharacterSprite1(900, 890, 150, 150);
-koule._framesRunning = [
+const koule = new SpriteAnim(900, 890, 150, 150, [
     "/Game_02_dakynovyKoule/foto/gula.png",
     "/Game_02_dakynovyKoule/foto/gula2.png",
     "/Game_02_dakynovyKoule/foto/gula_zada.png",
     "/Game_02_dakynovyKoule/foto/gula_zada.png",
     "/Game_02_dakynovyKoule/foto/gula_zada.png",
     "/Game_02_dakynovyKoule/foto/gula3.png"
-];
+]);
+koule.animSlow = 10;
+let showKoule = false;
+
+const power = new SpriteAnim(1451, 660, 420, 180, [
+    "/Game_02_dakynovyKoule/foto/power.png",
+    "/Game_02_dakynovyKoule/foto/power1.png",
+    "/Game_02_dakynovyKoule/foto/power2.png",
+    "/Game_02_dakynovyKoule/foto/power3.png",
+    "/Game_02_dakynovyKoule/foto/power4.png",
+    "/Game_02_dakynovyKoule/foto/power5.png",
+    "/Game_02_dakynovyKoule/foto/power6.png",
+    "/Game_02_dakynovyKoule/foto/power7.png", 
+    "/Game_02_dakynovyKoule/foto/power6.png",
+    "/Game_02_dakynovyKoule/foto/power5.png",
+    "/Game_02_dakynovyKoule/foto/power4.png",
+    "/Game_02_dakynovyKoule/foto/power3.png",
+    "/Game_02_dakynovyKoule/foto/power2.png",
+    "/Game_02_dakynovyKoule/foto/power1.png",
+]);
+
+power.animSlow = 25;
+let showpower = false;
 
 const sipecka = new SpriteAnim(850, 840, 250, 250, [
     "/Game_02_dakynovyKoule/foto/sipka.png",
@@ -90,7 +111,8 @@ const sipecka = new SpriteAnim(850, 840, 250, 250, [
     "/Game_02_dakynovyKoule/foto/sipka1.png"
 ]);
 sipecka.animSlow = 5;
-let showKoule = false;
+let sipeckaStop = false;
+
 
 function Mainloop() {
     background.render(ctx);
@@ -107,11 +129,17 @@ function Mainloop() {
     kuzelka1.render(ctx);
     if (showKoule == false) {
         sipecka.render(ctx);
-        sipecka.updateImage();
+        if (sipeckaStop == false) {
+            sipecka.updateImage();
+        }
+    }
+    if (showpower) {
+        power.render(ctx);
+        power.updateImage();
     }
     if (showKoule) {
         koule.render(ctx);
-        koule.updatePos();
+        koule.updateImage();
     }
 }
 
@@ -123,11 +151,19 @@ function handleClick(event) {
     const scaleY = canvas.height / rect.height;
     const mouseX = (event.clientX - rect.left) * scaleX;
     const mouseY = (event.clientY - rect.top) * scaleY;
-    if (mouseX >= cudlik._x && mouseX <= cudlik._x + cudlik._width &&
-        mouseY >= cudlik._y && mouseY <= cudlik._y + cudlik._height) {
-        showKoule = true;
+    if(!showKoule){
+        if (mouseX >= cudlik._x && mouseX <= cudlik._x + cudlik._width &&
+            mouseY >= cudlik._y && mouseY <= cudlik._y + cudlik._height) {
+            if (!showpower) {
+                showpower = true;
+                sipeckaStop = true;
+            } else if (showpower) {
+                showKoule = true;
+                showpower = false;
+                sipeckaStop = false;
+            }
+        }
     }
-
 }
 
 let ballY = koule._y;
