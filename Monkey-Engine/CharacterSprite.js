@@ -13,7 +13,8 @@ export class CharacterSprite extends SpriteDyna{
         this._wantGoRight = false;
         this._wantGoLeft  = false;
         this._wantJump    = false;
-        this._wantGoDown = false;
+        this._wantGoDown  = false;
+        this._wantInteract = false;
 
         this._isOnGround = false;
         this._isJumping  = false;
@@ -49,7 +50,7 @@ export class CharacterSprite extends SpriteDyna{
         this._floor = 1080 - this._height;
     }
     //posouvá objekt podle probíhající akce
-    updatePos(obsticles){
+    updatePos(obstacles){
         // poměr gravity:jumpVelocity určuje výší a délku skoku 
         const gravity = 0.07;
         const jumpVelocity = - 3.7;
@@ -115,10 +116,8 @@ export class CharacterSprite extends SpriteDyna{
         let canGoLeft  = true;
         let canGoUp    = true;
         let canGoDown  = true;
-        let isOnOrange = false;
-
-        
-        for (let ob of obsticles) {
+  
+        for (let ob of obstacles) {
             if(ob._color == 'orange' && !this._wantGoDown){
                 if (NextFrameY.doesColideWith(ob)  && !this.doesColideWith(ob) && (this._yVelocity >= 0)){
                     canGoDown = false;
@@ -141,7 +140,17 @@ export class CharacterSprite extends SpriteDyna{
                     this.y = this._y - 0.5;
                     this._xVelocity = this._xVelocity / 10;
                 }
-             }
+            }
+            if(ob._color == 'violet'){ 
+                if (this.doesColideWith(ob)){
+                    ob._isInteractable = true;
+                    if(this._wantInteract){
+                        ob._action(ob);
+                    }
+                }else {
+                    ob._isInteractable = false;
+                }
+            }
             
         }
         if(!canGoRight) {
