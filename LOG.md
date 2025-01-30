@@ -111,4 +111,4 @@ uspěšně opravil animaci koule i šipky, přidal různé trajektorie na zákla
 
 **Hana**
 
-nesplinla nic ze zadání z minulého týdne, má tak práci na prázdniny. Nejsem spoko.
+nesplinla skoro nic ze zadání z minulého týdne (rychlost skoku a hratelnost byla mírně zlepšená), má tak práci na prázdniny. Nejsem spoko.
