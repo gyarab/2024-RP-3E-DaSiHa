@@ -9,10 +9,6 @@ import { SpriteDyna }       from '../Monkey-Engine/SpriteDyna.js';
 window.addEventListener('keydown', event => handleKey(event, true));
 window.addEventListener('keyup', event => handleKey(event, false));
 
-button.addEventListener('click', () => {
-    alert('Button clicked!');
-});
-
 const hrib = new SpriteDyna(600,750,200,220, [ 
     "/Game_03_runner/sprites/hrib.png",
 ]);
@@ -66,6 +62,12 @@ const kost = new SpriteDyna(1100,820,100,110, [
 ])
 kost.id = "kost"
 
+const tlacitko = new Sprite(100, 100, 200, 100, [
+    "/Game_03_runner/sprites/button.png"
+])
+tlacitko.id = "tlacitko"
+
+
 
 //hlavní herní smyčka
 function Mainloop(){
@@ -85,6 +87,7 @@ function Mainloop(){
     character.updatePos();
     motyl.render(ctx, true);
     motyl.updateImage();
+    tlacitko.render(ctx);
     hrib._x -= hrib._xSpeed;
     muchomurka._x -= muchomurka._xSpeed;
     kost._x = (hrib._x + muchomurka._x) / 2;
