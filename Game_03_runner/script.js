@@ -18,15 +18,15 @@ const hrib = new SpriteDyna(600,750,200,220, [
 ]);
 hrib.id = "hrib"
 hrib._isGoLeft = true;
-hrib._xSpeed = 2;
+hrib._xSpeed = 3;
 
 const pozadi = new Sprite(0, 0, 1915, 1080);
 pozadi.loadImg("/Game_03_runner/sprites/pozadi_les.jpg");
-pozadi._xSpeed = 1;
+pozadi._xSpeed = 2;
 
 const pozadi2 = new Sprite(pozadi._width, 0, 1915, 1080);
 pozadi2.loadImg("/Game_03_runner/sprites/pozadi_les.jpg");
-pozadi2._xSpeed = 1;
+pozadi2._xSpeed = 2;
 
 const character = new CharacterSprite1(100, 690, 250, 310);
 
@@ -59,6 +59,7 @@ const muchomurka = new SpriteDyna(1400,750,200,220, [
     "/Game_03_runner/sprites/muchomurka.png",
 ])
 muchomurka.id = "muchomurka"
+muchomurka._xSpeed = 3;
 
 const kost = new SpriteDyna(1100,820,100,110, [ 
     "/Game_03_runner/sprites/kost.png",

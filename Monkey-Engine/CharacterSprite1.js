@@ -20,7 +20,7 @@ export class CharacterSprite1 extends SpriteDyna{
             
     }
     updatePos(){
-        const gravity = 0.2;
+        const gravity = 0.1;
         const jumpVelocity = -10;
 
         this._y += this._yVelocity;
