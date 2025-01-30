@@ -1,5 +1,6 @@
 import { CharacterSprite } from  '../Monkey-Engine/CharacterSprite.js';
 import {       SpriteDyna } from  '../Monkey-Engine/SpriteDyna.js';
+import {        SpriteAnim } from  '../Monkey-Engine/SpriteAnim.js';
 import {        Rectangle } from  '../Monkey-Engine/Rectangle.js';
 import {           Sprite } from  '../Monkey-Engine/Sprite.js';
 import {         barriers } from  './levels/00_main_hub.js';
@@ -71,7 +72,21 @@ window.addEventListener('load', () => {
     let infoMode = false;
     const infoBor = new Sprite (0,0,1920,1080,"../Game_01_Ledvadva/sprites/info.png");
     
-    
+    /*----------------------------------------------------------------*/
+    const Enemy = new SpriteAnim(10,10,124,124,[
+        "../Game_01_Ledvadva/sprites/Scissors/1.png",
+        "../Game_01_Ledvadva/sprites/Scissors/2.png",
+        "../Game_01_Ledvadva/sprites/Scissors/3.png",
+        "../Game_01_Ledvadva/sprites/Scissors/4.png",
+        "../Game_01_Ledvadva/sprites/Scissors/5.png",
+        /*
+        "../Game_01_Ledvadva/sprites/Scissors/4.png",
+        "../Game_01_Ledvadva/sprites/Scissors/3.png",
+        "../Game_01_Ledvadva/sprites/Scissors/2.png",
+        /**/
+        "../Game_01_Ledvadva/sprites/Scissors/1.png",
+    ]);
+    Enemy._animSlow = 10;
     /*------------------------nastavení kláves------------------------*/
     window.addEventListener(
         'keydown', event => (
@@ -160,11 +175,8 @@ window.addEventListener('load', () => {
         }
 
         
-        
-        
-        
-        
-
+        Enemy.render(ctx);
+        Enemy.updateImage();
         player1.updatePos(barriers);
         player1.updateImage();
         player1.render(ctx);
