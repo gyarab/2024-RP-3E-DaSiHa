@@ -10,7 +10,7 @@ window.addEventListener('load', () => {
     const ctx = canvas.getContext('2d');
 
     /*-------------------------player1--------------------------------*/
-    const player1 = new CharacterSprite(150, 100, 68 - 16, 124,[
+    const player1 = new CharacterSprite(1920/2, 1080 - 124, 68 - 16, 124,[
         //0
         "/Game_01_Ledvadva/sprites/BLU/stand.png",
         //1-14
@@ -59,7 +59,7 @@ window.addEventListener('load', () => {
     ]);
 
     player1._id = "player1";
-    player1.moveTo(100, 20);
+    player1.moveTo(1920/2, 1080 - 124);
     player1._framesStanding     = [player1._frames[0]];
     player1._framesRunRight     = player1._frames.slice(1, 15);
     player1._framesRunLeft      = player1._frames.slice(15, 29);
@@ -68,7 +68,7 @@ window.addEventListener('load', () => {
     player1._framesPushRight    = [player1._frames[35]];
     player1._framesPushLeft     = [player1._frames[36]];
     /*------------------------nastavení kláves------------------------*/
-    let infoMode = true;
+    let infoMode = false;
     const infoBor = new Sprite (0,0,1920,1080,"../Game_01_Ledvadva/sprites/info.png");
     
     
@@ -88,10 +88,11 @@ window.addEventListener('load', () => {
     function handleKeyUpAndDown(event, isDown) {
         const { key } = event;
         const actions = {
-            'w': () => player1._wantJump    = isDown,
-            'a': () => player1._wantGoLeft  = isDown,
-            'd': () => player1._wantGoRight = isDown,
-            's': () => player1._wantGoDown  = isDown,
+            'w': () => player1._wantJump     = isDown,
+            'a': () => player1._wantGoLeft   = isDown,
+            'd': () => player1._wantGoRight  = isDown,
+            's': () => player1._wantGoDown   = isDown,
+            'e': () => player1._wantInteract = isDown,
         };
         if (actions[key]) actions[key]();
     }
@@ -114,13 +115,13 @@ window.addEventListener('load', () => {
     const shelf4 = new Sprite(124,444,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-4.png");
     const shelf5 = new Sprite(124,288,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-5.png");
 
-    const nike = new Sprite(704,972,128,76,"../Game_01_Ledvadva/sprites/Hub/nike.png");
-    const control = new Sprite(142,852,92,40,"../Game_01_Ledvadva/sprites/Hub/control.png");
+    const nike = new Sprite(704,970,128,76,"../Game_01_Ledvadva/sprites/Hub/nike.png");
+    const control = new Sprite(142,850,92,40,"../Game_01_Ledvadva/sprites/Hub/control.png");
     const games = new Sprite(240,812,152,76,"../Game_01_Ledvadva/sprites/Hub/games.png");
-    const fairy = new Sprite(488,516,100,64,"../Game_01_Ledvadva/sprites/Hub/fairytale.png");
-    const study = new Sprite(364,676,104,60,"../Game_01_Ledvadva/sprites/Hub/study.png");
-    const dark  = new Sprite(324,336,144,88,"../Game_01_Ledvadva/sprites/Hub/dark.png");
-    const dark2 = new Sprite(416,332,28,64,"../Game_01_Ledvadva/sprites/Hub/dark2.png");
+    const fairy = new Sprite(488,514,100,64,"../Game_01_Ledvadva/sprites/Hub/fairytale.png");
+    const study = new Sprite(364,674,104,60,"../Game_01_Ledvadva/sprites/Hub/study.png");
+    const dark  = new Sprite(324,334,144,88,"../Game_01_Ledvadva/sprites/Hub/dark.png");
+    const dark2 = new Sprite(416,330,28,64,"../Game_01_Ledvadva/sprites/Hub/dark2.png");
 
     const shadow1 = new Sprite(124,912,716,136,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
     const shadow2 = new Sprite(124,756,716,136,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
@@ -142,12 +143,26 @@ window.addEventListener('load', () => {
         shelf5.render(ctx); shadow5.render(ctx);
                             shadow6.render(ctx);
 
-        nike.render(ctx);
-        control.render(ctx);
-        games.render(ctx);
-        fairy.render(ctx);
-        study.render(ctx);
-        dark.render(ctx);
+        if (barriers.some(barrier => barrier._id === '3014' && barrier._isInteractable)) {
+            nike.render(ctx);
+        }
+        if (barriers.some(barrier => barrier._id === '3016' && barrier._isInteractable)) {
+            games.render(ctx);
+        }
+        if (barriers.some(barrier => barrier._id === '3011' && barrier._isInteractable)) {
+            fairy.render(ctx);
+        }
+        if (barriers.some(barrier => barrier._id === '3017' && barrier._isInteractable)) {
+            study.render(ctx);
+        }
+        if (barriers.some(barrier => barrier._id === '3019' && barrier._isInteractable)) {
+            dark.render(ctx);
+        }
+
+        
+        
+        
+        
         
 
         player1.updatePos(barriers);
