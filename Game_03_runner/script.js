@@ -9,24 +9,20 @@ import { SpriteDyna }       from '../Monkey-Engine/SpriteDyna.js';
 window.addEventListener('keydown', event => handleKey(event, true));
 window.addEventListener('keyup', event => handleKey(event, false));
 
-button.addEventListener('click', () => {
-    alert('Button clicked!');
-});
-
 const hrib = new SpriteDyna(600,750,200,220, [ 
     "/Game_03_runner/sprites/hrib.png",
 ]);
 hrib.id = "hrib"
 hrib._isGoLeft = true;
-hrib._xSpeed = 2;
+hrib._xSpeed = 3;
 
 const pozadi = new Sprite(0, 0, 1915, 1080);
 pozadi.loadImg("/Game_03_runner/sprites/pozadi_les.jpg");
-pozadi._xSpeed = 1;
+pozadi._xSpeed = 2;
 
 const pozadi2 = new Sprite(pozadi._width, 0, 1915, 1080);
 pozadi2.loadImg("/Game_03_runner/sprites/pozadi_les.jpg");
-pozadi2._xSpeed = 1;
+pozadi2._xSpeed = 2;
 
 const character = new CharacterSprite1(100, 690, 250, 310);
 
@@ -59,11 +55,18 @@ const muchomurka = new SpriteDyna(1400,750,200,220, [
     "/Game_03_runner/sprites/muchomurka.png",
 ])
 muchomurka.id = "muchomurka"
+muchomurka._xSpeed = 3;
 
 const kost = new SpriteDyna(1100,820,100,110, [ 
     "/Game_03_runner/sprites/kost.png",
 ])
 kost.id = "kost"
+
+const tlacitko = new Sprite(100, 100, 200, 100, [
+    "/Game_03_runner/sprites/button.png"
+])
+tlacitko.id = "tlacitko"
+
 
 
 //hlavní herní smyčka
@@ -84,6 +87,7 @@ function Mainloop(){
     character.updatePos();
     motyl.render(ctx, true);
     motyl.updateImage();
+    tlacitko.render(ctx);
     hrib._x -= hrib._xSpeed;
     muchomurka._x -= muchomurka._xSpeed;
     kost._x = (hrib._x + muchomurka._x) / 2;
