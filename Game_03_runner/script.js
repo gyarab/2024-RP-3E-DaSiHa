@@ -9,8 +9,11 @@ import { SpriteDyna }       from '../Monkey-Engine/SpriteDyna.js';
 window.addEventListener('keydown', event => handleKey(event, true));
 window.addEventListener('keyup', event => handleKey(event, false));
 
+button.addEventListener('click', () => {
+    alert('Button clicked!');
+});
 
- const hrib = new SpriteDyna(600,750,200,220, [ 
+const hrib = new SpriteDyna(600,750,200,220, [ 
     "/Game_03_runner/sprites/hrib.png",
 ]);
 hrib.id = "hrib"
@@ -57,7 +60,7 @@ const muchomurka = new SpriteDyna(1400,750,200,220, [
 ])
 muchomurka.id = "muchomurka"
 
-const kost = new SpriteDyna(900,820,100,110, [ 
+const kost = new SpriteDyna(1100,820,100,110, [ 
     "/Game_03_runner/sprites/kost.png",
 ])
 kost.id = "kost"
@@ -83,6 +86,7 @@ function Mainloop(){
     motyl.updateImage();
     hrib._x -= hrib._xSpeed;
     muchomurka._x -= muchomurka._xSpeed;
+    kost._x = (hrib._x + muchomurka._x) / 2;
     hrib.render(ctx,true);
     hrib.updateImage();
     muchomurka.render(ctx,true);
@@ -95,6 +99,9 @@ function Mainloop(){
     }
     if (muchomurka._x < (0 - muchomurka._width)) {
         muchomurka._x = 1500;
+    }
+    if (kost._x < (0 - kost._width)) {
+        kost._x = (hrib._x + muchomurka._x) / 2;
     }
       
 }
