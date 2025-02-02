@@ -67,6 +67,28 @@ const tlacitko = new Sprite(100, 100, 200, 100, [
 ])
 tlacitko.id = "tlacitko"
 
+let isCityBackground = false;
+
+canvas.addEventListener('click', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const mouseX = (event.clientX - rect.left) * scaleX;
+    const mouseY = (event.clientY - rect.top) * scaleY;
+
+    if (mouseX >= tlacitko._x && mouseX <= tlacitko._x + tlacitko._width &&
+        mouseY >= tlacitko._y && mouseY <= tlacitko._y + tlacitko._height) {
+
+        if (isCityBackground) {
+            pozadi.loadImg("/Game_03_runner/sprites/pozadi_les.jpg");
+            pozadi2.loadImg("/Game_03_runner/sprites/pozadi_les.jpg");
+        } else {
+            pozadi.loadImg("/Game_03_runner/sprites/pozadi_mesto.jpg");
+            pozadi2.loadImg("/Game_03_runner/sprites/pozadi_mesto.jpg");
+        }
+        isCityBackground = !isCityBackground;
+    }
+});
 
 
 //hlavní herní smyčka
