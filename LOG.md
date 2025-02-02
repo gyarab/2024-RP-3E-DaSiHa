@@ -104,3 +104,11 @@ uspěšně opravila pozadí takže na sebe samo (jakžtakž) navazuje, dále ho 
 + využít i alternativní scenérie
 + něco v HTML hledač her nebo přepínač kategorijí (klidně oboje ☺)
 
+## 29.1 Deadline
+**David**
+
+uspěšně opravil animaci koule i šipky, přidal různé trajektorie na základě různých stavů šipky a přidal samotný powerbar. Splnil vše co jsem po něm na tento týden chtěl. Jsem spoko.
+
+**Hana**
+
+nesplinla skoro nic ze zadání z minulého týdne (rychlost skoku a hratelnost byla mírně zlepšená), má tak práci na prázdniny. Nejsem spoko.
