@@ -123,6 +123,7 @@ window.addEventListener('load', () => {
     const Blue = new Rectangle(0,0,1920,1080,"grey")
     const Print = new Sprite(0,0,1920,1080,"../Game_01_Ledvadva/sprites/Hub/hub01.png");
     const furniture = new Sprite(0,0,1920,1080,"../Game_01_Ledvadva/sprites/Hub/furniture.png")
+    const E = new Sprite(0,0,44,44,"../Game_01_Ledvadva/sprites/Indicators/Press-E.png")
 
     const shelf1 = new Sprite(124,912,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-1.png");
     const shelf2 = new Sprite(124,754,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-2.png");
@@ -160,23 +161,30 @@ window.addEventListener('load', () => {
 
         if (barriers.some(barrier => barrier._id === '3014' && barrier._isInteractable)) {
             nike.render(ctx);
+            E.moveTo(752,900);
+            E.render(ctx)
         }
         if (barriers.some(barrier => barrier._id === '3016' && barrier._isInteractable)) {
             games.render(ctx);
+            E.render(ctx)
         }
         if (barriers.some(barrier => barrier._id === '3011' && barrier._isInteractable)) {
             fairy.render(ctx);
+            E.render(ctx)
         }
         if (barriers.some(barrier => barrier._id === '3017' && barrier._isInteractable)) {
             study.render(ctx);
+            E.render(ctx)
         }
         if (barriers.some(barrier => barrier._id === '3019' && barrier._isInteractable)) {
             dark.render(ctx);
+            E.render(ctx)
         }
 
         
         Enemy.render(ctx);
         Enemy.updateImage();
+
         player1.updatePos(barriers);
         player1.updateImage();
         player1.render(ctx);

@@ -28,7 +28,7 @@ má (do 20.12.) :
 + nakreslit sprity ustřední postavy pro svojí hru
 + zkopírovat example a uvést tak svůj index.html do standardizového tvaru¨
 
-## 20.12 *Deadline*
+## 20.12. *Deadline*
 
 **David** 
 
@@ -38,7 +38,7 @@ má víceméně splněno šipka byť neudržuje tvar rotuje. Výsledný efekt je
 
 odevzdala pozdě a kromě zkopírovaného ne uplně funkčního kódu přidala jen stažené spritesheety má tak práci na prázdniny ( pře/udělat sprity pro ustřední postavu)
 
-## 6.1 Druhá schůzka 
+## 6.1. Druhá schůzka 
 
 **David**
 
@@ -59,11 +59,11 @@ má (do 15.1.) :
 + vytvořit pozadí (zkusit vícero lokací)
 + vytvořit sprity pro potencionální colectables (coiny,kosti nebo tak něco)
 
-## 15.1 Třetí schůzka 
+## 15.1. Třetí schůzka 
 **David**
 
 uspěšně vytvořil sprity pro kuželky, přetvořil pozadí a vytvořil první ze spritů pro bowlingovou kouli. Pokus o rozpohybování koule a zprovoznění tlačítka proběhl (neuspěšně). Dále to tedy zadám jako jeden z úkolů na následující týden,
-(do 22.1) tedy má:
+(do 22.1.) tedy má:
 + rozpracovat galerku her (HTML stránku)
 + nakreslit si sprity pro koulející se bowlingovou kouli
 + zprovoznit tlačítko 
@@ -72,18 +72,18 @@ uspěšně vytvořil sprity pro kuželky, přetvořil pozadí a vytvořil první
 **Hana**
 
 uspěšně vytvořila sprity pro několik překážek, pro motýla, pro potencionální colectable a hned pro dvě pozadí. Dále uvedla v provoz skákání hlavního charakteru (psa).
-(Do 22.1) má:
+(Do 22.1.) má:
 + rozpohybovat překážky a pozadí
 + upravit pozadí ať samo na sebe navazuje
 + kontolovat kolize psa a překážek
 + změnit vykreslování spritu psa při skoku
 
 
-## 22.1 Čtvrtá schůzka 
+## 22.1. Čtvrtá schůzka 
 **David**
 
 uspěšne nakreslil sprity pro kouli, rozhýbal jí, a zprovoznil tlačítko na její ovládání. Samotná animace potřebuje krapet lásky s načasování ale to je drobnůstka. K galerii her se nedostal a tak tento ůkol dále trvá. Dále
-(do 29.1) má:
+(do 29.1.) má:
 + opravit animaci koule (podržet na spritu kde nejsou dirky koule vidět) a vycentrovat ji
 + opravit šipku:
     + nový sprite/y v pixelart stylu 
@@ -97,14 +97,14 @@ uspěšne nakreslil sprity pro kouli, rozhýbal jí, a zprovoznil tlačítko na 
 **Hana**
 
 uspěšně opravila pozadí takže na sebe samo (jakžtakž) navazuje, dále ho roztočila a zozhejbala samotné překážky. Kolize s překážky a vykreslování psa ve skoku neztihla, dále tyto úkoly trvají. Dále
-(do 29.1) má:
+(do 29.1.) má:
 + nastavit rycholsti a délku skoku tak aby hra byla "hratelná"
 + možnost interakce s colectables
 + počítání skóre a alespoň do konzole vypisovat
 + využít i alternativní scenérie
 + něco v HTML hledač her nebo přepínač kategorijí (klidně oboje ☺)
 
-## 29.1 Deadline
+## 29.1. Deadline
 **David**
 
 uspěšně opravil animaci koule i šipky, přidal různé trajektorie na základě různých stavů šipky a přidal samotný powerbar. Splnil vše co jsem po něm na tento týden chtěl. Jsem spoko.
@@ -112,3 +112,28 @@ uspěšně opravil animaci koule i šipky, přidal různé trajektorie na zákla
 **Hana**
 
 nesplinla skoro nic ze zadání z minulého týdne (rychlost skoku a hratelnost byla mírně zlepšená), má tak práci na prázdniny. Nejsem spoko.
+
+## 4.2. Zadání práce a rešerše doposuď nesplněného
+**David** 
+
+dodělat:
+- rozpracovat galerii her v HTML a CSS
+- využít sílu hodu ve výsledném hodu (alespoň pomocí rychlosti koule)
+
+dále (do 12.2.):
+- řešit kolize koule s žlábky a kuželky
+
+
+**Hana**
+
+dodělat:
+- vykreslování psa ve skoku
+- řešení kolizí s překážky i colectables
+- počítání a vykreslování skóre
+- využítí druhé scenérie (taktéž by měla navazovat a i překážky by měli měnit vizáž)
+- rozpracování HTML stránky (vyhledávač her nebo filtrování podle žánrů)
+- celkově finalizovat hru jako takovou
+
+dále (do 12.2.):
+- předložit (adekvátně rozpracovaný) návrh na další hru, či dostatečně složitý nápad na prohloubení hry s pracovním názvem "runner". Očekávám nákresy či nějaké jinak "hmatetelné" důkazy o stráveném času na této úloze, aby nebylo pochyb že jí byl věnován čas.
+
