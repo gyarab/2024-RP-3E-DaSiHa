@@ -200,6 +200,9 @@ let ballX = koule._x;
 let ballSpeed = 0.8;
 let ballScale = 1;
 let ballShrinkSpeed = 0.0018;
+let zlabek = false;
+let pokus = 0;
+let strike = true;
 
 function moveBall() {
     if (showKoule) {
@@ -207,29 +210,70 @@ function moveBall() {
         ballScale -= ballShrinkSpeed;
         ballX += 0.14;
 
-        if (sipecka._currentFrame == 0 && power._currentFrame == 7) {
-            /*if (ballY <= 594) {
-                showKuzelka1 = false;
+        if (sipecka._currentFrame == 0 ){
+            if (strike) {
+                if (power._currentFrame == 5 || 
+                    power._currentFrame == 6 || 
+                    power._currentFrame == 7 || 
+                    power._currentFrame == 8 || 
+                    power._currentFrame == 9 || 
+                    power._currentFrame == 10 || 
+                    power._currentFrame == 11 || 
+                    power._currentFrame == 12 ) { 
+                    if (ballY <= 594) {
+                        showKuzelka1 = false;
+                    }
+
+                    if (ballY <= 583) {
+                        showKuzelka2 = false;
+                        showKuzelka3 = false;
+                    }
+
+                    if (ballY <= 572) {
+                        showKuzelka4 = false;
+                        showKuzelka5 = false;
+                        showKuzelka6 = false;
+                    }
+                    
+                    if (ballY <= 561) {
+                        showKuzelka7 = false;
+                        showKuzelka8 = false;
+                        showKuzelka9 = false;
+                        showKuzelka10 = false;
+                        pokus = 2;
+                    }
+                }
             }
 
-            if (ballY <= 583) {
-                showKuzelka2 = false;
-                showKuzelka3 = false;
-            }
+            if (power._currentFrame == 0 || 
+                power._currentFrame == 1 || 
+                power._currentFrame == 2 || 
+                power._currentFrame == 3 || 
+                power._currentFrame == 4 || 
+                power._currentFrame == 13 || 
+                power._currentFrame == 14 || 
+                power._currentFrame == 15) { 
+                if (ballY <= 594) {
+                    showKuzelka1 = false;
+                }
 
-            if (ballY <= 572) {
-                showKuzelka4 = false;
-                showKuzelka5 = false;
-                showKuzelka6 = false;
+                if (ballY <= 583) {
+                    showKuzelka2 = false;
+                    showKuzelka3 = false;
+                }
+
+                if (ballY <= 572) {
+                    showKuzelka4 = false;
+                    showKuzelka5 = false;
+                    showKuzelka6 = false;
+                }
+                
+                if (ballY <= 561) {
+                    showKuzelka8 = false;
+                    showKuzelka9 = false;
+                }
+                strike = false;
             }
-            
-            if (ballY <= 561) {
-                showKuzelka7 = false;
-                showKuzelka8 = false;
-                showKuzelka9 = false;
-                showKuzelka10 = false;
-                showKoule = false;
-            }*/
         }
         if (sipecka._currentFrame == 1 || sipecka._currentFrame == 17) {
             ballX -= 0.07;
@@ -275,6 +319,7 @@ function moveBall() {
         }
         if (sipecka._currentFrame == 24 || sipecka._currentFrame == 30) {
             ballX += 0.54;
+            
         }
         if (sipecka._currentFrame == 25 || sipecka._currentFrame == 29) {
             ballX += 0.68;
@@ -298,11 +343,29 @@ function moveBall() {
 
         if (ballY <= 560) {
             showKoule = false;
-            ballY = 890;
-            ballX = 900;
-            ballScale = 1;
-            sipecka._currentFrame = 0;
-            power._currentFrame = 0;
+            pokus++;
+            if(pokus >= 2) {
+                showKoule = false;
+                strike = true;
+                setTimeout(() => {
+                    showKuzelka1 = true;
+                    showKuzelka2 = true;
+                    showKuzelka3 = true;
+                    showKuzelka4 = true;
+                    showKuzelka5 = true;
+                    showKuzelka6 = true;
+                    showKuzelka7 = true;
+                    showKuzelka8 = true;
+                    showKuzelka9 = true;
+                    showKuzelka10 = true;
+                    }, 500);
+                pokus = 0;
+            }
+                ballY = 890;
+                ballX = 900;
+                ballScale = 1;
+                sipecka._currentFrame = 0;
+                power._currentFrame = 0;
         }
         koule._y = ballY;
         koule._x = ballX;
