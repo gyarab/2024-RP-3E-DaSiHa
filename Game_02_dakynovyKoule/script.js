@@ -197,14 +197,48 @@ function handleClick(event) {
 
 let ballY = koule._y;
 let ballX = koule._x;
-let ballSpeed = 0.8;
 let ballScale = 1;
-let ballShrinkSpeed = 0.0018;
 let zlabek = false;
 let pokus = 0;
 let strike = true;
 
 function moveBall() {
+    let ballSpeed = 0.8;
+    let ballShrinkSpeed = 0.0018;
+
+    if (power._currentFrame == 0) {
+        ballSpeed = 0.3;
+        ballShrinkSpeed = 0.0008;
+    }
+    if (power._currentFrame == 1 || power._currentFrame == 13) {
+        ballSpeed = 0.4;
+        ballShrinkSpeed = 0.0010;
+    }
+    if (power._currentFrame == 2 || power._currentFrame == 12) {
+        ballSpeed = 0.5;
+        ballShrinkSpeed = 0.0012;
+    }
+
+    if (power._currentFrame == 3 || power._currentFrame == 11) {
+        ballSpeed = 0.6;
+        ballShrinkSpeed = 0.0014;
+    }
+    if (power._currentFrame == 4 || power._currentFrame == 10) {
+        ballSpeed = 0.7;
+        ballShrinkSpeed = 0.0016;
+    }
+    if (power._currentFrame == 5 || power._currentFrame == 9) {
+        ballSpeed = 0.8;
+        ballShrinkSpeed = 0.0018;
+    }
+    if (power._currentFrame == 6 || power._currentFrame == 8) {
+        ballSpeed = 0.9;
+        ballShrinkSpeed = 0.002;
+    }
+    if (power._currentFrame == 7) {
+        ballSpeed = 1;
+        ballShrinkSpeed = 0.0022;
+    }
     if (showKoule) {
         ballY -= ballSpeed;
         ballScale -= ballShrinkSpeed;
@@ -212,14 +246,13 @@ function moveBall() {
 
         if (sipecka._currentFrame == 0 ){
             if (strike) {
-                if (power._currentFrame == 5 || 
+                if (power._currentFrame == 4 ||
+                    power._currentFrame == 5 || 
                     power._currentFrame == 6 || 
                     power._currentFrame == 7 || 
                     power._currentFrame == 8 || 
                     power._currentFrame == 9 || 
-                    power._currentFrame == 10 || 
-                    power._currentFrame == 11 || 
-                    power._currentFrame == 12 ) { 
+                    power._currentFrame == 10) { 
                     if (ballY <= 594) {
                         showKuzelka1 = false;
                     }
@@ -249,10 +282,9 @@ function moveBall() {
                 power._currentFrame == 1 || 
                 power._currentFrame == 2 || 
                 power._currentFrame == 3 || 
-                power._currentFrame == 4 || 
-                power._currentFrame == 13 || 
-                power._currentFrame == 14 || 
-                power._currentFrame == 15) { 
+                power._currentFrame == 11 || 
+                power._currentFrame == 12 || 
+                power._currentFrame == 13) { 
                 if (ballY <= 594) {
                     showKuzelka1 = false;
                 }
