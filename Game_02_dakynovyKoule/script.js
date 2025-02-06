@@ -2,7 +2,6 @@ const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 
 import { Sprite } from '../Monkey-Engine/Sprite.js';
-import { CharacterSprite1 } from '../Monkey-Engine/CharacterSprite1.js';
 import { SpriteAnim } from '../Monkey-Engine/SpriteAnim.js';
 
 const background = new Sprite(0, 0, 1920, 1100);
@@ -10,33 +9,43 @@ background.loadImg("/Game_02_dakynovyKoule/foto/bowling.png");
 
 const kuzelka1 = new Sprite(920, 594, 100, 90);
 kuzelka1.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
+let showKuzelka1 = true;
 
 const kuzelka2 = new Sprite(900, 583, 100, 90);
 kuzelka2.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
+let showKuzelka2 = true;
 
 const kuzelka3 = new Sprite(940, 583, 100, 90);
 kuzelka3.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
+let showKuzelka3 = true;
 
 const kuzelka4 = new Sprite(880, 572, 100, 90);
 kuzelka4.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
+let showKuzelka4 = true;
 
 const kuzelka5 = new Sprite(920, 572, 100, 90);
 kuzelka5.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
+let showKuzelka5 = true;
 
 const kuzelka6 = new Sprite(960, 572, 100, 90);
 kuzelka6.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
+let showKuzelka6 = true;
 
 const kuzelka7 = new Sprite(860, 561, 100, 90);
 kuzelka7.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
+let showKuzelka7 = true;
 
 const kuzelka8 = new Sprite(900, 561, 100, 90);
 kuzelka8.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
+let showKuzelka8 = true;
 
 const kuzelka9 = new Sprite(940, 561, 100, 90);
 kuzelka9.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
+let showKuzelka9 = true;
 
 const kuzelka10 = new Sprite(980, 561, 100, 90);
 kuzelka10.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
+let showKuzelka10 = true;
 
 const cudlik = new Sprite(1450, 850, 420, 180);
 cudlik.loadImg("/Game_02_dakynovyKoule/foto/cudlas.png");
@@ -117,20 +126,40 @@ let sipeckaStop = false;
 function Mainloop() {
     background.render(ctx);
     cudlik.render(ctx);
-    kuzelka10.render(ctx);
-    kuzelka9.render(ctx);
-    kuzelka8.render(ctx);
-    kuzelka7.render(ctx);
-    kuzelka6.render(ctx);
-    kuzelka5.render(ctx);
-    kuzelka4.render(ctx);
-    kuzelka3.render(ctx);
-    kuzelka2.render(ctx);
-    kuzelka1.render(ctx);
+    if (showKuzelka10) {
+        kuzelka10.render(ctx);
+    }
+    if (showKuzelka9) {
+        kuzelka9.render(ctx);
+    }
+    if (showKuzelka8) {
+        kuzelka8.render(ctx);
+    }
+    if (showKuzelka7) {
+        kuzelka7.render(ctx);
+    }
+    if (showKuzelka6) {
+        kuzelka6.render(ctx);
+    }
+    if (showKuzelka5) {
+        kuzelka5.render(ctx);
+    }
+    if (showKuzelka4) {
+        kuzelka4.render(ctx);
+    }
+    if (showKuzelka3) {
+        kuzelka3.render(ctx);
+    }
+    if (showKuzelka2) {
+        kuzelka2.render(ctx);
+    }
+    if (showKuzelka1) {
+        kuzelka1.render(ctx);
+    }
     if (showKoule == false) {
         sipecka.render(ctx);
         if (sipeckaStop == false) {
-            sipecka.updateImage();
+            //sipecka.updateImage();
         }
     }
     if (showpower) {
@@ -177,6 +206,31 @@ function moveBall() {
         ballY -= ballSpeed;
         ballScale -= ballShrinkSpeed;
         ballX += 0.14;
+
+        if (sipecka._currentFrame == 0 && power._currentFrame == 7) {
+            /*if (ballY <= 594) {
+                showKuzelka1 = false;
+            }
+
+            if (ballY <= 583) {
+                showKuzelka2 = false;
+                showKuzelka3 = false;
+            }
+
+            if (ballY <= 572) {
+                showKuzelka4 = false;
+                showKuzelka5 = false;
+                showKuzelka6 = false;
+            }
+            
+            if (ballY <= 561) {
+                showKuzelka7 = false;
+                showKuzelka8 = false;
+                showKuzelka9 = false;
+                showKuzelka10 = false;
+                showKoule = false;
+            }*/
+        }
         if (sipecka._currentFrame == 1 || sipecka._currentFrame == 17) {
             ballX -= 0.07;
         }
@@ -242,11 +296,13 @@ function moveBall() {
         //console.log(ballX);
         //console.log(ballY);
 
-        if (ballY <= 561) {
+        if (ballY <= 560) {
             showKoule = false;
             ballY = 890;
             ballX = 900;
             ballScale = 1;
+            sipecka._currentFrame = 0;
+            power._currentFrame = 0;
         }
         koule._y = ballY;
         koule._x = ballX;
