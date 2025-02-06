@@ -1,5 +1,5 @@
 import { CharacterSprite } from  '../Monkey-Engine/CharacterSprite.js';
-import {       SpriteDyna } from  '../Monkey-Engine/SpriteDyna.js';
+import { InteractableIndicator } from  '../Monkey-Engine/Intractable.js';
 import {        SpriteAnim } from  '../Monkey-Engine/SpriteAnim.js';
 import {        Rectangle } from  '../Monkey-Engine/Rectangle.js';
 import {           Sprite } from  '../Monkey-Engine/Sprite.js';
@@ -13,49 +13,49 @@ window.addEventListener('load', () => {
     /*-------------------------player1--------------------------------*/
     const player1 = new CharacterSprite(1920/2, 1080 - 124, 68 - 16, 124,[
         //0
-        "/Game_01_Ledvadva/sprites/BLU/stand.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/stand.png",
         //1-14
-        "/Game_01_Ledvadva/sprites/BLU/rR/1.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/2.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/3.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/4.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/5.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/6.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/7.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/8.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/7.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/6.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/5.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/4.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/3.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/2.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rR/1.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rR/2.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rR/3.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rR/4.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rR/5.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rR/6.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rR/7.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rR/8.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rR/7.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rR/6.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rR/5.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rR/4.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rR/3.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rR/2.png",
         //15-28
-        "/Game_01_Ledvadva/sprites/BLU/rL/1.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/2.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/3.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/4.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/5.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/6.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/7.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/8.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/7.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/6.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/5.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/4.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/3.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/2.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rL/1.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rL/2.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rL/3.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rL/4.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rL/5.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rL/6.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rL/7.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rL/8.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rL/7.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rL/6.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rL/5.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rL/4.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rL/3.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/rL/2.png",
         //29-31
-        "/Game_01_Ledvadva/sprites/BLU/jR/1.png",
-        "/Game_01_Ledvadva/sprites/BLU/jR/2.png",
-        "/Game_01_Ledvadva/sprites/BLU/jR/3.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/jR/1.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/jR/2.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/jR/3.png",
         //32-34
-        "/Game_01_Ledvadva/sprites/BLU/jL/1.png",
-        "/Game_01_Ledvadva/sprites/BLU/jL/2.png",
-        "/Game_01_Ledvadva/sprites/BLU/jL/3.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/jL/1.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/jL/2.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/jL/3.png",
         //35
-        "/Game_01_Ledvadva/sprites/BLU/pR.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/pR.png",
         //36
-        "/Game_01_Ledvadva/sprites/BLU/pL.png",
+        "/Game_01_Ledvadva/sprites/SKIN-00/pL.png",
 
     ]);
 
@@ -69,7 +69,7 @@ window.addEventListener('load', () => {
     player1._framesPushRight    = [player1._frames[35]];
     player1._framesPushLeft     = [player1._frames[36]];
     /*------------------------nastavení kláves------------------------*/
-    let infoMode = false;
+    let infoMode = true;
     const infoBor = new Sprite (0,0,1920,1080,"../Game_01_Ledvadva/sprites/info.png");
     
     /*----------------------------------------------------------------*/
@@ -107,6 +107,7 @@ window.addEventListener('load', () => {
             'a': () => player1._wantGoLeft   = isDown,
             'd': () => player1._wantGoRight  = isDown,
             's': () => player1._wantGoDown   = isDown,
+            
             'e': () => player1._wantInteract = isDown,
         };
         if (actions[key]) actions[key]();
@@ -123,7 +124,7 @@ window.addEventListener('load', () => {
     const Blue = new Rectangle(0,0,1920,1080,"grey")
     const Print = new Sprite(0,0,1920,1080,"../Game_01_Ledvadva/sprites/Hub/hub01.png");
     const furniture = new Sprite(0,0,1920,1080,"../Game_01_Ledvadva/sprites/Hub/furniture.png")
-    const E = new Sprite(0,0,44,44,"../Game_01_Ledvadva/sprites/Indicators/Press-E.png")
+    const E = new InteractableIndicator(0,0,44,44,"../Game_01_Ledvadva/sprites/Indicators/Press-E.png")
 
     const shelf1 = new Sprite(124,912,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-1.png");
     const shelf2 = new Sprite(124,754,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-2.png");
@@ -159,29 +160,58 @@ window.addEventListener('load', () => {
         shelf5.render(ctx); shadow5.render(ctx);
                             shadow6.render(ctx);
 
-        if (barriers.some(barrier => barrier._id === '3014' && barrier._isInteractable)) {
-            nike.render(ctx);
-            E.moveTo(752,900);
-            E.render(ctx)
+        const ShoeBox = barriers.find(barrier => barrier._id === '3014');
+        if (ShoeBox){
+            if (ShoeBox._isInteractable){
+                nike.render(ctx);
+                E.moveTo(ShoeBox);
+                E.render(ctx)
+            } else
+            if (ShoeBox._isComplete){
+                nike.render(ctx);
+            }
         }
-        if (barriers.some(barrier => barrier._id === '3016' && barrier._isInteractable)) {
+        const GameBox = barriers.find(barrier => barrier._id === '3016');
+        if (GameBox) {
+            if (GameBox._isInteractable) {
             games.render(ctx);
-            E.render(ctx)
+            E.moveTo(GameBox); 
+            E.render(ctx);
+            } else if (GameBox._isComplete) {
+            games.render(ctx);
+            }
         }
-        if (barriers.some(barrier => barrier._id === '3011' && barrier._isInteractable)) {
-            fairy.render(ctx);
-            E.render(ctx)
-        }
-        if (barriers.some(barrier => barrier._id === '3017' && barrier._isInteractable)) {
+        const StudyBox = barriers.find(barrier => barrier._id === '3017');
+        if (StudyBox) {
+            if (StudyBox._isInteractable) {
             study.render(ctx);
-            E.render(ctx)
+            E.moveTo(StudyBox); 
+            E.render(ctx);
+            } else if (StudyBox._isComplete) {
+            study.render(ctx);
+            }
         }
-        if (barriers.some(barrier => barrier._id === '3019' && barrier._isInteractable)) {
+        const FairyBox = barriers.find(barrier => barrier._id === '3011');
+        if (FairyBox) {
+            if (FairyBox._isInteractable) {
+            fairy.render(ctx);
+            E.moveTo(FairyBox);
+            E.render(ctx);
+            } else if (FairyBox._isComplete) {
+            fairy.render(ctx);
+            }
+        }
+        const DarkBox = barriers.find(barrier => barrier._id === '3019');
+        if (DarkBox) {
+            if (DarkBox._isInteractable) {
             dark.render(ctx);
-            E.render(ctx)
+            E.moveTo(DarkBox, 1.6);
+            E.render(ctx);
+            } else if (DarkBox._isComplete) {
+            dark.render(ctx);
+            }
         }
 
-        
         Enemy.render(ctx);
         Enemy.updateImage();
 

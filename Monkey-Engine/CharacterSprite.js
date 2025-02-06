@@ -2,7 +2,7 @@ import { Tetragon } from "./Tetragon.js";
 import { Rectangle } from "./Rectangle.js";
 import { SpriteDyna } from "./SpriteDyna.js";
 import { colides } from "./Tetragon.js";
-import { Sprite } from "./Sprite.js";
+import { Interactable } from "./Intractable.js";
 import { intersectionOfLineSegments } from "./LineSection.js";
 
 export class CharacterSprite extends SpriteDyna{
@@ -32,6 +32,7 @@ export class CharacterSprite extends SpriteDyna{
             { x: this._x + this._width, y: this._y + this._height },
             { x: this._x, y: this._y + this._height }
         ];
+        this._pointOfJump = { x: this._x + this._width, y: this._y + this._height };
 
         //jednotlivé pole pro animace
         this._framesStanding = [];
@@ -56,8 +57,8 @@ export class CharacterSprite extends SpriteDyna{
         const jumpVelocity = - 3.7;
 
         this.y = this._y + this._yVelocity
-        const maxRunVelocity = 1.5;
-        const maxJumpVelocity   = 2;
+        const maxRunVelocity  = 1.5;
+        const maxJumpVelocity = 2;
         /*-----------------------pokud chce doprava------------------ */
         if(this._wantGoRight && !this._wantGoLeft ){
             if(!this._isJumping){
@@ -101,6 +102,7 @@ export class CharacterSprite extends SpriteDyna{
             if(!this._isGoRight &&  this._isGoLeft){this._dirOfJump = -1}
             this._yVelocity = jumpVelocity;
             this._isJumping = true;
+            this._pointOfJump = {x: this._x, y: this._y + this._height};
         }
 
         const ratioOfLegs = 9/10
@@ -116,14 +118,29 @@ export class CharacterSprite extends SpriteDyna{
         let canGoLeft  = true;
         let canGoUp    = true;
         let canGoDown  = true;
-  
+        let actAsRed   = false;
+        
+        
+
+
         for (let ob of obstacles) {
+            let actAsRed   = false;
             if(ob._color == 'orange' && !this._wantGoDown){
                 if (NextFrameY.doesColideWith(ob)  && !this.doesColideWith(ob) && (this._yVelocity >= 0)){
                     canGoDown = false;
                 } 
             }
-            if (ob._color == 'red'){
+            if(ob._color == 'yellow'){
+                if (
+                        (!this._isJumping && this._points[3].y < ob._points[3].y) 
+                        ||( this._isJumping && this._pointOfJump.y < ob._points[3].y)
+                    ){
+                    if (!this.doesColideWith(ob)){
+                    actAsRed = true;
+                    }
+                }
+            }
+            if (ob._color == 'red' || actAsRed){
                 if (NextFrameDown.doesColideWith(ob)){
                     canGoDown = false;
                 }
@@ -141,7 +158,7 @@ export class CharacterSprite extends SpriteDyna{
                     this._xVelocity = this._xVelocity / 10;
                 }
             }
-            if(ob._color == 'violet'){ 
+            if(ob instanceof Interactable){ 
                 if (this.doesColideWith(ob)){
                     ob._isInteractable = true;
                     if(this._wantInteract){
@@ -151,6 +168,7 @@ export class CharacterSprite extends SpriteDyna{
                     ob._isInteractable = false;
                 }
             }
+
             
         }
         if(!canGoRight) {
