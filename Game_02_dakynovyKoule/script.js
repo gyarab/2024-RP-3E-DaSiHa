@@ -1,3 +1,14 @@
+/*Zdravím všechny kdo si tuto pěknou zprávu čtou. Jak je vidno v bakalářích, na mini obhajobu ročníkovky nebudu ve škole, 
+proto bych chtěl aspoň takto napsat rychlej message. Od první kontroly jsme jako tým velmi pokročili a každej makáme na svých gamesách. Deadliny 
+jsou fair, akorát náročné a dají se i stíhat. Šimon mi s pár věcma pomohl a pravidelně se udělané práci věnuje a nabízí možné zlepšení. 
+
+Teď už k tomu mému. Hru bowling už jsem dosti posunul. Udělal jsem si spoustu obrázků včetně custom čudlíku a power baru. Šipka se již nedeformuje 
+a trošku jsem ji customiznul :) Také jsem si již pohrál se shazovaním kuželek a směry hodů. Udělal jsem tedy první protyp na shazování kuželek a 
+jejich vracení, pouze když je šipka rovná(dá se vyzkoušet když se zakomanduje sipecka.updateImage(); ). Chtěl bych ale metodu trošičku pozměnit aby 
+byla víc univerzální. To ale až po příjezdu ze slunečných Alp :)
+
+S naší prací jsem doposad spokojen a musíme zamakat, aby jsme vše stihli*/ 
+
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 
@@ -159,7 +170,7 @@ function Mainloop() {
     if (showKoule == false) {
         sipecka.render(ctx);
         if (sipeckaStop == false) {
-            //sipecka.updateImage();
+            sipecka.updateImage();
         }
     }
     if (showpower) {
