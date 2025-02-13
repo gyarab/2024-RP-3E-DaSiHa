@@ -1,25 +1,24 @@
 // Autor: Šimon Bendl
 import { Rectangle } from '../../Monkey-Engine/Rectangle.js';
-import { RectangleInter } from '../../Monkey-Engine/RectangleInter.js';
+import { LevelSelect } from '../../Monkey-Engine/Intractable.js';
 
 /*-----------------------------barriers----------------------------------- */
 //const _1001 = new Rectangle(1624,  480,  128,  240,"red"); _1001._id = "pc" 
 const _1002 = new Rectangle( 920,  276,  604,   52,"red"); _1002._id = "shelf"  
 const _1003 = new Rectangle(   0, 1072, 1920,   16,"red"); _1003._id = "floor"
-const _1004 = new Rectangle( 112,  124,   20,  948,"red"); _1004._id = "library-wall-1"
-const _1005 = new Rectangle( 832,  124,   20,  732,"red"); _1005._id = "library-wall-2"
+const _1004 = new Rectangle( 112,  124,   16,  924,"yellow"); _1004._id = "library-wall-1"
+const _1005 = new Rectangle( 836,  124,   16,  924,"yellow"); _1005._id = "library-wall-2"
 const _1006 = new Rectangle(1292,  720,  516,   36,"red"); _1006._id = "desk-1" 
 const _1007 = new Rectangle(1080,  720,   24,   36,"red"); _1007._id = "desk-2"
-const _1008 = new Rectangle(1092,  720,   12,  180,"red"); _1008._id = "drawer-1"
-const _1009 = new Rectangle(1292,  720,   12,  180,"red"); _1009._id = "drawer-2"
-const _1010 = new Rectangle(1092,  896,  212,   16,"red"); _1010._id = "drawer-3"
+const _1008 = new Rectangle(1092,  720,   12,  180,"yellow"); _1008._id = "drawer-1"
+const _1009 = new Rectangle(1292,  720,   12,  180,"yellow"); _1009._id = "drawer-2"
+const _1010 = new Rectangle(1092,  896,  212,   16,"grey"); _1010._id = "drawer-3"
 
 /*-----------------------------interactable-----------------------------------*/
 
 /*--------------------------yellow-baririers------------------------------ */
 const _2001 = new Rectangle(1092, 912, 12, 140, "yellow") // drawers
 const _2002 = new Rectangle(1292, 912, 12, 140, "yellow") // -//-
-const _2003 = new Rectangle(836, 856, 16, 192, "yellow")  // library
 /*-----------------------------platforms-----------------------------------*/
 const _3001 = new Rectangle( 112,  112, 740,   12, "orange") // library
 const _3002 = new Rectangle( 128,  268, 708,   20, "orange") // -//-
@@ -32,21 +31,21 @@ const _3008 = new Rectangle(1104,  720, 188,   36, "orange") // drawers
 const _3013 = new Rectangle(1104,  784, 188,    8, "orange") // -//-
 const _3009 = new Rectangle(1104,  836, 188,    8, "orange") // -//-
 const _3010 = new Rectangle(1104, 1044, 188,   28, "orange") // -//-
-const _3014 = new RectangleInter( 704,  972, 128,   76); _3014._id = "3014";//nike
-const _3016 = new RectangleInter( 240,  816, 156,   76); _3016._id = "3016"//games
+const _3014 = new LevelSelect( 704,  972, 128,   76); _3014._id = "3014";//nike
+const _3016 = new LevelSelect( 240,  816, 156,   76); _3016._id = "3016"//games
 const _3012 = new Rectangle     ( 142,  856,  92,   36, "grey");//contoler
-const _3011 = new RectangleInter( 488,  516, 100,   64, "grey");_3011._id = "3011"//fairytalebook
+const _3011 = new LevelSelect( 488,  516, 100,   64, "grey");_3011._id = "3011"//fairytalebook
 const _3015 = new Rectangle     ( 364,  704, 104,   32, "grey"); //study
-const _3017 = new RectangleInter( 384,  676,  76,   28, "grey"); _3017._id = "3017"//study
+const _3017 = new LevelSelect( 384,  676,  76,   28, "grey"); _3017._id = "3017"//study
 const _3018 = new Rectangle     ( 324,  396, 144,   28, "grey");//dark
-const _3019 = new RectangleInter( 356,  364, 104,  32, "grey"); _3019._id = "3019"//dark
+const _3019 = new LevelSelect( 356,  364, 104,  32, "grey"); _3019._id = "3019"//dark
 
 //const _3011 = new Rectangle( 132,  920, 392,  128, "orange");//folders
 //const _3015 = new Rectangle( 396,  764, 428,  128, "orange");//folders
 
 export const barriers = [
     _1002, _1003, _1004,_1005,_1006,_1007,_1008,_1009,_1010,
-    _2001, _2002, _2003,
+    _2001, _2002,
     _3001, _3002, _3003,_3004,_3005,_3006,_3007,_3008,_3009,_3010,_3013,_3014,_3016,_3012,_3011,_3015,_3017, _3018,_3019
 ];
 /*-----------------------------Blue Print--------------------------------
