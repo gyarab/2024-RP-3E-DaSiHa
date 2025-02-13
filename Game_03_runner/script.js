@@ -122,19 +122,19 @@ function Mainloop(){
 
     pozadi.render(ctx);
     pozadi2.render(ctx);
-    character.render(ctx, true);
+    character.render(ctx);
     character.updatePos();
-    motyl.render(ctx, true);
+    motyl.render(ctx);
     motyl.updateImage();
     tlacitko.render(ctx);
     hrib._x -= hrib._xSpeed;
     muchomurka._x -= muchomurka._xSpeed;
     kost._x = (hrib._x + muchomurka._x) / 2;
-    hrib.render(ctx,true);
+    hrib.render(ctx);
     hrib.updateImage();
-    muchomurka.render(ctx,true);
+    muchomurka.render(ctx);
     muchomurka.updateImage();
-    kost.render(ctx,true);
+    kost.render(ctx);
     kost.updateImage();
 
     if(hrib._x < (0 - hrib._width)){
