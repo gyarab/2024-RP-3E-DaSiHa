@@ -9,6 +9,11 @@ import { SpriteDyna }       from '../Monkey-Engine/SpriteDyna.js';
 window.addEventListener('keydown', event => handleKey(event, true));
 window.addEventListener('keyup', event => handleKey(event, false));
 
+//const audio = new Audio('/Game_03_runner/sprites/hra.wav');
+//audio.loop = true;
+
+//audio.play();
+
 const hrib = new SpriteDyna(600,750,200,220, [ 
     "/Game_03_runner/sprites/hrib.png",
 ]);
@@ -62,12 +67,13 @@ const kost = new SpriteDyna(1100,820,100,110, [
 ])
 kost.id = "kost"
 
-const tlacitko = new Sprite(100, 100, 200, 100, [
-    "/Game_03_runner/sprites/button.png"
+const tlacitko = new Sprite(10, 10, 450, 350, [
+    "/Game_03_runner/sprites/switch.png"
 ])
 tlacitko.id = "tlacitko"
 
 let isCityBackground = false;
+let isSwitched = false;
 
 canvas.addEventListener('click', (event) => {
     const rect = canvas.getBoundingClientRect();
@@ -87,6 +93,17 @@ canvas.addEventListener('click', (event) => {
             pozadi2.loadImg("/Game_03_runner/sprites/pozadi_mesto.jpg");
         }
         isCityBackground = !isCityBackground;
+
+        if (isSwitched) {
+            hrib._images = ["/Game_03_runner/sprites/hrib.png"];
+            muchomurka._images = ["/Game_03_runner/sprites/muchomurka.png"];
+        } else {
+            hrib._images = ["/Game_03_runner/sprites/auto.png"];
+            muchomurka._images = ["/Game_03_runner/sprites/mic.png"];
+        }
+        hrib.updateImage();
+        muchomurka.updateImage();
+        isSwitched = !isSwitched;
     }
 });
 
