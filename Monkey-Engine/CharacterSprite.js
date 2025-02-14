@@ -1,9 +1,5 @@
-import { Tetragon } from "./Tetragon.js";
-import { Rectangle } from "./Rectangle.js";
 import { SpriteDyna } from "./SpriteDyna.js";
-import { colides } from "./Tetragon.js";
 import { Interactable } from "./Intractable.js";
-import { intersectionOfLineSegments } from "./LineSection.js";
 
 export class CharacterSprite extends SpriteDyna{
     constructor(x, y, width, height, spritePaths) {
@@ -118,10 +114,6 @@ export class CharacterSprite extends SpriteDyna{
         let canGoLeft  = true;
         let canGoUp    = true;
         let canGoDown  = true;
-        let actAsRed   = false;
-        
-        
-
 
         for (let ob of obstacles) {
             let actAsRed   = false;
@@ -204,16 +196,6 @@ export class CharacterSprite extends SpriteDyna{
             this._isJumping = false;
         }
     }
-    // * cyklí mezi jednotlivými snímky animací
-    updateImage(){
-        if (this._isGoLeft || this._isGoRight) {
-            this._counterAnim +=  1;
-            if (this._counterAnim > 9){
-                this._counterAnim   = 0;
-                this._timeOfAction +=  1;
-            }
-        }
-    }
     // * vykresluje sprite podle probíhající akce  
     render(ctx, Rbox = null){
         //
@@ -269,58 +251,41 @@ export class CharacterSprite extends SpriteDyna{
                 img = this._framesStanding[0];
             }
         }
+        console.log(img);
         if (img && img.complete) {
             ctx.drawImage(img, this._x -8, this._y, this._width +16, this._height);
         }
     }
-    // ! USELESS (was used for getting info about the object)
-    renderInfo(ctx, numOfInfo = 0){
-        console.log("renderInfo() is useless and should be deleted.")
-        /* 
-        ctx.font = '25px Arial';
-        ctx.fillStyle = 'black';
-        ctx.fillText( this._id + ' :', 10 + numOfInfo * 200,  20);
-        ctx.font = '20px Arial';
-        ctx.fillText('----------------------------'      , 10 + numOfInfo * 200,  35);
-
-        ctx.fillText('isGoRight   = ' + this._isGoRight  , 10 + numOfInfo * 200,  50);
-        ctx.fillText('isPushRight = ' + this._isPushRight, 10 + numOfInfo * 200,  75);
-        ctx.fillText('isGoLeft  = ' + this._isGoLeft   , 10 + numOfInfo * 200, 100);
-        ctx.fillText('isPushLeft  = ' + this._isPushLeft , 10 + numOfInfo * 200, 125);
-        
-        ctx.fillText('----------------------------'      , 10 + numOfInfo * 200, 135);
-        */
-    }
-    // * WORKS FLAWLESSLY (for other = Tetragon) 
-    doesColideWith(other) {
-        if (other instanceof Tetragon) {
-            for (let j = 0; j < other._points.length; j++) {
-                for (let i = 0; i < this._points.length; i++) {
-                    let A = this._points[i];
-                    let B = this._points[(i + 1) % this._points.length];
-                    let C = other._points[j];
-                    let D = other._points[(j + 1) % other._points.length]
-
-
-                    const intersection = intersectionOfLineSegments(A, B, C, D);
-                    if (intersection) {
-                        if (intersection === null) {throw new Error("intersectionOfLineSegments() returned null.")}
-                        return true;
-                    }
-                    if (colides(this, other)){
-                        return true;
-                    }
-                }
+    updateImage(){
+        if (this._isGoLeft || this._isGoRight) {
+            this._counterAnim +=  1;
+            if (this._counterAnim > 9){
+                this._counterAnim   = 0;
+                this._timeOfAction +=  1;
             }
         }
-        return false;
     }
 }
+//TODO: Example je basicly moje ročníkovka CharacterSprite je natolik komplexní že ho nevyužije nikdo jiný
+
+
+
+
+
+
+
+
+
+
+
+
 /*---------------------------CharacterSprite----------------------
+import { Rectangle } from "./Rectangle.js";
+import { Tetragon } from "./Tetragon.js"
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 
-/*-------------------------player1-------------------------------
+/*-------------------------player1-------------------------------*
 const player1 = new CharacterSprite(100, 150, 68 - 16, 124,[
     //0
     "/Game_01_Ledvadva/sprites/BLU/stand.png",
@@ -395,18 +360,19 @@ const w0 = new Rectangle(  1600, 400, 200, 50, "orange"); w0.id = "w0";
 const w1 = new Rectangle(  10, 300, 500, 500, "red"); w1.id = "w1";
 const w2 = new Rectangle(  10, 1000, 1900, 16, "red"); w2.id = "w2";
 const w3 = new Rectangle( 600, 800, 200, 200, "grey"); w3.id = "w3";
-const w5 = new Rectangle( 800, 950, 200, 50, "orange"); w5.id = "w5"; 
-const w6 = new Rectangle( 1200, 950 -124, 200, 50, "orange"); w6.id = "w6";
-const w7 = new Rectangle( 1600, 950, 200, 50, "orange"); w7.id = "w7";
-const w8 = new Rectangle( 1600, 756, 200 , 50, "orange"); w8.id = "w8";
 const w4 = new Tetragon(
     {x: 200, y: 150},
     {x: 900, y:  0},
     {x: 900, y: 150},
     {x: 200, y: 150},
     "grey"
-)
-w4.moveTo(1000,1000)
+); w4.moveTo(1000,1000)
+const w5 = new Rectangle( 800, 950, 200, 50, "orange"); w5.id = "w5"; 
+const w6 = new Rectangle( 1200, 950 -124, 200, 50, "orange"); w6.id = "w6";
+const w7 = new Rectangle( 1600, 950, 200, 50, "orange"); w7.id = "w7";
+const w8 = new Rectangle( 1600, 756, 200 , 50, "orange"); w8.id = "w8";
+
+
 let walls = [w0,w1, w2, w3, w4,w5,w6,w7,w8];
     function Mainloop() {
         ctx.clearRect(0,0,canvas.width, canvas.height);

@@ -11,7 +11,6 @@ export class CharacterSprite0 extends SpriteDyna{
 
         this._animStandingSlow = 10;
         this._animMovingSlow   = 10;
-
     }    
     
     isFor(action){
@@ -79,6 +78,5 @@ export class CharacterSprite0 extends SpriteDyna{
         }
     }
 }
-/*---------------------------CharacterSprite0-------------------------------
-jsem línej a nikdo z vás to nevyužije takže to na to seru  xxx
-/**/
+//TODO: Example udělám až mě o to někdo z vás požádá :), nikdo z týmu to zatím nepotřebuje
+
