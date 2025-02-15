@@ -137,3 +137,13 @@ dodělat:
 dále (do 12.2.):
 - předložit (adekvátně rozpracovaný) návrh na další hru, či dostatečně složitý nápad na prohloubení hry s pracovním názvem "runner". Očekávám nákresy či nějaké jinak "hmatetelné" důkazy o stráveném času na této úloze, aby nebylo pochyb že jí byl věnován čas.
 
+## 12.2 Deadline
+Jak David tak Hana mají na dodělání nějakou práci a oba v okolí dneška odjížděli na hory. Očkávat tedy cokoliv by od nich bylo značně pošetilé a tak deadline posouvá do neurčita. dále by se mělo ale říct, že...
+
+**David**
+
+krásně rozdělal schazování kuželek a částečně zaimplementoval rychlost hodu. Jeho řešení je ale málo obecné a tak jsem mu doporučil systém předělat a zaslíbil jsem mu pomoc.
+
+**Hana**
+
+upozornila na stagnaci jakéhokoliv progresu a toho že neví kudy kam. Proto bylo zapotřebí zasáhnout a opravit jí strukturu kódu. S několika úkoly jsem jí tedy pomohl a doufám že si udrží momentum.

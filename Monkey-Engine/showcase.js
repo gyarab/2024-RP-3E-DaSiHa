@@ -1,144 +1,101 @@
 import { CharacterSprite } from  '../Monkey-Engine/CharacterSprite.js';
-import { InteractableIndicator } from  '../Monkey-Engine/Intractable.js';
-import { SpriteAnim } from  '../Monkey-Engine/SpriteAnim.js';
+import { CharacterSprite0 } from  '../Monkey-Engine/CharacterSprite0.js';
 import { Rectangle } from './Rectangle.js';
 import { Tetragon } from './Tetragon.js';
 
 
+class Projectile extends CharacterSprite0 {
+    constructor(x, y, width, height, spritePath = []){
+        super  (x, y, width, height, spritePath); 
+    }
+    //TODO: změnit hitbox na na kruh
+    //doesColideWith(){}
+}
+class Scissors extends Projectile{
+    constructor(x, y, width, height){
+        super  (x, y, width, height,[
+            "../Game_01_Ledvadva/sprites/Scissors/1.png",
+            "../Game_01_Ledvadva/sprites/Scissors/2.png",
+            "../Game_01_Ledvadva/sprites/Scissors/3.png",
+            "../Game_01_Ledvadva/sprites/Scissors/4.png",
+            "../Game_01_Ledvadva/sprites/Scissors/5.png",
+            "../Game_01_Ledvadva/sprites/Scissors/1.png",
+        ]);
+        this._framesRunUp = this._frames.slice(0,7)
+        this._animSlow = 8;
+    
+    }
+}
+class Player extends CharacterSprite {
+    constructor(x, y, skin){
+        super  (x, y, 52, 124, [
+            //0
+            "/Game_01_Ledvadva/sprites/" + skin + "/stand.png",
+            //1-14
+            "/Game_01_Ledvadva/sprites/" + skin + "/rR/1.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rR/2.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rR/3.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rR/4.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rR/5.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rR/6.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rR/7.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rR/8.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rR/7.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rR/6.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rR/5.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rR/4.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rR/3.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rR/2.png",
+            //15-28
+            "/Game_01_Ledvadva/sprites/" + skin + "/rL/1.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rL/2.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rL/3.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rL/4.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rL/5.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rL/6.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rL/7.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rL/8.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rL/7.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rL/6.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rL/5.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rL/4.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rL/3.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/rL/2.png",
+            //29-31
+            "/Game_01_Ledvadva/sprites/" + skin + "/jR/1.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/jR/2.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/jR/3.png",
+            //32-34
+            "/Game_01_Ledvadva/sprites/" + skin + "/jL/1.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/jL/2.png",
+            "/Game_01_Ledvadva/sprites/" + skin + "/jL/3.png",
+            //35
+            "/Game_01_Ledvadva/sprites/" + skin + "/pR.png",
+            //36
+            "/Game_01_Ledvadva/sprites/" + skin + "/pL.png",
+        ]); 
+        this._framesStanding     = [this._frames[0]];
+        this._framesRunRight     = this._frames.slice(1, 15);
+        this._framesRunLeft      = this._frames.slice(15, 29);
+        this._framesJumpFarRight = this._frames.slice(29, 32);
+        this._framesJumpFarLeft  = this._frames.slice(32, 35);
+        this._framesPushRight    = [this._frames[35]];
+        this._framesPushLeft     = [this._frames[36]];
+    }
+}
 
 window.addEventListener('load', () => {
     const canvas = document.getElementById('herniRozhraní');
     const ctx = canvas.getContext('2d');
 
-    /*-------------------------player1--------------------------------*/
-    const player1 = new CharacterSprite(1920/2 - 100, 1080 /2 , 68 - 16, 124,[
-        //0
-        "/Game_01_Ledvadva/sprites/SKIN-00/stand.png",
-        //1-14
-        "/Game_01_Ledvadva/sprites/SKIN-00/rR/1.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rR/2.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rR/3.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rR/4.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rR/5.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rR/6.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rR/7.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rR/8.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rR/7.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rR/6.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rR/5.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rR/4.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rR/3.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rR/2.png",
-        //15-28
-        "/Game_01_Ledvadva/sprites/SKIN-00/rL/1.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rL/2.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rL/3.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rL/4.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rL/5.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rL/6.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rL/7.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rL/8.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rL/7.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rL/6.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rL/5.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rL/4.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rL/3.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/rL/2.png",
-        //29-31
-        "/Game_01_Ledvadva/sprites/SKIN-00/jR/1.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/jR/2.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/jR/3.png",
-        //32-34
-        "/Game_01_Ledvadva/sprites/SKIN-00/jL/1.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/jL/2.png",
-        "/Game_01_Ledvadva/sprites/SKIN-00/jL/3.png",
-        //35
-        "/Game_01_Ledvadva/sprites/SKIN-00/pR.png",
-        //36
-        "/Game_01_Ledvadva/sprites/SKIN-00/pL.png",
-
-    ]);
-
-    player1._id = "player1";
-    player1._framesStanding     = [player1._frames[0]];
-    player1._framesRunRight     = player1._frames.slice(1, 15);
-    player1._framesRunLeft      = player1._frames.slice(15, 29);
-    player1._framesJumpFarRight = player1._frames.slice(29, 32);
-    player1._framesJumpFarLeft  = player1._frames.slice(32, 35);
-    player1._framesPushRight    = [player1._frames[35]];
-    player1._framesPushLeft     = [player1._frames[36]];
-    /*-------------------------player1--------------------------------*/
-    const player2 = new CharacterSprite(1920/2 + 100, 1080 /2, 68 - 16, 124,[
-        //0
-        "/Game_01_Ledvadva/sprites/BLU/stand.png",
-        //1-14
-        "/Game_01_Ledvadva/sprites/BLU/rR/1.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/2.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/3.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/4.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/5.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/6.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/7.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/8.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/7.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/6.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/5.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/4.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/3.png",
-        "/Game_01_Ledvadva/sprites/BLU/rR/2.png",
-        //15-28
-        "/Game_01_Ledvadva/sprites/BLU/rL/1.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/2.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/3.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/4.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/5.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/6.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/7.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/8.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/7.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/6.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/5.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/4.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/3.png",
-        "/Game_01_Ledvadva/sprites/BLU/rL/2.png",
-        //29-31
-        "/Game_01_Ledvadva/sprites/BLU/jR/1.png",
-        "/Game_01_Ledvadva/sprites/BLU/jR/2.png",
-        "/Game_01_Ledvadva/sprites/BLU/jR/3.png",
-        //32-34
-        "/Game_01_Ledvadva/sprites/BLU/jL/1.png",
-        "/Game_01_Ledvadva/sprites/BLU/jL/2.png",
-        "/Game_01_Ledvadva/sprites/BLU/jL/3.png",
-        //35
-        "/Game_01_Ledvadva/sprites/BLU/pR.png",
-        //36
-        "/Game_01_Ledvadva/sprites/BLU/pL.png",
-
-    ]);
-
-    player2._id = "player1";
-    player2._framesStanding     = [player2._frames[0]];
-    player2._framesRunRight     = player2._frames.slice(1, 15);
-    player2._framesRunLeft      = player2._frames.slice(15, 29);
-    player2._framesJumpFarRight = player2._frames.slice(29, 32);
-    player2._framesJumpFarLeft  = player2._frames.slice(32, 35);
-    player2._framesPushRight    = [player2._frames[35]];
-    player2._framesPushLeft     = [player2._frames[36]];
+    /*-------------------------players--------------------------------*/
+    const player1 = new Player(1920/2 - 100, 1080 /2 , "SKIN-00");
+    const player2 = new Player(1920/2 + 100, 1080 /2, "BLU");
+     
     /*------------------------nastavení kláves------------------------*/
-    const Enemy = new SpriteAnim(10,10,124,124,[
-        "../Game_01_Ledvadva/sprites/Scissors/1.png",
-        "../Game_01_Ledvadva/sprites/Scissors/2.png",
-        "../Game_01_Ledvadva/sprites/Scissors/3.png",
-        "../Game_01_Ledvadva/sprites/Scissors/4.png",
-        "../Game_01_Ledvadva/sprites/Scissors/5.png",
-        /*
-        "../Game_01_Ledvadva/sprites/Scissors/4.png",
-        "../Game_01_Ledvadva/sprites/Scissors/3.png",
-        "../Game_01_Ledvadva/sprites/Scissors/2.png",
-        /**/
-        "../Game_01_Ledvadva/sprites/Scissors/1.png",
-    ]);
-    Enemy._animSlow = 10;
+    const Enemy = new Scissors(200,1080,124,124);
+    Enemy._animSlow = 8;
+    Enemy._isGoUp = true;
     /*------------------------nastavení kláves------------------------*/
     window.addEventListener(
         'keydown', event => (
@@ -172,12 +129,31 @@ window.addEventListener('load', () => {
     }
     
     /*-----------------------------Blue Prints----------------------------------- */
+ 
+    const b1 = new Rectangle( 100, 500, 500, 500, "purple"); 
+    const w3 = new Rectangle( 600, 800, 200, 200, "purple"); 
+    const w4 = new Tetragon(
+    {x: 200, y: 150},
+    {x: 900, y:  0},
+    {x: 900, y: 150},
+    {x: 200, y: 150},
+    "purple"
+    ); w4.moveTo(1000,1000)
+    
+    const w5 = new Rectangle( 300, 920, 200, 16, "orange");
+    const w6 = new Rectangle( 300, 830, 200, 16, "orange");
+    const w7 = new Rectangle( 300, 740, 200, 16, "orange");
+    const w8 = new Rectangle( 300, 650, 200 ,16, "orange");
+    const w0 = new Rectangle( 300, 560, 200, 16, "orange");
 
-    //const E = new InteractableIndicator(0,0,44,44,"../Game_01_Ledvadva/sprites/Indicators/Press-E.png");
-    const floor    = new Rectangle(0, 1080 - 44, 1920, 44,'red');
+    const ceiling  = new Rectangle(0, 0, 1920, 16, "red");
+    const floor    = new Rectangle(0, 1000, 1920, 80,'red');
     
     let walls = [
-        floor, 
+        b1,
+        w0,w3,w4,w5,w6,w7,w8,
+        floor, ceiling
+
     ]
     /*--------------------------Mainloop--------------------------------*/
 
@@ -188,9 +164,6 @@ window.addEventListener('load', () => {
             wall.render(ctx, true);
         }
 
-        Enemy.render(ctx);
-        Enemy.updateImage();
-
         player1.updatePos(walls);
         player1.updateImage();
         player1.render(ctx);
@@ -198,6 +171,13 @@ window.addEventListener('load', () => {
         player2.updatePos(walls);
         player2.updateImage();
         player2.render(ctx);
+
+        Enemy.render(ctx);
+        Enemy.updatePos();
+        Enemy.updateImage()
+        if (Enemy._y + Enemy._height < 0 ){
+            Enemy._y = 1080;
+        }
         
         
     }
