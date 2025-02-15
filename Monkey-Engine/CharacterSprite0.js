@@ -25,7 +25,8 @@ export class CharacterSprite0 extends SpriteDyna{
             ); 
         }
     }
-    render(ctx) {
+    render(ctx, Rbox){ 
+        if (Rbox) { super.render_Hitbox(ctx)}
         let img = null;
         if (this.isFor('GoRight')) { 
             img =  this._framesRunRight[

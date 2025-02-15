@@ -35,7 +35,6 @@ export class SpriteDyna extends SpriteAnim{
     updateAll(){
         this.updateImage();
         this.updatePos();
-        this.updateImage();
     }
     /*--------------------------Setters-------------------------------*/ 
 
