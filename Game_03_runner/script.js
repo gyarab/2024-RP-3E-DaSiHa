@@ -3,8 +3,9 @@ const ctx = canvas.getContext('2d');
 
 import { Sprite }           from '../Monkey-Engine/Sprite.js';
 import { CharacterSprite1 } from '../Monkey-Engine/CharacterSprite1.js';
-import { SpriteAnim }       from '../Monkey-Engine/SpriteAnim.js';
 import { SpriteDyna }       from '../Monkey-Engine/SpriteDyna.js';
+import { SpriteAnim }       from '../Monkey-Engine/SpriteAnim.js';
+import { Rectangle }       from  '../Monkey-Engine/Rectangle.js';
 
 window.addEventListener('keydown', event => handleKey(event, true));
 window.addEventListener('keyup', event => handleKey(event, false));
@@ -14,25 +15,49 @@ window.addEventListener('keyup', event => handleKey(event, false));
 
 //audio.play();
 
-const hrib = new SpriteDyna(600,750,200,220, [ 
+//-----------------Překážky-----------------------
+const obstic_1 = new SpriteDyna(600,750,200,220,[ 
     "/Game_03_runner/sprites/hrib.png",
+    "/Game_03_runner/sprites/auto.png",
 ]);
-hrib.id = "hrib"
-hrib._isGoLeft = true;
-hrib._xSpeed = 3;
-
-const pozadi = new Sprite(0, 0, 1915, 1080);
-pozadi.loadImg("/Game_03_runner/sprites/pozadi_les.jpg");
-pozadi._xSpeed = 2;
-
-const pozadi2 = new Sprite(pozadi._width, 0, 1915, 1080);
-pozadi2.loadImg("/Game_03_runner/sprites/pozadi_les.jpg");
-pozadi2._xSpeed = 2;
-
-const character = new CharacterSprite1(100, 690, 250, 310);
-
-character._id = "pes";
-character._framesRunning = [
+obstic_1._isGoLeft = true;
+obstic_1._xSpeed = 3;
+obstic_1._animSlow = 0;
+const obstic_2 = new SpriteDyna(1400,750,200,220,[ 
+    "/Game_03_runner/sprites/muchomurka.png",
+    "/Game_03_runner/sprites/mic.png",
+]);
+obstic_2._isGoLeft = true;
+obstic_2._xSpeed = 3;
+obstic_2._animSlow = 0;
+//-----------------Colectables-----------------------
+const bone_1 = new SpriteDyna(1100,820,100,110, [ 
+    "/Game_03_runner/sprites/kost.png",
+])
+bone_1._isGoLeft = true;
+bone_1._xSpeed = 3;
+const bone_2 = new SpriteDyna(1100,820,100,110, [ 
+    "/Game_03_runner/sprites/kost.png",
+])
+bone_2._isGoLeft = true;
+bone_2._xSpeed = 3;
+//-----------------Pozadí-----------------------
+const pozadi = new SpriteDyna( 0, 0, 1915, 1080,[
+    "/Game_03_runner/sprites/pozadi_les.jpg",
+    "/Game_03_runner/sprites/pozadi_mesto.jpg"
+]);
+pozadi._xSpeed = 3;
+pozadi._animSlow = 0;
+pozadi._isGoLeft = true;
+const pozadi2 = new SpriteDyna(1915, 0, 1915, 1080,[
+    "/Game_03_runner/sprites/pozadi_les.jpg",
+    "/Game_03_runner/sprites/pozadi_mesto.jpg"
+]);
+pozadi2._xSpeed = 3;
+pozadi2._animSlow = 0;
+pozadi2._isGoLeft = true;
+//-----------------Pes-----------------------
+const character = new CharacterSprite1(100, 690, 250, 310, [
     "/Game_03_runner/sprites/faze10.png",
     "/Game_03_runner/sprites/faze9.png",
     "/Game_03_runner/sprites/faze8.png",
@@ -42,39 +67,23 @@ character._framesRunning = [
     "/Game_03_runner/sprites/faze4.png",
     "/Game_03_runner/sprites/faze3.png",
     "/Game_03_runner/sprites/faze2.png",
-    "/Game_03_runner/sprites/faze1.png",
-]
-character._framesJumping = [
-    "/Game_03_runner/sprites/faze10.png",
-];
-
-const motyl = new SpriteDyna(1300,400,150,110,[ 
+    "/Game_03_runner/sprites/faze1.png"
+]);
+character._framesRunning = character._frames;
+character._framesJumping = character._frames.slice(0,1);
+//-----------------motýl-----------------------
+const motyl = new SpriteAnim(1300,400,150,110,[ 
     "/Game_03_runner/sprites/motyl_faze1.png",
     "/Game_03_runner/sprites/motyl_faze2.png",
  ])
  motyl._animSlow = 35;
-
-
-
-const muchomurka = new SpriteDyna(1400,750,200,220, [ 
-    "/Game_03_runner/sprites/muchomurka.png",
-])
-muchomurka.id = "muchomurka"
-muchomurka._xSpeed = 3;
-
-const kost = new SpriteDyna(1100,820,100,110, [ 
-    "/Game_03_runner/sprites/kost.png",
-])
-kost.id = "kost"
-
+//-----------------UI-----------------------
 const tlacitko = new Sprite(10, 10, 450, 350, [
     "/Game_03_runner/sprites/switch.png"
 ])
-tlacitko.id = "tlacitko"
 
-let isCityBackground = false;
+
 let isSwitched = false;
-
 canvas.addEventListener('click', (event) => {
     const rect = canvas.getBoundingClientRect();
     const scaleX = canvas.width / rect.width;
@@ -83,72 +92,61 @@ canvas.addEventListener('click', (event) => {
     const mouseY = (event.clientY - rect.top) * scaleY;
 
     if (mouseX >= tlacitko._x && mouseX <= tlacitko._x + tlacitko._width &&
-        mouseY >= tlacitko._y && mouseY <= tlacitko._y + tlacitko._height) {
+        mouseY >= tlacitko._y && mouseY <= tlacitko._y + tlacitko._height
+        ){
+            isSwitched = !isSwitched;
+            pozadi.updateImage();
+            pozadi2.updateImage();
+            obstic_1.updateImage();
+            obstic_2.updateImage();
 
-        if (isCityBackground) {
-            pozadi.loadImg("/Game_03_runner/sprites/pozadi_les.jpg");
-            pozadi2.loadImg("/Game_03_runner/sprites/pozadi_les.jpg");
-        } else {
-            pozadi.loadImg("/Game_03_runner/sprites/pozadi_mesto.jpg");
-            pozadi2.loadImg("/Game_03_runner/sprites/pozadi_mesto.jpg");
         }
-        isCityBackground = !isCityBackground;
-
-        if (isSwitched) {
-            hrib._images = ["/Game_03_runner/sprites/hrib.png"];
-            muchomurka._images = ["/Game_03_runner/sprites/muchomurka.png"];
-        } else {
-            hrib._images = ["/Game_03_runner/sprites/auto.png"];
-            muchomurka._images = ["/Game_03_runner/sprites/mic.png"];
-        }
-        hrib.updateImage();
-        muchomurka.updateImage();
-        isSwitched = !isSwitched;
-    }
 });
-
 
 //hlavní herní smyčka
 function Mainloop(){
-    pozadi._x -= pozadi._xSpeed;
-    pozadi2._x -= pozadi2._xSpeed;
 
-    if (pozadi._x <= -pozadi._width) {
-        pozadi._x = pozadi2._x + pozadi2._width;
-    }
-    if (pozadi2._x <= -pozadi2._width) {
-        pozadi2._x = pozadi._x + pozadi._width;
-    }
-
-    pozadi.render(ctx);
+    pozadi.render(ctx); 
+    pozadi.updatePos();
     pozadi2.render(ctx);
+    pozadi2.updatePos();
+    if ( pozadi._x <=  -pozadi._width){ pozadi._x = pozadi2._x + pozadi2._width;}
+    if (pozadi2._x <= -pozadi2._width){pozadi2._x =  pozadi._x +  pozadi._width;}
+
     character.render(ctx);
     character.updatePos();
+
     motyl.render(ctx);
     motyl.updateImage();
-    tlacitko.render(ctx);
-    hrib._x -= hrib._xSpeed;
-    muchomurka._x -= muchomurka._xSpeed;
-    kost._x = (hrib._x + muchomurka._x) / 2;
-    hrib.render(ctx);
-    hrib.updateImage();
-    muchomurka.render(ctx);
-    muchomurka.updateImage();
-    kost.render(ctx);
-    kost.updateImage();
 
-    if(hrib._x < (0 - hrib._width)){
-        hrib._x = 1500;
+    tlacitko.render(ctx);
+
+    obstic_1.render(ctx,isSwitched);
+    obstic_1.updatePos();
+
+    obstic_2.render(ctx,isSwitched);
+    obstic_2.updatePos();
+
+    bone_1.render(ctx);
+    bone_1.updatePos();
+
+    if(obstic_1._x < (0 - obstic_1._width)){
+        obstic_1.x = pozadi._width;
     }
-    if (muchomurka._x < (0 - muchomurka._width)) {
-        muchomurka._x = 1500;
+    if (obstic_2._x < (0 - obstic_2._width)) {
+        obstic_2.x = pozadi._width;
     }
-    if (kost._x < (0 - kost._width)) {
-        kost._x = (hrib._x + muchomurka._x) / 2;
+    if (bone_1._x < (0 - bone_1._width)) {
+        bone_1.x = (obstic_1._x + obstic_2._x) / 2
     }
-      
+
+    const characterHitbox = new Rectangle(character._x + 60, character._y + 60, character._width - 120, character._height - 120);
+    if (characterHitbox.doesColideWith(obstic_1) || characterHitbox.doesColideWith(obstic_2)){
+        console.log('Kolize');
+    }
+    if (isSwitched){characterHitbox.render(ctx,true);}  
 }
-window.setInterval(Mainloop, 5, true);
+window.setInterval(Mainloop, 6, true);
 function handleKey(event, isDown) {
     const { key } = event;
     if (key === ' ') {
@@ -157,11 +155,5 @@ function handleKey(event, isDown) {
     const actions = {
         ' ': () => character._wantJump = isDown
     };
-    if (isDown && key === ' ') {
-        character._currentFrame = 0;
-        character._frames = character._framesJumping;
-    } else if (!isDown && key === ' ') {
-        character._frames = character._framesRunning;
-    }
     if (actions[key]) actions[key]();
 }
