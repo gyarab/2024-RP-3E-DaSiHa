@@ -1,5 +1,5 @@
 import { CharacterSprite } from  '../Monkey-Engine/CharacterSprite.js';
-import { InteractableIndicator } from  '../Monkey-Engine/Intractable.js';
+import { InteractableIndicator } from  '../Monkey-Engine/Interactable.js';
 import {        SpriteAnim } from  '../Monkey-Engine/SpriteAnim.js';
 import {        Rectangle } from  '../Monkey-Engine/Rectangle.js';
 import {           Sprite } from  '../Monkey-Engine/Sprite.js';

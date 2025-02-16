@@ -1,6 +1,6 @@
 // Autor: Šimon Bendl
 import { Rectangle } from '../../Monkey-Engine/Rectangle.js';
-import { LevelSelect } from '../../Monkey-Engine/Intractable.js';
+import { LevelSelect } from '../../Monkey-Engine/Interactable.js';
 
 /*-----------------------------barriers----------------------------------- */
 //const _1001 = new Rectangle(1624,  480,  128,  240,"red"); _1001._id = "pc" 

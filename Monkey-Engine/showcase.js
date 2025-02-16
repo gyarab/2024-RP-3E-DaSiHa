@@ -1,6 +1,7 @@
 import { CharacterSprite } from  '../Monkey-Engine/CharacterSprite.js';
 import { CharacterSprite0 } from  '../Monkey-Engine/CharacterSprite0.js';
 import { Rectangle } from './Rectangle.js';
+import { Sprite } from './Sprite.js';
 import { Tetragon } from './Tetragon.js';
 
 
@@ -83,6 +84,19 @@ class Player extends CharacterSprite {
         this._framesPushLeft     = [this._frames[36]];
     }
 }
+export class Pushable extends Sprite{
+    constructor(x, y, width, height, spritePath){
+        super  (x, y, width, height, spritePath); 
+        this._xVelocity = 0;
+    }
+    updatePos(){
+        this.x = this._x + this._xVelocity;
+        if (this._xVelocity > 0) this._xVelocity--; Math.floor(this._xVelocity);
+        if (this._xVelocity < 0) this._xVelocity++; Math.floor(this._xVelocity);
+        console.log(this._xVelocity);
+    }
+
+}
 
 window.addEventListener('load', () => {
     const canvas = document.getElementById('herniRozhraní');
@@ -148,11 +162,14 @@ window.addEventListener('load', () => {
 
     const ceiling  = new Rectangle(0, 0, 1920, 16, "red");
     const floor    = new Rectangle(0, 1000, 1920, 80,'red');
+
+    const box = new Pushable(0, 0, 100, 100, "../Game_01_Ledvadva/sprites/BOX/1.png");
+    box.moveTo(900, 900);
     
     let walls = [
         b1,
         w0,w3,w4,w5,w6,w7,w8,
-        floor, ceiling
+        floor, ceiling,box
 
     ]
     /*--------------------------Mainloop--------------------------------*/
@@ -167,6 +184,7 @@ window.addEventListener('load', () => {
         player1.updatePos(walls);
         player1.updateImage();
         player1.render(ctx);
+        box.updatePos();
 
         player2.updatePos(walls);
         player2.updateImage();

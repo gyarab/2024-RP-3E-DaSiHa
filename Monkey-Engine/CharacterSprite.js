@@ -1,5 +1,6 @@
 import { SpriteDyna } from "./SpriteDyna.js";
-import { Interactable } from "./Intractable.js";
+import { Interactable } from "./Interactable.js";
+import { Pushable } from "./showcase.js";
 
 export class CharacterSprite extends SpriteDyna{
     constructor(x, y, width, height, spritePaths) {
@@ -109,7 +110,7 @@ export class CharacterSprite extends SpriteDyna{
         const NextFrameRight = new CharacterSprite(this._x + this._xSpeed, this._y , this._width, this._height * ratioOfLegs );
         const NextFrameLeft  = new CharacterSprite(this._x - this._xSpeed, this._y , this._width, this._height * ratioOfLegs );
         const NextFrameY     = new CharacterSprite(this._x, this._y + this._yVelocity + 1, this._width, this._height);
-        
+
         let canGoRight = true;
         let canGoLeft  = true;
         let canGoUp    = true;
@@ -132,6 +133,21 @@ export class CharacterSprite extends SpriteDyna{
                     }
                 }
             }
+            if(ob instanceof Pushable){
+                actAsRed = true;
+                if (this._isOnGround){
+                    if (NextFrameRight.doesColideWith(ob)){
+                        if((this._xVelocity > 0)){
+                            ob.x = ob._x + this._xVelocity;
+                        }
+                    } else if (NextFrameLeft.doesColideWith(ob)){
+                        if((this._xVelocity < 0)){
+                            ob.x = ob._x + this._xVelocity;
+                        }
+                    }
+                }
+                
+            }
             if (ob._color == 'red' || actAsRed){
                 if (NextFrameDown.doesColideWith(ob)){
                     canGoDown = false;
@@ -150,6 +166,7 @@ export class CharacterSprite extends SpriteDyna{
                     this._xVelocity = this._xVelocity / 10;
                 }
             }
+            
             if(ob instanceof Interactable){ 
                 if (this.doesColideWith(ob)){
                     ob._isInteractable = true;
@@ -160,7 +177,6 @@ export class CharacterSprite extends SpriteDyna{
                     ob._isInteractable = false;
                 }
             }
-
             
         }
         if(!canGoRight) {
@@ -251,7 +267,6 @@ export class CharacterSprite extends SpriteDyna{
                 img = this._framesStanding[0];
             }
         }
-        console.log(img);
         if (img && img.complete) {
             ctx.drawImage(img, this._x -8, this._y, this._width +16, this._height);
         }
@@ -267,119 +282,3 @@ export class CharacterSprite extends SpriteDyna{
     }
 }
 //TODO: Example je basicly moje ročníkovka CharacterSprite je natolik komplexní že ho nevyužije nikdo jiný
-
-
-
-
-
-
-
-
-
-
-
-
-/*---------------------------CharacterSprite----------------------
-import { Rectangle } from "./Rectangle.js";
-import { Tetragon } from "./Tetragon.js"
-const canvas = document.getElementById('herniRozhraní');
-const ctx = canvas.getContext('2d');
-
-/*-------------------------player1-------------------------------*
-const player1 = new CharacterSprite(100, 150, 68 - 16, 124,[
-    //0
-    "/Game_01_Ledvadva/sprites/BLU/stand.png",
-    //1-14
-    "/Game_01_Ledvadva/sprites/BLU/rR/1.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/2.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/3.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/4.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/5.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/6.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/7.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/8.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/7.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/6.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/5.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/4.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/3.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/2.png",
-    //15-28
-    "/Game_01_Ledvadva/sprites/BLU/rL/1.png",
-    "/Game_01_Ledvadva/sprites/BLU/rL/2.png",
-    "/Game_01_Ledvadva/sprites/BLU/rL/3.png",
-    "/Game_01_Ledvadva/sprites/BLU/rL/4.png",
-    "/Game_01_Ledvadva/sprites/BLU/rL/5.png",
-    "/Game_01_Ledvadva/sprites/BLU/rL/6.png",
-    "/Game_01_Ledvadva/sprites/BLU/rL/7.png",
-    "/Game_01_Ledvadva/sprites/BLU/rL/8.png",
-    "/Game_01_Ledvadva/sprites/BLU/rL/7.png",
-    "/Game_01_Ledvadva/sprites/BLU/rL/6.png",
-    "/Game_01_Ledvadva/sprites/BLU/rL/5.png",
-    "/Game_01_Ledvadva/sprites/BLU/rL/4.png",
-    "/Game_01_Ledvadva/sprites/BLU/rL/3.png",
-    "/Game_01_Ledvadva/sprites/BLU/rL/2.png",
-    //29-31
-    "/Game_01_Ledvadva/sprites/BLU/jR/1.png",
-    "/Game_01_Ledvadva/sprites/BLU/jR/2.png",
-    "/Game_01_Ledvadva/sprites/BLU/jR/3.png",
-    //32-34
-    "/Game_01_Ledvadva/sprites/BLU/jL/1.png",
-    "/Game_01_Ledvadva/sprites/BLU/jL/2.png",
-    "/Game_01_Ledvadva/sprites/BLU/jL/3.png",
-    //35
-    "/Game_01_Ledvadva/sprites/BLU/pR.png",
-    //36
-    "/Game_01_Ledvadva/sprites/BLU/pL.png",
-
-]);
-
-player1._id = "player1";
-player1._framesStanding     = [player1._frames[0]];
-player1._framesRunRight     = player1._frames.slice(1, 15);
-player1._framesRunLeft      = player1._frames.slice(15, 29);
-player1._framesJumpFarRight = player1._frames.slice(29, 32);
-player1._framesJumpFarLeft  = player1._frames.slice(32, 35);
-player1._framesPushRight    = [player1._frames[35]];
-player1._framesPushLeft     = [player1._frames[36]];
-/*------------------------nastavení kláves------------------------
-window.addEventListener('keydown', event => handleKeyUpAndDown(event,  true));
-window.addEventListener('keyup'  , event => handleKeyUpAndDown(event, false));
-
-function handleKeyUpAndDown(event, isDown) {
-    const { key } = event;
-    const actions = {
-        'w': () => player1._wantJump    = isDown,
-        'a': () => player1._wantGoLeft  = isDown,
-        'd': () => player1._wantGoRight = isDown,
-        's': () => player1._wantGoDown  = isDown,
-    };
-    if (actions[key]) actions[key]();
-}
-const w0 = new Rectangle(  1600, 400, 200, 50, "orange"); w0.id = "w0";
-const w1 = new Rectangle(  10, 300, 500, 500, "red"); w1.id = "w1";
-const w2 = new Rectangle(  10, 1000, 1900, 16, "red"); w2.id = "w2";
-const w3 = new Rectangle( 600, 800, 200, 200, "grey"); w3.id = "w3";
-const w4 = new Tetragon(
-    {x: 200, y: 150},
-    {x: 900, y:  0},
-    {x: 900, y: 150},
-    {x: 200, y: 150},
-    "grey"
-); w4.moveTo(1000,1000)
-const w5 = new Rectangle( 800, 950, 200, 50, "orange"); w5.id = "w5"; 
-const w6 = new Rectangle( 1200, 950 -124, 200, 50, "orange"); w6.id = "w6";
-const w7 = new Rectangle( 1600, 950, 200, 50, "orange"); w7.id = "w7";
-const w8 = new Rectangle( 1600, 756, 200 , 50, "orange"); w8.id = "w8";
-
-
-let walls = [w0,w1, w2, w3, w4,w5,w6,w7,w8];
-    function Mainloop() {
-        ctx.clearRect(0,0,canvas.width, canvas.height);
-        for (let wall of walls){wall.render(ctx, true);}
-        player1.updatePos(walls);
-        player1.updateImage();
-        player1.render(ctx, true);
-    }
-window.setInterval(Mainloop,6,true);
-/**/ 

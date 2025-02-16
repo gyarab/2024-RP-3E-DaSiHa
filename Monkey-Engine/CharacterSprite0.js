@@ -51,7 +51,6 @@ export class CharacterSprite0 extends SpriteDyna{
         if (this.isFor('Stand')) {
             img = this._framesStanding[this._currentFrame];
         }
-        console.log(img);
         if (img && img.complete) {
             ctx.drawImage(img, this._x, this._y, this._width, this._height);
         }
