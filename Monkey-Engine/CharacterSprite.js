@@ -137,16 +137,17 @@ export class CharacterSprite extends SpriteDyna{
                 actAsRed = true;
                 if (this._isOnGround){
                     if (NextFrameRight.doesColideWith(ob)){
-                        if((this._xVelocity > 0)){
-                            ob.x = ob._x + this._xVelocity;
+                        if((this._xVelocity >= 0)){
+                            ob._xVelocity = this._xVelocity;
                         }
                     } else if (NextFrameLeft.doesColideWith(ob)){
-                        if((this._xVelocity < 0)){
-                            ob.x = ob._x + this._xVelocity;
+                        if((this._xVelocity <= 0)){
+                            ob._xVelocity = this._xVelocity;
                         }
+                    }else{
+                        ob._xVelocity = 0;
                     }
                 }
-                
             }
             if (ob._color == 'red' || actAsRed){
                 if (NextFrameDown.doesColideWith(ob)){

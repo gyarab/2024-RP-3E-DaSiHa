@@ -89,15 +89,22 @@ export class Pushable extends Sprite{
         super  (x, y, width, height, spritePath); 
         this._xVelocity = 0;
     }
-    updatePos(){
-        this.x = this._x + this._xVelocity;
-        if (this._xVelocity > 0) this._xVelocity--; Math.floor(this._xVelocity);
-        if (this._xVelocity < 0) this._xVelocity++; Math.floor(this._xVelocity);
+    updatePos(obsticles){
         console.log(this._xVelocity);
+        const nextFrame = new Rectangle(this._x + this._xVelocity, this._y, this._width, this._height);
+        let canMoveonX = true;
+        for(let ob of obsticles){
+            if ((ob._color == "red" || ob instanceof Player ) &&  nextFrame.doesColideWith(ob)){
+                canMoveonX = false;
+                console.log(ob._id);
+
+            }
+        }
+        if ((this._xVelocity != 0) && canMoveonX){ 
+            this.x = this._x + this._xVelocity;
+        }   
     }
-
 }
-
 window.addEventListener('load', () => {
     const canvas = document.getElementById('herniRozhraní');
     const ctx = canvas.getContext('2d');
@@ -164,12 +171,14 @@ window.addEventListener('load', () => {
     const floor    = new Rectangle(0, 1000, 1920, 80,'red');
 
     const box = new Pushable(0, 0, 100, 100, "../Game_01_Ledvadva/sprites/BOX/1.png");
-    box.moveTo(900, 900);
+    box.moveTo(900, 850);
+    box.id = "box";
     
     let walls = [
         b1,
         w0,w3,w4,w5,w6,w7,w8,
-        floor, ceiling,box
+        floor, ceiling,box,
+        player1, player2
 
     ]
     /*--------------------------Mainloop--------------------------------*/
@@ -184,7 +193,7 @@ window.addEventListener('load', () => {
         player1.updatePos(walls);
         player1.updateImage();
         player1.render(ctx);
-        box.updatePos();
+        box.updatePos(walls);
 
         player2.updatePos(walls);
         player2.updateImage();
