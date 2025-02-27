@@ -1,22 +1,28 @@
-/*Zdravím všechny kdo si tuto pěknou zprávu čtou. Jak je vidno v bakalářích, na mini obhajobu ročníkovky nebudu ve škole, 
-proto bych chtěl aspoň takto napsat rychlej message. Od první kontroly jsme jako tým velmi pokročili a každej makáme na svých gamesách. Deadliny 
-jsou fair, akorát náročné a dají se i stíhat. Šimon mi s pár věcma pomohl a pravidelně se udělané práci věnuje a nabízí možné zlepšení. 
+import { Sprite } from '../Monkey-Engine/Sprite.js';
+import { SpriteAnim } from '../Monkey-Engine/SpriteAnim.js';
+import { Tetragon } from '../Monkey-Engine/Tetragon.js';
 
-Teď už k tomu mému. Hru bowling už jsem dosti posunul. Udělal jsem si spoustu obrázků včetně custom čudlíku a power baru. Šipka se již nedeformuje 
-a trošku jsem ji customiznul :) Také jsem si již pohrál se shazovaním kuželek a směry hodů. Udělal jsem tedy první protyp na shazování kuželek a 
-jejich vracení, pouze když je šipka rovná(dá se vyzkoušet když se zakomanduje sipecka.updateImage(); ). Chtěl bych ale metodu trošičku pozměnit aby 
-byla víc univerzální. To ale až po příjezdu ze slunečných Alp :)
-
-S naší prací jsem doposad spokojen a musíme zamakat, aby jsme vše stihli*/ 
-
+window.addEventListener('load', () => {
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 
-import { Sprite } from '../Monkey-Engine/Sprite.js';
-import { SpriteAnim } from '../Monkey-Engine/SpriteAnim.js';
-
 const background = new Sprite(0, 0, 1920, 1100);
 background.loadImg("/Game_02_dakynovyKoule/foto/bowling.png");
+
+const zlabekL = new Tetragon(
+    {x:   830, y:   640},
+    {x: 890, y:   640},
+    {x: 423, y: 1100},
+    {x: 230, y: 1100}, 
+    'red'
+);
+const zlabekR = new Tetragon(
+    {x:   1060, y:   640},
+    {x: 1120, y:   640},
+    {x: 1720, y: 1100},
+    {x:   1520, y: 1100},
+     'yellow'
+);    
 
 const kuzelka1 = new Sprite(920, 594, 100, 90);
 kuzelka1.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
@@ -136,6 +142,8 @@ let sipeckaStop = false;
 
 function Mainloop() {
     background.render(ctx);
+    zlabekL.render(ctx, true);
+    zlabekR.render(ctx, true);
     cudlik.render(ctx);
     if (showKuzelka10) {
         kuzelka10.render(ctx);
@@ -362,7 +370,6 @@ function moveBall() {
         }
         if (sipecka._currentFrame == 24 || sipecka._currentFrame == 30) {
             ballX += 0.54;
-            
         }
         if (sipecka._currentFrame == 25 || sipecka._currentFrame == 29) {
             ballX += 0.68;
@@ -421,4 +428,4 @@ window.setInterval(() => {
     Mainloop();
     moveBall();
 }, 1);
-
+});
