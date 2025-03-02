@@ -1,18 +1,18 @@
-import { CharacterSprite } from  '../Monkey-Engine/CharacterSprite.js';
+import { CharacterSprite } from   '../Monkey-Engine/CharacterSprite.js';
 import { CharacterSprite0 } from  '../Monkey-Engine/CharacterSprite0.js';
 import { Rectangle } from './Rectangle.js';
 import { Sprite } from './Sprite.js';
 import { Tetragon } from './Tetragon.js';
 
 
-class Projectile extends CharacterSprite0 {
+export class Projectile extends CharacterSprite0 {
     constructor(x, y, width, height, spritePath = []){
         super  (x, y, width, height, spritePath); 
     }
     //TODO: změnit hitbox na na kruh
     //doesColideWith(){}
 }
-class Scissors extends Projectile{
+export class Scissors extends Projectile{
     constructor(x, y, width, height){
         super  (x, y, width, height,[
             "../Game_01_Ledvadva/sprites/Scissors/1.png",
@@ -27,7 +27,7 @@ class Scissors extends Projectile{
     
     }
 }
-class Player extends CharacterSprite {
+export class Player extends CharacterSprite {
     constructor(x, y, skin){
         super  (x, y, 52, 124, [
             //0
@@ -105,6 +105,7 @@ export class Pushable extends Sprite{
         }   
     }
 }
+
 window.addEventListener('load', () => {
     const canvas = document.getElementById('herniRozhraní');
     const ctx = canvas.getContext('2d');
@@ -116,7 +117,7 @@ window.addEventListener('load', () => {
     /*------------------------nastavení kláves------------------------*/
     const Enemy = new Scissors(200,1080,124,124);
     Enemy._animSlow = 8;
-    Enemy._isGoUp = true;
+    Enemy._isGoUp = true
     /*------------------------nastavení kláves------------------------*/
     window.addEventListener(
         'keydown', event => (
@@ -171,7 +172,7 @@ window.addEventListener('load', () => {
     const floor    = new Rectangle(0, 1000, 1920, 80,'red');
 
     const box = new Pushable(0, 0, 100, 100, "../Game_01_Ledvadva/sprites/BOX/1.png");
-    box.moveTo(900, 850);
+    box.moveTo(900, 899);
     box.id = "box";
     
     let walls = [
