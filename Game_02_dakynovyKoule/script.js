@@ -22,7 +22,15 @@ const zlabekR = new Tetragon(
     {x: 1720, y: 1100},
     {x:   1520, y: 1100},
      'yellow'
-);    
+);
+
+const T = new Tetragon(
+    {x:   970, y:   960},
+    {x: 980, y:   960},
+    {x: 980, y: 970},
+    {x:   970, y: 970},
+     'green'
+);
 
 const kuzelka1 = new Sprite(920, 594, 100, 90);
 kuzelka1.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
@@ -178,7 +186,7 @@ function Mainloop() {
     if (showKoule == false) {
         sipecka.render(ctx);
         if (sipeckaStop == false) {
-            sipecka.updateImage();
+            //sipecka.updateImage();
         }
     }
     if (showpower) {
@@ -189,6 +197,7 @@ function Mainloop() {
         koule.render(ctx);
         koule.updateImage();
     }
+    T.render(ctx, true);
 }
 
 window.addEventListener('click', event => handleClick(event));
@@ -216,6 +225,8 @@ function handleClick(event) {
 
 let ballY = koule._y;
 let ballX = koule._x;
+let TX = (T.p1.x + T.p2.x) / 2;    
+let TY = (T.p3.y + T.p4.y) / 2;
 let ballScale = 1;
 let zlabek = false;
 let pokus = 0;
@@ -262,6 +273,8 @@ function moveBall() {
         ballY -= ballSpeed;
         ballScale -= ballShrinkSpeed;
         ballX += 0.14;
+        TX += 0.14;
+        TY -= ballSpeed;
 
         if (sipecka._currentFrame == 0 ){
             if (strike) {
@@ -381,6 +394,12 @@ function moveBall() {
             ballX += 0.89;
         }
 
+        /*if(koule.doesColideWith(zlabekL)){
+            ballSpeed = 0.3;
+            ballShrinkSpeed = 0.0008;
+            ballX += 2;
+        }*/
+
         //console.log(sipecka._currentFrame);
 
         //zkusebni
@@ -419,6 +438,8 @@ function moveBall() {
         }
         koule._y = ballY;
         koule._x = ballX;
+        T._x = TX;
+        T._y = TY;
         koule._width = 150 * ballScale;
         koule._height = 150 * ballScale;
     }
