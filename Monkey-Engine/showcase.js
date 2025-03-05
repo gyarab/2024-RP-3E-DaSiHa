@@ -1,110 +1,6 @@
-import { CharacterSprite } from   '../Monkey-Engine/CharacterSprite.js';
-import { CharacterSprite0 } from  '../Monkey-Engine/CharacterSprite0.js';
+import { Player, Scissors, Pushable, Solid, Platform } from '../Monkey-Engine/PlatformerLib.js';
 import { Rectangle } from './Rectangle.js';
-import { Sprite } from './Sprite.js';
 import { Tetragon } from './Tetragon.js';
-
-
-export class Projectile extends CharacterSprite0 {
-    constructor(x, y, width, height, spritePath = []){
-        super  (x, y, width, height, spritePath); 
-    }
-    //TODO: změnit hitbox na na kruh
-    //doesColideWith(){}
-}
-export class Scissors extends Projectile{
-    constructor(x, y, width, height){
-        super  (x, y, width, height,[
-            "../Game_01_Ledvadva/sprites/Scissors/1.png",
-            "../Game_01_Ledvadva/sprites/Scissors/2.png",
-            "../Game_01_Ledvadva/sprites/Scissors/3.png",
-            "../Game_01_Ledvadva/sprites/Scissors/4.png",
-            "../Game_01_Ledvadva/sprites/Scissors/5.png",
-            "../Game_01_Ledvadva/sprites/Scissors/1.png",
-        ]);
-        this._framesRunUp = this._frames.slice(0,7)
-        this._animSlow = 8;
-    
-    }
-}
-export class Player extends CharacterSprite {
-    constructor(x, y, skin){
-        super  (x, y, 52, 124, [
-            //0
-            "/Game_01_Ledvadva/sprites/" + skin + "/stand.png",
-            //1-14
-            "/Game_01_Ledvadva/sprites/" + skin + "/rR/1.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rR/2.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rR/3.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rR/4.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rR/5.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rR/6.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rR/7.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rR/8.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rR/7.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rR/6.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rR/5.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rR/4.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rR/3.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rR/2.png",
-            //15-28
-            "/Game_01_Ledvadva/sprites/" + skin + "/rL/1.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rL/2.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rL/3.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rL/4.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rL/5.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rL/6.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rL/7.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rL/8.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rL/7.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rL/6.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rL/5.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rL/4.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rL/3.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/rL/2.png",
-            //29-31
-            "/Game_01_Ledvadva/sprites/" + skin + "/jR/1.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/jR/2.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/jR/3.png",
-            //32-34
-            "/Game_01_Ledvadva/sprites/" + skin + "/jL/1.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/jL/2.png",
-            "/Game_01_Ledvadva/sprites/" + skin + "/jL/3.png",
-            //35
-            "/Game_01_Ledvadva/sprites/" + skin + "/pR.png",
-            //36
-            "/Game_01_Ledvadva/sprites/" + skin + "/pL.png",
-        ]); 
-        this._framesStanding     = [this._frames[0]];
-        this._framesRunRight     = this._frames.slice(1, 15);
-        this._framesRunLeft      = this._frames.slice(15, 29);
-        this._framesJumpFarRight = this._frames.slice(29, 32);
-        this._framesJumpFarLeft  = this._frames.slice(32, 35);
-        this._framesPushRight    = [this._frames[35]];
-        this._framesPushLeft     = [this._frames[36]];
-    }
-}
-export class Pushable extends Sprite{
-    constructor(x, y, width, height, spritePath){
-        super  (x, y, width, height, spritePath); 
-        this._xVelocity = 0;
-    }
-    updatePos(obsticles){
-        console.log(this._xVelocity);
-        const nextFrame = new Rectangle(this._x + this._xVelocity, this._y, this._width, this._height);
-        let canMoveonX = true;
-        for(let ob of obsticles){
-            if ((ob._color == "red" || ob instanceof Player ) &&  nextFrame.doesColideWith(ob)){
-                canMoveonX = false;
-                console.log(ob._id);
-
-            }
-        }
-        if ((this._xVelocity != 0) && canMoveonX){ 
-            this.x = this._x + this._xVelocity;
-        }   
-    }
-}
 
 window.addEventListener('load', () => {
     const canvas = document.getElementById('herniRozhraní');
@@ -162,16 +58,16 @@ window.addEventListener('load', () => {
     "purple"
     ); w4.moveTo(1000,1000)
     
-    const w5 = new Rectangle( 300, 920, 200, 16, "orange");
-    const w6 = new Rectangle( 300, 830, 200, 16, "orange");
-    const w7 = new Rectangle( 300, 740, 200, 16, "orange");
-    const w8 = new Rectangle( 300, 650, 200 ,16, "orange");
-    const w0 = new Rectangle( 300, 560, 200, 16, "orange");
+    const w5 = new Platform( 300, 920, 200, 16);
+    const w6 = new Platform( 300, 830, 200, 16);
+    const w7 = new Platform( 300, 740, 200, 16);
+    const w8 = new Platform( 300, 650, 200 ,16);
+    const w0 = new Platform( 300, 560, 200, 16);
 
-    const ceiling  = new Rectangle(0, 0, 1920, 16, "red");
-    const floor    = new Rectangle(0, 1000, 1920, 80,'red');
+    const ceiling  = new Solid(0, 0, 1920, 16);
+    const floor    = new Solid(0, 1000, 1920, 80);
 
-    const box = new Pushable(0, 0, 100, 100, "../Game_01_Ledvadva/sprites/BOX/1.png");
+    const box = new Pushable(0, 0, 100, 100, ["../Game_01_Ledvadva/sprites/BOX/1.png"]);
     box.moveTo(900, 899);
     box.id = "box";
     
@@ -179,7 +75,7 @@ window.addEventListener('load', () => {
         b1,
         w0,w3,w4,w5,w6,w7,w8,
         floor, ceiling,box,
-        player1, player2
+        player2, player1
 
     ]
     /*--------------------------Mainloop--------------------------------*/
@@ -190,24 +86,28 @@ window.addEventListener('load', () => {
         for (let wall of walls) {
             wall.render(ctx, true);
         }
+        player2.updatePos(walls);
+        player2.updateImage();
+        player2.render(ctx);
 
         player1.updatePos(walls);
         player1.updateImage();
         player1.render(ctx);
+
+
+        
         box.updatePos(walls);
 
-        player2.updatePos(walls);
-        player2.updateImage();
-        player2.render(ctx);
+
+
 
         Enemy.render(ctx);
         Enemy.updatePos();
         Enemy.updateImage()
         if (Enemy._y + Enemy._height < 0 ){
             Enemy._y = 1080;
-        }
-        
-        
+        };
+        box.render(ctx);      
     }
     window.setInterval(Mainloop, 6, true);
 });

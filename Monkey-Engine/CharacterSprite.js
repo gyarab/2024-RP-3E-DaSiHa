@@ -1,6 +1,7 @@
 import { SpriteDyna } from "./SpriteDyna.js";
 import { Interactable } from "./Interactable.js";
-import { Pushable } from "./showcase.js";
+import { Platform, Pushable, SemiSolid, Solid } from "./PlatformerLib.js";
+import { Rectangle } from "./Rectangle.js";
 
 export class CharacterSprite extends SpriteDyna{
     constructor(x, y, width, height, spritePaths) {
@@ -13,8 +14,12 @@ export class CharacterSprite extends SpriteDyna{
         this._wantGoDown  = false;
         this._wantInteract = false;
 
-        this._isOnGround = false;
-        this._isJumping  = false;
+        this._isOnGround  = false;
+        this._isJumping   = false;
+
+
+        // 0 = none, 1 = solid, 2 = platform, 3 = dynamic
+        this._typeOfGround = 0; 
 
         this._isPushRight = false;
         this._isPushLeft  = false;
@@ -103,6 +108,7 @@ export class CharacterSprite extends SpriteDyna{
         }
 
         const ratioOfLegs = 9/10
+        const ratioOfPushLegsm = 5/10
         //kolize
         //NextFrameDown a NextFrameUp jsous skoro stejné a proto si plete kolizi s podlahou a stropem
         const NextFrameDown  = new CharacterSprite(this._x , this._y + this._yVelocity + gravity, this._width, this._height);
@@ -111,47 +117,56 @@ export class CharacterSprite extends SpriteDyna{
         const NextFrameLeft  = new CharacterSprite(this._x - this._xSpeed, this._y , this._width, this._height * ratioOfLegs );
         const NextFrameY     = new CharacterSprite(this._x, this._y + this._yVelocity + 1, this._width, this._height);
 
+        const nextFrameRightBox = new Rectangle(this._x + this._xSpeed + 5 , this._y, this._width, this._height * ratioOfLegs);
+        const nextFrameLeftBox  = new Rectangle(this._x - this._xSpeed - 5 , this._y, this._width, this._height * ratioOfLegs);
+
         let canGoRight = true;
         let canGoLeft  = true;
         let canGoUp    = true;
         let canGoDown  = true;
 
         for (let ob of obstacles) {
-            let actAsRed   = false;
-            if(ob._color == 'orange' && !this._wantGoDown){
+            //! = act as solid
+            //! don't forget to assaign what type of obstacle should use the propretese of red
+            //! 0 = none, 1 = solid, 2 = platform, 3 = dynamic
+            let actAsRed  = null;
+
+            if(ob instanceof Platform && !this._wantGoDown){
                 if (NextFrameY.doesColideWith(ob)  && !this.doesColideWith(ob) && (this._yVelocity >= 0)){
                     canGoDown = false;
+                    this._typeOfGround = 2;
                 } 
             }
-            if(ob._color == 'yellow'){
+            if(ob instanceof SemiSolid){
                 if (
                         (!this._isJumping && this._points[3].y < ob._points[3].y) 
                         ||( this._isJumping && this._pointOfJump.y < ob._points[3].y)
                     ){
                     if (!this.doesColideWith(ob)){
-                    actAsRed = true;
+                    actAsRed = 1;
                     }
                 }
             }
             if(ob instanceof Pushable){
+                
                 actAsRed = true;
-                if (this._isOnGround){
-                    if (NextFrameRight.doesColideWith(ob)){
-                        if((this._xVelocity >= 0)){
-                            ob._xVelocity = this._xVelocity;
-                        }
-                    } else if (NextFrameLeft.doesColideWith(ob)){
-                        if((this._xVelocity <= 0)){
-                            ob._xVelocity = this._xVelocity;
-                        }
-                    }else{
-                        ob._xVelocity = 0;
+                if (!this._isJumping && this._typeOfGround != ob._id){
+                    if  (nextFrameRightBox.doesColideWith(ob) && (this._xVelocity >= 0)||
+                         (nextFrameLeftBox.doesColideWith(ob) && (this._xVelocity <= 0))){
+                        ob._xVelocity = this._xVelocity;
+                        ob._isPushed = true;
+                        
                     }
                 }
+                if (this._typeOfGround == ob._id){
+                    this._xVelocity = this._xVelocity + ob._xVelocity;
+                }
             }
-            if (ob._color == 'red' || actAsRed){
+            if(ob instanceof Solid || actAsRed){
                 if (NextFrameDown.doesColideWith(ob)){
                     canGoDown = false;
+                    this._typeOfGround = 1;
+                    if (actAsRed){ this._typeOfGround = ob._id; }
                 }
                 if (NextFrameRight.doesColideWith(ob) && (this._xVelocity > 0)){
                     canGoRight = false;
@@ -167,7 +182,6 @@ export class CharacterSprite extends SpriteDyna{
                     this._xVelocity = this._xVelocity / 10;
                 }
             }
-            
             if(ob instanceof Interactable){ 
                 if (this.doesColideWith(ob)){
                     ob._isInteractable = true;
@@ -189,12 +203,13 @@ export class CharacterSprite extends SpriteDyna{
             this._isPushLeft = true;
         }else{
             this.x = this._x + this._xVelocity;
-            this._isPushRight = false;
+            this._isPushRight = false;  
             this._isPushLeft  = false;
         }
         if(canGoDown){
             this._floor = 1080 - this._height;
             this._isOnGround = false;
+            this._typeOfGround = 0;
             this._yVelocity += gravity;
             
         }if (!canGoDown){
