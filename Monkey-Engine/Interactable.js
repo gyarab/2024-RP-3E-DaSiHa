@@ -26,20 +26,3 @@ export class InteractableIndicator extends Sprite{
     }
 
 }
-//!--------------------classes-that-are-way-too-specific----------------------!//
-export class LevelSelect extends Interactable{
-    constructor(x, y, width, height){
-        super(x, y, width, height);
-        this._isComplete = false;
-    }
-    _action(objects){
-        console.log("Level Select");
-        objects._color = "orange";
-        this._isComplete = true;
-    }
-}
-export class IndicatorKey_E extends InteractableIndicator{
-    constructor(x = 0, y = 0){
-        super(x, y, 44,44,"../Game_01_Ledvadva/sprites/Indicators/Press-E.png");
-    }
-}
