@@ -1,12 +1,13 @@
 // Autor: Bendl Šimon
 import {intersectionOfLineSegments} from './LineSection.js';
 export class Tetragon{
-
+    static IdCounter = 0;
     constructor(p1, p2, p3, p4, color = 'magenta'){
         this._points = [p1, p2, p3, p4];
         this._color  = color;
         this._strokeWidth = 10;
-        this._id = Math.floor(Math.random() * 9000) + 1000;
+        this._id =  Tetragon.IdCounter.toString().padStart(4, '0');
+        Tetragon.IdCounter++;
     }
 
     //! rendering without fill = true will distort 

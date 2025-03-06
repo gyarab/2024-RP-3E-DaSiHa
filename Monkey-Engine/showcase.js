@@ -1,4 +1,4 @@
-import { Player, Scissors, Pushable, Solid, Platform } from '../Monkey-Engine/PlatformerLib.js';
+import { Player, Scissors, Solid, Platform, Box} from '../Monkey-Engine/PlatformerLib.js';
 import { Rectangle } from './Rectangle.js';
 import { Tetragon } from './Tetragon.js';
 
@@ -11,7 +11,7 @@ window.addEventListener('load', () => {
     const player2 = new Player(1920/2 + 100, 1080 /2, "BLU");
      
     /*------------------------nastavení kláves------------------------*/
-    const Enemy = new Scissors(200,1080,124,124);
+    const Enemy = new Scissors(200,1080);
     Enemy._animSlow = 8;
     Enemy._isGoUp = true
     /*------------------------nastavení kláves------------------------*/
@@ -67,9 +67,7 @@ window.addEventListener('load', () => {
     const ceiling  = new Solid(0, 0, 1920, 16);
     const floor    = new Solid(0, 1000, 1920, 80);
 
-    const box = new Pushable(0, 0, 100, 100, ["../Game_01_Ledvadva/sprites/BOX/1.png"]);
-    box.moveTo(900, 899);
-    box.id = "box";
+    const box = new Box(900, 871, 6);
     
     let walls = [
         b1,
