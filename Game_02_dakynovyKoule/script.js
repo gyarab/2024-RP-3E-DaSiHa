@@ -220,138 +220,30 @@ function handleClick(event) {
 let ballY = koule._y;
 let ballX = koule._x;
 let ballScale = 1;
-let zlabek = false;
 let pokus = 0;
 let strike = true;
-
-function moveBall() {
-    let ballSpeed = 0.8;
-    let ballShrinkSpeed = 0.0018;
-
-    if (power._currentFrame == 0) {
-        ballSpeed = 0.3;
-        ballShrinkSpeed = 0.0008;
-    }
-    if (power._currentFrame == 1 || power._currentFrame == 13) {
-        ballSpeed = 0.4;
-        ballShrinkSpeed = 0.0010;
-    }
-    if (power._currentFrame == 2 || power._currentFrame == 12) {
-        ballSpeed = 0.5;
-        ballShrinkSpeed = 0.0012;
-    }
-
-    if (power._currentFrame == 3 || power._currentFrame == 11) {
-        ballSpeed = 0.6;
-        ballShrinkSpeed = 0.0014;
-    }
-    if (power._currentFrame == 4 || power._currentFrame == 10) {
-        ballSpeed = 0.7;
-        ballShrinkSpeed = 0.0016;
-    }
-    if (power._currentFrame == 5 || power._currentFrame == 9) {
-        ballSpeed = 0.8;
-        ballShrinkSpeed = 0.0018;
-    }
-    if (power._currentFrame == 6 || power._currentFrame == 8) {
-        ballSpeed = 0.9;
-        ballShrinkSpeed = 0.002;
-    }
-    if (power._currentFrame == 7) {
-        ballSpeed = 1;
-        ballShrinkSpeed = 0.0022;
-    }
-    if (showKoule) {
-        ballY -= ballSpeed;
-        ballScale -= ballShrinkSpeed;
-        ballX += 0.14;
-
-        if (sipecka._currentFrame == 0 ){
-            if (strike) {
-                if (power._currentFrame == 4 ||
-                    power._currentFrame == 5 || 
-                    power._currentFrame == 6 || 
-                    power._currentFrame == 7 || 
-                    power._currentFrame == 8 || 
-                    power._currentFrame == 9 || 
-                    power._currentFrame == 10) { 
-                    if (ballY <= 594) {
-                        showKuzelka1 = false;
-                    }
-
-                    if (ballY <= 583) {
-                        showKuzelka2 = false;
-                        showKuzelka3 = false;
-                    }
-
-                    if (ballY <= 572) {
-                        showKuzelka4 = false;
-                        showKuzelka5 = false;
-                        showKuzelka6 = false;
-                    }
-                    
-                    if (ballY <= 561) {
-                        showKuzelka7 = false;
-                        showKuzelka8 = false;
-                        showKuzelka9 = false;
-                        showKuzelka10 = false;
-                        pokus = 2;
-                    }
-                }
-            }
-
-            if (power._currentFrame == 0 || 
-                power._currentFrame == 1 || 
-                power._currentFrame == 2 || 
-                power._currentFrame == 3 || 
-                power._currentFrame == 11 || 
-                power._currentFrame == 12 || 
-                power._currentFrame == 13) { 
-                if (ballY <= 594) {
-                    showKuzelka1 = false;
-                }
-
-                if (ballY <= 583) {
-                    showKuzelka2 = false;
-                    showKuzelka3 = false;
-                }
-
-                if (ballY <= 572) {
-                    showKuzelka4 = false;
-                    showKuzelka5 = false;
-                    showKuzelka6 = false;
-                }
-                
-                if (ballY <= 561) {
-                    showKuzelka8 = false;
-                    showKuzelka9 = false;
-                }
-                strike = false;
-            }
-        }
-        if (sipecka._currentFrame == 1 || sipecka._currentFrame == 17) {
-            ballX -= 0.07;
-        }
-        if (sipecka._currentFrame == 2 || sipecka._currentFrame == 16) { 
-            ballX -= 0.14;
-        }
-        if (sipecka._currentFrame == 3 || sipecka._currentFrame == 15) {
-            ballX -= 0.21;
-        }
+let zlabek = false;
+function renderAndCheckCollision() {
+    let ballSpeed = 0.3;
+    let ballShrinkSpeed = 0.0008;
+    const hibox = new Rectangle(koule._points[3].x + koule._width / 2 - 10, koule._points[3].y, 10, 10, 'red');
+    hibox.render(ctx, true);
+    if (hibox.doesColideWith(zlabekL) || hibox.doesColideWith(zlabekR)) {
+        zlabek = true;
         if (sipecka._currentFrame == 4 || sipecka._currentFrame == 14) {
-            ballX -= 0.31;
+            ballX += 1.31;
         }
         if (sipecka._currentFrame == 5 || sipecka._currentFrame == 13) {
-            ballX -= 0.43;
+            ballX += 1.31;
         }
         if (sipecka._currentFrame == 6 || sipecka._currentFrame == 12) {
-            ballX -= 0.54;
+            ballX += 1.31;
         }
         if (sipecka._currentFrame == 7 || sipecka._currentFrame == 11) {
-            ballX -= 0.68;
+            ballX += 1.31;
         }
         if (sipecka._currentFrame == 8 || sipecka._currentFrame == 10) {
-            ballX -= 0.79;
+            ballX += 1.31;
         }
         if (sipecka._currentFrame == 9) {
             ballX -= 0.89;
@@ -374,73 +266,213 @@ function moveBall() {
         if (sipecka._currentFrame == 24 || sipecka._currentFrame == 30) {
             ballX += 0.54;
         }
-        if (sipecka._currentFrame == 25 || sipecka._currentFrame == 29) {
-            ballX += 0.68;
-        }
-        if (sipecka._currentFrame == 26 || sipecka._currentFrame == 28) {
-            ballX += 0.79;
-        }
-        if (sipecka._currentFrame == 27) {
-            ballX += 0.89;
-        }
+        
+        console.log(sipecka._currentFrame);
+        console.log("Collision detected");
 
-        /*if(koule.doesColideWith(zlabekL)){
-            ballSpeed = 0.3;
-            ballShrinkSpeed = 0.0008;
-            ballX += 2;
-        }*/
-
-        //console.log(sipecka._currentFrame);
-
-        //zkusebni
-        /*if (sipecka._currentFrame == 1) {
-        ballX += 0.89;
-        }*/
-
-        //console.log(ballX);
-        //console.log(ballY);
-
-        if (ballY <= 560) {
-            showKoule = false;
-            pokus++;
-            if(pokus >= 2) {
-                showKoule = false;
-                strike = true;
-                setTimeout(() => {
-                    showKuzelka1 = true;
-                    showKuzelka2 = true;
-                    showKuzelka3 = true;
-                    showKuzelka4 = true;
-                    showKuzelka5 = true;
-                    showKuzelka6 = true;
-                    showKuzelka7 = true;
-                    showKuzelka8 = true;
-                    showKuzelka9 = true;
-                    showKuzelka10 = true;
-                    }, 500);
-                pokus = 0;
-            }
-                ballY = 890;
-                ballX = 900;
-                ballScale = 1;
-                sipecka._currentFrame = 0;
-                power._currentFrame = 0;
-        }
-        koule.y = ballY;
-        koule.x = ballX;
-        koule.width = 150 * ballScale;
-        koule.height = 150 * ballScale;
     }
 }
-window.setInterval(() => {
-    Mainloop();
-    moveBall();
 
-    const hibox = new Rectangle(koule._points[3].x + koule._width / 2 , koule._points[3].y ,10,10,'red');
-
-    hibox.render(ctx,true)
-    if (hibox.doesColideWith(zlabekL) || hibox.doesColideWith(zlabekR)) {
-        console.log("zajebáné")
+function moveBall() {
+    let ballSpeed = 0.8;
+    let ballShrinkSpeed = 0.0018;
+    if(!zlabek) {
+        if (power._currentFrame == 0) {
+            ballSpeed = 0.3;
+            ballShrinkSpeed = 0.0008;
+        }
+        if (power._currentFrame == 1 || power._currentFrame == 13) {
+            ballSpeed = 0.4;
+            ballShrinkSpeed = 0.0010;
+        }
+        if (power._currentFrame == 2 || power._currentFrame == 12) {
+            ballSpeed = 0.5;
+            ballShrinkSpeed = 0.0012;
+        }
+        if (power._currentFrame == 3 || power._currentFrame == 11) {
+            ballSpeed = 0.6;
+            ballShrinkSpeed = 0.0014;
+        }
+        if (power._currentFrame == 4 || power._currentFrame == 10) {
+            ballSpeed = 0.7;
+            ballShrinkSpeed = 0.0016;
+        }
+        if (power._currentFrame == 5 || power._currentFrame == 9) {
+            ballSpeed = 0.8;
+            ballShrinkSpeed = 0.0018;
+        }
+        if (power._currentFrame == 6 || power._currentFrame == 8) {
+            ballSpeed = 0.9;
+            ballShrinkSpeed = 0.002;
+        }
+        if (power._currentFrame == 7) {
+            ballSpeed = 1;
+            ballShrinkSpeed = 0.0022;
+        }
     }
-}, 1);
+        if (showKoule) {
+            ballY -= ballSpeed;
+            ballScale -= ballShrinkSpeed;
+            ballX += 0.14;
+
+            if (sipecka._currentFrame == 0 ){
+                if (strike) {
+                    if (power._currentFrame == 4 ||
+                        power._currentFrame == 5 || 
+                        power._currentFrame == 6 || 
+                        power._currentFrame == 7 || 
+                        power._currentFrame == 8 || 
+                        power._currentFrame == 9 || 
+                        power._currentFrame == 10) { 
+                        if (ballY <= 594) {
+                            showKuzelka1 = false;
+                        }
+
+                        if (ballY <= 583) {
+                            showKuzelka2 = false;
+                            showKuzelka3 = false;
+                        }
+
+                        if (ballY <= 572) {
+                            showKuzelka4 = false;
+                            showKuzelka5 = false;
+                            showKuzelka6 = false;
+                        }
+                        
+                        if (ballY <= 561) {
+                            showKuzelka7 = false;
+                            showKuzelka8 = false;
+                            showKuzelka9 = false;
+                            showKuzelka10 = false;
+                            pokus = 2;
+                        }
+                    }
+                }
+
+                if (power._currentFrame == 0 || 
+                    power._currentFrame == 1 || 
+                    power._currentFrame == 2 || 
+                    power._currentFrame == 3 || 
+                    power._currentFrame == 11 || 
+                    power._currentFrame == 12 || 
+                    power._currentFrame == 13) { 
+                    if (ballY <= 594) {
+                        showKuzelka1 = false;
+                    }
+
+                    if (ballY <= 583) {
+                        showKuzelka2 = false;
+                        showKuzelka3 = false;
+                    }
+
+                    if (ballY <= 572) {
+                        showKuzelka4 = false;
+                        showKuzelka5 = false;
+                        showKuzelka6 = false;
+                    }
+                    
+                    if (ballY <= 561) {
+                        showKuzelka8 = false;
+                        showKuzelka9 = false;
+                    }
+                    strike = false;
+                }
+            }
+
+        if(!zlabek) {
+            if (sipecka._currentFrame == 1 || sipecka._currentFrame == 17) {
+                ballX -= 0.07;
+            }
+            if (sipecka._currentFrame == 2 || sipecka._currentFrame == 16) { 
+                ballX -= 0.14;
+            }
+            if (sipecka._currentFrame == 3 || sipecka._currentFrame == 15) {
+                ballX -= 0.21;
+            }
+            if (sipecka._currentFrame == 4 || sipecka._currentFrame == 14) {
+                ballX -= 0.31;
+            }
+            if (sipecka._currentFrame == 5 || sipecka._currentFrame == 13) {
+                ballX -= 0.43;
+            }
+            if (sipecka._currentFrame == 6 || sipecka._currentFrame == 12) {
+                ballX -= 0.54;
+            }
+            if (sipecka._currentFrame == 7 || sipecka._currentFrame == 11) {
+                ballX -= 0.68;
+            }
+            if (sipecka._currentFrame == 8 || sipecka._currentFrame == 10) {
+                ballX -= 0.79;
+            }
+            if (sipecka._currentFrame == 9) {
+                ballX -= 0.89;
+            }
+            if (sipecka._currentFrame == 19 || sipecka._currentFrame == 35) {
+                ballX += 0.07;
+            }
+            if (sipecka._currentFrame == 20 || sipecka._currentFrame == 34) {
+                ballX += 0.14;
+            }
+            if (sipecka._currentFrame == 21 || sipecka._currentFrame == 33) {
+                ballX += 0.21;
+            }
+            if (sipecka._currentFrame == 22 || sipecka._currentFrame == 32) {
+                ballX += 0.31;
+            }
+            if (sipecka._currentFrame == 23 || sipecka._currentFrame == 31) {
+                ballX += 0.43;
+            }
+            if (sipecka._currentFrame == 24 || sipecka._currentFrame == 30) {
+                ballX += 0.54;
+            }
+            if (sipecka._currentFrame == 25 || sipecka._currentFrame == 29) {
+                ballX += 0.68;
+            }
+            if (sipecka._currentFrame == 26 || sipecka._currentFrame == 28) {
+                ballX += 0.79;
+            }
+            if (sipecka._currentFrame == 27) {
+                ballX += 0.89;
+            }
+        }
+
+            if (ballY <= 560) {
+                showKoule = false;
+                pokus++;
+                if(pokus >= 2) {
+                    showKoule = false;
+                    strike = true;
+                    setTimeout(() => {
+                        showKuzelka1 = true;
+                        showKuzelka2 = true;
+                        showKuzelka3 = true;
+                        showKuzelka4 = true;
+                        showKuzelka5 = true;
+                        showKuzelka6 = true;
+                        showKuzelka7 = true;
+                        showKuzelka8 = true;
+                        showKuzelka9 = true;
+                        showKuzelka10 = true;
+                        }, 500);
+                    pokus = 0;
+                }
+                    ballY = 890;
+                    ballX = 900;
+                    ballScale = 1;
+                    zlabek = false;
+                    sipecka._currentFrame = 0;
+                    power._currentFrame = 0;
+            }
+            koule.y = ballY;
+            koule.x = ballX;
+            koule.width = 150 * ballScale;
+            koule.height = 150 * ballScale;
+        }
+}
+
+    window.setInterval(() => {
+        Mainloop();
+        moveBall();
+        renderAndCheckCollision();
+    }, 1);
 });
