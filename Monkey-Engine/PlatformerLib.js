@@ -5,10 +5,8 @@ import {    Rectangle } from './Rectangle.js';
 
 
 //TODO změnit hitbox u Projektilů na kruh
-//TODO přidat další typy Projektilů
-//TODO přidat typy Pushable objektů
 //TODO přidat Tetragon-Solid
-//TODO opravit Pushable
+//TODO Pushable má hodně much
 
 /*--------------------------Walls---------------------------*/
 export class Platform  extends Rectangle{
@@ -48,24 +46,61 @@ export class Pushable  extends CharacterSprite0{
         super  (x, y, width, height, spritePaths); 
         this._framesStanding = this._frames;
         this._isPushed = false;
-        this._xVelocity = 0
+        this._xVelocity = 0;
+        this._yVelocity = 0;
+
+        this._drag = 0.005;
+        this._gravity = 0.05;
+    }
+    cantPassThru(ob){
+        return (
+            ob instanceof Solid ||
+            ob instanceof Player||
+            (ob instanceof Pushable && ob._id != this._id)
+        );
+    };
+    cantFallThru(ob){
+        return (
+            ob instanceof Solid  ||
+            ob instanceof Player ||
+            ob instanceof Platform ||
+            (ob instanceof Pushable && ob._id != this._id)
+        );
+    };
+    render(ctx){
+        let img = this._frames[this._currentFrame];
+        if (img && img.complete) {
+            ctx.drawImage(img, this._x, this._y, this._width, this._height);
+        }
     }
     updatePos(obsticles){
-        const nextFrame = new Rectangle(this._x + this._xVelocity, this._y, this._width, this._height);
+        const nextFrameX = new Rectangle(this._x + this._xVelocity, this._y, this._width, this._height);
+        const nextFrameY = new Rectangle(this._x , this._y +  this._yVelocity + this._ySpeed, this._width, this._height);
+
         let canMoveonX = true;
+        let canMoveonY = true;
+
         for(let ob of obsticles){
-            if ( nextFrame.doesColideWith(ob) && (ob._color == "red" || ob instanceof Player)){
+            if ( nextFrameX.doesColideWith(ob) && this.cantPassThru(ob)){
                 canMoveonX = false;
                 this._xVelocity = 0;
-                console.log("stop")
+            }
+            if( nextFrameY.doesColideWith(ob) && this.cantFallThru(ob)){
+                if(nextFrameY.doesColideWith(ob) && ob instanceof Player){console.error("Player gets smashed with pushable");}
+                canMoveonY = false
+                this._yVelocity = 0;
             }
         }
-        if ((this._xVelocity != 0) && canMoveonX){ 
+        if (canMoveonX){ 
             this.x = this._x + this._xVelocity;
-            if (this._xVelocity > 0 ){this._xVelocity = this._xVelocity - 0.005}
-            if (this._xVelocity < 0 ){this._xVelocity = this._xVelocity + 0.005}
+            if (Math.abs(this._xVelocity) < this._drag) { this._xVelocity = 0; }
+            if (this._xVelocity > 0 ){this._xVelocity = this._xVelocity - this._drag; this.isGoRight = true; this.isGoLeft  = false;}
+            if (this._xVelocity < 0 ){this._xVelocity = this._xVelocity + this._drag; this.isGoLeft  = true; this.isGoRight = false;}
         }
-        //if (this._isPushed){ this._xVelocity = 0; this._isPushed = false}
+        if (canMoveonY){
+            this._yVelocity = this._yVelocity + this._gravity;
+            this.y = this._y + this._yVelocity;
+        }
     }
 }
 /*intance*/ const pathToPushable = "../Game_01_Ledvadva/sprites/Pushable/";
@@ -86,24 +121,50 @@ export class Pushable  extends CharacterSprite0{
             ]);            
         }
     }
-    //TODO Basketball/Ball
-    export class Basketball extends Pushable{
-        constructor(x, y){
-            super  (x, y, 128, 128, [
-                pathToPushable + "Crate/" + skin +  ".png",
-                pathToPushable + "Crate/" + skin + "d.png",
-            ]);            
-        }
-    }
-    //! NEEXISTUJE png -> Binder nepoužívat
     export class Binder extends Pushable{
-        constructor(x, y){
+        constructor(x, y, skin){
             super  (x, y, 128, 128, [
                 pathToPushable + "Binder/" + skin +  ".png",
                 pathToPushable + "Binder/" + skin + "d.png",
             ]);            
         }
     }
+    export class Basketball extends Pushable{
+        constructor(x, y){
+            super  (x, y, 64, 64, [
+                pathToPushable + "Basketball/0.png",
+                pathToPushable + "Basketball/1.png",
+                pathToPushable + "Basketball/2.png",
+                pathToPushable + "Basketball/3.png",
+                pathToPushable + "Basketball/4.png",
+                pathToPushable + "Basketball/5.png",
+                pathToPushable + "Basketball/6.png",
+                pathToPushable + "Basketball/7.png",
+            ]); 
+            this._drag = 0.0025;         
+        }
+        updateImage(){
+            console.log(this._xVelocity)
+            this._animMovingSlow = 1 / (Math.abs(this._xVelocity) + 0.1) * 15;
+            this._animTick += 1;
+            if (this._animTick > this._animMovingSlow) {
+                if(this._xVelocity > 0){
+                    this._currentFrame = (this._currentFrame + 1) % this._frames.length;
+                }
+                if(this._xVelocity < 0){
+                    this._currentFrame = (this._currentFrame - 1 + this._frames.length) % this._frames.length;
+                }
+                this._animTick = 0;
+            }
+        }
+        render(ctx, Rbox){
+            let img = this._frames[this._currentFrame];
+            if (img && img.complete) {
+                ctx.drawImage(img, this._x, this._y, this._width, this._height);
+            }
+        }      
+    }
+    
 /*---------------------Projectiles-------------------------*/
 export class Projectile extends CharacterSprite0 {
     constructor(x, y, width, height, spritePath = []){
@@ -111,20 +172,42 @@ export class Projectile extends CharacterSprite0 {
     }
 }
 /*intance*/ const pathToProjectiles = "../Game_01_Ledvadva/sprites/Projectiles/";
-    //TODO NEEXISTUJÍ png pro všechny směry-> Scissors dodělat
     export class Scissors  extends Projectile{
         constructor(x, y){
-            super  (x, y, 124, 124,[
-                "../Game_01_Ledvadva/sprites/Scissors/1.png",
-                "../Game_01_Ledvadva/sprites/Scissors/2.png",
-                "../Game_01_Ledvadva/sprites/Scissors/3.png",
-                "../Game_01_Ledvadva/sprites/Scissors/4.png",
-                "../Game_01_Ledvadva/sprites/Scissors/5.png",
-                "../Game_01_Ledvadva/sprites/Scissors/1.png",
+            super  (x, y, 116, 116,[
+                //0-5
+                pathToProjectiles + "Scissors/UP/1.png",
+                pathToProjectiles + "Scissors/UP/2.png",
+                pathToProjectiles + "Scissors/UP/3.png",
+                pathToProjectiles + "Scissors/UP/4.png",
+                pathToProjectiles + "Scissors/UP/5.png",
+                pathToProjectiles + "Scissors/UP/1.png",
+                //6-11
+                pathToProjectiles + "Scissors/DOWN/1.png",
+                pathToProjectiles + "Scissors/DOWN/2.png",
+                pathToProjectiles + "Scissors/DOWN/3.png",
+                pathToProjectiles + "Scissors/DOWN/4.png",
+                pathToProjectiles + "Scissors/DOWN/5.png",
+                pathToProjectiles + "Scissors/DOWN/1.png",
+                //12-17
+                pathToProjectiles + "Scissors/LEFT/1.png",
+                pathToProjectiles + "Scissors/LEFT/2.png",
+                pathToProjectiles + "Scissors/LEFT/3.png",
+                pathToProjectiles + "Scissors/LEFT/4.png",
+                pathToProjectiles + "Scissors/LEFT/5.png",
+                pathToProjectiles + "Scissors/LEFT/1.png",
+                //18-23
+                pathToProjectiles + "Scissors/RIGHT/1.png",
+                pathToProjectiles + "Scissors/RIGHT/2.png",
+                pathToProjectiles + "Scissors/RIGHT/3.png",
+                pathToProjectiles + "Scissors/RIGHT/4.png",
+                pathToProjectiles + "Scissors/RIGHT/5.png",
+                pathToProjectiles + "Scissors/RIGHT/1.png"
             ]);
-            this._framesRunUp = this._frames.slice(0,7)
-            this._animSlow = 8;
-        
+            this._framesRunUp = this._frames.slice(0,6);
+            this._framesRunDown = this._frames.slice(6,12);
+            this._framesRunLeft = this._frames.slice(12,18);
+            this._framesRunRight = this._frames.slice(18,24);      
         }
     }
     //! NEEXISTUJÍ png -> Chainsaw nepoužívat
@@ -138,7 +221,7 @@ export class Projectile extends CharacterSprite0 {
         }
     }    
 /*---------------------CharacterSprite-------------------------*/
-/*intance*/ const pathToSkins = "../Game_01_Ledvadva/sprites/";
+/*intance*/ const pathToSkins = "../Game_01_Ledvadva/sprites/Player/";
     export class Player    extends CharacterSprite {
         constructor(x, y, skin){
             super  (x, y, 52, 124, [
@@ -216,7 +299,6 @@ export class Projectile extends CharacterSprite0 {
             super(x, y, 44,44, pathToIndicators + "Press-E.png");
         }
     }
-    //! NEEXISTUJE png -> IndicatorKey_R nepoužívat
     export class IndicatorKey_R extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 44,44,pathToIndicators + "Press-R.png");

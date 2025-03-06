@@ -1,6 +1,6 @@
 import { SpriteDyna } from "./SpriteDyna.js";
 import { Interactable } from "./Interactable.js";
-import { Platform, Pushable, SemiSolid, Solid } from "./PlatformerLib.js";
+import { Basketball, Platform, Pushable, SemiSolid, Solid } from "./PlatformerLib.js";
 import { Rectangle } from "./Rectangle.js";
 
 export class CharacterSprite extends SpriteDyna{
@@ -18,7 +18,7 @@ export class CharacterSprite extends SpriteDyna{
         this._isJumping   = false;
 
 
-        // 0 = none, 1 = solid, 2 = platform, 3 = dynamic
+        // 0 = none, 1 = solid, 2 = platform, else = dynamic_id
         this._typeOfGround = 0; 
 
         this._isPushRight = false;
@@ -128,7 +128,7 @@ export class CharacterSprite extends SpriteDyna{
         for (let ob of obstacles) {
             //! = act as solid
             //! don't forget to assaign what type of obstacle should use the propretese of red
-            //! 0 = none, 1 = solid, 2 = platform, 3 = dynamic
+            //! 0 = none, 1 = solid, 2 = platform, else = dynamic_id
             let actAsRed  = null;
 
             if(ob instanceof Platform && !this._wantGoDown){
@@ -148,8 +148,7 @@ export class CharacterSprite extends SpriteDyna{
                 }
             }
             if(ob instanceof Pushable){
-                
-                actAsRed = true;
+                actAsRed = true; 
                 if (!this._isJumping && this._typeOfGround != ob._id){
                     if  (nextFrameRightBox.doesColideWith(ob) && (this._xVelocity >= 0)||
                          (nextFrameLeftBox.doesColideWith(ob) && (this._xVelocity <= 0))){

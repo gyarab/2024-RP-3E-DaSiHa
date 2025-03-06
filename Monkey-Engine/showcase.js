@@ -1,6 +1,5 @@
-import { Player, Scissors, Solid, Platform, Box} from '../Monkey-Engine/PlatformerLib.js';
+import { Player, Scissors, Solid, Platform, Box, Binder, Basketball} from '../Monkey-Engine/PlatformerLib.js';
 import { Rectangle } from './Rectangle.js';
-import { Tetragon } from './Tetragon.js';
 
 window.addEventListener('load', () => {
     const canvas = document.getElementById('herniRozhraní');
@@ -12,19 +11,10 @@ window.addEventListener('load', () => {
      
     /*------------------------nastavení kláves------------------------*/
     const Enemy = new Scissors(200,1080);
-    Enemy._animSlow = 8;
     Enemy._isGoUp = true
     /*------------------------nastavení kláves------------------------*/
-    window.addEventListener(
-        'keydown', event => (
-            handleKeyUpAndDown(event,  true)
-        )
-    ); 
-    window.addEventListener(
-        'keyup'  , event => (
-            handleKeyUpAndDown(event, false)
-        )
-    );
+    window.addEventListener('keydown', event => (handleKeyUpAndDown(event,  true))); 
+    window.addEventListener('keyup'  , event => (handleKeyUpAndDown(event, false)));
     
     function handleKeyUpAndDown(event, isDown) {
         const { key } = event;
@@ -50,13 +40,6 @@ window.addEventListener('load', () => {
  
     const b1 = new Rectangle( 100, 500, 500, 500, "purple"); 
     const w3 = new Rectangle( 600, 800, 200, 200, "purple"); 
-    const w4 = new Tetragon(
-    {x: 200, y: 150},
-    {x: 900, y:  0},
-    {x: 900, y: 150},
-    {x: 200, y: 150},
-    "purple"
-    ); w4.moveTo(1000,1000)
     
     const w5 = new Platform( 300, 920, 200, 16);
     const w6 = new Platform( 300, 830, 200, 16);
@@ -67,12 +50,13 @@ window.addEventListener('load', () => {
     const ceiling  = new Solid(0, 0, 1920, 16);
     const floor    = new Solid(0, 1000, 1920, 80);
 
-    const box = new Box(900, 871, 6);
-    
+    const box = new Box(750, 871, 2);
+    const ball = new Basketball(400, 300);
+
     let walls = [
-        b1,
-        w0,w3,w4,w5,w6,w7,w8,
-        floor, ceiling,box,
+        b1, 
+        w0,w3,w5,w6,w7,w8,
+        floor, ceiling,box,ball,
         player2, player1
 
     ]
@@ -92,20 +76,18 @@ window.addEventListener('load', () => {
         player1.updateImage();
         player1.render(ctx);
 
-
-        
         box.updatePos(walls);
+        console.log(box._currentFrame);
+        ball.updatePos(walls);
+        ball.updateImage();
 
-
-
-
-        Enemy.render(ctx);
+        Enemy.render(ctx,true);
         Enemy.updatePos();
         Enemy.updateImage()
+
         if (Enemy._y + Enemy._height < 0 ){
             Enemy._y = 1080;
         };
-        box.render(ctx);      
     }
     window.setInterval(Mainloop, 6, true);
 });
