@@ -103,8 +103,33 @@ canvas.addEventListener('click', (event) => {
         }
 });
 
+let gameOver = false;
+
 //hlavní herní smyčka
 function Mainloop(){
+    if (gameOver) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pozadi.render(ctx);
+        pozadi2.render(ctx);
+        
+        const text = 'Game Over';
+        const textWidth = ctx.measureText(text).width;
+        const textHeight = 200;
+        
+        ctx.fillStyle = 'white';
+        ctx.fillRect((canvas.width - textWidth) / 2 - 20, (canvas.height - textHeight) / 2 - 20, textWidth + 40, textHeight + 40);
+        
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 5;
+        ctx.strokeRect((canvas.width - textWidth) / 2 - 20, (canvas.height - textHeight) / 2 - 20, textWidth + 40, textHeight + 40);
+        
+        ctx.fillStyle = 'black';
+        ctx.font = '200px Sheriff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+        return;
+    }
 
     pozadi.render(ctx); 
     pozadi.updatePos();
@@ -143,6 +168,7 @@ function Mainloop(){
     const characterHitbox = new Rectangle(character._x + 60, character._y + 60, character._width - 120, character._height - 120);
     if (characterHitbox.doesColideWith(obstic_1) || characterHitbox.doesColideWith(obstic_2)){
         console.log('Kolize');
+        gameOver = true;
     }
     if (isSwitched){characterHitbox.render(ctx,true);}  
 }
