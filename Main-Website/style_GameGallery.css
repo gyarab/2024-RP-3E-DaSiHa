@@ -1,20 +1,69 @@
 /* ------------------------- Grid --------------------- */
 .gameGallery {
     display: grid;
-    grid-template-columns: 1fr 1fr ;
+    grid-template-columns: 1fr 1fr;
     grid-template-rows: auto auto;
-    margin-top:   50px;
-    margin-left:  10px;
+    margin-top: 50px;
+    margin-left: 10px;
     margin-right: 10px;
     gap: 20px;
 }
 
 .content {
- margin: 0px;
+    position: relative;
+    margin: 0px;
 }
+
 .content img {
     width: 100%;
     height: auto;
+    transition: filter 0.3s ease, transform 0.3s ease; /* Smooth transition */
+}
+
+.content:hover img {
+    filter: brightness(0.7); /* Darken the image */
+}
+
+.content:hover img,
+.content:hover .overlay,
+.overlay:hover img {
+    transform: scale(1.05); /* Slight zoom effect */
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 128, 0, 0.8); /* Green with opacity */
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s ease, backdrop-filter 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px); /* Blur effect */
+}
+
+.content:hover .overlay,
+.overlay:hover {
+    height: 30%; /* Adjust the height as needed */
+}
+
+.overlay button {
+    background-color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    border-radius: 15px; /* Rounded edges */
+    position: absolute;
+    left: 10px; /* Position on the left side */
+}
+
+.overlay button:hover {
+    background-color: #f0f0f0; /* Slightly darker on hover */
 }
 
 /* ------------------- @media srágory ----------------- */
@@ -23,7 +72,7 @@
         grid-template-columns: 1fr;
     }
 
-    .link-header{
+    .link-header {
         flex-direction: column;
     }
 }
