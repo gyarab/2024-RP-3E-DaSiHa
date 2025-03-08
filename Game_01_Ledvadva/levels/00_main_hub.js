@@ -1,36 +1,36 @@
 // Autor: Šimon Bendl
 import { Rectangle } from '../../Monkey-Engine/Rectangle.js';
-import { LevelSelect } from '../../Monkey-Engine/Interactable.js';
+import { LevelSelect, Platform, SemiSolid, Solid} from '../../Monkey-Engine/PlatformerLib.js';
 
 /*-----------------------------barriers----------------------------------- */
 //const _1001 = new Rectangle(1624,  480,  128,  240,"red"); _1001._id = "pc" 
-const _1002 = new Rectangle( 920,  276,  604,   52,"red"); _1002._id = "shelf"  
-const _1003 = new Rectangle(   0, 1072, 1920,   16,"red"); _1003._id = "floor"
-const _1004 = new Rectangle( 112,  124,   16,  924,"yellow"); _1004._id = "library-wall-1"
-const _1005 = new Rectangle( 836,  124,   16,  924,"yellow"); _1005._id = "library-wall-2"
-const _1006 = new Rectangle(1292,  720,  516,   36,"red"); _1006._id = "desk-1" 
-const _1007 = new Rectangle(1080,  720,   24,   36,"red"); _1007._id = "desk-2"
-const _1008 = new Rectangle(1092,  720,   12,  180,"yellow"); _1008._id = "drawer-1"
-const _1009 = new Rectangle(1292,  720,   12,  180,"yellow"); _1009._id = "drawer-2"
+const _1002 = new Solid( 920,  276,  604,   52); _1002._id = "shelf"  
+const _1003 = new Solid(   0, 1072, 1920,   16); _1003._id = "floor"
+const _1004 = new SemiSolid( 112,  124,   16,  924,"yellow"); _1004._id = "library-wall-1"
+const _1005 = new SemiSolid( 836,  124,   16,  924,"yellow"); _1005._id = "library-wall-2"
+const _1006 = new Solid(1292,  720,  516,   36); _1006._id = "desk-1" 
+const _1007 = new Solid(1080,  720,   24,   36); _1007._id = "desk-2"
+const _1008 = new SemiSolid(1092,  720,   12,  180,"yellow"); _1008._id = "drawer-1"
+const _1009 = new SemiSolid(1292,  720,   12,  180,"yellow"); _1009._id = "drawer-2"
 const _1010 = new Rectangle(1092,  896,  212,   16,"grey"); _1010._id = "drawer-3"
 
 /*-----------------------------interactable-----------------------------------*/
 
 /*--------------------------yellow-baririers------------------------------ */
-const _2001 = new Rectangle(1092, 912, 12, 140, "yellow") // drawers
-const _2002 = new Rectangle(1292, 912, 12, 140, "yellow") // -//-
+const _2001 = new SemiSolid(1092, 912, 12, 140, "yellow") // drawers
+const _2002 = new SemiSolid(1292, 912, 12, 140, "yellow") // -//-
 /*-----------------------------platforms-----------------------------------*/
-const _3001 = new Rectangle( 112,  112, 740,   12, "orange") // library
-const _3002 = new Rectangle( 128,  268, 708,   20, "orange") // -//-
-const _3003 = new Rectangle( 128,  424, 708,   20, "orange") // -//-
-const _3004 = new Rectangle( 128,  580, 708,   20, "orange") // -//-
-const _3005 = new Rectangle( 128,  736, 708,   20, "orange") // -//-
-const _3006 = new Rectangle( 128,  892, 708,   20, "orange") // -//-
-const _3007 = new Rectangle( 128, 1048, 708,   24, "orange") // -//-
-const _3008 = new Rectangle(1104,  720, 188,   36, "orange") // drawers
-const _3013 = new Rectangle(1104,  784, 188,    8, "orange") // -//-
-const _3009 = new Rectangle(1104,  836, 188,    8, "orange") // -//-
-const _3010 = new Rectangle(1104, 1044, 188,   28, "orange") // -//-
+const _3001 = new Platform( 112,  112, 740,   12) // library
+const _3002 = new Platform( 128,  268, 708,   20) // -//-
+const _3003 = new Platform( 128,  424, 708,   20) // -//-
+const _3004 = new Platform( 128,  580, 708,   20) // -//-
+const _3005 = new Platform( 128,  736, 708,   20) // -//-
+const _3006 = new Platform( 128,  892, 708,   20) // -//-
+const _3007 = new Platform( 128, 1048, 708,   24) // -//-
+const _3008 = new Platform(1104,  720, 188,   36) // drawers
+const _3013 = new Platform(1104,  784, 188,    8) // -//-
+const _3009 = new Platform(1104,  836, 188,    8) // -//-
+const _3010 = new Platform(1104, 1044, 188,   28) // -//-
 const _3014 = new LevelSelect( 704,  972, 128,   76); _3014._id = "3014";//nike
 const _3016 = new LevelSelect( 240,  816, 156,   76); _3016._id = "3016"//games
 const _3012 = new Rectangle     ( 142,  856,  92,   36, "grey");//contoler

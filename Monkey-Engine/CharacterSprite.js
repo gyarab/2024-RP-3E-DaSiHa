@@ -1,6 +1,6 @@
 import { SpriteDyna } from "./SpriteDyna.js";
 import { Interactable } from "./Interactable.js";
-import { Basketball, Platform, Pushable, SemiSolid, Solid } from "./PlatformerLib.js";
+import { Basketball, LevelSelect, Platform, Pushable, SemiSolid, Solid } from "./PlatformerLib.js";
 import { Rectangle } from "./Rectangle.js";
 
 export class CharacterSprite extends SpriteDyna{
@@ -131,7 +131,7 @@ export class CharacterSprite extends SpriteDyna{
             //! 0 = none, 1 = solid, 2 = platform, else = dynamic_id
             let actAsRed  = null;
 
-            if(ob instanceof Platform && !this._wantGoDown){
+            if(ob instanceof Platform && !this._wantGoDown || ob instanceof LevelSelect){
                 if (NextFrameY.doesColideWith(ob)  && !this.doesColideWith(ob) && (this._yVelocity >= 0)){
                     canGoDown = false;
                     this._typeOfGround = 2;
