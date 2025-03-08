@@ -147,3 +147,27 @@ krásně rozdělal schazování kuželek a částečně zaimplementoval rychlost
 **Hana**
 
 upozornila na stagnaci jakéhokoliv progresu a toho že neví kudy kam. Proto bylo zapotřebí zasáhnout a opravit jí strukturu kódu. S několika úkoly jsem jí tedy pomohl a doufám že si udrží momentum.
+
+# 8.3 Well-past deadline
+
+**David**
+
+překvapivě pěkně rozpracoval game library v HTML a vyřešil padání bolingové koule do žlábků ale furt ho čeká nejtěžší část které se vyhýbá jak čert kříži a to je samotné schazování kuželek, krom toho ale dohnal zadání takže mu patřičně přidám.
+dále bych si od něj přál:
+- brzší mizení koule a zároveň vyřešení vizuálních neduch kdy se kuželky vykreslují za koulí i když už to neodpovídá realitě/perspektivě
+- aby kuželky už padaly (je třeba to vzít obecně dosavadní přístup je chabý)
+- aby pokračoval v HTMLku a CSSku pro velký uspěch (pokračoval bych v knihovně videoher či v něčem dle liba)
+
+**Hana**
+
+navázala na zavedení hitboxů a detekcí nárazu s výpisem game over. Bohužel nijak nenavázala a hra nejde ani opětovně zpustit. Z její hromádky nesplněné práce ale moc neubylo tudíž apeluji na dodělání:
+- počítání/vypisování skóre
+- colectables jsou stále zvlášťně vytvářené v půlce obrazovky (celkově je nazvážení předělání značně monotóní frekvence "posílání" překážek i colectables)
+- colectables stále nelze sebrat
+- druhá scenérie stále nenavazuje jak bych si přál
+- v HTML nevzniklo dosud nic
+
+krom těchto opakujících se zadání se objevilo i pár neduh které by bylo fajn pořešit:
+- velikost textur pro překážky někdy značně mistifikuje upravid textury/přizpůsobit hitboxi je třeba
+- po prohře hra zmrzne a ani restart neni možnen
+- nově neviditelné tlačítko pro změnu scenérií je stále funkční po smrti hráče
