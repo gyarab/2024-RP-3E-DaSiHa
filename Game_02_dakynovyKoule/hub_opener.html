@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcade Game Hub</title>
+    <link rel = "stylesheet" href = "../Main-Website/style_header.css"     >
+  <link rel = "stylesheet" href = "../Main-Website/style_GameSection.css" >
+  <link rel = "stylesheet" href = "../Main-Website/style_GameGallery.css" >
+    <style>
+        body {
+         display: block;
+         justify-content: center;
+         align-items: center;
+         background-color:#492f09;
+         margin: 0;
+       }
+    </style>
+    <script type="module">
+      loadExternalHTML('/Game_02_dakynovyKoule/hub.html');
+    </script>
+</head>
+<body>
+    <div id="externalCode"></div>
+  <script>
+    function loadExternalHTML(url) {
+          return fetch(url)
+            .then(response => response.text())
+            .then(data => {
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = data;
+              document.getElementById('externalCode').appendChild(tempDiv);
+              const scripts = tempDiv.getElementsByTagName('script');
+              for (let script of scripts) {
+          const newScript = document.createElement('script');
+          newScript.text = script.text;
+          document.body.appendChild(newScript);
+              }
+            });
+        }
+
+        loadExternalHTML('../Main-Website/Header.html')
+          .then(() => loadExternalHTML('../Main-Website/GameSection.html'))
+          .then(() => loadExternalHTML('../Main-Website/GameGallery.html'))
+          .catch(error => {
+            console.error('Error fetching HTML:', error);
+          });
+  </script>
+</body>
+</html>
