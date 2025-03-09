@@ -12,7 +12,7 @@ const _1006 = new Solid(1292,  720,  516,   36); _1006._id = "desk-1"
 const _1007 = new Solid(1080,  720,   24,   36); _1007._id = "desk-2"
 const _1008 = new SemiSolid(1092,  720,   12,  180,"yellow"); _1008._id = "drawer-1"
 const _1009 = new SemiSolid(1292,  720,   12,  180,"yellow"); _1009._id = "drawer-2"
-const _1010 = new Rectangle(1092,  896,  212,   16,"grey"); _1010._id = "drawer-3"
+const _1010 = new Rectangle(1092,  896,  212,   16,"grey"  ); _1010._id = "drawer-3"
 
 /*-----------------------------interactable-----------------------------------*/
 
@@ -48,19 +48,3 @@ export const barriers = [
     _2001, _2002,
     _3001, _3002, _3003,_3004,_3005,_3006,_3007,_3008,_3009,_3010,_3013,_3014,_3016,_3012,_3011,_3015,_3017, _3018,_3019
 ];
-/*-----------------------------Blue Print--------------------------------
-const canvas = document.getElementById('herniRozhraní');
-const ctx = canvas.getContext('2d');
-
-const Blue = new Rectangle(0,0,1920,1080,"blue")
-const Print = new Sprite(0,0,1920,1080,path + "hub01.png")
-
-/*-----------------------------Render-----------------------------------
-function RenderAll() {
-    Blue.render(ctx,true)
-    Print.render(ctx)
-    barriers.forEach(barriers => barriers.render(ctx));
-    
-}
-window.setInterval(RenderAll, 10);
-/* */
