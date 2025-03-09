@@ -131,7 +131,7 @@ export class CharacterSprite extends SpriteDyna{
             //! 0 = none, 1 = solid, 2 = platform, else = dynamic_id
             let actAsRed  = null;
 
-            if(ob instanceof Platform && !this._wantGoDown || ob instanceof LevelSelect){
+            if((ob instanceof Platform  || (ob instanceof LevelSelect && ob._isComplete)) && !this._wantGoDown){
                 if (NextFrameY.doesColideWith(ob)  && !this.doesColideWith(ob) && (this._yVelocity >= 0)){
                     canGoDown = false;
                     this._typeOfGround = 2;

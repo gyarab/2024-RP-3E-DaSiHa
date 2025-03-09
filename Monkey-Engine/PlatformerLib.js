@@ -7,6 +7,7 @@ import {    Rectangle } from './Rectangle.js';
 //TODO změnit hitbox u Projektilů na kruh
 //TODO přidat Tetragon-Solid
 //TODO Pushable má hodně much
+//TODO: EndOfLevel, Switch,LevelSelect
 
 /*--------------------------Walls---------------------------*/
 export class Platform  extends Rectangle{
@@ -30,6 +31,7 @@ export class Ladder extends Rectangle{
     }
 }
 /*---------------------Interactable-------------------------*/
+//TODO: vyzobrazovat různé stavy dodělanosti
 export class LevelSelect extends Interactable{
     constructor(x, y, width, height){
         super(x, y, width, height);
@@ -37,10 +39,29 @@ export class LevelSelect extends Interactable{
     }
     _action(objects){
         console.log("Level Select");
-        objects._color = "orange";
         this._isComplete = true;
     }
 }
+//TODO: vyzobrazovat různé stavy dodělanosti
+export class Switch extends Interactable{
+    constructor(x, y, width, height){
+        super(x, y, width, height);
+        this._isOn = false;
+    };;
+    _action(objects){
+        console.log("Switch");
+        this._isOn = !this._isOn;
+    }
+}
+export class EndOfLevel extends Interactable{
+    constructor(x, y, width, height){
+        super(x, y, width, height);
+    };;
+    _action(objects){
+        console.log("EndOfLevel");
+    }
+};
+/*---------------------Pushable-------------------------*/
 export class Pushable  extends CharacterSprite0{
     constructor(x, y, width, height, spritePaths){
         super  (x, y, width, height, spritePaths); 
