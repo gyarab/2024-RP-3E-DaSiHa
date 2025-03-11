@@ -1,6 +1,6 @@
 import { Sprite } from '../Monkey-Engine/Sprite.js';
 import { SpriteAnim } from '../Monkey-Engine/SpriteAnim.js';
-import { pointInPolygon, Tetragon } from '../Monkey-Engine/Tetragon.js';
+import { Tetragon } from '../Monkey-Engine/Tetragon.js';
 import { Rectangle } from '../Monkey-Engine/Rectangle.js';
 
 
@@ -152,56 +152,120 @@ const sipecka = new SpriteAnim(850, 840, 250, 250, [
 sipecka.animSlow = 5;
 let sipeckaStop = false;
 
+const cudlikR = new Sprite(1450, 850, 420, 180);
+cudlikR.loadImg("/Game_02_dakynovyKoule/foto/cudlasR.png");
 
+const kouleR = new SpriteAnim(900, 890, 150, 150, [
+    "/Game_02_dakynovyKoule/foto/gulaR.png",
+    "/Game_02_dakynovyKoule/foto/gula2R.png",
+    "/Game_02_dakynovyKoule/foto/gula_zadaR.png",
+    "/Game_02_dakynovyKoule/foto/gula_zadaR.png",
+    "/Game_02_dakynovyKoule/foto/gula_zadaR.png",
+    "/Game_02_dakynovyKoule/foto/gula3R.png"
+]);
+kouleR.animSlow = 10;
+
+const sipeckaR = new SpriteAnim(850, 840, 250, 250, [
+    "/Game_02_dakynovyKoule/foto/sipkaR.png",
+    "/Game_02_dakynovyKoule/foto/sipka-1R.png",
+    "/Game_02_dakynovyKoule/foto/sipka-2R.png",
+    "/Game_02_dakynovyKoule/foto/sipka-3R.png",
+    "/Game_02_dakynovyKoule/foto/sipka-4R.png",
+    "/Game_02_dakynovyKoule/foto/sipka-5R.png",
+    "/Game_02_dakynovyKoule/foto/sipka-6R.png",
+    "/Game_02_dakynovyKoule/foto/sipka-7R.png",
+    "/Game_02_dakynovyKoule/foto/sipka-8R.png",
+    "/Game_02_dakynovyKoule/foto/sipka-9R.png",
+    "/Game_02_dakynovyKoule/foto/sipka-8R.png",
+    "/Game_02_dakynovyKoule/foto/sipka-7R.png",
+    "/Game_02_dakynovyKoule/foto/sipka-6R.png",
+    "/Game_02_dakynovyKoule/foto/sipka-5R.png",
+    "/Game_02_dakynovyKoule/foto/sipka-4R.png",
+    "/Game_02_dakynovyKoule/foto/sipka-3R.png",
+    "/Game_02_dakynovyKoule/foto/sipka-2R.png",
+    "/Game_02_dakynovyKoule/foto/sipka-1R.png",
+    "/Game_02_dakynovyKoule/foto/sipkaR.png",
+    "/Game_02_dakynovyKoule/foto/sipka1R.png",
+    "/Game_02_dakynovyKoule/foto/sipka2R.png",
+    "/Game_02_dakynovyKoule/foto/sipka3R.png",
+    "/Game_02_dakynovyKoule/foto/sipka4R.png",
+    "/Game_02_dakynovyKoule/foto/sipka5R.png",
+    "/Game_02_dakynovyKoule/foto/sipka6R.png",
+    "/Game_02_dakynovyKoule/foto/sipka7R.png",
+    "/Game_02_dakynovyKoule/foto/sipka8R.png",
+    "/Game_02_dakynovyKoule/foto/sipka9R.png",
+    "/Game_02_dakynovyKoule/foto/sipka8R.png",
+    "/Game_02_dakynovyKoule/foto/sipka7R.png",
+    "/Game_02_dakynovyKoule/foto/sipka6R.png",
+    "/Game_02_dakynovyKoule/foto/sipka5R.png",
+    "/Game_02_dakynovyKoule/foto/sipka4R.png",
+    "/Game_02_dakynovyKoule/foto/sipka3R.png",
+    "/Game_02_dakynovyKoule/foto/sipka2R.png",
+    "/Game_02_dakynovyKoule/foto/sipka1R.png"
+]);
+sipeckaR.animSlow = 5;
+
+
+let hrac = 1;
 function Mainloop() {
     background.render(ctx);
-    //zlabekL.render(ctx, true);
-    //zlabekR.render(ctx, true);
-    cudlik.render(ctx);
+    if (hrac % 2 == 1) {
+        cudlik.render(ctx);
+    } else {
+        cudlikR.render(ctx);
+    }
     if (showKuzelka10) {
         kuzelka10.render(ctx);
-        pin10.render(ctx, true);
+    
     }
     if (showKuzelka9) {
         kuzelka9.render(ctx);
-        pin9.render(ctx, true);
+
     }
     if (showKuzelka8) {
         kuzelka8.render(ctx);
-        pin8.render(ctx, true);
+
     }
     if (showKuzelka7) {
         kuzelka7.render(ctx);
-        pin7.render(ctx, true);
+
     }
     if (showKuzelka6) {
         kuzelka6.render(ctx);
-        pin6.render(ctx, true);
+
     }
     if (showKuzelka5) {
         kuzelka5.render(ctx);
-        pin5.render(ctx, true);
+
     }
     if (showKuzelka4) {
         kuzelka4.render(ctx);
-        pin4.render(ctx, true);
+
     }
     if (showKuzelka3) {
         kuzelka3.render(ctx);
-        pin3.render(ctx, true);
+
     }
     if (showKuzelka2) {
         kuzelka2.render(ctx);
-        pin2.render(ctx, true);
+
     }
     if (showKuzelka1) {
         kuzelka1.render(ctx);
-        pin1.render(ctx, true);
+
     }
     if (showKoule == false) {
-        sipecka.render(ctx);
-        if (sipeckaStop == false) {
-            sipecka.updateImage();
+        if (hrac % 2 == 1) {
+            sipecka.render(ctx);
+            if (sipeckaStop == false) {
+                sipecka.updateImage();
+            }
+        }
+        if (hrac % 2 == 0) {
+            sipeckaR.render(ctx);
+            if (sipeckaStop == false) {
+                sipeckaR.updateImage();
+            }
         }
     }
     if (showpower) {
@@ -209,8 +273,14 @@ function Mainloop() {
         power.updateImage();
     }
     if (showKoule) {
-        koule.render(ctx);
-        koule.updateImage();
+        if (hrac % 2 == 1) {
+            koule.render(ctx);
+            koule.updateImage();
+        }
+        if (hrac % 2 == 0) {
+            kouleR.render(ctx);
+            kouleR.updateImage();
+        }
     }
 }
 
@@ -242,14 +312,16 @@ let ballX = koule._x;
 let ballScale = 1;
 let pokus = 0;
 let zlabek = false;
+let strike = false;
 
 function moveBall() {
     let ballSpeed = 0.8;
     let ballShrinkSpeed = 0.0018;
 
+
     const hibox_zlabek = new Rectangle(koule._points[3].x + koule._width / 2 - 10, koule._points[3].y, 10, 10, 'red');
-    const hibox_kuzelky = new Rectangle(koule._points[3].x + koule._width / 2 - 10, koule._points[3].y - koule._height, 20, 10, 'green');
-    hibox_kuzelky.render(ctx, true);
+    const hibox_kuzelky = new Rectangle(koule._points[3].x + koule._width / 2 - 13, koule._points[3].y - koule._height, 26, 10, 'green');
+    //hibox_kuzelky.render(ctx);
 
     if (hibox_zlabek.doesColideWith(zlabekL)) {
         zlabek = true;
@@ -311,52 +383,67 @@ function moveBall() {
                         power._currentFrame == 8 || 
                         power._currentFrame == 9 || 
                         power._currentFrame == 10) { 
-                        if (ballY <= 594) {
-                            showKuzelka1 = false;
-                        }
+                            strike = true;
+                            if(strike == true) {
+                            if (ballY <= 594) {
+                                showKuzelka1 = false;
+                            }
 
-                        if (ballY <= 583) {
-                            showKuzelka2 = false;
-                            showKuzelka3 = false;
-                        }
+                            if (ballY <= 583) {
+                                showKuzelka2 = false;
+                                showKuzelka3 = false;
+                            }
 
-                        if (ballY <= 572) {
-                            showKuzelka4 = false;
-                            showKuzelka5 = false;
-                            showKuzelka6 = false;
-                        }
-                        
-                        if (ballY <= 561) {
-                            showKuzelka7 = false;
-                            showKuzelka8 = false;
-                            showKuzelka9 = false;
-                            showKuzelka10 = false;
-                            pokus = 2;
+                            if (ballY <= 572) {
+                                showKuzelka4 = false;
+                                showKuzelka5 = false;
+                                showKuzelka6 = false;
+                            }
+                            
+                            if (ballY <= 561) {
+                                showKuzelka7 = false;
+                                showKuzelka8 = false;
+                                showKuzelka9 = false;
+                                showKuzelka10 = false;
+                                pokus = 2;
+                            }
                         }
                     }
                 }
             }
+        
 
-            if (hibox_kuzelky.doesColideWith(pin1)) {
-                showKuzelka1 = false;
-            } else if (hibox_kuzelky.doesColideWith(pin2)) {
-                showKuzelka2 = false;
-            } else if (hibox_kuzelky.doesColideWith(pin3)) {
-                showKuzelka3 = false;
-            } else if (hibox_kuzelky.doesColideWith(pin4)) {
-                showKuzelka4 = false;
-            } else if (hibox_kuzelky.doesColideWith(pin5)) {
-                showKuzelka5 = false;
-            } else if (hibox_kuzelky.doesColideWith(pin6)) {
-                showKuzelka6 = false;
-            } else if (hibox_kuzelky.doesColideWith(pin7)) {
-                showKuzelka7 = false;
-            } else if (hibox_kuzelky.doesColideWith(pin8)) {
-                showKuzelka8 = false;
-            } else if (hibox_kuzelky.doesColideWith(pin9)) {
-                showKuzelka9 = false;
-            } else if (hibox_kuzelky.doesColideWith(pin10)) {
-                showKuzelka10 = false;
+            if(strike == false) {
+                if (hibox_kuzelky.doesColideWith(pin1)) {
+                    showKuzelka1 = false;
+                }
+                if (hibox_kuzelky.doesColideWith(pin2)) {
+                    showKuzelka2 = false;
+                }
+                if (hibox_kuzelky.doesColideWith(pin3)) {
+                    showKuzelka3 = false;
+                }
+                if (hibox_kuzelky.doesColideWith(pin4)) {
+                    showKuzelka4 = false;
+                }
+                if (hibox_kuzelky.doesColideWith(pin5)) {
+                    showKuzelka5 = false;
+                }
+                if (hibox_kuzelky.doesColideWith(pin6)) {
+                    showKuzelka6 = false;
+                }
+                if (hibox_kuzelky.doesColideWith(pin7)) {
+                    showKuzelka7 = false;
+                }
+                if (hibox_kuzelky.doesColideWith(pin8)) {
+                    showKuzelka8 = false;
+                }
+                if (hibox_kuzelky.doesColideWith(pin9)) {
+                    showKuzelka9 = false;
+                }
+                if (hibox_kuzelky.doesColideWith(pin10)) {
+                    showKuzelka10 = false;
+                }
             }
 
         if(!zlabek) {
@@ -432,13 +519,17 @@ function moveBall() {
                         showKuzelka8 = true;
                         showKuzelka9 = true;
                         showKuzelka10 = true;
-                        }, 500);
+                        }, 1000);
                     pokus = 0;
+                    setTimeout(() => {
+                    hrac++;
+                    }, 1000);
                 }
                     ballY = 890;
                     ballX = 900;
                     ballScale = 1;
                     zlabek = false;
+                    strike = false;
                     sipecka._currentFrame = 0;
                     power._currentFrame = 0;
             }
@@ -449,8 +540,241 @@ function moveBall() {
         }
 }
 
+let ballRX = kouleR._x;
+let ballRY = kouleR._y;
+
+function moveBallR() {
+    let ballSpeed = 0.8;
+    let ballShrinkSpeed = 0.0018;
+
+    const hiboxR_zlabek = new Rectangle(kouleR._points[3].x + kouleR._width / 2 - 10, kouleR._points[3].y, 10, 10, 'red');
+    const hiboxR_kuzelky = new Rectangle(kouleR._points[3].x + kouleR._width / 2 - 13, kouleR._points[3].y - kouleR._height, 26, 10, 'green');
+
+    if (hiboxR_zlabek.doesColideWith(zlabekL) || hiboxR_zlabek.doesColideWith(zlabekL)) {
+        zlabek = true;
+        ballRX += 0.09;
+        ballSpeed = 0.15;
+        ballShrinkSpeed = 0.0005;
+    } else if (hiboxR_zlabek.doesColideWith(zlabekR) || hiboxR_zlabek.doesColideWith(zlabekR)) {
+        zlabek = true;
+        ballRX -= 0.29;
+        ballSpeed = 0.15;
+        ballShrinkSpeed = 0.0005;
+    }
+
+    if (!zlabek) {
+        if (power._currentFrame == 0) {
+            ballSpeed = 0.3;
+            ballShrinkSpeed = 0.0008;
+        }
+        if (power._currentFrame == 1 || power._currentFrame == 13) {
+            ballSpeed = 0.4;
+            ballShrinkSpeed = 0.0010;
+        }
+        if (power._currentFrame == 2 || power._currentFrame == 12) {
+            ballSpeed = 0.5;
+            ballShrinkSpeed = 0.0012;
+        }
+        if (power._currentFrame == 3 || power._currentFrame == 11) {
+            ballSpeed = 0.6;
+            ballShrinkSpeed = 0.0014;
+        }
+        if (power._currentFrame == 4 || power._currentFrame == 10) {
+            ballSpeed = 0.7;
+            ballShrinkSpeed = 0.0016;
+        }
+        if (power._currentFrame == 5 || power._currentFrame == 9) {
+            ballSpeed = 0.8;
+            ballShrinkSpeed = 0.0018;
+        }
+        if (power._currentFrame == 6 || power._currentFrame == 8) {
+            ballSpeed = 0.9;
+            ballShrinkSpeed = 0.002;
+        }
+        if (power._currentFrame == 7) {
+            ballSpeed = 1;
+            ballShrinkSpeed = 0.0022;
+        }
+    }
+
+    if (showKoule) {
+        ballRY -= ballSpeed;
+        ballScale -= ballShrinkSpeed;
+        ballRX += 0.14;
+
+        if (sipecka._currentFrame == 0) {
+            if (pokus == 0) {
+                if (power._currentFrame == 4 ||
+                    power._currentFrame == 5 ||
+                    power._currentFrame == 6 ||
+                    power._currentFrame == 7 ||
+                    power._currentFrame == 8 ||
+                    power._currentFrame == 9 ||
+                    power._currentFrame == 10) {
+                    strike = true;
+                    if (strike == true) {
+                        if (ballRY <= 594) {
+                            showKuzelka1 = false;
+                        }
+
+                        if (ballRY <= 583) {
+                            showKuzelka2 = false;
+                            showKuzelka3 = false;
+                        }
+
+                        if (ballRY <= 572) {
+                            showKuzelka4 = false;
+                            showKuzelka5 = false;
+                            showKuzelka6 = false;
+                        }
+
+                        if (ballRY <= 561) {
+                            showKuzelka7 = false;
+                            showKuzelka8 = false;
+                            showKuzelka9 = false;
+                            showKuzelka10 = false;
+                            pokus = 2;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (strike == false) {
+            if (hiboxR_kuzelky.doesColideWith(pin1)) {
+            showKuzelka1 = false;
+            }
+            if (hiboxR_kuzelky.doesColideWith(pin2)) {
+            showKuzelka2 = false;
+            }
+            if (hiboxR_kuzelky.doesColideWith(pin3)) {
+            showKuzelka3 = false;
+            }
+            if (hiboxR_kuzelky.doesColideWith(pin4)) {
+            showKuzelka4 = false;
+            }
+            if (hiboxR_kuzelky.doesColideWith(pin5)) {
+            showKuzelka5 = false;
+            }
+            if (hiboxR_kuzelky.doesColideWith(pin6)) {
+            showKuzelka6 = false;
+            }
+            if (hiboxR_kuzelky.doesColideWith(pin7)) {
+            showKuzelka7 = false;
+            }
+            if (hiboxR_kuzelky.doesColideWith(pin8)) {
+            showKuzelka8 = false;
+            }
+            if (hiboxR_kuzelky.doesColideWith(pin9)) {
+            showKuzelka9 = false;
+            }
+            if (hiboxR_kuzelky.doesColideWith(pin10)) {
+            showKuzelka10 = false;
+            }
+        }
+
+        if (!zlabek) {
+            if (sipeckaR._currentFrame == 1 || sipeckaR._currentFrame == 17) {
+            ballRX -= 0.07;
+            }
+            if (sipeckaR._currentFrame == 2 || sipeckaR._currentFrame == 16) {
+            ballRX -= 0.14;
+            }
+            if (sipeckaR._currentFrame == 3 || sipeckaR._currentFrame == 15) {
+            ballRX -= 0.21;
+            }
+            if (sipeckaR._currentFrame == 4 || sipeckaR._currentFrame == 14) {
+            ballRX -= 0.31;
+            }
+            if (sipeckaR._currentFrame == 5 || sipeckaR._currentFrame == 13) {
+            ballRX -= 0.43;
+            }
+            if (sipeckaR._currentFrame == 6 || sipeckaR._currentFrame == 12) {
+            ballRX -= 0.54;
+            }
+            if (sipeckaR._currentFrame == 7 || sipeckaR._currentFrame == 11) {
+            ballRX -= 0.68;
+            }
+            if (sipeckaR._currentFrame == 8 || sipeckaR._currentFrame == 10) {
+            ballRX -= 0.79;
+            }
+            if (sipeckaR._currentFrame == 9) {
+            ballRX -= 0.89;
+            }
+            if (sipeckaR._currentFrame == 19 || sipeckaR._currentFrame == 35) {
+            ballRX += 0.07;
+            }
+            if (sipeckaR._currentFrame == 20 || sipeckaR._currentFrame == 34) {
+            ballRX += 0.14;
+            }
+            if (sipeckaR._currentFrame == 21 || sipeckaR._currentFrame == 33) {
+            ballRX += 0.21;
+            }
+            if (sipeckaR._currentFrame == 22 || sipeckaR._currentFrame == 32) {
+            ballRX += 0.31;
+            }
+            if (sipeckaR._currentFrame == 23 || sipeckaR._currentFrame == 31) {
+            ballRX += 0.43;
+            }
+            if (sipeckaR._currentFrame == 24 || sipeckaR._currentFrame == 30) {
+            ballRX += 0.54;
+            }
+            if (sipeckaR._currentFrame == 25 || sipeckaR._currentFrame == 29) {
+            ballRX += 0.68;
+            }
+            if (sipeckaR._currentFrame == 26 || sipeckaR._currentFrame == 28) {
+            ballRX += 0.79;
+            }
+            if (sipeckaR._currentFrame == 27) {
+            ballRX += 0.89;
+            }
+        }
+
+        if (ballRY <= 560 || (hiboxR_zlabek.doesColideWith(zlabekL) && ballRY <= 600) || (hiboxR_zlabek.doesColideWith(zlabekR) && ballRY <= 600)) {
+            showKoule = false;
+            pokus++;
+            if (pokus >= 2) {
+            showKoule = false;
+            setTimeout(() => {
+                showKuzelka1 = true;
+                showKuzelka2 = true;
+                showKuzelka3 = true;
+                showKuzelka4 = true;
+                showKuzelka5 = true;
+                showKuzelka6 = true;
+                showKuzelka7 = true;
+                showKuzelka8 = true;
+                showKuzelka9 = true;
+                showKuzelka10 = true;
+            }, 1000);
+            pokus = 0;
+            setTimeout(() => {
+                hrac++;
+                }, 1000);
+            }
+            ballRY = 890;
+            ballRX = 900;
+            ballScale = 1;
+            zlabek = false;
+            strike = false;
+            sipecka._currentFrame = 0;
+            power._currentFrame = 0;
+        }
+        kouleR.y = ballRY;
+        kouleR.x = ballRX;
+        kouleR.width = 150 * ballScale;
+        kouleR.height = 150 * ballScale;
+    }
+}
+
+console.log(hrac);
+
     window.setInterval(() => {
         Mainloop();
-        moveBall();
+        if(hrac % 2 == 1) {
+            moveBall();
+        } else {    
+            moveBallR();
+        }
     }, 1);
 });
