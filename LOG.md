@@ -57,7 +57,7 @@ má (do 15.1.) :
 + vytvořit sprity pro motýle 
 + vytvořit sprity pro překážky (zkusit vícero)
 + vytvořit pozadí (zkusit vícero lokací)
-+ vytvořit sprity pro potencionální colectables (coiny,kosti nebo tak něco)
++ vytvořit sprity pro potencionální collectables (coiny,kosti nebo tak něco)
 
 ## 15.1. Třetí schůzka 
 **David**
@@ -99,7 +99,7 @@ uspěšne nakreslil sprity pro kouli, rozhýbal jí, a zprovoznil tlačítko na 
 uspěšně opravila pozadí takže na sebe samo (jakžtakž) navazuje, dále ho roztočila a zozhejbala samotné překážky. Kolize s překážky a vykreslování psa ve skoku neztihla, dále tyto úkoly trvají. Dále
 (do 29.1.) má:
 + nastavit rycholsti a délku skoku tak aby hra byla "hratelná"
-+ možnost interakce s colectables
++ možnost interakce s collectables
 + počítání skóre a alespoň do konzole vypisovat
 + využít i alternativní scenérie
 + něco v HTML hledač her nebo přepínač kategorijí (klidně oboje ☺)
@@ -128,7 +128,7 @@ dále (do 12.2.):
 
 dodělat:
 - vykreslování psa ve skoku
-- řešení kolizí s překážky i colectables
+- řešení kolizí s překážky i collectables
 - počítání a vykreslování skóre
 - využítí druhé scenérie (taktéž by měla navazovat a i překážky by měli měnit vizáž)
 - rozpracování HTML stránky (vyhledávač her nebo filtrování podle žánrů)
@@ -162,8 +162,8 @@ dále bych si od něj přál:
 
 navázala na zavedení hitboxů a detekcí nárazu s výpisem game over. Bohužel nijak nenavázala a hra nejde ani opětovně zpustit. Z její hromádky nesplněné práce ale moc neubylo tudíž apeluji na dodělání:
 - počítání/vypisování skóre
-- colectables jsou stále zvlášťně vytvářené v půlce obrazovky (celkově je nazvážení předělání značně monotóní frekvence "posílání" překážek i colectables)
-- colectables stále nelze sebrat
+- collectables jsou stále zvlášťně vytvářené v půlce obrazovky (celkově je nazvážení předělání značně monotóní frekvence "posílání" překážek i collectables)
+- collectables stále nelze sebrat
 - druhá scenérie stále nenavazuje jak bych si přál
 - v HTML nevzniklo dosud nic
 
@@ -171,3 +171,31 @@ krom těchto opakujících se zadání se objevilo i pár neduh které by bylo f
 - velikost textur pro překážky někdy značně mistifikuje upravid textury/přizpůsobit hitboxi je třeba
 - po prohře hra zmrzne a ani restart neni možnen
 - nově neviditelné tlačítko pro změnu scenérií je stále funkční po smrti hráče
+
+# 11. 3 Pátá schůzka
+Pro zoficielnění nových deadlinů a pro Davidovo upěšně dohnání svých dosavadních deadlinů.
+
+**David**
+uspěšně dodělal svůj kus práce
+
+dále (do 16. 3) má:
+- vytvořit tabulku počítající skóre jednotlivých hráčů
+- vytvořit strukturu Latexové dokumentace
+
+**Hana**
+
+nic neudělala,
+
+stále má dodělat:
+- počítání/vypisování skóre
+- collectables jsou stále zvlášťně vytvářené v půlce obrazovky (celkově je nazvážení předělání značně monotóní frekvence "posílání" překážek i collectables)
+- collectables stále nelze sebrat
+- druhá scenérie stále nenavazuje jak bych si přál
+- v HTML nevzniklo dosud nic
+
+dále (do 16. 3) má:
+- opravit chyby:
+    - upravid textury/přizpůsobit hitboxi
+    - vypnout jediné tlačítko při prohře
+- zprovoznit opakovené spuštění hry
+- krom už zadaného vypisování skóre vypsat i nejvyžší dosažené skóre
