@@ -51,40 +51,42 @@ export class SpriteDyna extends SpriteAnim{
         this._isGoDown = newIsGoDown;
     }
 }
-/*---------------------------SpriteDyna-------------------------------
-import { Tetragon , colides } from './Tetragon.js';
+/*//*----------------SpriteDyna EXAMPLE----------------
+import { Tetragon } from './Tetragon.js';
+
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
+
 const bluescreen = new Tetragon(
     {x:0,y:0},
     {x:800,y:0},
     {x:800,y:400},
     {x:0,y:150}
-)
-
+);
 const c = new SpriteDyna(10,10,90,160,[ 
-   "/Game_01_Ledvadva/sprites/BLU/rR/1.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/2.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/3.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/4.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/5.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/6.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/7.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/8.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/7.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/6.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/5.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/4.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/3.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/2.png"
-])
+   "/Game_01_Ledvadva/sprites/Player/BLU/rR/1.png",
+    "/Game_01_Ledvadva/sprites/Player/BLU/rR/2.png",
+    "/Game_01_Ledvadva/sprites/Player/BLU/rR/3.png",
+    "/Game_01_Ledvadva/sprites/Player/BLU/rR/4.png",
+    "/Game_01_Ledvadva/sprites/Player/BLU/rR/5.png",
+    "/Game_01_Ledvadva/sprites/Player/BLU/rR/6.png",
+    "/Game_01_Ledvadva/sprites/Player/BLU/rR/7.png",
+    "/Game_01_Ledvadva/sprites/Player/BLU/rR/8.png",
+    "/Game_01_Ledvadva/sprites/Player/BLU/rR/7.png",
+    "/Game_01_Ledvadva/sprites/Player/BLU/rR/6.png",
+    "/Game_01_Ledvadva/sprites/Player/BLU/rR/5.png",
+    "/Game_01_Ledvadva/sprites/Player/BLU/rR/4.png",
+    "/Game_01_Ledvadva/sprites/Player/BLU/rR/3.png",
+    "/Game_01_Ledvadva/sprites/Player/BLU/rR/2.png"
+]);
 c._animSlow = 4;
 function SpriteAnimLoop (){
+
     bluescreen.render(ctx,true)
     c.render(ctx,true);
     c.updateImage();
     c.updatePos();
-    if (colides(c,bluescreen)){
+    if (c.doesColideWith(bluescreen)){
         bluescreen.color = 'blue'
     }else{
         bluescreen.color = 'red'

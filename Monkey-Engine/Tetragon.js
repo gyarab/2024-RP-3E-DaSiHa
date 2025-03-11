@@ -10,8 +10,7 @@ export class Tetragon{
         Tetragon.IdCounter++;
     }
 
-    //! rendering without fill = true will distort 
-    //!   actual size by half of the strokeWidth
+    //! rendering without fill = true will distort actual size by half of the strokeWidth
     render(ctx, fill) {
         ctx.beginPath();
         ctx.moveTo(this._points[0].x, this._points[0].y);
@@ -57,12 +56,14 @@ export class Tetragon{
                     const intersection = intersectionOfLineSegments(A, B, C, D);
                     if (colidesAnyPoints(this, other)){return true;}
                     if (intersection) {
-                        if (intersection === null) {throw new Error("intersectionOfLineSegments() returned null.")}
+                        if (intersection === null) {
+                            throw new Error("intersectionOfLineSegments() returned null.")
+                        }
                         return true;
                     }  
                 }
             }
-        //other != Tetragon
+        //TODO: other != Tetragon
         }else{
             throw new Error("Argument is not instance of Tetragon.")
         }
@@ -70,15 +71,9 @@ export class Tetragon{
     }
 
     //*------------------Setters--------------------
-    set color  (newColor ){ this._color  = newColor }
-    set points (newPoints){ this._points = newPoints}
-    set id (newId){
-        console.log(
-            '---------------------------------------\n' +
-            'id changed from '+ this._id +' to '+ newId
-        );
-        this._id= newId;
-    }   
+    set color  (newColor ){ this._color  = newColor; }
+    set points (newPoints){ this._points = newPoints;}
+    set id     (newId    ){ this._id= newId;}   
 }
 // * contols if any of the points of the Tetragon intersects the other Tetragon and vice versa
 export function colidesAnyPoints(tetragon1, tetragon2){
@@ -109,8 +104,7 @@ function vectorBetween(p1 , p2){
 
 }
 
-
-/*//*---------------Tetragon-Example-------------------
+/*//*---------------Tetragon-EXAMPLE-------------------
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 const t1 = new Tetragon(
