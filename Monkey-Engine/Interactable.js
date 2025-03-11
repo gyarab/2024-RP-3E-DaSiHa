@@ -5,12 +5,11 @@ import {Sprite} from './Sprite.js'
 //default class for interactable objects
 export class Interactable extends Rectangle{
     constructor(x, y, width, height){
-        super(x, y, width, height,'violet');
-        this._isInteractable = false;
-        this._interactedWith = [];
+        super(x, y, width, height);
+        this._isInteractableWith = [];
     }
     _action(){
-        if (this._isInteractable){
+        if (this._isInteractable()){
             console.log("action");
         }   
     }

@@ -1,7 +1,7 @@
 // Autor: Bendl Šimon
 import {Tetragon} from './Tetragon.js';
 export class Rectangle extends Tetragon{
-    constructor(x, y, width, height,color){
+    constructor(x, y, width, height,color = 'grey'){
         super(
             {x: x , y: y},              //p1
             {x: x + width, y: y},          //p2

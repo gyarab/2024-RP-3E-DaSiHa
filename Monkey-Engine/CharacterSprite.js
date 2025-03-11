@@ -1,6 +1,6 @@
 import { SpriteDyna } from "./SpriteDyna.js";
 import { Interactable } from "./Interactable.js";
-import { Basketball, LevelSelect, Platform, Pushable, SemiSolid, Solid } from "./PlatformerLib.js";
+import { Basketball, Platform, Pushable, SemiSolid, Solid, LevelSelect } from "./PlatformerLib.js";
 import { Rectangle } from "./Rectangle.js";
 
 export class CharacterSprite extends SpriteDyna{
@@ -109,6 +109,7 @@ export class CharacterSprite extends SpriteDyna{
 
         const ratioOfLegs = 9/10
         const ratioOfPushLegsm = 5/10
+
         //kolize
         //NextFrameDown a NextFrameUp jsous skoro stejné a proto si plete kolizi s podlahou a stropem
         const NextFrameDown  = new CharacterSprite(this._x , this._y + this._yVelocity + gravity, this._width, this._height);
@@ -128,26 +129,11 @@ export class CharacterSprite extends SpriteDyna{
         for (let ob of obstacles) {
             //! = act as solid
             //! don't forget to assaign what type of obstacle should use the propretese of red
-            //! 0 = none, 1 = solid, 2 = platform, else = dynamic_id
+            //! 0 = none, 1 = Platform, 2 = SemiSolid, else = Dynamic_id
             let actAsRed  = null;
 
-            if((ob instanceof Platform  || (ob instanceof LevelSelect && ob._isComplete)) && !this._wantGoDown){
-                if (NextFrameY.doesColideWith(ob)  && !this.doesColideWith(ob) && (this._yVelocity >= 0)){
-                    canGoDown = false;
-                    this._typeOfGround = 2;
-                } 
-            }
-            if(ob instanceof SemiSolid){
-                if (
-                        (!this._isJumping && this._points[3].y < ob._points[3].y) 
-                        ||( this._isJumping && this._pointOfJump.y < ob._points[3].y)
-                    ){
-                    if (!this.doesColideWith(ob)){
-                    actAsRed = 1;
-                    }
-                }
-            }
-            if(ob instanceof Pushable){
+            //* ob instanceof Pushable
+            if ( ob instanceof Pushable ){
                 actAsRed = true; 
                 if (!this._isJumping && this._typeOfGround != ob._id){
                     if  (nextFrameRightBox.doesColideWith(ob) && (this._xVelocity >= 0)||
@@ -161,7 +147,26 @@ export class CharacterSprite extends SpriteDyna{
                     this._xVelocity = this._xVelocity + ob._xVelocity;
                 }
             }
-            if(ob instanceof Solid || actAsRed){
+            //* ob instanceof SemiSolid 
+            if (ob._color == 'yellow'){
+                if (
+                        (!this._isJumping && this._points[3].y < ob._points[3].y) 
+                        ||( this._isJumping && this._pointOfJump.y < ob._points[3].y)
+                    ){
+                    if (!this.doesColideWith(ob)){
+                    actAsRed = 2;
+                    }
+                }
+            }
+            //* ob instanceof Platform
+            if (ob._color == 'orange' && !this._wantGoDown){
+                if (NextFrameY.doesColideWith(ob)  && !this.doesColideWith(ob) && (this._yVelocity >= 0)){
+                    canGoDown = false;
+                    this._typeOfGround = 1;
+                } 
+            }
+            //* ob instanceof Solid
+            if (ob._color == 'red' || actAsRed){
                 if (NextFrameDown.doesColideWith(ob)){
                     canGoDown = false;
                     this._typeOfGround = 1;
@@ -181,29 +186,31 @@ export class CharacterSprite extends SpriteDyna{
                     this._xVelocity = this._xVelocity / 10;
                 }
             }
-            if(ob instanceof Interactable){ 
-                if (this.doesColideWith(ob)){
-                    ob._isInteractable = true;
+            //* ob instanceof Interactable
+            if ( ob instanceof Interactable ){ 
+                if (this.doesColideWith(ob) && (this._typeOfGround != 0 || !(ob instanceof LevelSelect))){
+                    ob._isInteractableWith[this._id] = true;
+                    ob._interactingWith = this._id;
                     if(this._wantInteract){
                         ob._action(ob);
                     }
-                }else {
-                    ob._isInteractable = false;
+                }else{
+                    ob._isInteractableWith[this._id] = false;
                 }
             }
-            
         }
+
+        
         if(!canGoRight) {
             this._xVelocity = 0
             this._isPushRight = true;
-        }
-        else if(!canGoLeft)  {
+        }else{ this._isPushRight = false; }
+        if(!canGoLeft)  {
             this._xVelocity = 0
             this._isPushLeft = true;
-        }else{
+        }else{ this._isPushLeft  = false; }
+        if (canGoRight && canGoLeft){
             this.x = this._x + this._xVelocity;
-            this._isPushRight = false;  
-            this._isPushLeft  = false;
         }
         if(canGoDown){
             this._floor = 1080 - this._height;
@@ -211,7 +218,7 @@ export class CharacterSprite extends SpriteDyna{
             this._typeOfGround = 0;
             this._yVelocity += gravity;
             
-        }if (!canGoDown){
+        }else{
             this._floor = Math.floor(this._y) ;
             this._isOnGround = true;
             this._yVelocity = 0;

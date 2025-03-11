@@ -35,11 +35,19 @@ export class Ladder extends Rectangle{
 export class LevelSelect extends Interactable{
     constructor(x, y, width, height){
         super(x, y, width, height);
+        this._platforms = [this];
         this._isComplete = false;
+    }
+    _addPlatform(platform){
+        this._platforms.push(platform);
     }
     _action(objects){
         console.log("Level Select");
+        for (let pform of this._platforms) {
+            pform._color = "orange";
+        }
         this._isComplete = true;
+        
     }
 }
 //TODO: vyzobrazovat různé stavy dodělanosti
@@ -323,5 +331,15 @@ export class Projectile extends CharacterSprite0 {
     export class IndicatorKey_R extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 44,44,pathToIndicators + "Press-R.png");
+        }
+    }
+    export class IndicatorKey_A extends InteractableIndicator{
+        constructor(x = 0, y = 0){
+            super(x, y, 44,44,pathToIndicators + "Press-A.png");
+        }
+    }
+    export class IndicatorKey_Shift extends InteractableIndicator{
+        constructor(x = 0, y = 0){
+            super(x, y, 124,44,pathToIndicators + "Press-Shift.png");
         }
     }
