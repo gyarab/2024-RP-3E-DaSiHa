@@ -10,9 +10,9 @@ const _1004 = new SemiSolid( 112,  124,   16,  924,"yellow"); _1004._id = "libra
 const _1005 = new SemiSolid( 836,  124,   16,  924,"yellow"); _1005._id = "library-wall-2"
 const _1006 = new Solid(1292,  720,  516,   36); _1006._id = "desk-1" 
 const _1007 = new Solid(1080,  720,   24,   36); _1007._id = "desk-2"
-const _1008 = new SemiSolid(1092,  720,   12,  180,"yellow"); _1008._id = "drawer-1"
-const _1009 = new SemiSolid(1292,  720,   12,  180,"yellow"); _1009._id = "drawer-2"
-const _1010 = new Rectangle(1092,  896,  212,   16,"grey"  ); _1010._id = "drawer-3"
+const _1008 = new SemiSolid(1092,  720,   12,  180,"yellow");
+const _1009 = new SemiSolid(1292,  720,   12,  180,"yellow");
+const _1010 = new Rectangle(1092,  896,  212,   16);//drawer-3
 
 /*-----------------------------interactable-----------------------------------*/
 
@@ -31,15 +31,20 @@ const _3008 = new Platform(1104,  720, 188,   36) // drawers
 const _3013 = new Platform(1104,  784, 188,    8) // -//-
 const _3009 = new Platform(1104,  836, 188,    8) // -//-
 const _3010 = new Platform(1104, 1044, 188,   28) // -//-
-const _3014 = new LevelSelect( 704,  972, 128,   76); _3014._id = "3014";//nike
-const _3016 = new LevelSelect( 240,  816, 156,   76); _3016._id = "3016"//games
-const _3012 = new Rectangle     ( 142,  856,  92,   36, "grey");//contoler
-const _3011 = new LevelSelect( 488,  516, 100,   64, "grey");_3011._id = "3011"//fairytalebook
-const _3015 = new Rectangle     ( 364,  704, 104,   32, "grey"); //study
-const _3017 = new LevelSelect( 384,  676,  76,   28, "grey"); _3017._id = "3017"//study
-const _3018 = new Rectangle     ( 324,  396, 144,   28, "grey");//dark
-const _3019 = new LevelSelect( 356,  364, 104,  32, "grey"); _3019._id = "3019"//dark
 
+const _3014 = new LevelSelect( 704,  972, 128,  76); _3014._id = "i001"; //nike
+
+const _3016 = new LevelSelect( 240,  816, 156,  76); _3016._id = "i002"; //games
+const _3012 = new Rectangle  ( 142,  856,  92,  36); _3012._id = "i003"; //contoler
+_3016._addPlatform(_3012);
+const _3011 = new LevelSelect( 488,  516, 100,  64); _3011._id = "i004"; //fairytalebook
+
+const _3017 = new LevelSelect( 384,  676,  76,  28); _3017._id = "i006"; //study
+const _3015 = new Rectangle  ( 364,  704, 104,  32); _3015._id = "i005"; //study
+_3017._addPlatform(_3015);
+const _3019 = new LevelSelect( 356,  364, 104,  32); _3019._id = "i008"; //dark
+const _3018 = new Rectangle  ( 324,  396, 144,  28); _3018._id = "i007"; //dark
+_3019._addPlatform(_3018);
 //const _3011 = new Rectangle( 132,  920, 392,  128, "orange");//folders
 //const _3015 = new Rectangle( 396,  764, 428,  128, "orange");//folders
 
