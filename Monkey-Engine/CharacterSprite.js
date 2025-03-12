@@ -1,6 +1,6 @@
 import { SpriteDyna } from "./SpriteDyna.js";
 import { Interactable } from "./Interactable.js";
-import { Basketball, Platform, Pushable, SemiSolid, Solid, LevelSelect } from "./PlatformerLib.js";
+import { Selector, Pushable} from "./PlatformerLib.js";
 import { Rectangle } from "./Rectangle.js";
 
 export class CharacterSprite extends SpriteDyna{
@@ -12,7 +12,7 @@ export class CharacterSprite extends SpriteDyna{
         this._wantGoLeft  = false;
         this._wantJump    = false;
         this._wantGoDown  = false;
-        this._wantInteract = false;
+        this._wantInteract = "none";
 
         this._isOnGround  = false;
         this._isJumping   = false;
@@ -108,10 +108,8 @@ export class CharacterSprite extends SpriteDyna{
         }
 
         const ratioOfLegs = 9/10
-        const ratioOfPushLegsm = 5/10
 
-        //kolize
-        //NextFrameDown a NextFrameUp jsous skoro stejné a proto si plete kolizi s podlahou a stropem
+        //kolize        
         const NextFrameDown  = new CharacterSprite(this._x , this._y + this._yVelocity + gravity, this._width, this._height);
         const NextFrameUp     = new CharacterSprite(this._x , this._y + this._yVelocity - this._ySpeed, this._width, this._height)
         const NextFrameRight = new CharacterSprite(this._x + this._xSpeed, this._y , this._width, this._height * ratioOfLegs );
@@ -138,6 +136,7 @@ export class CharacterSprite extends SpriteDyna{
                 if (!this._isJumping && this._typeOfGround != ob._id){
                     if  (nextFrameRightBox.doesColideWith(ob) && (this._xVelocity >= 0)||
                          (nextFrameLeftBox.doesColideWith(ob) && (this._xVelocity <= 0))){
+                        //if(ob instanceof Ball){ob.y = this._y + this._height/2 - ob._height/2;}
                         ob._xVelocity = this._xVelocity;
                         ob._isPushed = true;
                         
@@ -188,19 +187,25 @@ export class CharacterSprite extends SpriteDyna{
             }
             //* ob instanceof Interactable
             if ( ob instanceof Interactable ){ 
-                if (this.doesColideWith(ob) && (this._typeOfGround != 0 || !(ob instanceof LevelSelect))){
+                if (this.doesColideWith(ob) && (this._typeOfGround != 0 || !ob._hasToBeOnGround)){
                     ob._isInteractableWith[this._id] = true;
-                    ob._interactingWith = this._id;
-                    if(this._wantInteract){
-                        ob._action(ob);
+                    if(this._wantInteract ==  'action'  && ob._reactToAction){
+                        ob._action();
+                    }
+                    if(this._wantInteract == 'forward'  && ob._reactToForward){
+                        ob._action(this,  1);
+                    }
+                    if(this._wantInteract == 'backward' && ob._reactToBackward){
+                        ob._action(this, -1);
+
                     }
                 }else{
                     ob._isInteractableWith[this._id] = false;
                 }
             }
         }
+        this._wantInteract = "none";
 
-        
         if(!canGoRight) {
             this._xVelocity = 0
             this._isPushRight = true;

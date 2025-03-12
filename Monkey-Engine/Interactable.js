@@ -6,11 +6,20 @@ import {Sprite} from './Sprite.js'
 export class Interactable extends Rectangle{
     constructor(x, y, width, height){
         super(x, y, width, height);
+
         this._isInteractableWith = [];
+        this._hasToBeOnGround = false;
+
+        //Types of actions this object should react to
+        this._reactToAction   = true;
+        this._reactToForward  = false;
+        this._reactToBackward = false;
+        this._reactToOther = [];
+        
     }
     _action(){
         if (this._isInteractable()){
-            console.log("action");
+            //...
         }   
     }
 }

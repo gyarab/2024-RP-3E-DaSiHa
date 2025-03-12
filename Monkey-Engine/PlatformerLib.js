@@ -6,8 +6,9 @@ import {    Rectangle } from './Rectangle.js';
 
 //TODO změnit hitbox u Projektilů na kruh
 //TODO přidat Tetragon-Solid
-//TODO Pushable má hodně much
+//TODO Pushable má hodně mušek
 //TODO: EndOfLevel, Switch,LevelSelect
+//TODO: generizuj Selector a Closet
 
 /*--------------------------Walls---------------------------*/
 export class Platform  extends Rectangle{
@@ -31,44 +32,75 @@ export class Ladder extends Rectangle{
     }
 }
 /*---------------------Interactable-------------------------*/
-//TODO: vyzobrazovat různé stavy dodělanosti
 export class LevelSelect extends Interactable{
     constructor(x, y, width, height){
         super(x, y, width, height);
-        this._platforms = [this];
+        this._hasToBeOnGround = true;
+
+        this._color = "white";
+        this._platforms  = [this];
         this._isComplete = false;
     }
     _addPlatform(platform){
         this._platforms.push(platform);
     }
-    _action(objects){
-        console.log("Level Select");
-        for (let pform of this._platforms) {
-            pform._color = "orange";
-        }
-        this._isComplete = true;
-        
+    _action(){
+        for (let pform of this._platforms) {pform._color = "orange";}
+        this._isComplete = true;  
     }
 }
-//TODO: vyzobrazovat různé stavy dodělanosti
+export class  Selector  extends Interactable{
+    constructor(x, y, width, height){
+        super(x, y, width, height);
+        this._hasToBeOnGround = true;
+        this._reactToForward  = true;
+        this._reactToBackward = true;
+        this._reactToAction   = false;
+
+        this._color = "white";
+        this._skins = [ "RED", "BLU","SKIN-00", "SKIN-01"];
+
+    }
+    _action(player, index){
+        const oldSkinIndex = this._skins.indexOf(player._skins[player._currentSkin]);
+        const newSkinIndex = oldSkinIndex + index;
+        console.log(newSkinIndex);
+        player.loadAndChangeSkin(this._skins[newSkinIndex]);
+
+        if((newSkinIndex + 1) > this._skins.length - 1){
+            this._reactToForward  = false;
+            console.log("Forward is off");
+        }else{
+            this._reactToForward  = true;
+        }
+        if((newSkinIndex - 1) < 0 ){
+            console.log("Backward is off");
+            this._reactToBackward = false;
+        }else{
+            this._reactToBackward = true;
+        }
+
+    }
+};
+//TODO: 
+export class EndOfLevel extends Interactable{
+    constructor(x, y, width, height){
+        super(x, y, width, height);
+    };;
+    _action(objects){
+    }
+};
+//TODO: 
 export class Switch extends Interactable{
     constructor(x, y, width, height){
         super(x, y, width, height);
         this._isOn = false;
     };;
     _action(objects){
-        console.log("Switch");
         this._isOn = !this._isOn;
     }
 }
-export class EndOfLevel extends Interactable{
-    constructor(x, y, width, height){
-        super(x, y, width, height);
-    };;
-    _action(objects){
-        console.log("EndOfLevel");
-    }
-};
+
 /*---------------------Pushable-------------------------*/
 export class Pushable  extends CharacterSprite0{
     constructor(x, y, width, height, spritePaths){
@@ -80,6 +112,7 @@ export class Pushable  extends CharacterSprite0{
 
         this._drag = 0.005;
         this._gravity = 0.05;
+        this._isPickable = false;
     }
     cantPassThru(ob){
         return (
@@ -126,7 +159,7 @@ export class Pushable  extends CharacterSprite0{
             if (this._xVelocity > 0 ){this._xVelocity = this._xVelocity - this._drag; this.isGoRight = true; this.isGoLeft  = false;}
             if (this._xVelocity < 0 ){this._xVelocity = this._xVelocity + this._drag; this.isGoLeft  = true; this.isGoRight = false;}
         }
-        if (canMoveonY){
+        if (canMoveonY && (!this._isPickable || !this._isPushed)){
             this._yVelocity = this._yVelocity + this._gravity;
             this.y = this._y + this._yVelocity;
         }
@@ -158,7 +191,8 @@ export class Pushable  extends CharacterSprite0{
             ]);            
         }
     }
-    export class Basketball extends Pushable{
+    //! 
+    export class Ball extends Pushable{
         constructor(x, y){
             super  (x, y, 64, 64, [
                 pathToPushable + "Basketball/0.png",
@@ -170,10 +204,10 @@ export class Pushable  extends CharacterSprite0{
                 pathToPushable + "Basketball/6.png",
                 pathToPushable + "Basketball/7.png",
             ]); 
+            this._isPickable = true;
             this._drag = 0.0025;         
         }
         updateImage(){
-            console.log(this._xVelocity)
             this._animMovingSlow = 1 / (Math.abs(this._xVelocity) + 0.1) * 15;
             this._animTick += 1;
             if (this._animTick > this._animMovingSlow) {
@@ -251,62 +285,64 @@ export class Projectile extends CharacterSprite0 {
     }    
 /*---------------------CharacterSprite-------------------------*/
 /*intance*/ const pathToSkins = "../Game_01_Ledvadva/sprites/Player/";
-    export class Player    extends CharacterSprite {
+    export class Player    extends CharacterSprite { 
         constructor(x, y, skin){
-            super  (x, y, 52, 124, [
-                //0
-                pathToSkins + skin + "/stand.png",
-                //1-14
-                pathToSkins + skin + "/rR/1.png",
-                pathToSkins + skin + "/rR/2.png",
-                pathToSkins + skin + "/rR/3.png",
-                pathToSkins + skin + "/rR/4.png",
-                pathToSkins + skin + "/rR/5.png",
-                pathToSkins + skin + "/rR/6.png",
-                pathToSkins + skin + "/rR/7.png",
-                pathToSkins + skin + "/rR/8.png",
-                pathToSkins + skin + "/rR/7.png",
-                pathToSkins + skin + "/rR/6.png",
-                pathToSkins + skin + "/rR/5.png",
-                pathToSkins + skin + "/rR/4.png",
-                pathToSkins + skin + "/rR/3.png",
-                pathToSkins + skin + "/rR/2.png",
-                //15-28
-                pathToSkins + skin + "/rL/1.png",
-                pathToSkins + skin + "/rL/2.png",
-                pathToSkins + skin + "/rL/3.png",
-                pathToSkins + skin + "/rL/4.png",
-                pathToSkins + skin + "/rL/5.png",
-                pathToSkins + skin + "/rL/6.png",
-                pathToSkins + skin + "/rL/7.png",
-                pathToSkins + skin + "/rL/8.png",
-                pathToSkins + skin + "/rL/7.png",
-                pathToSkins + skin + "/rL/6.png",
-                pathToSkins + skin + "/rL/5.png",
-                pathToSkins + skin + "/rL/4.png",
-                pathToSkins + skin + "/rL/3.png",
-                pathToSkins + skin + "/rL/2.png",
-                //29-31
-                pathToSkins + skin + "/jR/1.png",
-                pathToSkins + skin + "/jR/2.png",
-                pathToSkins + skin + "/jR/3.png",
-                //32-34
-                pathToSkins + skin + "/jL/1.png",
-                pathToSkins + skin + "/jL/2.png",
-                pathToSkins + skin + "/jL/3.png",
-                //35
-                pathToSkins + skin + "/pR.png",
-                //36
-                pathToSkins + skin + "/pL.png",
-            ]); 
-            this._framesStanding     = [this._frames[0]];
-            this._framesRunRight     = this._frames.slice(1, 15);
-            this._framesRunLeft      = this._frames.slice(15, 29);
-            this._framesJumpFarRight = this._frames.slice(29, 32);
-            this._framesJumpFarLeft  = this._frames.slice(32, 35);
-            this._framesPushRight    = [this._frames[35]];
-            this._framesPushLeft     = [this._frames[36]];
-            this._skin = skin;
+            super  (x, y, 52, 124);
+
+            this._currentSkin = 0; 
+            this._skins = [skin];
+
+            this.loadSkin(skin);            
+            this.changeSkin(skin);
+        }
+        static framesTypes = [
+            //0
+            "/stand.png",
+            //1-14
+            "/rR/1.png", "/rR/2.png","/rR/3.png","/rR/4.png","/rR/5.png","/rR/6.png","/rR/7.png",
+            "/rR/8.png", "/rR/7.png","/rR/6.png","/rR/5.png","/rR/4.png","/rR/3.png","/rR/2.png",
+            //15-28
+            "/rL/1.png", "/rL/2.png","/rL/3.png","/rL/4.png","/rL/5.png","/rL/6.png","/rL/7.png",
+            "/rL/8.png", "/rL/7.png","/rL/6.png","/rL/5.png","/rL/4.png","/rL/3.png","/rL/2.png",
+            //29-31
+            "/jR/1.png", "/jR/2.png","/jR/3.png",
+            //32-34
+            "/jL/1.png", "/jL/2.png","/jL/3.png",
+            //35-36
+            "/pL.png", "/pR.png",
+            //37-38
+            //"/cL.png", "/cR.png",
+            //39-40
+        ];    
+        loadSkin(skin){
+            if(skin == ""){this._id + " Skin not found"}
+            else{
+                this._frames = []; // Clear the frames array before loading new skin images
+                Player.framesTypes.forEach(type => {
+                    const img = new Image();
+                    img.src = pathToSkins + skin + type;
+                    this._frames.push(img);
+                });
+                this._skins.push(skin);
+            }
+        }
+        changeSkin(skin){
+            if(this._skins.includes(skin)){
+                this._currentSkin = this._skins.indexOf(skin);
+                const shiftIndex = 0 // this._currentSkin * Player.framesTypes.length;
+
+                this._framesStanding     = [this._frames[0 + shiftIndex]];
+                this._framesRunRight     = this._frames.slice(1 + shiftIndex, 15 + shiftIndex);
+                this._framesRunLeft      = this._frames.slice(15 + shiftIndex, 29 + shiftIndex);
+                this._framesJumpFarRight = this._frames.slice(29 + shiftIndex, 32 + shiftIndex);
+                this._framesJumpFarLeft  = this._frames.slice(32 + shiftIndex, 35 + shiftIndex);
+                this._framesPushRight    = [this._frames[35 + shiftIndex]];
+                this._framesPushLeft     = [this._frames[36 + shiftIndex]];
+            }
+        }
+        loadAndChangeSkin(skin){
+            this.loadSkin(skin);
+            this.changeSkin(skin);
         }
     }
     //! PNG nejsou v adresáři -> Mario nepoužívat
@@ -328,6 +364,17 @@ export class Projectile extends CharacterSprite0 {
             super(x, y, 44,44, pathToIndicators + "Press-E.png");
         }
     }
+    export class IndicatorKey_E_Shift extends InteractableIndicator{
+        constructor(x = 0, y = 0){
+            super(x, y, 200,44, pathToIndicators + "Press-E-Shift.png");
+        }
+    }
+    export class IndicatorKey_Shift extends InteractableIndicator{
+        constructor(x = 0, y = 0){
+            super(x, y, 124,44,pathToIndicators + "Press-Shift.png");
+        }
+    }
+
     export class IndicatorKey_R extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 44,44,pathToIndicators + "Press-R.png");
@@ -336,10 +383,5 @@ export class Projectile extends CharacterSprite0 {
     export class IndicatorKey_A extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 44,44,pathToIndicators + "Press-A.png");
-        }
-    }
-    export class IndicatorKey_Shift extends InteractableIndicator{
-        constructor(x = 0, y = 0){
-            super(x, y, 124,44,pathToIndicators + "Press-Shift.png");
         }
     }

@@ -1,4 +1,4 @@
-import { Player, Scissors, Solid, Platform, Box, Binder, Basketball} from '../Monkey-Engine/PlatformerLib.js';
+import { Player, Scissors, Solid, Platform, Box, Binder, Ball} from '../Monkey-Engine/PlatformerLib.js';
 import { Rectangle } from './Rectangle.js';
 
 window.addEventListener('load', () => {
@@ -51,7 +51,7 @@ window.addEventListener('load', () => {
     const floor    = new Solid(0, 1000, 1920, 80);
 
     const box = new Box(750, 871, 2);
-    const ball = new Basketball(400, 300);
+    const ball = new Ball(400, 300);
 
     let walls = [
         b1, 
