@@ -307,6 +307,24 @@ function handleClick(event) {
     }
 }
 
+window.addEventListener('keypress', event => handleKeyPress(event));
+
+function handleKeyPress(event) {
+    if (event.code === 'Space') {
+        event.preventDefault();
+        if (!showKoule) {
+            if (!showpower) {
+                showpower = true;
+                sipeckaStop = true;
+            } else if (showpower) {
+                showKoule = true;
+                showpower = false;
+                sipeckaStop = false;
+            }
+        }
+    }
+}
+
 let ballY = koule._y;
 let ballX = koule._x;
 let ballScale = 1;
