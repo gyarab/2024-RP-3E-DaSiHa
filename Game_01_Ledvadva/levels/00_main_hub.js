@@ -33,7 +33,7 @@ const _5702 = new Rectangle  ( 324,  396, 144,  28); _5702._id = "i007";
 _5004._addPlatform(_5702);
 
 //* Closet
-const _5005 = new Selector( 512,  712,  200,  24); 
+const _5005 = new Selector   ( 512,  712,  200, 24); _5005._id = "i009";
 
 /*--------------------------yellow-baririers------------------------------ */
 const _2001 = new SemiSolid(1092, 912, 12, 140, "yellow") // drawers

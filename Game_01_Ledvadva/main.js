@@ -1,6 +1,6 @@
 import { Rectangle } from  '../Monkey-Engine/Rectangle.js';
 import { Sprite } from  '../Monkey-Engine/Sprite.js';
-import { Player, IndicatorKey_E, IndicatorKey_Shift, IndicatorKey_E_Shift} from  '../Monkey-Engine/PlatformerLib.js';
+import { Player, IndicatorKey_E, IndicatorKey_Shift, IndicatorKey_E_Shift, Closet} from  '../Monkey-Engine/PlatformerLib.js';
 import { barriers } from  './levels/00_main_hub.js';
 
 
@@ -82,14 +82,14 @@ window.addEventListener('load', () => {
             const shelf4 = new Sprite(124,444,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-4.png");
             const shelf5 = new Sprite(124,288,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-5.png");
 
-            const control = new Sprite(142,850,92,40,"../Game_01_Ledvadva/sprites/Hub/control.png");
-            const closet = new Sprite(0,0,0,0,"")
-            const nike  = new Sprite(704,970,128,76,"../Game_01_Ledvadva/sprites/Hub/nike.png");
-            const games = new Sprite(240,812,152,76,"../Game_01_Ledvadva/sprites/Hub/games.png");
-            const fairy = new Sprite(488,514,100,64,"../Game_01_Ledvadva/sprites/Hub/fairytale.png");
-            const study = new Sprite(364,674,104,60,"../Game_01_Ledvadva/sprites/Hub/study.png");
-            const dark  = new Sprite(324,334,144,88,"../Game_01_Ledvadva/sprites/Hub/dark.png");
-            const dark2 = new Sprite(416,330,28,64,"../Game_01_Ledvadva/sprites/Hub/dark2.png");
+            
+            const nike  = new Sprite(704,970,128,76,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/shoebox.png");
+            const control = new Sprite(142,850,92,40,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/controler.png");
+            const games = new Sprite(240,812,152,76,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/games.png");
+            const fairy = new Sprite(488,514,100,64,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/fairytale.png");
+            const study = new Sprite(364,674,104,60,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/study.png");
+            const dark  = new Sprite(324,334,144,88,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/dark.png");
+            const candle = new Sprite(416,330,28,64,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/candle.png");
 
             const shadow1 = new Sprite(124,912,716,136,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
             const shadow2 = new Sprite(124,756,716,136,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
@@ -97,6 +97,8 @@ window.addEventListener('load', () => {
             const shadow4 = new Sprite(124,444,716,136,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
             const shadow5 = new Sprite(124,288,716,136,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
             const shadow6 = new Sprite(124,124,716,144,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
+
+            const ChangingRoom = new Closet( 512,  634);
     /*--------------------------Mainloop--------------------------------*/
     const Level_01 = barriers.find(barrier => barrier._id === 'i001');
     const Level_02 = barriers.find(barrier => barrier._id === 'i002');
@@ -104,7 +106,7 @@ window.addEventListener('load', () => {
     const Level_04 = barriers.find(barrier => barrier._id === 'i004');
     const Level_05 = barriers.find(barrier => barrier._id === 'i008');
 
-    const Closet   = barriers.find(barrier => barrier._id === 'i008');
+    const SkinSelector   = barriers.find(barrier => barrier._id === 'i009');
 
     /*--------------------------Mainloop--------------------------------*/
     function isPlayersInterac(interactable){
@@ -137,6 +139,8 @@ window.addEventListener('load', () => {
             sprite.render(ctx);
         }
     };
+
+
     function Mainloop() {
         Blue.render(ctx,true);
         furniture.render(ctx);
@@ -155,14 +159,15 @@ window.addEventListener('load', () => {
         renderInteractable(Level_04, fairy);
         renderInteractable(Level_05, dark, 1.6);
 
-        if(true){}
-
         if (infoMode){
-            infoBor.render(ctx);
             barriers.forEach(
                 obstacle => obstacle.render(ctx)
             ); 
+            infoBor.render(ctx);
         }
+        
+        ChangingRoom.updateImage(player1._wantInteract, isPlayersInterac(SkinSelector) && SkinSelector._canGo(player1._wantInteract));
+        
         player1.updatePos(barriers);
         player1.updateImage();
         player1.render(ctx,infoMode);
@@ -171,11 +176,14 @@ window.addEventListener('load', () => {
         player2.updateImage();
         player2.render(ctx,infoMode);
 
-        //!NEFUNGUJE
-        if (player1._points[2].y < dark2._points[2].y){
-            dark2.render(ctx);
-        }
+        ChangingRoom.render(ctx);
 
+        //!NEFUNGUJE
+        if (player1._points[2].y < candle._points[2].y){
+            candle.render(ctx);
+        }
+        player1._wantInteract = "none";
+        player2._wantInteract = "none";
     }
     window.setInterval(Mainloop, 6, true);
 });

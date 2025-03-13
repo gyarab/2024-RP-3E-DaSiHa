@@ -188,7 +188,9 @@ export class CharacterSprite extends SpriteDyna{
             //* ob instanceof Interactable
             if ( ob instanceof Interactable ){ 
                 if (this.doesColideWith(ob) && (this._typeOfGround != 0 || !ob._hasToBeOnGround)){
+
                     ob._isInteractableWith[this._id] = true;
+                    
                     if(this._wantInteract ==  'action'  && ob._reactToAction){
                         ob._action();
                     }
@@ -204,7 +206,6 @@ export class CharacterSprite extends SpriteDyna{
                 }
             }
         }
-        this._wantInteract = "none";
 
         if(!canGoRight) {
             this._xVelocity = 0

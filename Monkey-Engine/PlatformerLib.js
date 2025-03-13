@@ -1,7 +1,8 @@
 import { Interactable, InteractableIndicator } from './Interactable.js';
+import { SpriteAnim } from  '../Monkey-Engine/SpriteAnim.js';
 import {  CharacterSprite } from '../Monkey-Engine/CharacterSprite.js';
 import { CharacterSprite0 } from '../Monkey-Engine/CharacterSprite0.js';
-import {    Rectangle } from './Rectangle.js';
+import {  Rectangle } from './Rectangle.js';
 
 
 //TODO změnit hitbox u Projektilů na kruh
@@ -10,7 +11,7 @@ import {    Rectangle } from './Rectangle.js';
 //TODO: EndOfLevel, Switch,LevelSelect
 //TODO: generizuj Selector a Closet
 
-/*--------------------------Walls---------------------------*/
+////-------------------------Walls---------------------------////
 export class Platform  extends Rectangle{
     constructor(x, y, width, height){
         super(x, y, width, height, "orange");
@@ -31,77 +32,137 @@ export class Ladder extends Rectangle{
         super(x, y, width, height, "green");
     }
 }
-/*---------------------Interactable-------------------------*/
-export class LevelSelect extends Interactable{
-    constructor(x, y, width, height){
-        super(x, y, width, height);
-        this._hasToBeOnGround = true;
+////
+////-----------------------Interactable---------------------////
+/*intance*/const pathToInteractable = "../Game_01_Ledvadva/sprites/Interactable/";
+    export class LevelSelect extends Interactable{
+        constructor(x, y, width, height){
+            super(x, y, width, height);
+            this._hasToBeOnGround = true;
 
-        this._color = "white";
-        this._platforms  = [this];
-        this._isComplete = false;
+            this._color = "white";
+            this._platforms  = [this];
+            this._isComplete = false;
+        }
+        _addPlatform(platform){
+            this._platforms.push(platform);
+        }
+        _action(){
+            for (let pform of this._platforms) {pform._color = "orange";}
+            this._isComplete = true;  
+        }
     }
-    _addPlatform(platform){
-        this._platforms.push(platform);
+    export class EndOfLevel extends Interactable{
+        constructor(x, y, width, height){
+            super(x, y, width, height);
+        };;
+        _action(objects){
+        }
     }
-    _action(){
-        for (let pform of this._platforms) {pform._color = "orange";}
-        this._isComplete = true;  
+    export class Switch extends Interactable{
+        constructor(x, y, width, height){
+            super(x, y, width, height);
+            this._isOn = false;
+        };;
+        _action(objects){
+            this._isOn = !this._isOn;
+        }
     }
-}
-export class  Selector  extends Interactable{
-    constructor(x, y, width, height){
-        super(x, y, width, height);
-        this._hasToBeOnGround = true;
-        this._reactToForward  = true;
-        this._reactToBackward = true;
-        this._reactToAction   = false;
+        /*visualisation;*/
+        export class Lever extends SpriteAnim{
 
-        this._color = "white";
-        this._skins = [ "RED", "BLU","SKIN-00", "SKIN-01"];
+        }
 
-    }
-    _action(player, index){
-        const oldSkinIndex = this._skins.indexOf(player._skins[player._currentSkin]);
-        const newSkinIndex = oldSkinIndex + index;
-        console.log(newSkinIndex);
-        player.loadAndChangeSkin(this._skins[newSkinIndex]);
-
-        if((newSkinIndex + 1) > this._skins.length - 1){
-            this._reactToForward  = false;
-            console.log("Forward is off");
-        }else{
+    export class Selector extends Interactable{
+        constructor(x, y, width, height){
+            super(x, y, width, height);
+            this._hasToBeOnGround = true;
             this._reactToForward  = true;
-        }
-        if((newSkinIndex - 1) < 0 ){
-            console.log("Backward is off");
-            this._reactToBackward = false;
-        }else{
             this._reactToBackward = true;
+            this._reactToAction   = false;
+
+            this._color = "white";
+            this._field = ["RED", "BLU", "SKIN-00", "SKIN-01"];
+
+        }
+        _action(player, index){
+            const oldIndex = this._field.indexOf(player._skins[player._currentSkin]);
+            const newIndex = oldIndex + index;
+
+            player.loadAndChangeSkin(this._field[newIndex]);
+
+            if((newIndex + 1) > this._field.length - 1){
+                this._reactToForward  = false;
+                console.log("Forward is off");
+            }else{
+                this._reactToForward  = true;
+            }
+            if((newIndex - 1) < 0 ){
+                console.log("Backward is off");
+                this._reactToBackward = false;
+            }else{
+                this._reactToBackward = true;
+            }
+
+        }
+        _canGo(N_ward){
+            switch(N_ward){
+                case "forward" : return this._reactToForward;
+                case "backward": return this._reactToBackward;
+                default: return false;
+            }
+        }
+    }
+        /*visualisation*/ const pathToCloset = pathToInteractable + "Closet/";
+        export class Closet extends SpriteAnim{
+            constructor(x, y){
+                super(x, y, 200, 100, [
+                    // 0-10
+                    pathToCloset + "Backward/12.png", pathToCloset + "Backward/11.png",
+                    pathToCloset + "Backward/10.png", pathToCloset + "Backward/9.png" ,
+                    pathToCloset + "Backward/8.png" , pathToCloset + "Backward/7.png" ,
+                    pathToCloset + "Backward/6.png" , pathToCloset + "Backward/5.png" ,
+                    pathToCloset + "Backward/4.png" , pathToCloset + "Backward/3.png" ,
+                    pathToCloset + "Backward/2.png" , 
+                    // 11-21 
+                    pathToCloset + "Forward/1.png" , pathToCloset + "Forward/2.png" ,     
+                    pathToCloset + "Forward/3.png" , pathToCloset + "Forward/4.png" ,
+                    pathToCloset + "Forward/5.png" , pathToCloset + "Forward/6.png" ,
+                    pathToCloset + "Forward/7.png" , pathToCloset + "Forward/8.png" ,
+                    pathToCloset + "Forward/9.png" , pathToCloset + "Forward/10.png",
+                    pathToCloset + "Forward/11.png", pathToCloset + "Forward/12.png",
+                ]);
+                // @  0 = stay
+                // @  1 = forward
+                // @ -1 = backward
+                this._triggered = 0;
+                this._animSlow  = 7;
+                this._currentFrame = 11;
+                
+            }
+            updateImage(direction, canBeTriggered){
+                if(canBeTriggered){
+                    if(direction =='backward' ){ this._triggered =  1; this._currentFrame = 11;}
+                    if(direction == 'forward'){ this._triggered = -1; this._currentFrame = 11;}
+                }
+                if(this._triggered != 0){
+                    this._animTick += 1;
+                    if (this._animTick > this._animSlow){
+                        this._currentFrame = (this._currentFrame + this._triggered)
+                        this._animTick = 0;
+                        if( this._currentFrame == this._frames.length || this._currentFrame == -1){
+                            this._currentFrame = 11;
+                            this._triggered = 0;
+                        }
+                    }
+                }
+            }
+                
         }
 
-    }
-};
-//TODO: 
-export class EndOfLevel extends Interactable{
-    constructor(x, y, width, height){
-        super(x, y, width, height);
-    };;
-    _action(objects){
-    }
-};
-//TODO: 
-export class Switch extends Interactable{
-    constructor(x, y, width, height){
-        super(x, y, width, height);
-        this._isOn = false;
-    };;
-    _action(objects){
-        this._isOn = !this._isOn;
-    }
-}
 
-/*---------------------Pushable-------------------------*/
+////
+////-----------------------Pushable-------------------------////
 export class Pushable  extends CharacterSprite0{
     constructor(x, y, width, height, spritePaths){
         super  (x, y, width, height, spritePaths); 
@@ -165,8 +226,7 @@ export class Pushable  extends CharacterSprite0{
         }
     }
 }
-/*intance*/ const pathToPushable = "../Game_01_Ledvadva/sprites/Pushable/";
-
+    /*intance*/ const pathToPushable = "../Game_01_Ledvadva/sprites/Pushable/";
     export class Box extends Pushable{
         constructor(x, y, skin = 1){
             super  (x, y, 128, 128, [
@@ -191,7 +251,7 @@ export class Pushable  extends CharacterSprite0{
             ]);            
         }
     }
-    //! 
+    //! Broken 
     export class Ball extends Pushable{
         constructor(x, y){
             super  (x, y, 64, 64, [
@@ -227,14 +287,16 @@ export class Pushable  extends CharacterSprite0{
             }
         }      
     }
-    
-/*---------------------Projectiles-------------------------*/
+////
+////---------------------Enemies-------------------------////
+////
+////---------------------Projectiles---------------------////
 export class Projectile extends CharacterSprite0 {
     constructor(x, y, width, height, spritePath = []){
         super  (x, y, width, height, spritePath); 
     }
 }
-/*intance*/ const pathToProjectiles = "../Game_01_Ledvadva/sprites/Projectiles/";
+    /*intance*/ const pathToProjectiles = "../Game_01_Ledvadva/sprites/Projectiles/";
     export class Scissors  extends Projectile{
         constructor(x, y){
             super  (x, y, 116, 116,[
@@ -282,9 +344,11 @@ export class Projectile extends CharacterSprite0 {
             this._framesRunUp ;
             this._animSlow = 8;
         }
-    }    
-/*---------------------CharacterSprite-------------------------*/
-/*intance*/ const pathToSkins = "../Game_01_Ledvadva/sprites/Player/";
+    }
+////
+////-------------------CharacterSprite-------------------////
+
+    /*intance*/ const pathToPlayer = "../Game_01_Ledvadva/sprites/Player/";
     export class Player    extends CharacterSprite { 
         constructor(x, y, skin){
             super  (x, y, 52, 124);
@@ -309,18 +373,17 @@ export class Projectile extends CharacterSprite0 {
             //32-34
             "/jL/1.png", "/jL/2.png","/jL/3.png",
             //35-36
-            "/pL.png", "/pR.png",
+            "/pR.png", "/pL.png",
             //37-38
             //"/cL.png", "/cR.png",
-            //39-40
-        ];    
+        ]  
         loadSkin(skin){
             if(skin == ""){this._id + " Skin not found"}
             else{
                 this._frames = []; // Clear the frames array before loading new skin images
                 Player.framesTypes.forEach(type => {
                     const img = new Image();
-                    img.src = pathToSkins + skin + type;
+                    img.src = pathToPlayer + skin + type;
                     this._frames.push(img);
                 });
                 this._skins.push(skin);
@@ -356,9 +419,9 @@ export class Projectile extends CharacterSprite0 {
             ]);
         }
     }
-/*-----------------InteractableIndicators-------------------*/
-/*intance*/ const pathToIndicators = "../Game_01_Ledvadva/sprites/Indicators/";
-
+////
+////-----------------InteractableIndicators-------------------////
+    /*intance*/ const pathToIndicators = "../Game_01_Ledvadva/sprites/Indicators/";
     export class IndicatorKey_E extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 44,44, pathToIndicators + "Press-E.png");
@@ -374,7 +437,6 @@ export class Projectile extends CharacterSprite0 {
             super(x, y, 124,44,pathToIndicators + "Press-Shift.png");
         }
     }
-
     export class IndicatorKey_R extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 44,44,pathToIndicators + "Press-R.png");
@@ -385,3 +447,4 @@ export class Projectile extends CharacterSprite0 {
             super(x, y, 44,44,pathToIndicators + "Press-A.png");
         }
     }
+////
