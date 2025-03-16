@@ -83,6 +83,36 @@ const pin10 = new Rectangle(kuzelka10._x + kuzelka10._width / 2 - 22, kuzelka10.
 const X = new Sprite(280, 43, 49, 49);
 X.loadImg("/Game_02_dakynovyKoule/foto/strike.png");
 
+const spare = new Sprite(280, 43, 49, 49);
+spare.loadImg("/Game_02_dakynovyKoule/foto/spare.png");
+
+const devet = new Sprite(280, 43, 49, 49);
+devet.loadImg("/Game_02_dakynovyKoule/foto/devet.png");
+
+const osm = new Sprite(280, 43, 49, 49);
+osm.loadImg("/Game_02_dakynovyKoule/foto/osm.png");
+
+const sedm = new Sprite(280, 43, 49, 49);
+sedm.loadImg("/Game_02_dakynovyKoule/foto/sedm.png");
+
+const sest = new Sprite(280, 43, 49, 49);
+sest.loadImg("/Game_02_dakynovyKoule/foto/sest.png");
+
+const pet = new Sprite(280, 43, 49, 49);
+pet.loadImg("/Game_02_dakynovyKoule/foto/pet.png");
+
+const ctyri = new Sprite(280, 43, 49, 49);
+ctyri.loadImg("/Game_02_dakynovyKoule/foto/ctyri.png");
+
+const tri = new Sprite(280, 43, 49, 49);
+tri.loadImg("/Game_02_dakynovyKoule/foto/tri.png");
+
+const dva = new Sprite(280, 43, 49, 49);
+dva.loadImg("/Game_02_dakynovyKoule/foto/dva.png");
+
+const jedna = new Sprite(280, 43, 49, 49);
+jedna.loadImg("/Game_02_dakynovyKoule/foto/jedna.png");
+
 const cudlik = new Sprite(1450, 850, 420, 180);
 cudlik.loadImg("/Game_02_dakynovyKoule/foto/cudlas.png");
 
@@ -215,7 +245,6 @@ sipeckaR.animSlow = 5;
 let hrac = 1;
 function Mainloop() {
     background.render(ctx);
-    scoreBoard.render(ctx);
     if (hrac % 2 == 1) {
         cudlik.render(ctx);
     } else {
@@ -432,7 +461,6 @@ function moveBall() {
                                     showKuzelka9 = false;
                                     showKuzelka10 = false;
                                     pokus = 2;
-                                    tryB = 2;
                                 }
                                 pocet_kuzelek_dole = 10;
                             }
@@ -547,7 +575,7 @@ function moveBall() {
                 showKoule = false;
                 pokus++;
                 tryB++;
-                console.log(pocet_kuzelek_dole);
+                //console.log(pocet_kuzelek_dole);
                 if(pokus >= 2) {
                     showKoule = false;
                     setTimeout(() => {
@@ -827,28 +855,101 @@ function moveBallR() {
 
 let tryB = 0;
 let tryR = 0;
-
+let strikes = [];
 
 function counter() {
-    if(hrac % 2 == 1) {
-        if(tryB == 1) {
-            //if(pocet_kuzelek_dole == 10) {
-                X.render(ctx);
-            //}
+    scoreBoard.render(ctx);
+    if (pocet_kuzelek_dole == 9 && ballY <= 561) {
+        if (strikes.length < tryB + 1) {
+            strikes.push({ x: devet._x, y: devet._y, type: 'devet' });
+        }
+    }  if (pocet_kuzelek_dole == 8 && ballY <= 561) {
+        if (strikes.length < tryB + 1) {
+            strikes.push({ x: osm._x, y: osm._y, type: 'osm' });
+        }
+    }  if (pocet_kuzelek_dole == 7 && ballY <= 561) {
+        if (strikes.length < tryB + 1) {
+            strikes.push({ x: sedm._x, y: sedm._y, type: 'sedm' });
+        }
+    }  if (pocet_kuzelek_dole == 6 && ballY <= 561) {
+        if (strikes.length < tryB + 1) {
+            strikes.push({ x: sest._x, y: sest._y, type: 'sest' });
+        }
+    }  if (pocet_kuzelek_dole == 5 && ballY <= 561) {
+        if (strikes.length < tryB + 1) {
+            strikes.push({ x: pet._x, y: pet._y, type: 'pet' });
+        }
+    }  if (pocet_kuzelek_dole == 4 && ballY <= 561) {
+        if (strikes.length < tryB + 1) {
+            strikes.push({ x: ctyri._x, y: ctyri._y, type: 'ctyri' });
+        }
+    }  if (pocet_kuzelek_dole == 3 && ballY <= 561) {
+        if (strikes.length < tryB + 1) {
+            strikes.push({ x: tri._x, y: tri._y, type: 'tri' });
+        }
+    }  if (pocet_kuzelek_dole == 2 && ballY <= 561) {
+        if (strikes.length < tryB + 1) {
+            strikes.push({ x: dva._x, y: dva._y, type: 'dva' });
+        }
+    }  if (pocet_kuzelek_dole == 1 && ballY <= 561) {
+        if (strikes.length < tryB + 1) {
+            strikes.push({ x: jedna._x, y: jedna._y, type: 'jedna' });
         }
     }
-    
-    if(hrac % 2 == 0) {
-        if(tryR == 0) {
-            if(pocet_kuzelek_dole == 10) {
-                X._y = 100;
-                X.render(ctx);
-            }
+
+    strikes.forEach(strike => {
+        switch (strike.type) {
+            case 'devet':
+                devet.x = strike.x;
+                devet.y = strike.y;
+                devet.render(ctx);
+                break;
+            case 'osm':
+                osm.x = strike.x;
+                osm.y = strike.y;
+                osm.render(ctx);
+                break;
+            case 'sedm':
+                sedm.x = strike.x;
+                sedm.y = strike.y;
+                sedm.render(ctx);
+                break;
+            case 'sest':
+                sest.x = strike.x;
+                sest.y = strike.y;
+                sest.render(ctx);
+                break;
+            case 'pet':
+                pet.x = strike.x;
+                pet.y = strike.y;
+                pet.render(ctx);
+                break;
+            case 'ctyri':
+                ctyri.x = strike.x;
+                ctyri.y = strike.y;
+                ctyri.render(ctx);
+                break;
+            case 'tri':
+                tri.x = strike.x;
+                tri.y = strike.y;
+                tri.render(ctx);
+                break;
+            case 'dva':
+                dva.x = strike.x;
+                dva.y = strike.y;
+                dva.render(ctx);
+                break;
+            case 'jedna':
+                jedna.x = strike.x;
+                jedna.y = strike.y;
+                jedna.render(ctx);
+                break;
         }
-    }
+    });
+    console.log(pocet_kuzelek_dole);
 }
 
-console.log(hrac);
+
 
 
     window.setInterval(() => {
