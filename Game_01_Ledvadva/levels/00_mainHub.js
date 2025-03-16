@@ -1,5 +1,5 @@
 import { Sprite }    from  '../../Monkey-Engine/Sprite.js';
-import { Ledvadva }  from '../../Game_01_Ledvadva/main.js';
+import { Ledvadva }  from '../main.js';
 import { Rectangle } from '../../Monkey-Engine/Rectangle.js';
 import { LevelSelect, Platform, SemiSolid, Solid, Selector, Closet} from '../../Monkey-Engine/PlatformerLib.js';
 import { 
@@ -42,7 +42,11 @@ import { InteractableIndicator } from '../../Monkey-Engine/Interactable.js';
         const Blue = new Rectangle(0,0,1920,1080,"grey")
         const Print = new Sprite(0,0,1920,1080,"../Game_01_Ledvadva/sprites/Hub/hub01.png");
     //Furniture
-        const furniture = new Sprite(0,0,1920,1080,"../Game_01_Ledvadva/sprites/Hub/furniture.png")
+        const furniture = new Sprite(0,0,1920,1080,"../Game_01_Ledvadva/sprites/Hub/furniture.png");
+        const desk    = new Sprite(1084,712, 728, 364,"../Game_01_Ledvadva/sprites/Hub/desk.png");
+        const clock   = new Sprite(1092,912, 188, 140,"../Game_01_Ledvadva/sprites/Hub/clock.png");
+        const frame   = new Sprite(  0, 0, 1920,1080,"../Game_01_Ledvadva/sprites/Hub/frame.png");
+
     //Bookshelf
         const shelf1 = new Sprite(124,912,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-1.png");
         const shelf2 = new Sprite(124,754,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-2.png");
@@ -103,11 +107,11 @@ import { InteractableIndicator } from '../../Monkey-Engine/Interactable.js';
     const _3010 = new Platform(1104, 1044, 188,   28) // -//-
 ////---------//                   Interactable                 ////
     ////---------//               LevelSelect                  ////
-        const lvl01 = new LevelSelect( 704,  972, 128,  76);
-        const lvl02 = new LevelSelect( 240,  816, 156,  76);
-        const lvl03 = new LevelSelect( 384,  676,  76,  28);   
-        const lvl04 = new LevelSelect( 488,  516, 100,  64);
-        const lvl05 = new LevelSelect( 356,  364, 104,  32);
+        const lvl01 = new LevelSelect( 704,  972, 128,  76, 1);
+        const lvl02 = new LevelSelect( 240,  816, 156,  76, 2);
+        const lvl03 = new LevelSelect( 384,  676,  76,  28, 3);   
+        const lvl04 = new LevelSelect( 488,  516, 100,  64, 4);
+        const lvl05 = new LevelSelect( 356,  364, 104,  32, 5);
         ///const _5700 = new Rectangle  ( 142,  856,  92,  36); games
          ///const _5701 = new Rectangle  ( 364,  704, 104,  32); study
         ///const _5702 = new Rectangle  ( 324,  396, 144,  28); dark
@@ -182,11 +186,12 @@ function showIndicatorsFor(interaction, interactable, heightOfHover = 1.3){
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 
-export function _01_RENDER(){
+export function _00_RENDER(){
     
 
     Blue.render(ctx,true);
     furniture.render(ctx);
+    desk.render(ctx);
     
     for ( let s of shelfsAndShadow ){ s.render(ctx); }
 

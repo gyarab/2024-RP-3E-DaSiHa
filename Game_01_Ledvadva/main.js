@@ -1,4 +1,7 @@
-import { _01_RENDER } from './levels/01_mainHub.js';
+import { _00_RENDER } from './levels/00_mainHub.js';
+import { _01_RENDER } from './levels/01_level.js';
+///import { _02_RENDER } from './levels/02_level.js';
+
 import { Sprite } from  '../Monkey-Engine/Sprite.js';
 import { Player } from  '../Monkey-Engine/PlatformerLib.js';
 
@@ -78,14 +81,14 @@ window.addEventListener('load', () => {
     function Mainloop() {
 
         switch (Ledvadva.currentlvl) {
-            case 0: _01_RENDER(); break;
-            case 1: _02_RENDER(); break;
-            case 2: _03_RENDER(); break;
-            case 3: _04_RENDER(); break;
-            case 4: _05_RENDER(); break;
+            case 0: _00_RENDER(); break;
+            case 1: _01_RENDER(); break;
+            case 2: _02_RENDER(); break;
+            case 3: _03_RENDER(); break;
+            case 4: _04_RENDER(); break;
             default: console.error("Level not found"); break;
         }
     }
-    window.setInterval(Mainloop, 3, true);
+    window.setInterval(Mainloop, 6, true);
 });
 export { Ledvadva };

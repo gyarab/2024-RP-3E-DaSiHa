@@ -3,6 +3,7 @@ import { SpriteAnim } from  '../Monkey-Engine/SpriteAnim.js';
 import {  CharacterSprite } from '../Monkey-Engine/CharacterSprite.js';
 import { CharacterSprite0 } from '../Monkey-Engine/CharacterSprite0.js';
 import {  Rectangle } from './Rectangle.js';
+import { Ledvadva } from '../Game_01_Ledvadva/main.js';
 
 
 //TODO změnit hitbox u Projektilů na kruh
@@ -36,11 +37,11 @@ export class Ladder extends Rectangle{
 ////-----------------------Interactable---------------------////
 /*intance*/const pathToInteractable = "../Game_01_Ledvadva/sprites/Interactable/";
     export class LevelSelect extends Interactable{
-        constructor(x, y, width, height){
+        constructor(x, y, width, height, numberOfLevel){
             super(x, y, width, height);
             this._hasToBeOnGround = true;
 
-            this._color = "white";
+            this._lvlNumber  = numberOfLevel
             this._platforms  = [this];
             this._isComplete = false;
         }
@@ -49,6 +50,7 @@ export class Ladder extends Rectangle{
         }
         _action(){
             for (let pform of this._platforms) {pform._color = "orange";}
+            Ledvadva.currentlvl = this._lvlNumber;
             this._isComplete = true;  
         }
     }
