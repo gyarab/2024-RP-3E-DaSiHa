@@ -17,26 +17,38 @@ export class CharacterSprite extends SpriteDyna{
         this._isOnGround  = false;
         this._isJumping   = false;
 
-
         // 0 = none, 1 = solid, 2 = platform, else = dynamic_id
         this._typeOfGround = 0; 
 
         this._isPushRight = false;
         this._isPushLeft  = false;
+
         //vlastnosti akcí
         this._yVelocity = 0;
         this._xVelocity = 0;
         this._dirOfJump = 0;
+
         // Initialize points for collision detection
+        this._pointOfJump = { x: this._x + this._width, y: this._y + this._height };
         this._points = [
             { x: this._x, y: this._y },
             { x: this._x + this._width, y: this._y },
             { x: this._x + this._width, y: this._y + this._height },
             { x: this._x, y: this._y + this._height }
         ];
-        this._pointOfJump = { x: this._x + this._width, y: this._y + this._height };
 
         //jednotlivé pole pro animace
+        //! dělá hovno předělat na objekt
+        this.framesFor = {
+            Standing:     [],
+            RunningRight: [],
+            RunningLeft:  [],
+            JumpingRight: [],
+            JumpingLeft:  [],
+            PushingRight: [],
+            PushingLeft:  []
+        };
+        
         this._framesStanding = [];
         this._framesRunRight = [];
         this._framesRunLeft  = [];
@@ -54,9 +66,12 @@ export class CharacterSprite extends SpriteDyna{
     }
     //posouvá objekt podle probíhající akce
     updatePos(obstacles){
-        // poměr gravity:jumpVelocity určuje výší a délku skoku 
-        const gravity = 0.07;
-        const jumpVelocity = - 3.7;
+        //! MAX_RUN_VELOCITY a  MAX_JUMP_VELOCITY dělaj hovno
+        const MAX_RUN_VELOCITY = 1.5;
+        const MAX_JUMP_VELOCITY = 2;
+        // poměr (GRAVITY : JUMP_VELOCITY) určuje výší a délku skoku
+        const GRAVITY = 0.07;
+        const JUMP_VELOCITY = -3.7; 
 
         this.y = this._y + this._yVelocity
         const maxRunVelocity  = 1.5;
@@ -102,7 +117,7 @@ export class CharacterSprite extends SpriteDyna{
 
             if( this._isGoRight && !this._isGoLeft){this._dirOfJump =  1}
             if(!this._isGoRight &&  this._isGoLeft){this._dirOfJump = -1}
-            this._yVelocity = jumpVelocity;
+            this._yVelocity = JUMP_VELOCITY;
             this._isJumping = true;
             this._pointOfJump = {x: this._x, y: this._y + this._height};
         }
@@ -110,11 +125,11 @@ export class CharacterSprite extends SpriteDyna{
         const ratioOfLegs = 9/10
 
         //kolize        
-        const NextFrameDown  = new CharacterSprite(this._x , this._y + this._yVelocity + gravity, this._width, this._height);
-        const NextFrameUp     = new CharacterSprite(this._x , this._y + this._yVelocity - this._ySpeed, this._width, this._height)
-        const NextFrameRight = new CharacterSprite(this._x + this._xSpeed, this._y , this._width, this._height * ratioOfLegs );
-        const NextFrameLeft  = new CharacterSprite(this._x - this._xSpeed, this._y , this._width, this._height * ratioOfLegs );
-        const NextFrameY     = new CharacterSprite(this._x, this._y + this._yVelocity + 1, this._width, this._height);
+        const NextFrameDown  = new Rectangle(this._x , this._y + this._yVelocity + GRAVITY, this._width, this._height);
+        const NextFrameUp    = new Rectangle(this._x , this._y + this._yVelocity - this._ySpeed, this._width, this._height)
+        const NextFrameRight = new Rectangle(this._x + this._xSpeed, this._y , this._width, this._height * ratioOfLegs );
+        const NextFrameLeft  = new Rectangle(this._x - this._xSpeed, this._y , this._width, this._height * ratioOfLegs );
+        const NextFrameY     = new Rectangle(this._x, this._y + this._yVelocity + 1, this._width, this._height);
 
         const nextFrameRightBox = new Rectangle(this._x + this._xSpeed + 5 , this._y, this._width, this._height * ratioOfLegs);
         const nextFrameLeftBox  = new Rectangle(this._x - this._xSpeed - 5 , this._y, this._width, this._height * ratioOfLegs);
@@ -200,6 +215,11 @@ export class CharacterSprite extends SpriteDyna{
                     if(this._wantInteract == 'backward' && ob._reactToBackward){
                         ob._action(this, -1);
 
+                    }else{
+                        if(ob instanceof Selector){
+                            ob._updateReactsTo(this);
+                        }
+
                     }
                 }else{
                     ob._isInteractableWith[this._id] = false;
@@ -222,7 +242,7 @@ export class CharacterSprite extends SpriteDyna{
             this._floor = 1080 - this._height;
             this._isOnGround = false;
             this._typeOfGround = 0;
-            this._yVelocity += gravity;
+            this._yVelocity += GRAVITY;
             
         }else{
             this._floor = Math.floor(this._y) ;
@@ -234,7 +254,7 @@ export class CharacterSprite extends SpriteDyna{
         }  
         if (!canGoUp){
             this._yVelocity = 0; 
-            this.y = this._y + gravity;
+            this.y = this._y + GRAVITY;
         } 
         if (this._isOnGround){
             this._isJumping = false;

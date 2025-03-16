@@ -88,22 +88,24 @@ export class Ladder extends Rectangle{
         _action(player, index){
             const oldIndex = this._field.indexOf(player._skins[player._currentSkin]);
             const newIndex = oldIndex + index;
-
+            this._updateReactsTo(player);
             player.loadAndChangeSkin(this._field[newIndex]);
 
-            if((newIndex + 1) > this._field.length - 1){
+        }
+        _updateReactsTo(player){
+            const index = this._field.indexOf(player._skins[player._currentSkin]);
+            if((index + 1) > this._field.length - 1){
                 this._reactToForward  = false;
                 console.log("Forward is off");
             }else{
                 this._reactToForward  = true;
             }
-            if((newIndex - 1) < 0 ){
+            if((index - 1) < 0 ){
                 console.log("Backward is off");
                 this._reactToBackward = false;
             }else{
                 this._reactToBackward = true;
             }
-
         }
         _canGo(N_ward){
             switch(N_ward){
@@ -142,7 +144,7 @@ export class Ladder extends Rectangle{
             }
             updateImage(direction, canBeTriggered){
                 if(canBeTriggered){
-                    if(direction =='backward' ){ this._triggered =  1; this._currentFrame = 11;}
+                    if(direction =='backward'){ this._triggered =  1; this._currentFrame = 11;}
                     if(direction == 'forward'){ this._triggered = -1; this._currentFrame = 11;}
                 }
                 if(this._triggered != 0){
@@ -155,6 +157,8 @@ export class Ladder extends Rectangle{
                             this._triggered = 0;
                         }
                     }
+                }else{
+                    console.log("cannot be triggered");
                 }
             }
                 
@@ -395,10 +399,10 @@ export class Projectile extends CharacterSprite0 {
                 const shiftIndex = 0 // this._currentSkin * Player.framesTypes.length;
 
                 this._framesStanding     = [this._frames[0 + shiftIndex]];
-                this._framesRunRight     = this._frames.slice(1 + shiftIndex, 15 + shiftIndex);
-                this._framesRunLeft      = this._frames.slice(15 + shiftIndex, 29 + shiftIndex);
-                this._framesJumpFarRight = this._frames.slice(29 + shiftIndex, 32 + shiftIndex);
-                this._framesJumpFarLeft  = this._frames.slice(32 + shiftIndex, 35 + shiftIndex);
+                this._framesRunRight     =  this._frames.slice(1 + shiftIndex, 15 + shiftIndex);
+                this._framesRunLeft      =  this._frames.slice(15 + shiftIndex, 29 + shiftIndex);
+                this._framesJumpFarRight =  this._frames.slice(29 + shiftIndex, 32 + shiftIndex);
+                this._framesJumpFarLeft  =  this._frames.slice(32 + shiftIndex, 35 + shiftIndex);
                 this._framesPushRight    = [this._frames[35 + shiftIndex]];
                 this._framesPushLeft     = [this._frames[36 + shiftIndex]];
             }
@@ -422,9 +426,10 @@ export class Projectile extends CharacterSprite0 {
 ////
 ////-----------------InteractableIndicators-------------------////
     /*intance*/ const pathToIndicators = "../Game_01_Ledvadva/sprites/Indicators/";
-    export class IndicatorKey_E extends InteractableIndicator{
+    
+    export class IndicatorKey_Shift extends InteractableIndicator{
         constructor(x = 0, y = 0){
-            super(x, y, 44,44, pathToIndicators + "Press-E.png");
+            super(x, y, 124,44,pathToIndicators + "Press-Shift.png");
         }
     }
     export class IndicatorKey_E_Shift extends InteractableIndicator{
@@ -432,19 +437,68 @@ export class Projectile extends CharacterSprite0 {
             super(x, y, 200,44, pathToIndicators + "Press-E-Shift.png");
         }
     }
-    export class IndicatorKey_Shift extends InteractableIndicator{
+    export class IndicatorKey_E extends InteractableIndicator{
         constructor(x = 0, y = 0){
-            super(x, y, 124,44,pathToIndicators + "Press-Shift.png");
+            super(x, y, 44,44, pathToIndicators + "Press-E.png");
         }
     }
-    export class IndicatorKey_R extends InteractableIndicator{
+
+    export class IndicatorKey_F extends InteractableIndicator{
         constructor(x = 0, y = 0){
-            super(x, y, 44,44,pathToIndicators + "Press-R.png");
+            super(x, y, 44,44,pathToIndicators + "Press-F.png");
         }
     }
-    export class IndicatorKey_A extends InteractableIndicator{
+    export class IndicatorKey_K extends InteractableIndicator{
         constructor(x = 0, y = 0){
-            super(x, y, 44,44,pathToIndicators + "Press-A.png");
+            super(x, y, 44,44,pathToIndicators + "Press-K.png");
         }
     }
+    ///
+
+    export class IndicatorKey_G extends InteractableIndicator{
+        constructor(x = 0, y = 0){
+            super(x, y, 44,44,pathToIndicators + "Press-G.png");
+        }
+    }
+    export class IndicatorKey_L extends InteractableIndicator{
+        constructor(x = 0, y = 0){
+            super(x, y, 44,44,pathToIndicators + "Press-L.png");
+        }
+    }
+    ///
+    
+    export class Indicator_ToLeft extends InteractableIndicator{
+        moveTo(interactable, widthOfGap = 0, heightOfHover = 0){
+            this._x = interactable._x - this._width - (widthOfGap);
+            this._y = interactable._y + (interactable._height - this._height) / 2 + heightOfHover;
+        }
+    }
+        export class IndicatorKey_Left extends Indicator_ToLeft{
+            constructor(x = 0, y = 0){
+                super(x, y, 44,44,pathToIndicators + "To-Left.png");
+            }      
+        }
+        export class IndicatorKey_DiS_Left extends Indicator_ToLeft{
+            constructor(x = 0, y = 0){
+                super(x, y, 44,44,pathToIndicators + "dis_left.png");
+            }
+        }
+    export class Indicator_ToRight extends InteractableIndicator{
+        moveTo(interactable, widthOfGap = 0, heightOfHover = 0){
+            this._x = interactable._x + interactable._width + (widthOfGap);
+            this._y = interactable._y + (interactable._height - this._height) / 2 + heightOfHover;
+        }
+    }
+        export class IndicatorKey_Right extends Indicator_ToRight{
+            constructor(x = 0, y = 0){
+                super(x, y, 44,44,pathToIndicators + "To-Right.png");
+            }
+        }
+        export class IndicatorKey_DiS_Right extends Indicator_ToRight{
+            constructor(x = 0, y = 0){
+                super(x, y, 44,44,pathToIndicators + "dis_right.png");
+            }
+        }
+    
+
 ////

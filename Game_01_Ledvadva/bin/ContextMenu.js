@@ -1,4 +1,4 @@
-import { Menu } from '../Monkey-Engine/Menu.js';
+import { Menu } from '../../Monkey-Engine/Menu.js';
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 /*--------------------------Menus--------------------------------*/
