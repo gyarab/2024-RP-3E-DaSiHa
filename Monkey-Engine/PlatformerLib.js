@@ -53,12 +53,20 @@ export class Ladder extends Rectangle{
             Ledvadva.currentlvl = this._lvlNumber;
             this._isComplete = true;  
         }
+        render(ctx){
+            for (let p of this._platforms){
+                super.render(ctx);
+            }
+
+        }
     }
     export class EndOfLevel extends Interactable{
         constructor(x, y, width, height){
             super(x, y, width, height);
-        };;
-        _action(objects){
+            this._hasToBeOnGround = true;
+        };
+        _action(){
+            Ledvadva.currentlvl = 0;
         }
     }
     export class Switch extends Interactable{
@@ -160,7 +168,7 @@ export class Ladder extends Rectangle{
                         }
                     }
                 }else{
-                    console.log("cannot be triggered");
+                    ///console.log("cannot be triggered");
                 }
             }
                 
@@ -196,10 +204,14 @@ export class Pushable  extends CharacterSprite0{
             (ob instanceof Pushable && ob._id != this._id)
         );
     };
-    render(ctx){
+    render(ctx, hitboxes){
         let img = this._frames[this._currentFrame];
         if (img && img.complete) {
             ctx.drawImage(img, this._x, this._y, this._width, this._height);
+        }
+        if(hitboxes){
+            ctx.strokeStyle = "magenta";
+            ctx.strokeRect(this._x, this._y, this._width, this._height);
         }
     }
     updatePos(obsticles){
