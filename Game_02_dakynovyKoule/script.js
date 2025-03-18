@@ -373,14 +373,12 @@ function moveBall() {
     let ballSpeed = 0.8;
     let ballShrinkSpeed = 0.0018;
 
-
     const hibox_zlabek = new Rectangle(koule._points[3].x + koule._width / 2 - 10, koule._points[3].y, 10, 10, 'red');
     const hibox_kuzelky = new Rectangle(koule._points[3].x + koule._width / 2 - 13, koule._points[3].y - koule._height, 26, 10, 'green');
-    //hibox_kuzelky.render(ctx);
 
     if (hibox_zlabek.doesColideWith(zlabekL)) {
         zlabek = true;
-        ballX += 0.09;
+        ballX += 0.07;
         ballSpeed = 0.15;
         ballShrinkSpeed = 0.0005;
     } else if (hibox_zlabek.doesColideWith(zlabekR)) {
@@ -390,9 +388,9 @@ function moveBall() {
         ballShrinkSpeed = 0.0005;
     }
 
-    if(!zlabek) {
+    if (!zlabek) {
         if (power._currentFrame == 0) {
-            ballSpeed = 0.3;
+            ballSpeed = 0.31;
             ballShrinkSpeed = 0.0008;
         }
         if (power._currentFrame == 1 || power._currentFrame == 13) {
@@ -404,19 +402,19 @@ function moveBall() {
             ballShrinkSpeed = 0.0012;
         }
         if (power._currentFrame == 3 || power._currentFrame == 11) {
-            ballSpeed = 0.6;
+            ballSpeed = 0.62;
             ballShrinkSpeed = 0.0014;
         }
         if (power._currentFrame == 4 || power._currentFrame == 10) {
-            ballSpeed = 0.7;
+            ballSpeed = 0.69;
             ballShrinkSpeed = 0.0016;
         }
         if (power._currentFrame == 5 || power._currentFrame == 9) {
-            ballSpeed = 0.8;
+            ballSpeed = 0.75;
             ballShrinkSpeed = 0.0018;
         }
         if (power._currentFrame == 6 || power._currentFrame == 8) {
-            ballSpeed = 0.9;
+            ballSpeed = 0.89;
             ballShrinkSpeed = 0.002;
         }
         if (power._currentFrame == 7) {
@@ -424,193 +422,142 @@ function moveBall() {
             ballShrinkSpeed = 0.0022;
         }
     }
-        if (showKoule) {
-            ballY -= ballSpeed;
-            ballScale -= ballShrinkSpeed;            
-            ballX += 0.14;
 
-            if (sipecka._currentFrame == 0 ){
-                if(pokus == 0) {
-                    if (power._currentFrame == 4 ||
-                        power._currentFrame == 5 || 
-                        power._currentFrame == 6 || 
-                        power._currentFrame == 7 || 
-                        power._currentFrame == 8 || 
-                        power._currentFrame == 9 || 
-                        power._currentFrame == 10) { 
-                            strike = true;
-                            if(strike == true) {
-                                if (ballY <= 594) {
-                                    showKuzelka1 = false;
-                                }
+    if (showKoule) {
+        ballY -= ballSpeed;
+        ballScale -= ballShrinkSpeed;
+        ballX += 0.14;
 
-                                if (ballY <= 583) {
-                                    showKuzelka2 = false;
-                                    showKuzelka3 = false;
-                                }
-
-                                if (ballY <= 572) {
-                                    showKuzelka4 = false;
-                                    showKuzelka5 = false;
-                                    showKuzelka6 = false;
-                                }
-                                
-                                if (ballY <= 561) {
-                                    showKuzelka7 = false;
-                                    showKuzelka8 = false;
-                                    showKuzelka9 = false;
-                                    showKuzelka10 = false;
-                                    pokus = 2;
-                                }
-                                pocet_kuzelek_dole = 10;
-                            }
+        if (sipecka._currentFrame == 0) {
+            if (pokus == 0) {
+                if (power._currentFrame >= 4 && power._currentFrame <= 10) {
+                    strike = true;
+                    if (strike) {
+                        if (ballY <= 634) showKuzelka1 = false;
+                        if (ballY <= 623) {
+                            showKuzelka2 = false;
+                            showKuzelka3 = false;
                         }
+                        if (ballY <= 612) {
+                            showKuzelka4 = false;
+                            showKuzelka5 = false;
+                            showKuzelka6 = false;
+                        }
+                        if (ballY <= 601) {
+                            showKuzelka7 = false;
+                            showKuzelka8 = false;
+                            showKuzelka9 = false;
+                            showKuzelka10 = false;
+                            pokus = 2;
+                        }
+                        pocet_kuzelek_dole = 10;
                     }
                 }
-        
-
-            if(strike == false) {
-                if (hibox_kuzelky.doesColideWith(pin1)) {
-                    showKuzelka1 = false;
-                    pocet_kuzelek_dole++;
-                }
-                if (hibox_kuzelky.doesColideWith(pin2)) {
-                    showKuzelka2 = false;
-                    pocet_kuzelek_dole++;
-                }
-                if (hibox_kuzelky.doesColideWith(pin3)) {
-                    showKuzelka3 = false;
-                    pocet_kuzelek_dole++;
-                }
-                if (hibox_kuzelky.doesColideWith(pin4)) {
-                    showKuzelka4 = false;
-                    pocet_kuzelek_dole++;
-                }
-                if (hibox_kuzelky.doesColideWith(pin5)) {
-                    showKuzelka5 = false;
-                    pocet_kuzelek_dole++;
-                }
-                if (hibox_kuzelky.doesColideWith(pin6)) {
-                    showKuzelka6 = false;
-                    pocet_kuzelek_dole++;
-                }
-                if (hibox_kuzelky.doesColideWith(pin7)) {
-                    showKuzelka7 = false;
-                    pocet_kuzelek_dole++;
-                }
-                if (hibox_kuzelky.doesColideWith(pin8)) {
-                    showKuzelka8 = false;
-                    pocet_kuzelek_dole++;	
-                }
-                if (hibox_kuzelky.doesColideWith(pin9)) {
-                    showKuzelka9 = false;
-                    pocet_kuzelek_dole++;
-                }
-                if (hibox_kuzelky.doesColideWith(pin10)) {
-                    showKuzelka10 = false;
-                    pocet_kuzelek_dole++;
-                }
-            }
-
-        if(!zlabek) {
-            if (sipecka._currentFrame == 1 || sipecka._currentFrame == 17) {
-                ballX -= 0.07;
-            }
-            if (sipecka._currentFrame == 2 || sipecka._currentFrame == 16) { 
-                ballX -= 0.14;
-            }
-            if (sipecka._currentFrame == 3 || sipecka._currentFrame == 15) {
-                ballX -= 0.21;
-            }
-            if (sipecka._currentFrame == 4 || sipecka._currentFrame == 14) {
-                ballX -= 0.31;
-            }
-            if (sipecka._currentFrame == 5 || sipecka._currentFrame == 13) {
-                ballX -= 0.43;
-            }
-            if (sipecka._currentFrame == 6 || sipecka._currentFrame == 12) {
-                ballX -= 0.54;
-            }
-            if (sipecka._currentFrame == 7 || sipecka._currentFrame == 11) {
-                ballX -= 0.68;
-            }
-            if (sipecka._currentFrame == 8 || sipecka._currentFrame == 10) {
-                ballX -= 0.79;
-            }
-            if (sipecka._currentFrame == 9) {
-                ballX -= 0.89;
-            }
-            if (sipecka._currentFrame == 19 || sipecka._currentFrame == 35) {
-                ballX += 0.07;
-            }
-            if (sipecka._currentFrame == 20 || sipecka._currentFrame == 34) {
-                ballX += 0.14;
-            }
-            if (sipecka._currentFrame == 21 || sipecka._currentFrame == 33) {
-                ballX += 0.21;
-            }
-            if (sipecka._currentFrame == 22 || sipecka._currentFrame == 32) {
-                ballX += 0.31;
-            }
-            if (sipecka._currentFrame == 23 || sipecka._currentFrame == 31) {
-                ballX += 0.43;
-            }
-            if (sipecka._currentFrame == 24 || sipecka._currentFrame == 30) {
-                ballX += 0.54;
-            }
-            if (sipecka._currentFrame == 25 || sipecka._currentFrame == 29) {
-                ballX += 0.68;
-            }
-            if (sipecka._currentFrame == 26 || sipecka._currentFrame == 28) {
-                ballX += 0.79;
-            }
-            if (sipecka._currentFrame == 27) {
-                ballX += 0.89;
             }
         }
 
-        
+        if (!strike) {
+            if (hibox_kuzelky.doesColideWith(pin1) && showKuzelka1) {
+                showKuzelka1 = false;
+                pocet_kuzelek_dole++;
+            }
+            if (hibox_kuzelky.doesColideWith(pin2) && showKuzelka2) {
+                showKuzelka2 = false;
+                pocet_kuzelek_dole++;
+            }
+            if (hibox_kuzelky.doesColideWith(pin3) && showKuzelka3) {
+                showKuzelka3 = false;
+                pocet_kuzelek_dole++;
+            }
+            if (hibox_kuzelky.doesColideWith(pin4) && showKuzelka4) {
+                showKuzelka4 = false;
+                pocet_kuzelek_dole++;
+            }
+            if (hibox_kuzelky.doesColideWith(pin5) && showKuzelka5) {
+                showKuzelka5 = false;
+                pocet_kuzelek_dole++;
+            }
+            if (hibox_kuzelky.doesColideWith(pin6) && showKuzelka6) {
+                showKuzelka6 = false;
+                pocet_kuzelek_dole++;
+            }
+            if (hibox_kuzelky.doesColideWith(pin7) && showKuzelka7) {
+                showKuzelka7 = false;
+                pocet_kuzelek_dole++;
+            }
+            if (hibox_kuzelky.doesColideWith(pin8) && showKuzelka8) {
+                showKuzelka8 = false;
+                pocet_kuzelek_dole++;
+            }
+            if (hibox_kuzelky.doesColideWith(pin9) && showKuzelka9) {
+                showKuzelka9 = false;
+                pocet_kuzelek_dole++;
+            }
+            if (hibox_kuzelky.doesColideWith(pin10) && showKuzelka10) {
+                showKuzelka10 = false;
+                pocet_kuzelek_dole++;
+            }
+        }
 
-            if (ballY <= 560 || (hibox_zlabek.doesColideWith(zlabekL) && ballY <= 600) || (hibox_zlabek.doesColideWith(zlabekR) && ballY <= 600)) {
+        if (!zlabek) {
+            if (sipecka._currentFrame == 1 || sipecka._currentFrame == 17) ballX -= 0.07;
+            if (sipecka._currentFrame == 2 || sipecka._currentFrame == 16) ballX -= 0.14;
+            if (sipecka._currentFrame == 3 || sipecka._currentFrame == 15) ballX -= 0.21;
+            if (sipecka._currentFrame == 4 || sipecka._currentFrame == 14) ballX -= 0.31;
+            if (sipecka._currentFrame == 5 || sipecka._currentFrame == 13) ballX -= 0.43;
+            if (sipecka._currentFrame == 6 || sipecka._currentFrame == 12) ballX -= 0.54;
+            if (sipecka._currentFrame == 7 || sipecka._currentFrame == 11) ballX -= 0.68;
+            if (sipecka._currentFrame == 8 || sipecka._currentFrame == 10) ballX -= 0.79;
+            if (sipecka._currentFrame == 9) ballX -= 0.89;
+            if (sipecka._currentFrame == 19 || sipecka._currentFrame == 35) ballX += 0.07;
+            if (sipecka._currentFrame == 20 || sipecka._currentFrame == 34) ballX += 0.14;
+            if (sipecka._currentFrame == 21 || sipecka._currentFrame == 33) ballX += 0.21;
+            if (sipecka._currentFrame == 22 || sipecka._currentFrame == 32) ballX += 0.31;
+            if (sipecka._currentFrame == 23 || sipecka._currentFrame == 31) ballX += 0.43;
+            if (sipecka._currentFrame == 24 || sipecka._currentFrame == 30) ballX += 0.54;
+            if (sipecka._currentFrame == 25 || sipecka._currentFrame == 29) ballX += 0.68;
+            if (sipecka._currentFrame == 26 || sipecka._currentFrame == 28) ballX += 0.79;
+            if (sipecka._currentFrame == 27) ballX += 0.89;
+        }
+        if (ballY <= 579.99 || (hibox_zlabek.doesColideWith(zlabekL) && ballY <= 579.99) || (hibox_zlabek.doesColideWith(zlabekR) && ballY <= 579.99)) {
+            showKoule = false;
+            pokus++;
+            tryB++;
+            if (pokus >= 2) {
                 showKoule = false;
-                pokus++;
-                tryB++;
-                //console.log(pocet_kuzelek_dole);
-                if(pokus >= 2) {
-                    showKoule = false;
-                    setTimeout(() => {
-                        showKuzelka1 = true;
-                        showKuzelka2 = true;
-                        showKuzelka3 = true;
-                        showKuzelka4 = true;
-                        showKuzelka5 = true;
-                        showKuzelka6 = true;
-                        showKuzelka7 = true;
-                        showKuzelka8 = true;
-                        showKuzelka9 = true;
-                        showKuzelka10 = true;
-                        }, 1000);
-                    pokus = 0;
-                    setTimeout(() => {
+                setTimeout(() => {
+                    showKuzelka1 = true;
+                    showKuzelka2 = true;
+                    showKuzelka3 = true;
+                    showKuzelka4 = true;
+                    showKuzelka5 = true;
+                    showKuzelka6 = true;
+                    showKuzelka7 = true;
+                    showKuzelka8 = true;
+                    showKuzelka9 = true;
+                    showKuzelka10 = true;
+                }, 1000);
+                pokus = 0;
+                setTimeout(() => {
                     hrac++;
-                    }, 1000);
-                }
-                    ballY = 890;
-                    ballX = 900;
-                    ballScale = 1;
-                    zlabek = false;
-                    strike = false;
-                    sipecka._currentFrame = 0;
-                    power._currentFrame = 0;
-                    pocet_kuzelek_dole = 0;
+                }, 1000);
             }
-
-
-            koule.y = ballY;
-            koule.x = ballX;
-            koule.width = 150 * ballScale;
-            koule.height = 150 * ballScale;
+            ballY = 890;
+            ballX = 900;
+            ballScale = 1;
+            zlabek = false;
+            strike = false;
+            sipecka._currentFrame = 0;
+            power._currentFrame = 0;
+            pocet_kuzelek_dole = 0;
         }
+
+
+        koule.y = ballY;
+        koule.x = ballX;
+        koule.width = 150 * ballScale;
+        koule.height = 150 * ballScale;
+    }
 }
 
 let ballRX = kouleR._x;
@@ -856,49 +803,93 @@ function moveBallR() {
 let tryB = 0;
 let tryR = 0;
 let strikes = [];
+let zazemi = false;
 
 function counter() {
     scoreBoard.render(ctx);
-    if (pocet_kuzelek_dole == 9 && ballY <= 561) {
-        if (strikes.length < tryB + 1) {
-            strikes.push({ x: devet._x, y: devet._y, type: 'devet' });
+
+    if (ballY <= 580.32) zazemi = true;
+    else zazemi = false;
+
+    if (pocet_kuzelek_dole === 10 && zazemi)  {
+            strikes.push({ x: X._x + (tryB * 64) + 64, y: X._y, type: 'strike' });
+    } 
+    if (pocet_kuzelek_dole === 9 && zazemi) {
+        if(pokus % 2 == 1 || tryB <= 0) {
+            strikes.push({ x: devet._x + (tryB * 64), y: devet._y, type: 'devet' });
+        } else {
+            strikes.push({ x: devet._x + (tryR * 64) + 4, y: devet._y, type: 'devet' });
         }
-    }  if (pocet_kuzelek_dole == 8 && ballY <= 561) {
-        if (strikes.length < tryB + 1) {
-            strikes.push({ x: osm._x, y: osm._y, type: 'osm' });
+    } 
+    if (pocet_kuzelek_dole === 8 && zazemi) {
+        if(pokus % 2 == 1 || tryB <= 0) {
+            strikes.push({ x: osm._x + (tryB * 64), y: osm._y, type: 'osm' });
+        } else {
+            strikes.push({ x: osm._x + (tryR * 64) + 4, y: osm._y, type: 'osm' });
         }
-    }  if (pocet_kuzelek_dole == 7 && ballY <= 561) {
-        if (strikes.length < tryB + 1) {
-            strikes.push({ x: sedm._x, y: sedm._y, type: 'sedm' });
+    } 
+    if (pocet_kuzelek_dole === 7 && zazemi) {
+        if(pokus % 2 == 1 || tryB > 0) {
+            strikes.push({ x: sedm._x + (tryB * 64), y: sedm._y, type: 'sedm' });
+        } else {
+            strikes.push({ x: sedm._x + (tryR * 64) + 4, y: sedm._y, type: 'sedm' });
         }
-    }  if (pocet_kuzelek_dole == 6 && ballY <= 561) {
-        if (strikes.length < tryB + 1) {
-            strikes.push({ x: sest._x, y: sest._y, type: 'sest' });
+    } 
+    if (pocet_kuzelek_dole === 6 && zazemi) {
+        if(pokus % 2 == 1 || tryB <= 0) {
+            strikes.push({ x: sest._x + (tryB * 64), y: sest._y, type: 'sest' });
+        } else {
+            strikes.push({ x: sest._x + (tryR * 64) + 4, y: sest._y, type: 'sest' });
         }
-    }  if (pocet_kuzelek_dole == 5 && ballY <= 561) {
-        if (strikes.length < tryB + 1) {
-            strikes.push({ x: pet._x, y: pet._y, type: 'pet' });
+    } 
+    if (pocet_kuzelek_dole === 5 && zazemi) {
+        if(pokus % 2 == 1 || tryB <= 0) {
+            strikes.push({ x: pet._x + (tryB * 64), y: pet._y, type: 'pet' });
+        } else {
+            strikes.push({ x: pet._x + (tryR * 64) + 4, y: pet._y, type: 'pet' });
         }
-    }  if (pocet_kuzelek_dole == 4 && ballY <= 561) {
-        if (strikes.length < tryB + 1) {
-            strikes.push({ x: ctyri._x, y: ctyri._y, type: 'ctyri' });
+    } 
+    if (pocet_kuzelek_dole === 4 && zazemi) {
+        if(pokus % 2 == 1 || tryB <= 0) {
+            strikes.push({ x: ctyri._x + (tryB * 64), y: ctyri._y, type: 'ctyri' });
+        } else {
+            strikes.push({ x: ctyri._x + (tryR * 64) + 4, y: ctyri._y, type: 'ctyri' });
         }
-    }  if (pocet_kuzelek_dole == 3 && ballY <= 561) {
-        if (strikes.length < tryB + 1) {
-            strikes.push({ x: tri._x, y: tri._y, type: 'tri' });
+    } 
+    if (pocet_kuzelek_dole === 3 && zazemi) {
+        if(pokus % 2 == 1 || tryB <= 0) {
+            strikes.push({ x: tri._x + (tryB * 64), y: tri._y, type: 'tri' });
+        } else {
+            strikes.push({ x: tri._x + (tryR * 64) + 4, y: tri._y, type: 'tri' });
         }
-    }  if (pocet_kuzelek_dole == 2 && ballY <= 561) {
-        if (strikes.length < tryB + 1) {
-            strikes.push({ x: dva._x, y: dva._y, type: 'dva' });
+    } 
+    if (pocet_kuzelek_dole === 2 && zazemi) {
+        if(pokus % 2 == 1 || tryB <= 0) {
+            strikes.push({ x: dva._x + (tryB * 64), y: dva._y, type: 'dva' });
+        } else {
+            strikes.push({ x: dva._x + (tryR * 64) + 4, y: dva._y, type: 'dva' });
         }
-    }  if (pocet_kuzelek_dole == 1 && ballY <= 561) {
-        if (strikes.length < tryB + 1) {
-            strikes.push({ x: jedna._x, y: jedna._y, type: 'jedna' });
+    } 
+    if (pocet_kuzelek_dole === 1 && zazemi) {
+        if(pokus % 2 == 1 || tryB <= 0) {
+            strikes.push({ x: jedna._x + (tryB * 64), y: jedna._y, type: 'jedna' });
+        } else {
+            strikes.push({ x: jedna._x + (tryR * 64) + 4, y: jedna._y, type: 'jedna' });
         }
     }
 
     strikes.forEach(strike => {
         switch (strike.type) {
+            case 'strike':
+                X.x = strike.x;
+                X.y = strike.y;
+                X.render(ctx);
+                break;
+            case 'spare':
+                spare.x = strike.x;
+                spare.y = strike.y;
+                spare.render(ctx);
+                break;
             case 'devet':
                 devet.x = strike.x;
                 devet.y = strike.y;
@@ -946,7 +937,16 @@ function counter() {
                 break;
         }
     });
-    console.log(pocet_kuzelek_dole);
+    //console.log("sl - " + strikes.length);
+    console.log("tryB - " + tryB);
+
+    //console.log(pocet_kuzelek_dole);
+
+    //console.log(ballY)
+    
+    //console.log(zazemi)
+    
+    //console.log(power._currentFrame);
 }
 
 
