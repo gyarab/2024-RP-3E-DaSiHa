@@ -1,67 +1,52 @@
-    /*-------------------------Obstacles------------------------------*/
-    const w1 = new Tetragon(
-        {x: 200, y:   0},
-        {x: 600, y:   0},
-        {x: 600, y: 300},
-        {x: 200, y: 300},
-        "grey"
-    )
-    const w2 = new Tetragon(
-        {x: 200, y:  50},
-        {x: 900, y:  50},
-        {x: 900, y: 150},
-        {x: 200, y: 150},
-        "grey"
-    )
-    const w3 = new Tetragon(
-        {x: 200, y:  50},
-        {x: 400, y:  50},
-        {x: 400, y: 150},
-        {x: 200, y: 150},
-        "grey"
-    )
-    const w4 = new Tetragon(
-        {x: 200, y:  50},
-        {x: 400, y:  50},
-        {x: 400, y: 100},
-        {x: 200, y: 100},
-        "grey"
-    )
-    const w5 = new Tetragon(
-        {x:   0, y:  0},
-        {x:1500, y:  0},
-        {x:1500, y:200},
-        {x:   0, y:200},
-        "grey"
-    )
-    const w6 = new Tetragon(
-        {x:   0, y:   0},
-        {x:   0, y: 400},
-        {x: 250, y: 400},
-        {x: 250, y:   0},
-        "grey"
-    )
+import { Ledvadva } from "../../Game_01_Ledvadva/main.js";
+import { Sprite } from "../../Monkey-Engine/Sprite.js";
+import { Solid } from "../../Monkey-Engine/PlatformerLib.js";
+//@-------------------------------VISUALS----------------------------------@//
+const Backgrnd = new Sprite(0, 0, 1920, 1080,"../Game_01_Ledvadva/sprites/Lvl-02/Background.png");
+const Fargrnd  = new Sprite(0, 0, 1920, 1080,"../Game_01_Ledvadva/sprites/Lvl-02/Farground.png");
+const Midgrnd  = new Sprite(0, 0, 1920, 1080,"../Game_01_Ledvadva/sprites/Lvl-02/Midground.png");
+const Forgrnd  = new Sprite(0, 0, 1920, 1080,"../Game_01_Ledvadva/sprites/Lvl-02/Forground.png");
+//@------------------------------STRUCTURE---------------------------------@//
+////---------//                 Solid                         ////
+    const _0001 = new Solid(  16, 1032, 1888,  32); //ground
+////---------//                 Enemy                         ////
+    const _0002 = new Solid( 216,  908,   68, 124); //cacti
+    const _0003 = new Solid( 588,  984,   60,  48); //-//-
+    const _0004 = new Solid(1056,  908,   68, 124); //-//-
+const HitBoxes = [
+    _0001, _0002, _0003, _0004
+];
+//@-------------------------------RENDER-----------------------------------@//
+const canvas = document.getElementById('herniRozhraní');
+const ctx = canvas.getContext('2d');
+////---------//                  Restart                      ////
+    let shouldRestart = true;
+    function restart_02(){ 
+        Ledvadva.players[0].moveTo(1000,680);
+        Ledvadva.players[1].moveTo(1000,680);
 
-    w1.moveTo(0     ,   400);
-    w2.moveTo(650   ,   600);
-    w3.moveTo(950   ,   500);
-    w4.moveTo(650   ,   320);
-    w5.moveTo(0     ,   900);
-    w6.moveTo(1500  ,   760);
+        shouldRestart = false;
+    }
+////---------//                  LvlLoop                      ////
+    export function _02_RENDER(){
+        if (shouldRestart){ restart_02();}
+        Backgrnd.render(ctx);
+        Fargrnd.render(ctx);
+        
+        Ledvadva.players[0].updatePos(HitBoxes);
+        Ledvadva.players[0].updateImage();
+        Ledvadva.players[0].render(ctx, Ledvadva.Modes.infoMode);
 
-    const obsticles  = [w1, w2, w3, w4, w5, w6];
-    
-    /*------------------------Bottles---------------------------------*/
-    const bottleBLU = new Sprite( null, null, 64, 64,
-        "/Game_01_Ledvadva/sprites/BLU/b7.png"
-    );
-    bottleBLU.moveTo(720, 220);
-    const bottleRED = new Sprite( null, null, 64, 64,
-        "/Game_01_Ledvadva/sprites/BLU/b7.png"
-    );
-    bottleRED.moveTo(400, 800);
-    const bottleORA = new Sprite( null, null, 64, 64,
-        "/Game_01_Ledvadva/sprites/BLU/b7.png"
-    );
-    bottleORA.moveTo(1000, 800);
-    const bottles = [bottleBLU, bottleRED, bottleORA];
+        Ledvadva.players[1].updatePos(HitBoxes);
+        Ledvadva.players[1].updateImage();
+        Ledvadva.players[1].render(ctx, Ledvadva.Modes.infoMode);
+
+
+        Midgrnd.render(ctx);
+        Forgrnd.render(ctx);
+
+        if (Ledvadva.Modes.infoMode) {
+            HitBoxes.forEach(hitbox => hitbox.render(ctx));
+            Ledvadva.infoBar.render(ctx);
+        }
+    }

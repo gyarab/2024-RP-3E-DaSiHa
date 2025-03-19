@@ -1,6 +1,6 @@
 import { _00_RENDER } from './levels/00_mainHub.js';
 import { _01_RENDER } from './levels/01_level.js';
-///import { _02_RENDER } from './levels/02_level.js';
+import { _02_RENDER } from './levels/02_level.js';
 
 import { Sprite } from  '../Monkey-Engine/Sprite.js';
 import { Player } from  '../Monkey-Engine/PlatformerLib.js';
@@ -16,19 +16,16 @@ const Ledvadva = {
         infoMode : false,
         EditMode : false            
     },
-    currentlvl : 0
+    currentlvl : 0,
+    infoBar : new Sprite(0,0,1920,1080,"../Game_01_Ledvadva/sprites/Indicators/infoBar.png")
 }
 window.addEventListener('load', () => {
-
+    ////-----------------------canvasSetUp-----------------------////
     const canvas = document.getElementById('herniRozhraní');
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false; 
-
-    const infoBor = new Sprite (0,0,1920,1080,"../Game_01_Ledvadva/sprites/info.png");
     ////-----------------------KeyBoard-Binds-----------------------////
-
     const pressedKeys = new Set();
-
     window.addEventListener('keydown' , event => {
         handleKeyUpAndDown(event,  true);
         handleKeyDown(event);
@@ -76,10 +73,8 @@ window.addEventListener('load', () => {
         };
         if (actions[key]) actions[key]();
     }
-
     ////--------------------------Mainloop---------------------------////
     function Mainloop() {
-
         switch (Ledvadva.currentlvl) {
             case 0: _00_RENDER(); break;
             case 1: _01_RENDER(); break;
@@ -88,6 +83,8 @@ window.addEventListener('load', () => {
             case 4: _04_RENDER(); break;
             default: console.error("Level not found"); break;
         }
+        Ledvadva.players[0]._wantInteract = "none";
+        Ledvadva.players[1]._wantInteract = "none";
     }
     window.setInterval(Mainloop, 6, true);
 });

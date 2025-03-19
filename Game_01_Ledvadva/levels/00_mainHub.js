@@ -94,7 +94,7 @@ import { InteractableIndicator } from '../../Monkey-Engine/Interactable.js';
 ////---------//                   Interactable                 ////
     ////---------//               LevelSelect                  ////
         const lvl01 = new LevelSelect( 704,  972, 128,  76, 0);
-        const lvl02 = new LevelSelect( 240,  816, 156,  76, 0);
+        const lvl02 = new LevelSelect( 240,  816, 156,  76, 2);
         const lvl03 = new LevelSelect( 384,  676,  76,  28, 1);   
         const lvl04 = new LevelSelect( 488,  516, 100,  64, 0);
         const lvl05 = new LevelSelect( 356,  364, 104,  32, 0);
@@ -224,6 +224,7 @@ export function _00_RENDER(){
 
     if(Ledvadva.Modes.infoMode){
         Hitboxes.forEach(hitbox => hitbox.render(ctx));
+        Ledvadva.infoBar.render(ctx);
     }
     Ledvadva.players[0]._wantInteract = "none";
     Ledvadva.players[1]._wantInteract = "none";
