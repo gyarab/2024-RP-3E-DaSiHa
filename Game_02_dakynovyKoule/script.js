@@ -525,6 +525,7 @@ function moveBall() {
             tryB++;
             if (pokus >= 2) {
                 showKoule = false;
+                roundB++;
                 setTimeout(() => {
                     showKuzelka1 = true;
                     showKuzelka2 = true;
@@ -537,9 +538,11 @@ function moveBall() {
                     showKuzelka9 = true;
                     showKuzelka10 = true;
                 }, 1000);
-                pokus = 0;
                 setTimeout(() => {
-                    hrac++;
+                    if(tryB != 20){
+                        pokus = 0;
+                        hrac++;
+                    }
                 }, 1000);
             }
             ballY = 890;
@@ -719,6 +722,7 @@ function moveBallR() {
             tryR++;
             if (pokus >= 2) {
                 showKoule = false;
+                roundR++;
                 setTimeout(() => {
                     showKuzelka1 = true;
                     showKuzelka2 = true;
@@ -731,9 +735,11 @@ function moveBallR() {
                     showKuzelka9 = true;
                     showKuzelka10 = true;
                 }, 1000);
-                pokus = 0;
                 setTimeout(() => {
-                    hrac++;
+                    if(tryR != 20){
+                        pokus = 0;
+                        hrac++;
+                    }
                 }, 1000);
             }
             ballRY = 890;
@@ -760,6 +766,10 @@ let strikesB = [];
 let strikesR = [];
 let zazemi = false;
 let zazemiR = false;
+const spotB = new Rectangle(282, 43, 49, 49);
+const spotR = new Rectangle(282, 43, 49, 49);
+let roundB = 0;
+let roundR = 0;
 
 function counter() {
     scoreBoard.render(ctx);
@@ -769,79 +779,98 @@ function counter() {
         else zazemi = false;
 
         if (pocet_kuzelek_dole > 0 && zazemi) {
-            let type;
+            let typeB;
             if (pocet_kuzelek_dole === 10) {
-                type = 'strike';
+                typeB = 'strike';
             } else if (pocet_kuzelek_dole === 9) {
-                type = 'devet';
+                typeB = 'devet';
             } else if (pocet_kuzelek_dole === 8) {
-                type = 'osm';
+                typeB = 'osm';
             } else if (pocet_kuzelek_dole === 7) {
-                type = 'sedm';
+                typeB = 'sedm';
             } else if (pocet_kuzelek_dole === 6) {
-                type = 'sest';
+                typeB = 'sest';
             } else if (pocet_kuzelek_dole === 5) {
-                type = 'pet';
+                typeB = 'pet';
             } else if (pocet_kuzelek_dole === 4) {
-                type = 'ctyri';
+                typeB = 'ctyri';
             } else if (pocet_kuzelek_dole === 3) {
-                type = 'tri';
+                typeB = 'tri';
             } else if (pocet_kuzelek_dole === 2) {
-                type = 'dva';
+                typeB = 'dva';
             } else if (pocet_kuzelek_dole === 1) {
-                type = 'jedna';
+                typeB = 'jedna';
             }
-            if (type) {
-                let offset = type === 'strike' ? (tryB > 0 ? 8 : 0) : (tryB > 1 ? 8 : 0);
-                strikesB.push({ x: X._x + (tryB * 65) + offset, y: X._y, type: type });
+            if (typeB) {
+                let offsetB = 0;
+                if (typeB === 'strike') {
+                    if (tryB > 0) {
+                        offsetB = 8;
+                    }
+                } else {
+                    if (tryB > 1) {
+                        offsetB = 8;
+                    }
+                }
+            
+                if(tryB <= 18){
+                    if (typeB === 'strike') {
+                        tryB++;
+                    }
+                }
+
+                if(tryB === 21){
+                    offsetB = 0;
+                }
+                strikesB.push({ x: spotB._x + (tryB * 62) + offsetB * roundB, y: spotB._y, type: typeB });
             }
         }
 
         strikesB.forEach(strike => {
             if (strike.type === 'strike') {
-                X.x = strike.x;
-                X.y = strike.y;
-                X.render(ctx);
-            } if (strike.type === 'spare') {
-                spare.x = strike.x;
-                spare.y = strike.y;
-                spare.render(ctx);
-            } if (strike.type === 'devet') {
-                devet.x = strike.x;
-                devet.y = strike.y;
-                devet.render(ctx);
-            } if (strike.type === 'osm') {
-                osm.x = strike.x;
-                osm.y = strike.y;
-                osm.render(ctx);
-            } if (strike.type === 'sedm') {
-                sedm.x = strike.x;
-                sedm.y = strike.y;
-                sedm.render(ctx);
-            } if (strike.type === 'sest') {
-                sest.x = strike.x;
-                sest.y = strike.y;
-                sest.render(ctx);
-            } if (strike.type === 'pet') {
-                pet.x = strike.x;
-                pet.y = strike.y;
-                pet.render(ctx);
-            } if (strike.type === 'ctyri') {
-                ctyri.x = strike.x;
-                ctyri.y = strike.y;
-                ctyri.render(ctx);
-            } if (strike.type === 'tri') {
-                tri.x = strike.x;
-                tri.y = strike.y;
-                tri.render(ctx);
-            } if (strike.type === 'dva') {
-                dva.x = strike.x;
-                dva.y = strike.y;
-                dva.render(ctx);
-            } if (strike.type === 'jedna') {
-                jedna.x = strike.x;
-                jedna.y = strike.y;
-                jedna.render(ctx);
+            X.x = strike.x;
+            X.y = strike.y;
+            X.render(ctx);
+            } else if (strike.type === 'spare') {
+            spare.x = strike.x;
+            spare.y = strike.y;
+            spare.render(ctx);
+            } else if (strike.type === 'devet') {
+            devet.x = strike.x;
+            devet.y = strike.y;
+            devet.render(ctx);
+            } else if (strike.type === 'osm') {
+            osm.x = strike.x;
+            osm.y = strike.y;
+            osm.render(ctx);
+            } else if (strike.type === 'sedm') {
+            sedm.x = strike.x;
+            sedm.y = strike.y;
+            sedm.render(ctx);
+            } else if (strike.type === 'sest') {
+            sest.x = strike.x;
+            sest.y = strike.y;
+            sest.render(ctx);
+            } else if (strike.type === 'pet') {
+            pet.x = strike.x;
+            pet.y = strike.y;
+            pet.render(ctx);
+            } else if (strike.type === 'ctyri') {
+            ctyri.x = strike.x;
+            ctyri.y = strike.y;
+            ctyri.render(ctx);
+            } else if (strike.type === 'tri') {
+            tri.x = strike.x;
+            tri.y = strike.y;
+            tri.render(ctx);
+            } else if (strike.type === 'dva') {
+            dva.x = strike.x;
+            dva.y = strike.y;
+            dva.render(ctx);
+            } else if (strike.type === 'jedna') {
+            jedna.x = strike.x;
+            jedna.y = strike.y;
+            jedna.render(ctx);
             }
         });
     }
@@ -851,31 +880,48 @@ function counter() {
         else zazemiR = false;
 
         if (pocet_kuzelek_dole > 0 && zazemiR) {
-            let type;
+            let typeR;
             if (pocet_kuzelek_dole === 10) {
-                type = 'strike';
+            typeR = 'strike';
             } else if (pocet_kuzelek_dole === 9) {
-                type = 'devet';
+            typeR = 'devet';
             } else if (pocet_kuzelek_dole === 8) {
-                type = 'osm';
+            typeR = 'osm';
             } else if (pocet_kuzelek_dole === 7) {
-                type = 'sedm';
+            typeR = 'sedm';
             } else if (pocet_kuzelek_dole === 6) {
-                type = 'sest';
+            typeR = 'sest';
             } else if (pocet_kuzelek_dole === 5) {
-                type = 'pet';
+            typeR = 'pet';
             } else if (pocet_kuzelek_dole === 4) {
-                type = 'ctyri';
+            typeR = 'ctyri';
             } else if (pocet_kuzelek_dole === 3) {
-                type = 'tri';
+            typeR = 'tri';
             } else if (pocet_kuzelek_dole === 2) {
-                type = 'dva';
+            typeR = 'dva';
             } else if (pocet_kuzelek_dole === 1) {
-                type = 'jedna';
+            typeR = 'jedna';
             }
-            if (type) {
-                let offset = type === 'strike' ? (tryR > 0 ? 8 : 0) : (tryR > 1 ? 8 : 0);
-                strikesR.push({ x: X._x + (tryR * 65) + offset, y: X._y + 62, type: type });
+            if (typeR) {
+                let offsetR = 0;
+                if (typeR === 'strike') {
+                    if (tryR > 0) {
+                        offsetR = 8;
+                    }
+                } else {
+                    if (tryR > 1) {
+                        offsetR = 8;
+                    }
+                }
+                if(tryR <= 18){
+                    if (typeR === 'strike') {
+                        tryR++;
+                    }
+                }
+                if(tryR === 21){
+                    offsetR = 0;
+                }
+                strikesR.push({ x: spotR._x + (tryR * 62) + offsetR * roundR, y: spotR._y + 61, type: typeR });
             }
         }
 
@@ -927,6 +973,8 @@ function counter() {
             }
         });
     }
+
+    console.log(tryB);
 
 }
 
