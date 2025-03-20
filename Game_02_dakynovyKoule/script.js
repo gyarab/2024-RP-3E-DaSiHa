@@ -29,6 +29,8 @@ const zlabekR = new Tetragon(
 const scoreBoard = new Sprite(252, 20, 1416, 156);
 scoreBoard.loadImg("/Game_02_dakynovyKoule/foto/score_board.png");
 
+const finalScore = new Sprite(1750, 20, 130, 156);
+finalScore.loadImg("/Game_02_dakynovyKoule/foto/final_score.png");
 
 const kuzelka1 = new Sprite(920, 594, 100, 90);
 kuzelka1.loadImg("/Game_02_dakynovyKoule/foto/kuzelka.png");
@@ -458,44 +460,54 @@ function moveBall() {
 
         if (!strike) {
             if (hibox_kuzelky.doesColideWith(pin1) && showKuzelka1) {
-                showKuzelka1 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka1 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundB++;
             }
             if (hibox_kuzelky.doesColideWith(pin2) && showKuzelka2) {
-                showKuzelka2 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka2 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundB++;
             }
             if (hibox_kuzelky.doesColideWith(pin3) && showKuzelka3) {
-                showKuzelka3 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka3 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundB++;
             }
             if (hibox_kuzelky.doesColideWith(pin4) && showKuzelka4) {
-                showKuzelka4 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka4 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundB++;
             }
             if (hibox_kuzelky.doesColideWith(pin5) && showKuzelka5) {
-                showKuzelka5 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka5 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundB++;
             }
             if (hibox_kuzelky.doesColideWith(pin6) && showKuzelka6) {
-                showKuzelka6 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka6 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundB++;
             }
             if (hibox_kuzelky.doesColideWith(pin7) && showKuzelka7) {
-                showKuzelka7 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka7 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundB++;
             }
             if (hibox_kuzelky.doesColideWith(pin8) && showKuzelka8) {
-                showKuzelka8 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka8 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundB++;
             }
             if (hibox_kuzelky.doesColideWith(pin9) && showKuzelka9) {
-                showKuzelka9 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka9 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundB++;
             }
             if (hibox_kuzelky.doesColideWith(pin10) && showKuzelka10) {
-                showKuzelka10 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka10 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundB++;
             }
         }
 
@@ -543,6 +555,7 @@ function moveBall() {
                         pokus = 0;
                         hrac++;
                     }
+                    pins_per_roundB = 0;
                 }, 1000);
             }
             ballY = 890;
@@ -655,44 +668,54 @@ function moveBallR() {
 
         if (!strike) {
             if (hiboxR_kuzelky.doesColideWith(pin1) && showKuzelka1) {
-                showKuzelka1 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka1 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundR++;
             }
             if (hiboxR_kuzelky.doesColideWith(pin2) && showKuzelka2) {
-                showKuzelka2 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka2 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundR++;
             }
             if (hiboxR_kuzelky.doesColideWith(pin3) && showKuzelka3) {
-                showKuzelka3 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka3 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundR++;
             }
             if (hiboxR_kuzelky.doesColideWith(pin4) && showKuzelka4) {
-                showKuzelka4 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka4 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundR++;
             }
             if (hiboxR_kuzelky.doesColideWith(pin5) && showKuzelka5) {
-                showKuzelka5 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka5 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundR++;
             }
             if (hiboxR_kuzelky.doesColideWith(pin6) && showKuzelka6) {
-                showKuzelka6 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka6 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundR++;
             }
             if (hiboxR_kuzelky.doesColideWith(pin7) && showKuzelka7) {
-                showKuzelka7 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka7 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundR++;
             }
             if (hiboxR_kuzelky.doesColideWith(pin8) && showKuzelka8) {
-                showKuzelka8 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka8 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundR++;
             }
             if (hiboxR_kuzelky.doesColideWith(pin9) && showKuzelka9) {
-                showKuzelka9 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka9 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundR++;
             }
             if (hiboxR_kuzelky.doesColideWith(pin10) && showKuzelka10) {
-                showKuzelka10 = false;
-                pocet_kuzelek_dole++;
+            showKuzelka10 = false;
+            pocet_kuzelek_dole++;
+            pins_per_roundR++;
             }
         }
 
@@ -740,6 +763,7 @@ function moveBallR() {
                         pokus = 0;
                         hrac++;
                     }
+                    pins_per_roundR = 0;
                 }, 1000);
             }
             ballRY = 890;
@@ -770,6 +794,8 @@ const spotB = new Rectangle(282, 43, 49, 49);
 const spotR = new Rectangle(282, 43, 49, 49);
 let roundB = 0;
 let roundR = 0;
+let pins_per_roundB = 0;
+let pins_per_roundR = 0;
 
 function counter() {
     scoreBoard.render(ctx);
@@ -782,23 +808,25 @@ function counter() {
             let typeB;
             if (pocet_kuzelek_dole === 10) {
                 typeB = 'strike';
-            } else if (pocet_kuzelek_dole === 9) {
+            } else if (pins_per_roundB === 10) {
+                typeB = 'spare';
+            } else if (pocet_kuzelek_dole === 9 && pins_per_roundB != 10) {
                 typeB = 'devet';
-            } else if (pocet_kuzelek_dole === 8) {
+            } else if (pocet_kuzelek_dole === 8 && pins_per_roundB != 10) {
                 typeB = 'osm';
-            } else if (pocet_kuzelek_dole === 7) {
+            } else if (pocet_kuzelek_dole === 7 && pins_per_roundB != 10) {
                 typeB = 'sedm';
-            } else if (pocet_kuzelek_dole === 6) {
+            } else if (pocet_kuzelek_dole === 6 && pins_per_roundB != 10) {
                 typeB = 'sest';
-            } else if (pocet_kuzelek_dole === 5) {
+            } else if (pocet_kuzelek_dole === 5 && pins_per_roundB != 10) {
                 typeB = 'pet';
-            } else if (pocet_kuzelek_dole === 4) {
+            } else if (pocet_kuzelek_dole === 4 && pins_per_roundB != 10) {
                 typeB = 'ctyri';
-            } else if (pocet_kuzelek_dole === 3) {
+            } else if (pocet_kuzelek_dole === 3 && pins_per_roundB != 10) {
                 typeB = 'tri';
-            } else if (pocet_kuzelek_dole === 2) {
+            } else if (pocet_kuzelek_dole === 2 && pins_per_roundB != 10) {
                 typeB = 'dva';
-            } else if (pocet_kuzelek_dole === 1) {
+            } else if (pocet_kuzelek_dole === 1 && pins_per_roundB != 10) {
                 typeB = 'jedna';
             }
             if (typeB) {
@@ -883,6 +911,8 @@ function counter() {
             let typeR;
             if (pocet_kuzelek_dole === 10) {
             typeR = 'strike';
+            } else if (pins_per_roundR === 10) {
+            typeR = 'spare';
             } else if (pocet_kuzelek_dole === 9) {
             typeR = 'devet';
             } else if (pocet_kuzelek_dole === 8) {
@@ -974,8 +1004,11 @@ function counter() {
         });
     }
 
-    console.log(tryB);
+}
 
+function skore_soucet() {
+    finalScore.render(ctx);
+    
 }
 
 
@@ -989,5 +1022,6 @@ function counter() {
             moveBallR();
         }
         counter();
+        skore_soucet();
     }, 1);
 });
