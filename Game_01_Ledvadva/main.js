@@ -1,6 +1,6 @@
-import { _00_RENDER } from './levels/00_mainHub.js';
-import { _01_RENDER } from './levels/01_level.js';
-import { _02_RENDER } from './levels/02_level.js';
+import { _00_RENDER , restart_00} from './levels/00_mainHub.js';
+import { _01_RENDER , restart_01} from './levels/01_level.js';
+import { _02_RENDER , restart_02} from './levels/02_level.js';
 
 import { Sprite } from  '../Monkey-Engine/Sprite.js';
 import { Player } from  '../Monkey-Engine/PlatformerLib.js';
@@ -8,17 +8,20 @@ import { Player } from  '../Monkey-Engine/PlatformerLib.js';
 //@------------------------> Ledvadva Manager <--------------------@//
 const Ledvadva = {
     players : [
-        new Player(1920/2, 1080 - 400,"SKIN-00"),
-        new Player(1920/2, 1080 - 400,"SKIN-01"),
+        new Player(0, 0,"SKIN-00"),
+        new Player(0, 0,"SKIN-01"),
     ],
     Modes : {
         Pause    : false,
         infoMode : false,
         EditMode : false            
     },
-    currentlvl : 0,
-    infoBar : new Sprite(0,0,1920,1080,"../Game_01_Ledvadva/sprites/Indicators/infoBar.png")
-}
+    currentlvl : 1,
+    shouldRestart : true,
+    infoBar : new Sprite(
+        0,0,1920,1080,"../Game_01_Ledvadva/sprites/Indicators/infoBar.png"
+    ),
+};
 window.addEventListener('load', () => {
     ////-----------------------canvasSetUp-----------------------////
     const canvas = document.getElementById('herniRozhraní');
@@ -69,8 +72,14 @@ window.addEventListener('load', () => {
             'ArrowUp'   : () => Ledvadva.players[1]._wantJump     = isDown,
             'ArrowLeft' : () => Ledvadva.players[1]._wantGoLeft   = isDown,
             'ArrowRight': () => Ledvadva.players[1]._wantGoRight  = isDown,
-            'ArrowDown' : () => Ledvadva.players[1]._wantGoDown   = isDown
+            'ArrowDown' : () => Ledvadva.players[1]._wantGoDown   = isDown,
+
+            '>'    : () => {Ledvadva.currentlvl = 0; Ledvadva.shouldRestart = true},
         };
+        if (actions[key]) {
+            event.preventDefault();
+            actions[key]();
+        }
         if (actions[key]) actions[key]();
     }
     ////--------------------------Mainloop---------------------------////

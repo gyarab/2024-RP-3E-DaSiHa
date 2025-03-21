@@ -2,6 +2,8 @@ import { SpriteDyna } from "./SpriteDyna.js";
 export class CharacterSprite0 extends SpriteDyna{
     constructor(x, y, width, height, spritePaths) {
         super(x, y, width, height, spritePaths);
+        this._renderWidth = width;
+        this._renderHeight = height;
 
         this._framesStanding = [];
         this._framesRunRight = [];
@@ -26,7 +28,6 @@ export class CharacterSprite0 extends SpriteDyna{
         }
     }
     render(ctx, Rbox){ 
-        if (Rbox) { super.render_Hitbox(ctx)}
         let img = null;
         if (this.isFor('GoRight')) { 
             img =  this._framesRunRight[
@@ -52,7 +53,13 @@ export class CharacterSprite0 extends SpriteDyna{
             img = this._framesStanding[this._currentFrame];
         }
         if (img && img.complete) {
-            ctx.drawImage(img, this._x, this._y, this._width, this._height);
+            const renderX = this._x - ((this._renderWidth - this._width) / 2 );
+            const renderY = this._y - ((this._renderHeight - this._height) / 2);
+            ctx.drawImage( img, renderX, renderY, this._renderWidth, this._renderHeight );
+        }
+        if (Rbox) {
+            ctx.strokeStyle = 'magenta';
+            ctx.strokeRect(this._x, this._y, this._width, this._height );
         }
     }
     updateImage() {

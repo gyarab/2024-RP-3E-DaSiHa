@@ -7,6 +7,8 @@ export class Interactable extends Rectangle{
     constructor(x, y, width, height){
         super(x, y, width, height);
 
+        this._color = "white";
+        this._isInteractable = 0;
         this._isInteractableWith = [];
         this._hasToBeOnGround = false;
 

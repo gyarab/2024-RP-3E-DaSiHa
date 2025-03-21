@@ -3,16 +3,16 @@ import { Sprite } from "../../Monkey-Engine/Sprite.js";
 import { Solid } from "../../Monkey-Engine/PlatformerLib.js";
 //@-------------------------------VISUALS----------------------------------@//
 const Backgrnd = new Sprite(0, 0, 1920, 1080,"../Game_01_Ledvadva/sprites/Lvl-02/Background.png");
-const Fargrnd  = new Sprite(0, 0, 1920, 1080,"../Game_01_Ledvadva/sprites/Lvl-02/Farground.png");
+const Fargrnd  = new Sprite(0, 0, 1920, 1080,"../Game_01_Ledvadva/sprites/Lvl-02/Farground-2.png");
 const Midgrnd  = new Sprite(0, 0, 1920, 1080,"../Game_01_Ledvadva/sprites/Lvl-02/Midground.png");
 const Forgrnd  = new Sprite(0, 0, 1920, 1080,"../Game_01_Ledvadva/sprites/Lvl-02/Forground.png");
 //@------------------------------STRUCTURE---------------------------------@//
 ////---------//                 Solid                         ////
     const _0001 = new Solid(  16, 1032, 1888,  32); //ground
-////---------//                 Enemy                         ////
-    const _0002 = new Solid( 216,  908,   68, 124); //cacti
-    const _0003 = new Solid( 588,  984,   60,  48); //-//-
-    const _0004 = new Solid(1056,  908,   68, 124); //-//-
+////---------//                 Cacti                         ////
+    const _0002 = new Solid( 216,  908,   68, 124);
+    const _0003 = new Solid( 588,  984,   60,  48);
+    const _0004 = new Solid(1056,  908,   68, 124);
 const HitBoxes = [
     _0001, _0002, _0003, _0004
 ];
@@ -20,16 +20,15 @@ const HitBoxes = [
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 ////---------//                  Restart                      ////
-    let shouldRestart = true;
-    function restart_02(){ 
+    export function restart_02(){ 
         Ledvadva.players[0].moveTo(1000,680);
-        Ledvadva.players[1].moveTo(1000,680);
+        Ledvadva.players[1].moveTo(1300,680);
 
-        shouldRestart = false;
+        Ledvadva.shouldRestart = false;
     }
 ////---------//                  LvlLoop                      ////
     export function _02_RENDER(){
-        if (shouldRestart){ restart_02();}
+        if (Ledvadva.shouldRestart){ restart_02();}
         Backgrnd.render(ctx);
         Fargrnd.render(ctx);
         

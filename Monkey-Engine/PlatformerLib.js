@@ -5,14 +5,19 @@ import { CharacterSprite0 } from '../Monkey-Engine/CharacterSprite0.js';
 import {  Rectangle } from './Rectangle.js';
 import { Ledvadva } from '../Game_01_Ledvadva/main.js';
 
-
 //TODO změnit hitbox u Projektilů na kruh
 //TODO přidat Tetragon-Solid
 //TODO Pushable má hodně mušek
 //TODO: EndOfLevel, Switch,LevelSelect
 //TODO: generizuj Selector a Closet
 
-////-------------------------Walls---------------------------////
+const pathToIndicators = "../Game_01_Ledvadva/sprites/Indicators/";
+const  indicatorKey_Shift  = new InteractableIndicator(0,0,124,44, pathToIndicators + "Press-Shift.png"   );
+const indicatorKey_E_Shift = new InteractableIndicator(0,0,200,44, pathToIndicators + "Press-E-Shift.png" );
+const    indicatorKey_E    = new InteractableIndicator(0,0, 44,44, pathToIndicators + "Press-E.png"       );
+
+////------------------------Walls--------------------------////
+
 export class Platform  extends Rectangle{
     constructor(x, y, width, height){
         super(x, y, width, height, "orange");
@@ -34,8 +39,10 @@ export class Ladder extends Rectangle{
     }
 }
 ////
-////-----------------------Interactable---------------------////
-/*intance*/const pathToInteractable = "../Game_01_Ledvadva/sprites/Interactable/";
+////----------------------Interactable--------------------////
+const pathToInteractable = "../Game_01_Ledvadva/sprites/Interactable/";
+// typeOf Interactable     LevelSelect              
+    //TODO: /*visualisation*/
     export class LevelSelect extends Interactable{
         constructor(x, y, width, height, numberOfLevel){
             super(x, y, width, height);
@@ -50,7 +57,9 @@ export class Ladder extends Rectangle{
         }
         _action(){
             for (let pform of this._platforms) {pform._color = "orange";}
+            console.log("Should change level to " + this._lvlNumber);
             Ledvadva.currentlvl = this._lvlNumber;
+            Ledvadva.shouldRestart = true;
             this._isComplete = true;  
         }
         render(ctx){
@@ -60,15 +69,37 @@ export class Ladder extends Rectangle{
 
         }
     }
-    export class EndOfLevel extends Interactable{
+// typeOf Interactable     PointerToHub
+    export class PointerToHub extends Interactable{
         constructor(x, y, width, height){
             super(x, y, width, height);
             this._hasToBeOnGround = true;
         };
         _action(){
             Ledvadva.currentlvl = 0;
+            Ledvadva.shouldRestart = true;
         }
     }
+    // visualisation
+        export class PointerToHubSprite extends SpriteAnim{
+            constructor(x, y, width, height, spritePaths, EndOfLevel){
+                super(x, y, width, height, spritePaths);
+                this._Interactable = EndOfLevel;
+            }
+            render(ctx){
+                this._currentFrame = 0;
+                let wasd  = (this._Interactable._isInteractableWith[Ledvadva.players[0]._id]);
+                let arrow = (this._Interactable._isInteractableWith[Ledvadva.players[1]._id]);
+                if(wasd || arrow){
+                    this._currentFrame = 1;
+                    if(wasd && arrow){ indicatorKey_E_Shift.moveTo(this) ; indicatorKey_E_Shift.render(ctx); }
+                    else if ( arrow ){ indicatorKey_Shift.moveTo(this)   ; indicatorKey_Shift.render(ctx)  ; }
+                    else if (  wasd ){ indicatorKey_E.moveTo(this)       ; indicatorKey_E.render(ctx)      ; }     
+                }
+                super.render(ctx);
+            }
+        }
+// typeOf Interactable      Switch
     export class Switch extends Interactable{
         constructor(x, y, width, height){
             super(x, y, width, height);
@@ -78,11 +109,12 @@ export class Ladder extends Rectangle{
             this._isOn = !this._isOn;
         }
     }
-        /*visualisation;*/
+    // visualisation
+        //TODO: 
         export class Lever extends SpriteAnim{
 
         }
-
+//typeOf Interactable      Selector
     export class Selector extends Interactable{
         constructor(x, y, width, height){
             super(x, y, width, height);
@@ -91,7 +123,6 @@ export class Ladder extends Rectangle{
             this._reactToBackward = true;
             this._reactToAction   = false;
 
-            this._color = "white";
             this._field = ["RED", "BLU", "SKIN-00", "SKIN-01"];
 
         }
@@ -125,8 +156,9 @@ export class Ladder extends Rectangle{
             }
         }
     }
-        /*visualisation*/ const pathToCloset = pathToInteractable + "Closet/";
-        export class Closet extends SpriteAnim{
+    // visualisation 
+    const pathToCloset = pathToInteractable + "Closet/";
+    export class Closet extends SpriteAnim{
             constructor(x, y){
                 super(x, y, 200, 100, [
                     // 0-10
@@ -172,11 +204,11 @@ export class Ladder extends Rectangle{
                 }
             }
                 
-        }
-
-
+    }
 ////
-////-----------------------Pushable-------------------------////
+////-----------------------Pushable------------------------////
+
+const pathToPushable = "../Game_01_Ledvadva/sprites/Pushable/";
 export class Pushable  extends CharacterSprite0{
     constructor(x, y, width, height, spritePaths){
         super  (x, y, width, height, spritePaths); 
@@ -244,7 +276,7 @@ export class Pushable  extends CharacterSprite0{
         }
     }
 }
-    /*intance*/ const pathToPushable = "../Game_01_Ledvadva/sprites/Pushable/";
+// typeOf Pushable          Box
     export class Box extends Pushable{
         constructor(x, y, skin = 1){
             super  (x, y, 128, 128, [
@@ -253,6 +285,7 @@ export class Pushable  extends CharacterSprite0{
             ]);            
         }
     }
+//typeOf Pushable          Crate
     export class Crate extends Pushable{
         constructor(x, y){
             super  (x, y, 128, 128, [
@@ -261,6 +294,7 @@ export class Pushable  extends CharacterSprite0{
             ]);            
         }
     }
+//typeOf Pushable          Binder
     export class Binder extends Pushable{
         constructor(x, y, skin){
             super  (x, y, 128, 128, [
@@ -269,6 +303,7 @@ export class Pushable  extends CharacterSprite0{
             ]);            
         }
     }
+//typeOf Pushable           Ball
     //! Broken 
     export class Ball extends Pushable{
         constructor(x, y){
@@ -306,18 +341,21 @@ export class Pushable  extends CharacterSprite0{
         }      
     }
 ////
-////---------------------Enemies-------------------------////
+////----------------------Enemies-----------------------////
+
 ////
-////---------------------Projectiles---------------------////
+////--------------------Projectiles---------------------////
+
+const pathToProjectiles = "../Game_01_Ledvadva/sprites/Projectiles/";
 export class Projectile extends CharacterSprite0 {
     constructor(x, y, width, height, spritePath = []){
         super  (x, y, width, height, spritePath); 
     }
 }
-    /*intance*/ const pathToProjectiles = "../Game_01_Ledvadva/sprites/Projectiles/";
+// typeOf Projectile     Scissors
     export class Scissors  extends Projectile{
         constructor(x, y){
-            super  (x, y, 116, 116,[
+            super  (x, y, 96, 88,[
                 //0-5
                 pathToProjectiles + "Scissors/UP/1.png",
                 pathToProjectiles + "Scissors/UP/2.png",
@@ -350,9 +388,13 @@ export class Projectile extends CharacterSprite0 {
             this._framesRunUp = this._frames.slice(0,6);
             this._framesRunDown = this._frames.slice(6,12);
             this._framesRunLeft = this._frames.slice(12,18);
-            this._framesRunRight = this._frames.slice(18,24);      
+            this._framesRunRight = this._frames.slice(18,24);
+
+            this._renderWidth = 116;
+            this._renderHeight = 116;
         }
     }
+// typeOf Projectile     Scissors
     //! NEEXISTUJÍ png -> Chainsaw nepoužívat
     export class Chainsaw  extends Projectile{
         constructor(x, y){
@@ -364,9 +406,9 @@ export class Projectile extends CharacterSprite0 {
         }
     }
 ////
-////-------------------CharacterSprite-------------------////
-
-    /*intance*/ const pathToPlayer = "../Game_01_Ledvadva/sprites/Player/";
+////----------------------------CharacterSprite-------------------------////
+// typeOf CharacterSprite           Player
+    const pathToPlayer = "../Game_01_Ledvadva/sprites/Player/";
     export class Player    extends CharacterSprite { 
         constructor(x, y, skin){
             super  (x, y, 52, 124);
@@ -426,6 +468,7 @@ export class Projectile extends CharacterSprite0 {
             this.changeSkin(skin);
         }
     }
+// typeOf CharacterSprite           Mario
     //! PNG nejsou v adresáři -> Mario nepoužívat
     export class Mario    extends CharacterSprite{
         constructor(x, y){
@@ -438,76 +481,83 @@ export class Projectile extends CharacterSprite0 {
         }
     }
 ////
-////-----------------InteractableIndicators-------------------////
-    /*intance*/ const pathToIndicators = "../Game_01_Ledvadva/sprites/Indicators/";
-    
+////----------------------------InteractableIndicators------------------////
+
+// typeOf InteractableIndicators           Shift
     export class IndicatorKey_Shift extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 124,44,pathToIndicators + "Press-Shift.png");
         }
     }
+// typeOf InteractableIndicators           E/Shift
     export class IndicatorKey_E_Shift extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 200,44, pathToIndicators + "Press-E-Shift.png");
         }
     }
+// typeOf InteractableIndicators             E
     export class IndicatorKey_E extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 44,44, pathToIndicators + "Press-E.png");
         }
     }
-
+// typeOf InteractableIndicators             F
     export class IndicatorKey_F extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 44,44,pathToIndicators + "Press-F.png");
         }
     }
+// typeOf InteractableIndicators             K
     export class IndicatorKey_K extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 44,44,pathToIndicators + "Press-K.png");
         }
     }
-    ///
-
+// typeOf InteractableIndicators             G
     export class IndicatorKey_G extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 44,44,pathToIndicators + "Press-G.png");
         }
     }
+// typeOf InteractableIndicators             L
     export class IndicatorKey_L extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 44,44,pathToIndicators + "Press-L.png");
         }
     }
-    ///
-    
+// typeOf InteractableIndicators            ToLeft
     export class Indicator_ToLeft extends InteractableIndicator{
         moveTo(interactable, widthOfGap = 0, heightOfHover = 0){
             this._x = interactable._x - this._width - (widthOfGap);
             this._y = interactable._y + (interactable._height - this._height) / 2 + heightOfHover;
         }
     }
+    //typeOf Indicator_ToLeft                   Left
         export class IndicatorKey_Left extends Indicator_ToLeft{
             constructor(x = 0, y = 0){
                 super(x, y, 44,44,pathToIndicators + "To-Left.png");
             }      
         }
+    //typeOf Indicator_ToLeft                   DiS_Left
         export class IndicatorKey_DiS_Left extends Indicator_ToLeft{
             constructor(x = 0, y = 0){
                 super(x, y, 44,44,pathToIndicators + "dis_left.png");
             }
         }
+// typeOf InteractableIndicators           ToRight
     export class Indicator_ToRight extends InteractableIndicator{
         moveTo(interactable, widthOfGap = 0, heightOfHover = 0){
             this._x = interactable._x + interactable._width + (widthOfGap);
             this._y = interactable._y + (interactable._height - this._height) / 2 + heightOfHover;
         }
     }
+    //typeOf Indicator_ToRight                  Right
         export class IndicatorKey_Right extends Indicator_ToRight{
             constructor(x = 0, y = 0){
                 super(x, y, 44,44,pathToIndicators + "To-Right.png");
             }
         }
+    //typeOf Indicator_ToRight                  DiS_Right
         export class IndicatorKey_DiS_Right extends Indicator_ToRight{
             constructor(x = 0, y = 0){
                 super(x, y, 44,44,pathToIndicators + "dis_right.png");

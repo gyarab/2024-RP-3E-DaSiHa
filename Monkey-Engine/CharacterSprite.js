@@ -204,8 +204,11 @@ export class CharacterSprite extends SpriteDyna{
             if ( ob instanceof Interactable ){ 
                 if (this.doesColideWith(ob) && (this._typeOfGround != 0 || !ob._hasToBeOnGround)){
 
-                    ob._isInteractableWith[this._id] = true;
-                    
+                    if (!ob._isInteractableWith[this._id]){
+                        ob._isInteractable += 1;
+                        ob._isInteractableWith[this._id] = true;
+                    }
+
                     if(this._wantInteract ==  'action'  && ob._reactToAction){
                         ob._action();
                     }
@@ -222,7 +225,10 @@ export class CharacterSprite extends SpriteDyna{
 
                     }
                 }else{
-                    ob._isInteractableWith[this._id] = false;
+                    if (ob._isInteractableWith[this._id]){
+                        ob._isInteractableWith[this._id] = false;
+                        ob._isInteractable -= 1;
+                    }
                 }
             }
         }
