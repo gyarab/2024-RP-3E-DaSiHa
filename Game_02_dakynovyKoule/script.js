@@ -115,6 +115,9 @@ dva.loadImg("/Game_02_dakynovyKoule/foto/dva.png");
 const jedna = new Sprite(280, 43, 49, 49);
 jedna.loadImg("/Game_02_dakynovyKoule/foto/jedna.png");
 
+const nula = new Sprite(280, 43, 49, 49);
+nula.loadImg("/Game_02_dakynovyKoule/foto/nula.png");
+
 const cudlik = new Sprite(1450, 850, 420, 180);
 cudlik.loadImg("/Game_02_dakynovyKoule/foto/cudlas.png");
 
@@ -565,7 +568,6 @@ function moveBall() {
             strike = false;
             sipecka._currentFrame = 0;
             power._currentFrame = 0;
-            pocet_kuzelek_dole = 0;
         }
 
 
@@ -773,7 +775,6 @@ function moveBallR() {
             strike = false;
             sipeckaR._currentFrame = 0;
             power._currentFrame = 0;
-            pocet_kuzelek_dole = 0;
         }
 
         kouleR.y = ballRY;
@@ -851,6 +852,7 @@ function counter() {
                     offsetB = 0;
                 }
                 strikesB.push({ x: spotB._x + (tryB * 62) + offsetB * roundB, y: spotB._y, type: typeB });
+                pocet_kuzelek_dole = 0;
             }
         }
 
@@ -952,6 +954,7 @@ function counter() {
                     offsetR = 0;
                 }
                 strikesR.push({ x: spotR._x + (tryR * 62) + offsetR * roundR, y: spotR._y + 61, type: typeR });
+                pocet_kuzelek_dole = 0;
             }
         }
 
@@ -1003,13 +1006,117 @@ function counter() {
             }
         });
     }
-
 }
+
+const final_spotB = new Rectangle(1765, 42, 49, 49);
+const final_spotR = new Rectangle(1765, 43, 49, 49);
+let final_scoreB = [];
+let final_scoreR = [];
 
 function skore_soucet() {
     finalScore.render(ctx);
-    
+
+    if (moveBall) {
+        let totalScore = 0;
+        let frame = 0;
+        let i = 0;
+
+        // Convert strike type to numbers directly inside skore_soucet()
+        let rolls = strikesB.map(strike => {
+            const mapping = {
+                'devet': 9, 'osm': 8, 'sedm': 7, 'sest': 6, 'pet': 5,
+                'ctyri': 4, 'tri': 3, 'dva': 2, 'jedna': 1, 'strike': 10, 'spare': 10
+            };
+            return mapping[strike.type] || 0;
+        });
+
+        // Calculate the score within skore_soucet()
+        while (frame < 10) {
+            if (rolls[i] === 10) {  
+                // Strike
+                totalScore += 10 + (rolls[i + 1] || 0) + (rolls[i + 2] || 0);
+                i += 1; 
+            } else if ((rolls[i] || 0) + (rolls[i + 1] || 0) === 10) {
+                // Spare
+                totalScore += 10 + (rolls[i + 2] || 0);
+                i += 2; 
+            } else {
+                // Normal frame
+                totalScore += (rolls[i] || 0) + (rolls[i + 1] || 0);
+                i += 2;
+            }
+            frame++;
+        }
+
+        // Store final score
+        final_scoreB.push({ x: final_spotB._x, y: final_spotB._y, score: totalScore });
+
+        // Display score as images
+        const scoreStr = totalScore.toString();
+        for (let i = 0; i < scoreStr.length; i++) {
+            let sprite = {
+                '0': nula, '1': jedna, '2': dva, '3': tri, '4': ctyri, 
+                '5': pet, '6': sest, '7': sedm, '8': osm, '9': devet
+            }[scoreStr[i]];
+
+            sprite.x = final_spotB._x + (i * 52) + (totalScore <= 9 ? 52 : 0);
+            sprite.y = final_spotB._y;
+            sprite.render(ctx);
+        }
+    }
+
+    if (moveBallR) {
+        let totalScore = 0;
+        let frame = 0;
+        let i = 0;
+
+        // Convert strike type to numbers directly inside skore_soucet()
+        let rolls = strikesR.map(strike => {
+            const mapping = {
+                'devet': 9, 'osm': 8, 'sedm': 7, 'sest': 6, 'pet': 5,
+                'ctyri': 4, 'tri': 3, 'dva': 2, 'jedna': 1, 'strike': 10, 'spare': 10
+            };
+            return mapping[strike.type] || 0;
+        });
+
+        // Calculate the score within skore_soucet()
+        while (frame < 10) {
+            if (rolls[i] === 10) {  
+                // Strike
+                totalScore += 10 + (rolls[i + 1] || 0) + (rolls[i + 2] || 0);
+                i += 1; 
+            } else if ((rolls[i] || 0) + (rolls[i + 1] || 0) === 10) {
+                // Spare
+                totalScore += 10 + (rolls[i + 2] || 0);
+                i += 2; 
+            } else {
+                // Normal frame
+                totalScore += (rolls[i] || 0) + (rolls[i + 1] || 0);
+                i += 2;
+            }
+            frame++;
+        }
+
+        // Store final score
+        final_scoreR.push({ x: final_spotR._x, y: final_spotR._y, score: totalScore });
+
+        // Display score as images
+        const scoreStr = totalScore.toString();
+        for (let i = 0; i < scoreStr.length; i++) {
+            let sprite = {
+                '0': nula, '1': jedna, '2': dva, '3': tri, '4': ctyri, 
+                '5': pet, '6': sest, '7': sedm, '8': osm, '9': devet
+            }[scoreStr[i]];
+
+            sprite.x = final_spotR._x + (i * 52) + (totalScore <= 9 ? 52 : 0);
+            sprite.y = final_spotR._y + 65;
+            sprite.render(ctx);
+        }
+    }
 }
+
+
+
 
 
 
