@@ -9,6 +9,9 @@ export class SpriteAnim extends Sprite{
         this._animSlow = 100;
         this._currentFrame = 0;
         
+        this._renderWidth = width;
+        this._renderHeight = height;
+        this._renderDir = null;
 
         if (spritePaths){
             this.loadImg(spritePaths);
@@ -29,12 +32,35 @@ export class SpriteAnim extends Sprite{
         }
     }
     render(ctx,Rbox) {
-        if (Rbox){super.render_Hitbox(ctx)}
         if (this._frames.length > 0){
                 const img = this._frames[this._currentFrame];
                 if (img.complete) {
-                    ctx.drawImage(img, this._x, this._y, this._width, this._height);
+                    let renderX;
+                    let renderY;
+                    switch (this._renderDir){
+                        case "top":
+                            renderX = this._x - ((this._renderWidth - this._width) / 2);
+                            renderY = this._y - this._renderHeight;
+                        break;
+                        case "bottom":
+                            renderX = this._x - ((this._renderWidth - this._width) / 2);
+                            renderY = this._y + this._height;
+                        break;
+                        case "left":
+                            renderX = this._x - this._renderWidth;
+                            renderY = this._y - ((this._renderHeight - this._height) / 2);
+                        break;
+                        case "right":
+                            renderX = this._x + this._width;
+                            renderY = this._y - ((this._renderHeight - this._height) / 2);
+                        break;
+                        default:
+                            renderX = this._x - ((this._renderWidth - this._width) / 2);
+                            renderY = this._y - ((this._renderHeight - this._height) / 2);
+                    }
+                    ctx.drawImage(img, renderX, renderY, this._renderWidth, this._renderHeight);
                 }
+                if (Rbox){ctx.strokeRect(this._x, this._y, this._width, this._height);}
         }else{
             super.render(ctx);
         }

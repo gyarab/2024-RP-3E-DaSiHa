@@ -100,6 +100,7 @@ const pathToInteractable = "../Game_01_Ledvadva/sprites/Interactable/";
             }
         }
 // typeOf Interactable      Switch
+    //TODO: /*visualisation*/
     export class Switch extends Interactable{
         constructor(x, y, width, height){
             super(x, y, width, height);
@@ -109,11 +110,6 @@ const pathToInteractable = "../Game_01_Ledvadva/sprites/Interactable/";
             this._isOn = !this._isOn;
         }
     }
-    // visualisation
-        //TODO: 
-        export class Lever extends SpriteAnim{
-
-        }
 //typeOf Interactable      Selector
     export class Selector extends Interactable{
         constructor(x, y, width, height){
@@ -304,7 +300,7 @@ export class Pushable  extends CharacterSprite0{
         }
     }
 //typeOf Pushable           Ball
-    //! Broken 
+    //! needs to be checked
     export class Ball extends Pushable{
         constructor(x, y){
             super  (x, y, 64, 64, [
@@ -317,7 +313,6 @@ export class Pushable  extends CharacterSprite0{
                 pathToPushable + "Basketball/6.png",
                 pathToPushable + "Basketball/7.png",
             ]); 
-            this._isPickable = true;
             this._drag = 0.0025;         
         }
         updateImage(){
@@ -395,13 +390,33 @@ export class Projectile extends CharacterSprite0 {
         }
     }
 // typeOf Projectile     Scissors
-    //! NEEXISTUJÍ png -> Chainsaw nepoužívat
-    export class Chainsaw  extends Projectile{
+    //! its fuged up
+    export class Arrow  extends Projectile{
         constructor(x, y){
-            super  (x, y, 124, 124,[
+            super  (x, y, 20, 100,[
+                "../Game_01_Ledvadva/sprites/Pushable/Arrow/DOWN/1.png",
+                "../Game_01_Ledvadva/sprites/Pushable/Arrow/DOWN/2.png",
+                "../Game_01_Ledvadva/sprites/Pushable/Arrow/DOWN/3.png",
+                "../Game_01_Ledvadva/sprites/Pushable/Arrow/DOWN/2.png",
+                /*
+                "../Game_01_Ledvadva/sprites/Pushable/Arrow/UP/1.png",
+                "../Game_01_Ledvadva/sprites/Pushable/Arrow/UP/2.png",
+                "../Game_01_Ledvadva/sprites/Pushable/Arrow/UP/3.png",
+                "../Game_01_Ledvadva/sprites/Pushable/Arrow/UP/2.png",
 
+                "../Game_01_Ledvadva/sprites/Pushable/Arrow/LEFT/1.png",
+                "../Game_01_Ledvadva/sprites/Pushable/Arrow/LEFT/2.png",
+                "../Game_01_Ledvadva/sprites/Pushable/Arrow/LEFT/3.png",
+                "../Game_01_Ledvadva/sprites/Pushable/Arrow/LEFT/2.png",
+
+                "../Game_01_Ledvadva/sprites/Pushable/Arrow/RIGHT/1.png",
+                "../Game_01_Ledvadva/sprites/Pushable/Arrow/RIGHT/2.png",
+                "../Game_01_Ledvadva/sprites/Pushable/Arrow/RIGHT/3.png",
+                "../Game_01_Ledvadva/sprites/Pushable/Arrow/RIGHT/2.png",
+                */
             ]);
-            this._framesRunUp ;
+            this._framesRunDown = this._frames.slice(0,4);
+            this._renderWidth = 20;
             this._animSlow = 8;
         }
     }

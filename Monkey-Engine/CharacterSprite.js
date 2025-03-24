@@ -179,6 +179,23 @@ export class CharacterSprite extends SpriteDyna{
                     this._typeOfGround = 1;
                 } 
             }
+            //* ob instaneceof Bouncy
+            if (ob._color == 'green' ){
+                actAsRed = 3; 
+                const yBounce = 3;
+                const xBounce = 50;
+                if (NextFrameY.doesColideWith(ob)){
+                    this._yVelocity = -this._ySpeed * yBounce;
+                }
+                if (NextFrameRight.doesColideWith(ob) && (this._xVelocity > 0)){
+                    this.x = this._x - xBounce;
+                    this._xVelocity = 0;
+                }
+                if (NextFrameLeft.doesColideWith(ob) && (this._xVelocity < 0)){
+                    this.x =  this._x + xBounce;
+                    this._xVelocity = 0;
+                }
+            }
             //* ob instanceof Solid
             if (ob._color == 'red' || actAsRed){
                 if (NextFrameDown.doesColideWith(ob)){

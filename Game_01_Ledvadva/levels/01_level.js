@@ -66,7 +66,7 @@ const ctx = canvas.getContext('2d');
         Ledvadva.players[0].moveTo(1200,860);
         Ledvadva.players[0]._xVelocity = 0;
         Ledvadva.players[0]._yVelocity = 0;
-        Ledvadva.players[1].moveTo(1700,860);
+        Ledvadva.players[1].moveTo(1300,860);
         Ledvadva.players[1]._xVelocity = 0;
         Ledvadva.players[1]._yVelocity = 0;
         

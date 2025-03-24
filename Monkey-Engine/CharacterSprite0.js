@@ -2,8 +2,6 @@ import { SpriteDyna } from "./SpriteDyna.js";
 export class CharacterSprite0 extends SpriteDyna{
     constructor(x, y, width, height, spritePaths) {
         super(x, y, width, height, spritePaths);
-        this._renderWidth = width;
-        this._renderHeight = height;
 
         this._framesStanding = [];
         this._framesRunRight = [];
