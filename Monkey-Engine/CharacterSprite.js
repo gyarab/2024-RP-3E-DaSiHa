@@ -113,13 +113,14 @@ export class CharacterSprite extends SpriteDyna{
             this._xVelocity = 0;
         }
         /*---------------------pokud chce skočit---------------------- */
+        if(!this._isJumping && this._isOnGround){
+            this._pointOfJump = { x: this._x , y: this._y + this._height };
+        }
         if(this._wantJump  && !this._isJumping && this._isOnGround){
-
             if( this._isGoRight && !this._isGoLeft){this._dirOfJump =  1}
             if(!this._isGoRight &&  this._isGoLeft){this._dirOfJump = -1}
             this._yVelocity = JUMP_VELOCITY;
             this._isJumping = true;
-            this._pointOfJump = {x: this._x, y: this._y + this._height};
         }
 
         const ratioOfLegs = 9/10
@@ -142,7 +143,7 @@ export class CharacterSprite extends SpriteDyna{
         for (let ob of obstacles) {
             //! = act as solid
             //! don't forget to assaign what type of obstacle should use the propretese of red
-            //! 0 = none, 1 = Platform, 2 = SemiSolid, else = Dynamic_id
+            //! 0 = none, 1 = Solid, 2 = SemiSolid, 3 = Bouncy, else = Dynamic_id
             let actAsRed  = null;
 
             //* ob instanceof Pushable
@@ -174,9 +175,9 @@ export class CharacterSprite extends SpriteDyna{
             }
             //* ob instanceof Platform
             if (ob._color == 'orange' && !this._wantGoDown){
-                if (NextFrameY.doesColideWith(ob)  && !this.doesColideWith(ob) && (this._yVelocity >= 0)){
+                if (NextFrameDown.doesColideWith(ob)  && !this.doesColideWith(ob) && (this._yVelocity >= 0)){
                     canGoDown = false;
-                    this._typeOfGround = 1;
+                    this._typeOfGround = 2;
                 } 
             }
             //* ob instaneceof Bouncy
@@ -271,7 +272,7 @@ export class CharacterSprite extends SpriteDyna{
             this._floor = Math.floor(this._y) ;
             this._isOnGround = true;
             this._yVelocity = 0;
-            this._isJumping = false;
+            if (this._typeOfGround != 3)this._isJumping = false;
             if(!this._wantGoLeft ){this._isGoLeft = false}
             if(!this._wantGoRight){this._isGoRight = false}
         }  
@@ -280,8 +281,7 @@ export class CharacterSprite extends SpriteDyna{
             this.y = this._y + GRAVITY;
         } 
         if (this._isOnGround){
-            this._isJumping = false;
-        }
+            if (this._typeOfGround != 3)this._isJumping = false;        }
     }
     // * vykresluje sprite podle probíhající akce  
     render(ctx, Rbox = null){
