@@ -797,6 +797,8 @@ let roundB = 0;
 let roundR = 0;
 let pins_per_roundB = 0;
 let pins_per_roundR = 0;
+let spare_zbytekB = 0;
+let spare_zbytekR = 0;
 
 function counter() {
     scoreBoard.render(ctx);
@@ -809,25 +811,29 @@ function counter() {
             let typeB;
             if (pocet_kuzelek_dole === 10) {
                 typeB = 'strike';
-            } else if (pins_per_roundB === 10) {
-                typeB = 'spare';
-            } else if (pocet_kuzelek_dole === 9 && pins_per_roundB != 10) {
+            } else if (pocet_kuzelek_dole === 4 && pins_per_roundB === 10) {
+                typeB = 'spare4';
+            } else if (pocet_kuzelek_dole === 5 && pins_per_roundB === 10) {
+                typeB = 'spare5';
+            } else if (pocet_kuzelek_dole === 9) {
                 typeB = 'devet';
-            } else if (pocet_kuzelek_dole === 8 && pins_per_roundB != 10) {
+            } else if (pocet_kuzelek_dole === 8) {
                 typeB = 'osm';
-            } else if (pocet_kuzelek_dole === 7 && pins_per_roundB != 10) {
+            } else if (pocet_kuzelek_dole === 7) {
                 typeB = 'sedm';
-            } else if (pocet_kuzelek_dole === 6 && pins_per_roundB != 10) {
+            } else if (pocet_kuzelek_dole === 6) {
                 typeB = 'sest';
-            } else if (pocet_kuzelek_dole === 5 && pins_per_roundB != 10) {
+            } else if (pocet_kuzelek_dole === 5) {
                 typeB = 'pet';
-            } else if (pocet_kuzelek_dole === 4 && pins_per_roundB != 10) {
+                spare_zbytekB = 5;
+            } else if (pocet_kuzelek_dole === 4) {
                 typeB = 'ctyri';
-            } else if (pocet_kuzelek_dole === 3 && pins_per_roundB != 10) {
+                spare_zbytekB = 4;
+            } else if (pocet_kuzelek_dole === 3) {
                 typeB = 'tri';
-            } else if (pocet_kuzelek_dole === 2 && pins_per_roundB != 10) {
+            } else if (pocet_kuzelek_dole === 2) {
                 typeB = 'dva';
-            } else if (pocet_kuzelek_dole === 1 && pins_per_roundB != 10) {
+            } else if (pocet_kuzelek_dole === 1) {
                 typeB = 'jedna';
             }
             if (typeB) {
@@ -848,9 +854,11 @@ function counter() {
                     }
                 }
 
-                if(tryB === 21){
+                if(tryB >= 21){
                     offsetB = 0;
                 }
+
+                console.log(pocet_kuzelek_dole, pins_per_roundB);
                 strikesB.push({ x: spotB._x + (tryB * 62) + offsetB * roundB, y: spotB._y, type: typeB });
                 pocet_kuzelek_dole = 0;
             }
@@ -861,7 +869,7 @@ function counter() {
             X.x = strike.x;
             X.y = strike.y;
             X.render(ctx);
-            } else if (strike.type === 'spare') {
+            } else if (strike.type === 'spare4' || strike.type === 'spare5') {
             spare.x = strike.x;
             spare.y = strike.y;
             spare.render(ctx);
@@ -913,8 +921,10 @@ function counter() {
             let typeR;
             if (pocet_kuzelek_dole === 10) {
             typeR = 'strike';
-            } else if (pins_per_roundR === 10) {
-            typeR = 'spare';
+            } else if (pocet_kuzelek_dole === 4 && pins_per_roundR === 10) {
+            typeR = 'spare4';
+            } else if (pocet_kuzelek_dole === 5 && pins_per_roundR === 10) {
+            typeR = 'spare5';
             } else if (pocet_kuzelek_dole === 9) {
             typeR = 'devet';
             } else if (pocet_kuzelek_dole === 8) {
@@ -950,8 +960,9 @@ function counter() {
                         tryR++;
                     }
                 }
-                if(tryR === 21){
+                if(tryR >= 21){
                     offsetR = 0;
+                    resetGame();
                 }
                 strikesR.push({ x: spotR._x + (tryR * 62) + offsetR * roundR, y: spotR._y + 61, type: typeR });
                 pocet_kuzelek_dole = 0;
@@ -963,7 +974,7 @@ function counter() {
                 X.x = strike.x;
                 X.y = strike.y;
                 X.render(ctx);
-            } if (strike.type === 'spare') {
+            } if (strike.type === 'spare4' || strike.type === 'spare5') {
                 spare.x = strike.x;
                 spare.y = strike.y;
                 spare.render(ctx);
@@ -1016,53 +1027,113 @@ let final_scoreR = [];
 function skore_soucet() {
     finalScore.render(ctx);
 
+    if (tryB >= 21 && tryR >= 21) {
+        sipeckaStop = true;
+        showKoule = false;
+        showpower = false;
+        cudlik._x = -1000;
+        cudlikR._x = -1000;
+        sipecka._x = -1000;
+        sipeckaR._x = -1000;
+
+        finalScore._x = canvas.width / 2 - finalScore._width / 2;
+        finalScore._y = canvas.height / 2 - finalScore._height / 2;
+        finalScore._width = 260;
+        finalScore._height = 312;
+        finalScore.render(ctx);
+
+        setTimeout(() => {
+            spareBonusB = [];
+            spareBonusR = [];
+            moveBall = false;
+            moveBallR = false;
+            ballY = 890;
+            ballRY = 890;
+            ballX = 900;
+            ballRX = 900;
+            ballScale = 1;
+            pocet_kuzelek_dole = 0;
+            tryB = 0;
+            tryR = 0;
+            roundB = 0;
+            roundR = 0;
+            strikesB = [];
+            strikesR = [];
+            pins_per_roundB = 0;
+            pins_per_roundR = 0;
+            zazemi = false;
+            zazemiR = false;
+            final_scoreB = [];
+            final_scoreR = [];
+            showKuzelka1 = true;
+            showKuzelka2 = true;
+            showKuzelka3 = true;
+            showKuzelka4 = true;
+            showKuzelka5 = true;
+            showKuzelka6 = true;
+            showKuzelka7 = true;
+            showKuzelka8 = true;
+            showKuzelka9 = true;
+            showKuzelka10 = true;
+            hrac = 1;
+            sipeckaStop = false;
+            showKoule = false;
+            showpower = false;
+        }, 10000);
+    }
+
     if (moveBall) {
         let totalScore = 0;
         let frame = 0;
         let i = 0;
 
-        // Convert strike type to numbers directly inside skore_soucet()
         let rolls = strikesB.map(strike => {
             const mapping = {
                 'devet': 9, 'osm': 8, 'sedm': 7, 'sest': 6, 'pet': 5,
-                'ctyri': 4, 'tri': 3, 'dva': 2, 'jedna': 1, 'strike': 10, 'spare': 10
+                'ctyri': 4, 'tri': 3, 'dva': 2, 'jedna': 1, 'strike': 10, 'spare4': 4, 'spare5': 5
             };
             return mapping[strike.type] || 0;
         });
 
-        // Calculate the score within skore_soucet()
         while (frame < 10) {
-            if (rolls[i] === 10) {  
-                // Strike
+            if (rolls[i] === 10) {
                 totalScore += 10 + (rolls[i + 1] || 0) + (rolls[i + 2] || 0);
-                i += 1; 
+                i += 1;
             } else if ((rolls[i] || 0) + (rolls[i + 1] || 0) === 10) {
-                // Spare
                 totalScore += 10 + (rolls[i + 2] || 0);
-                i += 2; 
+                i += 2;
             } else {
-                // Normal frame
                 totalScore += (rolls[i] || 0) + (rolls[i + 1] || 0);
                 i += 2;
             }
             frame++;
         }
 
-        // Store final score
         final_scoreB.push({ x: final_spotB._x, y: final_spotB._y, score: totalScore });
 
-        // Display score as images
         const scoreStr = totalScore.toString();
         for (let i = 0; i < scoreStr.length; i++) {
-            let sprite = {
+            let spriteB = {
                 '0': nula, '1': jedna, '2': dva, '3': tri, '4': ctyri, 
                 '5': pet, '6': sest, '7': sedm, '8': osm, '9': devet
             }[scoreStr[i]];
 
-            sprite.x = final_spotB._x + (i * 52) + (totalScore <= 9 ? 52 : 0);
-            sprite.y = final_spotB._y;
-            sprite.render(ctx);
+            if(tryR < 21){
+                spriteB.x = final_spotB._x + (i * 52) + (totalScore <= 9 ? 52 : 0);
+                spriteB.y = final_spotB._y;
+                spriteB.render(ctx);
+                spare_zbytekB = 0;
+            }
+
+            if (tryB >= 21 && tryR >= 21) {
+                spriteB.width = 98;
+                spriteB.height = 98;
+                spriteB.x = finalScore._x + (i * 104) + (totalScore <= 9 ? 104 : 0);
+                spriteB.y = finalScore._y + 40;
+                spriteB.render(ctx);
+            }
         }
+        console.log(i);
     }
 
     if (moveBallR) {
@@ -1070,57 +1141,53 @@ function skore_soucet() {
         let frame = 0;
         let i = 0;
 
-        // Convert strike type to numbers directly inside skore_soucet()
         let rolls = strikesR.map(strike => {
             const mapping = {
                 'devet': 9, 'osm': 8, 'sedm': 7, 'sest': 6, 'pet': 5,
-                'ctyri': 4, 'tri': 3, 'dva': 2, 'jedna': 1, 'strike': 10, 'spare': 10
+                'ctyri': 4, 'tri': 3, 'dva': 2, 'jedna': 1, 'strike': 10, 'spare4': 4, 'spare5': 5
             };
             return mapping[strike.type] || 0;
         });
 
-        // Calculate the score within skore_soucet()
         while (frame < 10) {
-            if (rolls[i] === 10) {  
-                // Strike
+            if (rolls[i] === 10) {
                 totalScore += 10 + (rolls[i + 1] || 0) + (rolls[i + 2] || 0);
-                i += 1; 
+                i += 1;
             } else if ((rolls[i] || 0) + (rolls[i + 1] || 0) === 10) {
-                // Spare
                 totalScore += 10 + (rolls[i + 2] || 0);
-                i += 2; 
+                i += 2;
             } else {
-                // Normal frame
                 totalScore += (rolls[i] || 0) + (rolls[i + 1] || 0);
                 i += 2;
             }
             frame++;
         }
 
-        // Store final score
         final_scoreR.push({ x: final_spotR._x, y: final_spotR._y, score: totalScore });
 
-        // Display score as images
         const scoreStr = totalScore.toString();
         for (let i = 0; i < scoreStr.length; i++) {
-            let sprite = {
+            let spriteR = {
                 '0': nula, '1': jedna, '2': dva, '3': tri, '4': ctyri, 
                 '5': pet, '6': sest, '7': sedm, '8': osm, '9': devet
             }[scoreStr[i]];
 
-            sprite.x = final_spotR._x + (i * 52) + (totalScore <= 9 ? 52 : 0);
-            sprite.y = final_spotR._y + 65;
-            sprite.render(ctx);
+            if(tryR < 21){
+                spriteR.x = final_spotR._x + (i * 52) + (totalScore <= 9 ? 52 : 0);
+                spriteR.y = final_spotR._y + 65;
+                spriteR.render(ctx);
+            }
+
+            if (tryR >= 21 && tryB >= 21) {
+                spriteR.width = 98;
+                spriteR.height = 98
+                spriteR.x = finalScore._x + (i * 104) + (totalScore <= 9 ? 104 : 0);
+                spriteR.y = finalScore._y + 178;
+                spriteR.render(ctx);
+            }
         }
     }
 }
-
-
-
-
-
-
-
     window.setInterval(() => {
         Mainloop();
         if(hrac % 2 == 1) {
