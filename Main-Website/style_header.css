@@ -1,4 +1,3 @@
-
 /* ------------------- Header Styles ------------------- */
 .link-header{
     display: flex;
@@ -25,7 +24,7 @@
 }
 .link-header .mid a     {
     width: 100%;
-    max-width: 80px;
+    max-width: 70px;
     margin: 15px;
 /*  border: 2px solid red;  */
 }
@@ -42,5 +41,4 @@
 .link-header .right img {
     width: 100%; 
     max-width: 40px;
-
 }

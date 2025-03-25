@@ -94,17 +94,19 @@ canvas.addEventListener('click', (event) => {
     if (mouseX >= tlacitko._x && mouseX <= tlacitko._x + tlacitko._width &&
         mouseY >= tlacitko._y && mouseY <= tlacitko._y + tlacitko._height
         ){
-            isSwitched = !isSwitched;
-            pozadi.updateImage();
-            pozadi2.updateImage();
-            obstic_1.updateImage();
-            obstic_2.updateImage();
+            if(!gameOver){
+                isSwitched = !isSwitched;
+                pozadi.updateImage();
+                pozadi2.updateImage();
+                obstic_1.updateImage();
+                obstic_2.updateImage();  
+            }
+            
 
         }
 });
 
 let gameOver = false;
-
 //hlavní herní smyčka
 function Mainloop(){
     if (gameOver) {
@@ -179,7 +181,19 @@ function handleKey(event, isDown) {
         event.preventDefault();
     }
     const actions = {
-        ' ': () => character._wantJump = isDown
+        ' ': () =>{
+           
+            if(gameOver){
+                gameOver = false;
+                character._x = 100;
+                character._y = 690;
+                obstic_1._x = 600;
+                obstic_2._x = 1400;
+            }else{
+                character._wantJump = isDown
+            }
+        } 
+
     };
     if (actions[key]) actions[key]();
 }
