@@ -299,7 +299,7 @@ function Mainloop() {
         if (hrac % 2 == 1) {
             sipecka.render(ctx);
             if (sipeckaStop == false) {
-                //sipecka.updateImage();
+                sipecka.updateImage();
             }
         }
         if (hrac % 2 == 0) {
@@ -554,8 +554,8 @@ function moveBall() {
                     showKuzelka10 = true;
                 }, 1000);
                 setTimeout(() => {
-                    if(tryB != 20){
-                        pokus = 0;
+                    pokus = 0;
+                    if(tryB < 19 || tryB > 20){
                         hrac++;
                     }
                     pins_per_roundB = 0;
@@ -761,8 +761,8 @@ function moveBallR() {
                     showKuzelka10 = true;
                 }, 1000);
                 setTimeout(() => {
-                    if(tryR != 20){
-                        pokus = 0;
+                    pokus = 0;
+                    if(tryR < 19 || tryR > 20){
                         hrac++;
                     }
                     pins_per_roundR = 0;
@@ -845,7 +845,7 @@ function counter() {
                     }
                 }
             
-                if(tryB <= 18){
+                if(tryB < 18){
                     if (typeB === 'strike') {
                         tryB++;
                     }
@@ -958,7 +958,6 @@ function counter() {
                 }
                 if(tryR >= 21){
                     offsetR = 0;
-                    resetGame();
                 }
                 strikesR.push({ x: spotR._x + (tryR * 62) + offsetR * roundR, y: spotR._y + 61, type: typeR });
                 pocet_kuzelek_dole = 0;
@@ -1020,6 +1019,48 @@ const final_spotR = new Rectangle(1765, 43, 49, 49);
 let final_scoreB = [];
 let final_scoreR = [];
 
+const zero = new Sprite(280, 43, 49, 49);
+zero.loadImg("/Game_02_dakynovyKoule/foto/nula.png");
+const one = new Sprite(280, 43, 49, 49);
+one.loadImg("/Game_02_dakynovyKoule/foto/jedna.png");
+const two = new Sprite(280, 43, 49, 49);
+two.loadImg("/Game_02_dakynovyKoule/foto/dva.png");
+const three = new Sprite(280, 43, 49, 49);
+three.loadImg("/Game_02_dakynovyKoule/foto/tri.png");
+const four = new Sprite(280, 43, 49, 49);
+four.loadImg("/Game_02_dakynovyKoule/foto/ctyri.png");
+const five = new Sprite(280, 43, 49, 49);
+five.loadImg("/Game_02_dakynovyKoule/foto/pet.png");
+const six = new Sprite(280, 43, 49, 49);
+six.loadImg("/Game_02_dakynovyKoule/foto/sest.png");
+const seven = new Sprite(280, 43, 49, 49);
+seven.loadImg("/Game_02_dakynovyKoule/foto/sedm.png");
+const eight = new Sprite(280, 43, 49, 49);
+eight.loadImg("/Game_02_dakynovyKoule/foto/osm.png");
+const nine = new Sprite(280, 43, 49, 49);
+nine.loadImg("/Game_02_dakynovyKoule/foto/devet.png");
+
+const zeroR = new Sprite(280, 43, 49, 49);
+zeroR.loadImg("/Game_02_dakynovyKoule/foto/nula.png");
+const oneR = new Sprite(280, 43, 49, 49);
+oneR.loadImg("/Game_02_dakynovyKoule/foto/jedna.png");
+const twoR = new Sprite(280, 43, 49, 49);
+twoR.loadImg("/Game_02_dakynovyKoule/foto/dva.png");
+const threeR = new Sprite(280, 43, 49, 49);
+threeR.loadImg("/Game_02_dakynovyKoule/foto/tri.png");
+const fourR = new Sprite(280, 43, 49, 49);
+fourR.loadImg("/Game_02_dakynovyKoule/foto/ctyri.png");
+const fiveR = new Sprite(280, 43, 49, 49);
+fiveR.loadImg("/Game_02_dakynovyKoule/foto/pet.png");
+const sixR = new Sprite(280, 43, 49, 49);
+sixR.loadImg("/Game_02_dakynovyKoule/foto/sest.png");
+const sevenR = new Sprite(280, 43, 49, 49);
+sevenR.loadImg("/Game_02_dakynovyKoule/foto/sedm.png");
+const eightR = new Sprite(280, 43, 49, 49);
+eightR.loadImg("/Game_02_dakynovyKoule/foto/osm.png");
+const nineR = new Sprite(280, 43, 49, 49);
+nineR.loadImg("/Game_02_dakynovyKoule/foto/devet.png");
+
 function skore_soucet() {
     finalScore.render(ctx);
 
@@ -1075,34 +1116,36 @@ function skore_soucet() {
         const scoreStr = totalScore.toString();
         for (let i = 0; i < scoreStr.length; i++) {
             let spriteB = {
-                '0': nula, '1': jedna, '2': dva, '3': tri, '4': ctyri, 
-                '5': pet, '6': sest, '7': sedm, '8': osm, '9': devet
+                '0': zero, '1': one, '2': two, '3': three, '4': four, 
+                '5': five, '6': six, '7': seven, '8': eight, '9': nine
             }[scoreStr[i]];
 
             if(tryR < 21){
-                spriteB.x = final_spotB._x + (i * (totalScore >= 100 ? 45 : 45)) + (totalScore <= 9 ? 45 : 0);
+                spriteB.x = final_spotB._x + (i * (totalScore >= 100 ? 35 : 52)) + (totalScore <= 9 ? 52 : 0);
                 spriteB.y = final_spotB._y;
                 spriteB.render(ctx);
+            }
+
+            if(totalScore >= 100){
+                spriteB.width = 30;
+
             }
 
             if (tryB >= 21 && tryR >= 21) {
                 spriteB.width = 98;
                 spriteB.height = 98;
-                spriteB.x = finalScore._x + (i * 104) + (totalScore <= 9 ? 104 : 0);
+                if(totalScore >= 100){
+                    spriteB.width = 60;
+                }
+                spriteB.x = finalScore._x + (i * (totalScore >= 100 ? 70 : 104)) + (totalScore <= 9 ? 104 : 0) + 30;
                 spriteB.y = finalScore._y + 40;
                 spriteB.render(ctx);
-                setTimeout(() => {
-                    spriteB.width = 49;
-                    spriteB.height = 49;
-                    spriteB.x = final_spotB._x + (i * 52) + (totalScore <= 9 ? 52 : 0);
-                    spriteB.y = final_spotB._y;
-            }, 10000);
         }
     }
 }
 
     if (moveBallR) {
-        let totalScore = 0;
+        let totalScoreR = 0;
         let frame = 0;
         let i = 0;
 
@@ -1116,45 +1159,39 @@ function skore_soucet() {
 
         while (frame < 10) {
             if (rolls[i] === 10) {
-                totalScore += 10 + (rolls[i + 1] || 0) + (rolls[i + 2] || 0);
+                totalScoreR += 10 + (rolls[i + 1] || 0) + (rolls[i + 2] || 0);
                 i += 1;
             } else if ((rolls[i] || 0) + (rolls[i + 1] || 0) === 10) {
-                totalScore += 10 + (rolls[i + 2] || 0);
+                totalScoreR += 10 + (rolls[i + 2] || 0);
                 i += 2;
             } else {
-                totalScore += (rolls[i] || 0) + (rolls[i + 1] || 0);
+                totalScoreR += (rolls[i] || 0) + (rolls[i + 1] || 0);
                 i += 2;
             }
             frame++;
         }
 
-        final_scoreR.push({ x: final_spotR._x, y: final_spotR._y, score: totalScore });
+        final_scoreR.push({ x: final_spotR._x, y: final_spotR._y, score: totalScoreR });
 
-        const scoreStr = totalScore.toString();
+        const scoreStr = totalScoreR.toString();
         for (let i = 0; i < scoreStr.length; i++) {
             let spriteR = {
-                '0': nula, '1': jedna, '2': dva, '3': tri, '4': ctyri, 
-                '5': pet, '6': sest, '7': sedm, '8': osm, '9': devet
+                '0': zeroR, '1': oneR, '2': twoR, '3': threeR, '4': fourR, 
+                '5': fiveR, '6': sixR, '7': sevenR, '8': eightR, '9': nineR
             }[scoreStr[i]];
 
             if(tryR < 21){
-                spriteR.x = final_spotR._x + (i * 52) + (totalScore <= 9 ? 52 : 0);
+                spriteR.x = final_spotR._x + (i * (totalScoreR >= 100 ? 35 : 52)) + (totalScoreR <= 9 ? 52 : 0);
                 spriteR.y = final_spotR._y + 65;
                 spriteR.render(ctx);
             }
 
             if (tryR >= 21 && tryB >= 21) {
                 spriteR.width = 98;
-                spriteR.height = 98
-                spriteR.x = finalScore._x + (i * 104) + (totalScore <= 9 ? 104 : 0);
+                spriteR.height = 98;
+                spriteR.x = finalScore._x + (i * (totalScoreR >= 100 ? 70 : 104)) + (totalScoreR <= 9 ? 104 : 0) + 30;
                 spriteR.y = finalScore._y + 178;
                 spriteR.render(ctx);
-                setTimeout(() => {
-                    spriteR.width = 49;
-                    spriteR.height = 49;
-                    spriteR.x = final_spotR._x + (i * 52) + (totalScore <= 9 ? 52 : 0);
-                    spriteR.y = final_spotR._y + 65;
-                }, 1000);
             }
         }
     }
