@@ -299,7 +299,7 @@ function Mainloop() {
         if (hrac % 2 == 1) {
             sipecka.render(ctx);
             if (sipeckaStop == false) {
-                sipecka.updateImage();
+                //sipecka.updateImage();
             }
         }
         if (hrac % 2 == 0) {
@@ -797,8 +797,7 @@ let roundB = 0;
 let roundR = 0;
 let pins_per_roundB = 0;
 let pins_per_roundR = 0;
-let spare_zbytekB = 0;
-let spare_zbytekR = 0;
+
 
 function counter() {
     scoreBoard.render(ctx);
@@ -825,10 +824,8 @@ function counter() {
                 typeB = 'sest';
             } else if (pocet_kuzelek_dole === 5) {
                 typeB = 'pet';
-                spare_zbytekB = 5;
             } else if (pocet_kuzelek_dole === 4) {
                 typeB = 'ctyri';
-                spare_zbytekB = 4;
             } else if (pocet_kuzelek_dole === 3) {
                 typeB = 'tri';
             } else if (pocet_kuzelek_dole === 2) {
@@ -858,7 +855,6 @@ function counter() {
                     offsetB = 0;
                 }
 
-                console.log(pocet_kuzelek_dole, pins_per_roundB);
                 strikesB.push({ x: spotB._x + (tryB * 62) + offsetB * roundB, y: spotB._y, type: typeB });
                 pocet_kuzelek_dole = 0;
             }
@@ -1028,7 +1024,7 @@ function skore_soucet() {
     finalScore.render(ctx);
 
     if (tryB >= 21 && tryR >= 21) {
-        sipeckaStop = true;
+        //sipeckaStop = true;
         showKoule = false;
         showpower = false;
         cudlik._x = -1000;
@@ -1040,46 +1036,11 @@ function skore_soucet() {
         finalScore._y = canvas.height / 2 - finalScore._height / 2;
         finalScore._width = 260;
         finalScore._height = 312;
-        finalScore.render(ctx);
 
-        setTimeout(() => {
-            spareBonusB = [];
-            spareBonusR = [];
-            moveBall = false;
-            moveBallR = false;
-            ballY = 890;
-            ballRY = 890;
-            ballX = 900;
-            ballRX = 900;
-            ballScale = 1;
-            pocet_kuzelek_dole = 0;
-            tryB = 0;
-            tryR = 0;
-            roundB = 0;
-            roundR = 0;
-            strikesB = [];
-            strikesR = [];
-            pins_per_roundB = 0;
-            pins_per_roundR = 0;
-            zazemi = false;
-            zazemiR = false;
-            final_scoreB = [];
-            final_scoreR = [];
-            showKuzelka1 = true;
-            showKuzelka2 = true;
-            showKuzelka3 = true;
-            showKuzelka4 = true;
-            showKuzelka5 = true;
-            showKuzelka6 = true;
-            showKuzelka7 = true;
-            showKuzelka8 = true;
-            showKuzelka9 = true;
-            showKuzelka10 = true;
-            hrac = 1;
-            sipeckaStop = false;
-            showKoule = false;
-            showpower = false;
+        setInterval(() => {
+           location.reload();
         }, 10000);
+
     }
 
     if (moveBall) {
@@ -1119,10 +1080,9 @@ function skore_soucet() {
             }[scoreStr[i]];
 
             if(tryR < 21){
-                spriteB.x = final_spotB._x + (i * 52) + (totalScore <= 9 ? 52 : 0);
+                spriteB.x = final_spotB._x + (i * (totalScore >= 100 ? 45 : 45)) + (totalScore <= 9 ? 45 : 0);
                 spriteB.y = final_spotB._y;
                 spriteB.render(ctx);
-                spare_zbytekB = 0;
             }
 
             if (tryB >= 21 && tryR >= 21) {
@@ -1131,10 +1091,15 @@ function skore_soucet() {
                 spriteB.x = finalScore._x + (i * 104) + (totalScore <= 9 ? 104 : 0);
                 spriteB.y = finalScore._y + 40;
                 spriteB.render(ctx);
-            }
+                setTimeout(() => {
+                    spriteB.width = 49;
+                    spriteB.height = 49;
+                    spriteB.x = final_spotB._x + (i * 52) + (totalScore <= 9 ? 52 : 0);
+                    spriteB.y = final_spotB._y;
+            }, 10000);
         }
-        console.log(i);
     }
+}
 
     if (moveBallR) {
         let totalScore = 0;
@@ -1184,10 +1149,18 @@ function skore_soucet() {
                 spriteR.x = finalScore._x + (i * 104) + (totalScore <= 9 ? 104 : 0);
                 spriteR.y = finalScore._y + 178;
                 spriteR.render(ctx);
+                setTimeout(() => {
+                    spriteR.width = 49;
+                    spriteR.height = 49;
+                    spriteR.x = final_spotR._x + (i * 52) + (totalScore <= 9 ? 52 : 0);
+                    spriteR.y = final_spotR._y + 65;
+                }, 1000);
             }
         }
     }
+    console.log(tryB, tryR);
 }
+
     window.setInterval(() => {
         Mainloop();
         if(hrac % 2 == 1) {

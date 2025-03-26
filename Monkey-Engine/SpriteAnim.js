@@ -72,6 +72,18 @@ export class SpriteAnim extends Sprite{
     set animSlow(newAnimSlow){
         this._animSlow = newAnimSlow;
     }
+    set width(newWidth){
+        if (this._renderWidth == this._width){
+            this._renderWidth = newWidth;
+        }
+        this._width = newWidth;
+    }
+    set height(newHeight){
+        if (this._renderHeight == this._height){
+            this._renderHeight = newHeight;
+        }
+        this._height = newHeight;
+    }
 }
 /*---------------------------SpriteAnim-------------------------------
 import { Tetragon, colides } from '../Monkey-Engine/Tetragon.js';
