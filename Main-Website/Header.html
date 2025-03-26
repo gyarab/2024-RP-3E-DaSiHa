@@ -1,39 +1,101 @@
-<header>
-    <div id="Header_incl_links" class="link-header">
-        <div class="left">
-            <a href="../Main-Website/DaSiHa.html">
-                <img src="../Main-Website/PNG/logo_DaSiHa.png" alt="Home">
-            </a> 
-        </div>
-        <div class="mid">
-            <a href="/Game_01_Ledvadva/index.html">
-                <img src="../Main-Website/PNG/logo_ledva.png" alt="Game 01">
-                <span class="span10px"></span>    
-            </a>
-            <a href="/Game_02_dakynovyKoule/index.html">
-                <img src="../Main-Website/PNG/logo_davesBalls.png" alt="Game 02">
+<body class="game-active">
+    <header>
+        <style>
+            #burger-menu {
+                display: none;
+                flex-direction: column;
+                background-color: #fff;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                padding: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
 
-            </a>
-            <a href="/Game_03_runner/index.html">
-                <img src="../Main-Website/PNG/pes_logo.png" alt="Game 03">
-            </a>
-            <a href="/Game_04_example/index.html">
-                <img src="../Main-Website/PNG/example.png" alt="Game 04">
-                <img src="../Main-Website/PNG/game.png"    alt="Game 04">
-            </a>
-            <a href="Game05">
-                <img src="../Main-Website/PNG/game.png" alt="Game 05">
-                <img src="../Main-Website/PNG/name.png" alt="Game 05">
-            </a>
-            <a href="Game06">
-                <img src="../Main-Website/PNG/game.png" alt="Game 06">
-                <img src="../Main-Website/PNG/name.png" alt="Game 06">
-            </a>
+            #burger-toggle:checked + label + #burger-menu {
+                display: flex;
+            }
+
+            #burger-icon {
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                background-color: #ccc;
+                border-radius: 5px;
+            }
+
+            #burger-menu img {
+                width: 40px;
+                height: 40px;
+                margin-right: 8px;
+                vertical-align: middle;
+            }
+        </style>
+        <div id="Header_incl_links" class="link-header" style="display: flex; align-items: center; justify-content: space-between;">
+            <div class="left">
+                <a href="/Main-Website/Settings.html">
+                </a>
+            </div>
+            
+            <!-- Burger menu toggle -->
+            <input type="checkbox" id="burger-toggle" style="display: none;">
+            <label for="burger-toggle" id="burger-icon">
+                ☰
+            </label>
+            <div id="burger-menu">
+                <a href="/Game_01_Ledvadva/index.html">
+                    <img src="/Main-Website/PNG/logo_ledva.png" alt="Ledva Dva Icon">Ledva Dva
+                </a>
+                <a href="/Game_02_dakynovyKoule/index.html">
+                    <img src="/Main-Website/PNG/logo_davesBalls.png" alt="Dakyho Koule Icon">Dave's Balls
+                </a>
+                <a href="/Game_03_runner/index.html">
+                    <img src="/Main-Website/PNG/pes_logo.png" alt="Pes Runner Icon">Runner
+                </a>
+                <a href="/Game_04_example/index.html">
+                    <img src="/Main-Website/PNG/example.png" alt="Example Game Icon">Example Game
+                </a>
+                <a href="/Game05">
+                    <img src="/Main-Website/PNG/game.png" alt="Game 05 Icon">Game 05
+                </a>
+                <a href="/Game06">
+                    <img src="/Main-Website/PNG/game.png" alt="Game 06 Icon">Game 06
+                </a>
+            </div>
+
+            <div class="mid">
+                <a href="/Game_01_Ledvadva/index.html">
+                    <img src="/Main-Website/PNG/logo_ledva.png" alt="Game 01">
+                    <span class="span10px"></span>    
+                </a>
+                <a href="/Game_02_dakynovyKoule/index.html">
+                    <img src="/Main-Website/PNG/logo_davesBalls.png" alt="Game 02">
+                </a>
+                <a href="/Game_03_runner/index.html">
+                    <img src="/Main-Website/PNG/pes_logo.png" alt="Game 03">
+                </a>
+                <a href="/Game_04_example/index.html">
+                    <img src="/Main-Website/PNG/example.png" alt="Game 04">
+                    <img src="/Main-Website/PNG/game.png"    alt="Game 04">
+                </a>
+                <a href="/Game05">
+                    <img src="/Main-Website/PNG/game.png" alt="Game 05">
+                    <img src="/Main-Website/PNG/name.png" alt="Game 05">
+                </a>
+                <a href="/Game06">
+                    <img src="/Main-Website/PNG/game.png" alt="Game 06">
+                    <img src="/Main-Website/PNG/name.png" alt="Game 06">
+                </a>
+            </div>
+            <div class="right">
+                <a href="/Main-Website/DaSiHa.html">
+                    <img src="/Main-Website/PNG/logo_DaSiHa.png" alt="Home">
+                </a>
+            </div>
         </div>
-        <div class="right">
-            <a href="/Monkey-Engine/MonkeyEngine.html" >
-                <img src="../Main-Website/PNG/setting2.png" alt="SETTING">
-            </a>
-        </div>
-    </div>
-</header>
+    </header>
+</body>
