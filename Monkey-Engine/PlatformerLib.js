@@ -7,7 +7,7 @@ import { Ledvadva } from '../Game_01_Ledvadva/main.js';
 
 //TODO přidat Tetragon-Solid
 //TODO Pushable má hodně mušek
-//TODO Switch,LevelSelect
+//TODO Switch, ledder
 //TODO generizuj Selector a Closet
 
 const pathToIndicators = "../Game_01_Ledvadva/sprites/Indicators/";

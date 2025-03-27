@@ -1,67 +1,37 @@
-    /*-------------------------Obstacles------------------------------*/
-    const w1 = new Tetragon(
-        {x: 200, y:   0},
-        {x: 600, y:   0},
-        {x: 600, y: 300},
-        {x: 200, y: 300},
-        "grey"
-    )
-    const w2 = new Tetragon(
-        {x: 200, y:  50},
-        {x: 900, y:  50},
-        {x: 900, y: 150},
-        {x: 200, y: 150},
-        "grey"
-    )
-    const w3 = new Tetragon(
-        {x: 200, y:  50},
-        {x: 400, y:  50},
-        {x: 400, y: 150},
-        {x: 200, y: 150},
-        "grey"
-    )
-    const w4 = new Tetragon(
-        {x: 200, y:  50},
-        {x: 400, y:  50},
-        {x: 400, y: 100},
-        {x: 200, y: 100},
-        "grey"
-    )
-    const w5 = new Tetragon(
-        {x:   0, y:  0},
-        {x:1500, y:  0},
-        {x:1500, y:200},
-        {x:   0, y:200},
-        "grey"
-    )
-    const w6 = new Tetragon(
-        {x:   0, y:   0},
-        {x:   0, y: 400},
-        {x: 250, y: 400},
-        {x: 250, y:   0},
-        "grey"
-    )
+//@-------------------------------IMPORTS-----------------------------------@//
 
-    w1.moveTo(0     ,   400);
-    w2.moveTo(650   ,   600);
-    w3.moveTo(950   ,   500);
-    w4.moveTo(650   ,   320);
-    w5.moveTo(0     ,   900);
-    w6.moveTo(1500  ,   760);
+import { Ledvadva } from "../../Game_01_Ledvadva/main.js";
+import { Sprite }     from '../../Monkey-Engine/Sprite.js';
 
-    const obsticles  = [w1, w2, w3, w4, w5, w6];
-    
-    /*------------------------Bottles---------------------------------*/
-    const bottleBLU = new Sprite( null, null, 64, 64,
-        "/Game_01_Ledvadva/sprites/BLU/b7.png"
-    );
-    bottleBLU.moveTo(720, 220);
-    const bottleRED = new Sprite( null, null, 64, 64,
-        "/Game_01_Ledvadva/sprites/BLU/b7.png"
-    );
-    bottleRED.moveTo(400, 800);
-    const bottleORA = new Sprite( null, null, 64, 64,
-        "/Game_01_Ledvadva/sprites/BLU/b7.png"
-    );
-    bottleORA.moveTo(1000, 800);
-    const bottles = [bottleBLU, bottleRED, bottleORA];
+//@------------------------------STRUCTURE----------------------------------@//
+////---------//                      Solid                     ////
+////---------//                    SemiSolid                   ////
+////---------//                    Platforms                   ////
+////---------//                   Projectiles                  ////
+////---------//                    Pushable                    ////
+////---------//                  Interactable                  ////
+    ////---------//          Endlevel / LevelSelect        ////
+    ////---------//      Selectors / Switchs / Buttons     ////
+//@-------------------------------VISUALS-----------------------------------@//
+const pathTolvl = "../Game_01_Ledvadva/sprites/Lvl-N/";
+const Backgrnd = new Sprite(0, 0, 1920, 1080,"");
+const Fargrnd  = new Sprite(0, 0, 1920, 1080,"");
+const Midgrnd  = new Sprite(0, 0, 1920, 1080,"");
+const Forgrnd  = new Sprite(0, 0, 1920, 1080,"");
+
+//@-------------------------------RENDER------------------------------------@//
+
+const canvas = document.getElementById('herniRozhraní');
+const ctx = canvas.getContext('2d');
+////---------//                  Restart                      ////
+export function restart_N(){ 
+
+        Ledvadva.players[0].moveTo(0,0);
+        Ledvadva.players[1].moveTo(0,0);
+        Ledvadva.shouldRestart = false;
+    }
+////---------//                  LvlLoop                      ////
+    export function _N_RENDER(){
+        if (Ledvadva.shouldRestart){ restart_N();}
+
+    }

@@ -1,14 +1,20 @@
+//@------------------------------IMPORTS----------------------------------@//
 import { Sprite }    from  '../../Monkey-Engine/Sprite.js';
 import { Ledvadva }  from '../main.js';
 import { Rectangle } from '../../Monkey-Engine/Rectangle.js';
-import { PointerToLevel, PointerToLevelSprite, Platform, SemiSolid, Solid, Selector, Closet} from '../../Monkey-Engine/PlatformerLib.js';
+import { 
+    InteractableIndicator 
+} from '../../Monkey-Engine/Interactable.js';
+import { 
+    PointerToLevel, PointerToLevelSprite, 
+    Platform, SemiSolid, Solid, Selector, Closet
+} from '../../Monkey-Engine/PlatformerLib.js';
 import { 
     IndicatorKey_E, IndicatorKey_Shift, IndicatorKey_E_Shift, 
-    IndicatorKey_F, IndicatorKey_K, 
-    IndicatorKey_G, IndicatorKey_L, 
-    IndicatorKey_Left, IndicatorKey_Right, IndicatorKey_DiS_Left, IndicatorKey_DiS_Right
+    IndicatorKey_F, IndicatorKey_K, IndicatorKey_Left,
+    IndicatorKey_G, IndicatorKey_L, IndicatorKey_Right, 
+    IndicatorKey_DiS_Left, IndicatorKey_DiS_Right
 } from  '../../Monkey-Engine/PlatformerLib.js';
-import { InteractableIndicator } from '../../Monkey-Engine/Interactable.js';
 
 //@------------------------------STRUCTURE----------------------------------@//
 ////---------//                     Solid                      ////
@@ -25,7 +31,7 @@ const _s001 = new SemiSolid( 112,  124,   20,  924,"yellow"); // library-wall-1
 const _s002 = new SemiSolid( 832,  124,   20,  924,"yellow"); // library-wall-2
 const _s003 = new SemiSolid(1092,  760,   20,  300,"yellow"); // drawers
 const _s004 = new SemiSolid(1284,  760,   20,  300,"yellow"); // -//-
-////-----------------//             Platforms                  ////
+////---------//                   Platforms                    ////
 const _3001 = new Platform( 112,  112, 740,   12) // library
 const _3002 = new Platform( 176,  268, 616,   20) // -//-
 const _3003 = new Platform( 176,  424, 616,   20) // -//-
@@ -38,73 +44,74 @@ const _3009 = new Platform(1128,  804, 140,    8) // -//-
 const _3010 = new    Solid(1160,  876,  80,    8) // -//-
 const _3011 = new Platform(1128, 1046, 140,   26) // -//-
 ////---------//                   Interactable                 ////
-////---------//               LevelSelect                  ////
-    const lvl01 = new PointerToLevel( 704,  970, 128,  78, 1);
-    const lvl02 = new PointerToLevel( 240,  816, 156,  76, 2);
-    const lvl03 = new PointerToLevel( 384,  674,  76,  30, 3);   
-    const lvl04 = new PointerToLevel( 488,  514, 100,  66, 4);
-    const lvl05 = new PointerToLevel( 356,  362, 104,  34, 5);
-    const _5700 = new Rectangle  ( 142,  856,  92,  36); ///lvl02._addPlatform(_5700);
-    const _5701 = new Rectangle  ( 364,  704, 104,  32); ///lvl03._addPlatform(_5701);
-    const _5702 = new Rectangle  ( 324,  396, 144,  28); ///lvl05._addPlatform(_5702);
-////---------//                  Selector                  ////
-const select_skin = new Selector   ( 580,  712,  56, 24);
+    ////---------//               LevelSelect                  ////
+        const lvl01 = new PointerToLevel( 704,  970, 128,  78, 1);
+        const lvl02 = new PointerToLevel( 240,  816, 156,  76, 2);
+        const lvl03 = new PointerToLevel( 384,  674,  76,  28, 3);   
+        const lvl04 = new PointerToLevel( 488,  514, 100,  66, 4);
+        const lvl05 = new PointerToLevel( 356,  362, 104,  34, 5);
+        const _5700 = new Rectangle  ( 142,  856,  92,  36); lvl02._addPlatform(_5700);
+        const _5701 = new Rectangle  ( 328,  630,  32, 106); lvl03._addPlatform(_5701);
+        const _5702 = new Rectangle  ( 364,  702, 104,  34); lvl03._addPlatform(_5702);
+        const _5703 = new Rectangle  ( 324,  396, 144,  28); lvl05._addPlatform(_5703);
+    ////---------//                  Selector                  ////
+    const select_skin = new Selector   ( 580,  712,  56, 24);
 //@
 const Hitboxes = [
 _0001, _0002, _0003, _0004, _0005, _0006, _0007,
 _s001, _s002, _s003, _s004, 
 _3001, _3002, _3003, _3004, _3005, _3006, _3007, _3008, _3009, _3010, _3011, 
 lvl01, lvl02, lvl03, lvl04, lvl05, 
-_5700, 
+_5700, _5701, _5702, _5703,
 select_skin
 ];
 //@------------------------------ VISUALS----------------------------------@//
-////---------//                           Indicators                      ////
-    const E = new IndicatorKey_E(); const EShift = new IndicatorKey_E_Shift();
-    const F = new IndicatorKey_F(); const Shift  = new IndicatorKey_Shift();
-    const G = new IndicatorKey_G(); const K = new IndicatorKey_K();
-    const L = new IndicatorKey_L();
 
-    const Left  = new IndicatorKey_Left(); const DisL  = new IndicatorKey_DiS_Left();
+////---------//                             Room                         ////
+    const pathToHub = "../Game_01_Ledvadva/sprites/Hub/";
+    const Backgrnd = new Sprite(0,0,1920,1080,pathToHub + "Background.png");
+    const Fargrnd  = new Sprite(0,0,1920,1080,pathToHub + "Farground.png");
+    const BluePrnt = new Sprite(0,0,1920,1080,pathToHub + "hub01.png");
+    
+    const shelf1 = new Sprite(124,912,716,136,pathToHub + "shelf-1.png");
+    const shelf2 = new Sprite(124,754,716,136,pathToHub + "shelf-2.png");
+    const shelf3 = new Sprite(124,600,716,136,pathToHub + "shelf-3.png");
+    const shelf4 = new Sprite(124,444,716,136,pathToHub + "shelf-4.png");
+    const shelf5 = new Sprite(124,288,716,136,pathToHub + "shelf-5.png");
+
+    const shadow1 = new Sprite(124,912,716,136,pathToHub + "shadow.png");
+    const shadow2 = new Sprite(124,756,716,136,pathToHub + "shadow.png");
+    const shadow3 = new Sprite(124,600,716,136,pathToHub + "shadow.png");
+    const shadow4 = new Sprite(124,444,716,136,pathToHub + "shadow.png");
+    const shadow5 = new Sprite(124,288,716,136,pathToHub + "shadow.png");
+    const shadow6 = new Sprite(124,124,716,144,pathToHub + "shadow.png");
+
+    const shelfsAndShadow = [
+        shelf1,shelf2,shelf3,shelf4,shelf5,
+        shadow1,shadow2,shadow3,shadow4,shadow5,shadow6 
+    ];
+
+    ///const candle  = new Sprite(416,330, 28,64,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/candle.png");
+////---------//                             Levels                         ////
+    const pathToLvls = "../Game_01_Ledvadva/sprites/Interactable/LevelSelect/"; 
+    const pathToBlank = pathToLvls + "blank.png";
+    const shoebox = new PointerToLevelSprite( 704, 970, 128,  76,[ pathToBlank, pathToLvls + "shoebox.png"  ], lvl01);
+    const games   = new PointerToLevelSprite( 144, 812, 248,  76,[ pathToBlank, pathToLvls + "games.png"    ], lvl02);
+    const study   = new PointerToLevelSprite( 328, 630, 140, 104,[ pathToBlank, pathToLvls + "study.png"    ], lvl03);
+    const fairy   = new PointerToLevelSprite( 488, 514, 100,  64,[ pathToBlank, pathToLvls + "fairytale.png"], lvl04);
+    const dark    = new PointerToLevelSprite( 324, 334, 144,  88,[ pathToBlank, pathToLvls + "dark.png"     ], lvl05);
+
+    const book = new Sprite(508, 712, 200, 24, "../Game_01_Ledvadva/sprites/Interactable/Closet/1.png");
+    const ChangingRoom = new Closet(508, 636);
+////---------//                           Indicators                      ////
+    const F = new IndicatorKey_F(); const G = new IndicatorKey_G(); 
+    const K = new IndicatorKey_K(); const L = new IndicatorKey_L();
+
+    const Left  = new IndicatorKey_Left() ; const DisL  = new IndicatorKey_DiS_Left() ;
     const Right = new IndicatorKey_Right(); const DisR  = new IndicatorKey_DiS_Right();
 
     const msg = new InteractableIndicator(0,0,140, 76,"../Game_01_Ledvadva/sprites/Indicators/get_a_room.png");
-    const msgShadow = new InteractableIndicator(0,0,160,76,"../Game_01_Ledvadva/sprites/Hub/shadow.png")
-
-////---------//                             Room                         ////
-        const Backgrnd = new Sprite(0,0,1920,1080,"../Game_01_Ledvadva/sprites/Hub/Background.png");
-        const Fargrnd  = new Sprite(0,0,1920,1080,"../Game_01_Ledvadva/sprites/Hub/Farground.png");
-        const BluePrnt = new Sprite(0,0,1920,1080,"../Game_01_Ledvadva/sprites/Hub/hub01.png");
-       
-        const shelf1 = new Sprite(124,912,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-1.png");
-        const shelf2 = new Sprite(124,754,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-2.png");
-        const shelf3 = new Sprite(124,600,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-3.png");
-        const shelf4 = new Sprite(124,444,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-4.png");
-        const shelf5 = new Sprite(124,288,716,136,"../Game_01_Ledvadva/sprites/Hub/shelf-5.png");
-        ///const shelf6 = new Sprite(124,124,716,144,"../Game_01_Ledvadva/sprites/Hub/shelf-6.png");
-
-        const shadow1 = new Sprite(124,912,716,136,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
-        const shadow2 = new Sprite(124,756,716,136,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
-        const shadow3 = new Sprite(124,600,716,136,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
-        const shadow4 = new Sprite(124,444,716,136,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
-        const shadow5 = new Sprite(124,288,716,136,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
-        const shadow6 = new Sprite(124,124,716,144,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
-
-        const shelfsAndShadow = [shelf1,shelf2,shelf3,shelf4,shelf5,shadow1,shadow2,shadow3,shadow4,shadow5,shadow6];
-
-        ///const control = new Sprite(142,850, 92,40,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/controler.png");
-        ///const candle  = new Sprite(416,330, 28,64,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/candle.png"   );
-
-        const pathToLvls = "../Game_01_Ledvadva/sprites/Interactable/LevelSelect/"; 
-        const pathToBlank = pathToLvls + "blank.png";
-        const shoebox = new PointerToLevelSprite( 704, 970, 128, 76,[ pathToBlank, pathToLvls + "shoebox.png"  ], lvl01);
-        const games   = new PointerToLevelSprite( 240, 812, 152, 76,[ pathToBlank, pathToLvls + "games.png"    ], lvl02);
-        const study   = new PointerToLevelSprite( 364, 674, 104, 60,[ pathToBlank, pathToLvls + "study.png"    ], lvl03);
-        const fairy   = new PointerToLevelSprite( 488, 514, 100, 64,[ pathToBlank, pathToLvls + "fairytale.png"], lvl04);
-        const dark    = new PointerToLevelSprite( 324, 334, 144, 88,[ pathToBlank, pathToLvls + "dark.png"     ], lvl05);
-
-        const book = new Sprite(508, 712, 200, 24, "../Game_01_Ledvadva/sprites/Interactable/Closet/1.png");
-        const ChangingRoom = new Closet(508, 636);
+    const msgShadow = new InteractableIndicator(0,0,160,76, pathToHub + "shadow.png")
 
 //@------------------------------ RENDER----------------------------------@//
 function isPlayersInterac(interactable){

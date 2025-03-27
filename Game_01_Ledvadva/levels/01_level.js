@@ -1,12 +1,11 @@
+//@------------------------------IMPORTS----------------------------------@//
+
 import { Scissors, Solid, Platform, Box, PointerToHub, PointerToHubSprite} from '../../Monkey-Engine/PlatformerLib.js';
 import { Sprite }     from '../../Monkey-Engine/Sprite.js';
 import { Ledvadva }   from '../main.js';
 
 //@------------------------------STRUCTURE----------------------------------@//
-////---------//                Projectiles                      ////
-    const scissors = new Scissors(200, 744);
-    scissors._isGoRight = true
-    scissors._xSpeed = 3.5;
+
 ////---------//                Platform                        ////
     const _l01 = new Platform( 748, 968, 12, 12);
     const _l02 = new Platform( 840, 968, 12, 12);
@@ -24,8 +23,11 @@ import { Ledvadva }   from '../main.js';
     const _0007 = new Solid( 1444, 488,  128,  128);
     const _0008 = new Solid(    0,   0,    8, 1080);
     const _0009 = new Solid( 1912,   0,    8, 1080);
-
-////---------//                     Box                    ////
+////---------//                Projectiles                      ////
+    const scissors = new Scissors(200, 744);
+    scissors._isGoRight = true
+    scissors._xSpeed = 3.5;
+////---------//                 Pushable                    ////
     const box  = new Box(1000, 870, 3);
 ////---------//                 Interactable               ////
     ////---------//               Endlevel                 ////
@@ -38,15 +40,16 @@ const HitBoxes = [
     ];
 
 let Structure;
+
 //@------------------------------ VISUALS----------------------------------@//
 
-const backgrnd = new Sprite(0, 0, 1920, 1080,"../Game_01_Ledvadva/sprites/Lvl-01/Background.png");
-const Forgrnd  = new Sprite(1408, 680, 280, 400,"../Game_01_Ledvadva/sprites/Lvl-01/Forground.png");
-const ForgAct  = new Sprite(1408, 680, 280, 400,"../Game_01_Ledvadva/sprites/Lvl-01/ForgroundActive-2.png");
+const pathTolvl = "../Game_01_Ledvadva/sprites/Lvl-01/";
+const backgrnd  = new Sprite(    0,   0, 1920, 1080, pathTolvl + "Background.png");
+const Forgrnd   = new Sprite( 1408, 680,  280,  400, pathTolvl + "Forground.png" );
+const ForgAct   = new Sprite( 1408, 680,  280,  400, pathTolvl + "ForgroundActive-2.png");
 
 const endOfLevelSprite  = new PointerToHubSprite( 1740, 924, 128, 76, [
-    "../Game_01_Ledvadva/sprites/Lvl-01/nike.png",
-    "../Game_01_Ledvadva/sprites/Interactable/LevelSelect/shoebox.png" 
+    pathTolvl + "nike.png", "../Game_01_Ledvadva/sprites/Interactable/LevelSelect/shoebox.png" 
     ], endOfLevel
 );
 const steps = new Sprite(742,820,116,180,"../Game_01_Ledvadva/sprites/Random/ladder.png");
@@ -55,8 +58,8 @@ const steps = new Sprite(742,820,116,180,"../Game_01_Ledvadva/sprites/Random/lad
 
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
-////---------//                  Restart                      ////
 
+////---------//                  Restart                      ////
     export function restart_01(){ 
         
         scissors.moveTo(200, 744);
@@ -122,5 +125,4 @@ const ctx = canvas.getContext('2d');
         }else{
             Forgrnd.render(ctx);
         }
-
     }

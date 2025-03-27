@@ -1,3 +1,5 @@
+//@------------------------------IMPORTS----------------------------------@//
+
 import { Ledvadva } from "../../Game_01_Ledvadva/main.js";
 import { Sprite } from "../../Monkey-Engine/Sprite.js";
 import { Rectangle } from "../../Monkey-Engine/Rectangle.js";
@@ -6,7 +8,9 @@ import {
     } from "../../Monkey-Engine/PlatformerLib.js";
 import { SpriteDyna } from "../../Monkey-Engine/SpriteDyna.js";
 import { SpriteAnim } from "../../Monkey-Engine/SpriteAnim.js";
+
 //@------------------------------STRUCTURE---------------------------------@//
+
 ////---------//                 Arrows                        ////
 const arrows = [];
 for (let i = 0; i < 16; i++) {
@@ -69,7 +73,9 @@ _0001, _0002, _0003, _0004, _0005, _0006, _0007, _0008,
 _1001, _1002, _1003, _1004, _1005, _1006, _1007, _1008, _1009, _1010,
 endOfLevel0, endOfLevel1
 ];
+
 //@-------------------------------VISUALS----------------------------------@//
+const pathTolvl = "../Game_01_Ledvadva/sprites/Lvl-02/";
 const Backgrnd = new Sprite(0, 0, 1920, 1080,"../Game_01_Ledvadva/sprites/Lvl-02/Background.png");
 const Fargrnd  = new Sprite(0, 0, 1920, 1080,"../Game_01_Ledvadva/sprites/Lvl-02/Farground-2.png");
 const Midgrnd  = new Sprite(0, 0, 1920, 1080,"../Game_01_Ledvadva/sprites/Lvl-02/Midground-2.png");
@@ -91,6 +97,7 @@ const Train    = new SpriteDyna(0, 536, 3332, 332, [
 Train._xSpeed = 0.35 * 2; 
 
 //@-------------------------------RENDER-----------------------------------@//
+
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 ////---------//                  Restart                      ////
@@ -193,6 +200,8 @@ const ctx = canvas.getContext('2d');
     }
 ////---------//                  LvlLoop                      ////
     export function _02_RENDER(){
+        if (Ledvadva.shouldRestart){ restart_02();}
+
         arrows.forEach(arrow => {
             const spike = new Rectangle(arrow._x , arrow._y , arrow._width , arrow._height);
             spike.color = "white";
@@ -201,8 +210,7 @@ const ctx = canvas.getContext('2d');
                 Ledvadva.shouldRestart = true;
             }
         });
-        if (Ledvadva.shouldRestart){ restart_02();}
-        
+
         Backgrnd.render(ctx);
         Fargrnd.render(ctx);
         let renderInside = [];
@@ -267,3 +275,4 @@ const ctx = canvas.getContext('2d');
             Ledvadva.infoBar.render(ctx);
         }        
     }
+    
