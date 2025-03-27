@@ -1,7 +1,7 @@
 import { Sprite }    from  '../../Monkey-Engine/Sprite.js';
 import { Ledvadva }  from '../main.js';
 import { Rectangle } from '../../Monkey-Engine/Rectangle.js';
-import { LevelSelect, Platform, SemiSolid, Solid, Selector, Closet} from '../../Monkey-Engine/PlatformerLib.js';
+import { PointerToLevel, PointerToLevelSprite, Platform, SemiSolid, Solid, Selector, Closet} from '../../Monkey-Engine/PlatformerLib.js';
 import { 
     IndicatorKey_E, IndicatorKey_Shift, IndicatorKey_E_Shift, 
     IndicatorKey_F, IndicatorKey_K, 
@@ -10,6 +10,54 @@ import {
 } from  '../../Monkey-Engine/PlatformerLib.js';
 import { InteractableIndicator } from '../../Monkey-Engine/Interactable.js';
 
+//@------------------------------STRUCTURE----------------------------------@//
+////---------//                     Solid                      ////
+const _0001 = new Solid( 1624,  480,  128,  240); // pc 
+const _0002 = new Solid(  920,  276,  604,   52); // shelf  
+const _0003 = new Solid( 1284,  720,  524,   40); // desk
+const _0004 = new Solid( 1080,  720,   32,   40); // -//-
+const _0005 = new Solid( 1830,    0,    4, 1080); // wall
+const _0006 = new Solid(   90,    0,    4, 1080); // -//-
+const _0007 = new Solid(    0, 1080, 1920,    4); // floor
+
+////---------//                    SemiSolid                  ////
+const _s001 = new SemiSolid( 112,  124,   20,  924,"yellow"); // library-wall-1
+const _s002 = new SemiSolid( 832,  124,   20,  924,"yellow"); // library-wall-2
+const _s003 = new SemiSolid(1092,  760,   20,  300,"yellow"); // drawers
+const _s004 = new SemiSolid(1284,  760,   20,  300,"yellow"); // -//-
+////-----------------//             Platforms                  ////
+const _3001 = new Platform( 112,  112, 740,   12) // library
+const _3002 = new Platform( 176,  268, 616,   20) // -//-
+const _3003 = new Platform( 176,  424, 616,   20) // -//-
+const _3004 = new Platform( 176,  580, 616,   20) // -//-
+const _3005 = new Platform( 176,  736, 616,   20) // -//-
+const _3006 = new Platform( 176,  892, 616,   20) // -//-
+const _3007 = new Platform( 176, 1048, 616,   24) // -//-
+const _3008 = new Platform(1128,  720, 140,   30) // drawers
+const _3009 = new Platform(1128,  804, 140,    8) // -//-
+const _3010 = new    Solid(1160,  876,  80,    8) // -//-
+const _3011 = new Platform(1128, 1046, 140,   26) // -//-
+////---------//                   Interactable                 ////
+////---------//               LevelSelect                  ////
+    const lvl01 = new PointerToLevel( 704,  970, 128,  78, 1);
+    const lvl02 = new PointerToLevel( 240,  816, 156,  76, 2);
+    const lvl03 = new PointerToLevel( 384,  674,  76,  30, 3);   
+    const lvl04 = new PointerToLevel( 488,  514, 100,  66, 4);
+    const lvl05 = new PointerToLevel( 356,  362, 104,  34, 5);
+    const _5700 = new Rectangle  ( 142,  856,  92,  36); ///lvl02._addPlatform(_5700);
+    const _5701 = new Rectangle  ( 364,  704, 104,  32); ///lvl03._addPlatform(_5701);
+    const _5702 = new Rectangle  ( 324,  396, 144,  28); ///lvl05._addPlatform(_5702);
+////---------//                  Selector                  ////
+const select_skin = new Selector   ( 580,  712,  56, 24);
+//@
+const Hitboxes = [
+_0001, _0002, _0003, _0004, _0005, _0006, _0007,
+_s001, _s002, _s003, _s004, 
+_3001, _3002, _3003, _3004, _3005, _3006, _3007, _3008, _3009, _3010, _3011, 
+lvl01, lvl02, lvl03, lvl04, lvl05, 
+_5700, 
+select_skin
+];
 //@------------------------------ VISUALS----------------------------------@//
 ////---------//                           Indicators                      ////
     const E = new IndicatorKey_E(); const EShift = new IndicatorKey_E_Shift();
@@ -44,71 +92,21 @@ import { InteractableIndicator } from '../../Monkey-Engine/Interactable.js';
 
         const shelfsAndShadow = [shelf1,shelf2,shelf3,shelf4,shelf5,shadow1,shadow2,shadow3,shadow4,shadow5,shadow6];
 
-        const shoebox = new Sprite(704,970,128,76,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/shoebox.png");
-        const control = new Sprite(142,850, 92,40,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/controler.png");
-        const games   = new Sprite(240,812,152,76,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/games.png");
-        const fairy   = new Sprite(488,514,100,64,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/fairytale.png");
-        const study   = new Sprite(364,674,104,60,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/study.png");
-        const dark    = new Sprite(324,334,144,88,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/dark.png");
-        const candle  = new Sprite(416,330, 28,64,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/candle.png");
-        const book    = new Sprite(508,712,200,24,"../Game_01_Ledvadva/sprites/Interactable/Closet/1.png");
+        ///const control = new Sprite(142,850, 92,40,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/controler.png");
+        ///const candle  = new Sprite(416,330, 28,64,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/candle.png"   );
+
+        const pathToLvls = "../Game_01_Ledvadva/sprites/Interactable/LevelSelect/"; 
+        const pathToBlank = pathToLvls + "blank.png";
+        const shoebox = new PointerToLevelSprite( 704, 970, 128, 76,[ pathToBlank, pathToLvls + "shoebox.png"  ], lvl01);
+        const games   = new PointerToLevelSprite( 240, 812, 152, 76,[ pathToBlank, pathToLvls + "games.png"    ], lvl02);
+        const study   = new PointerToLevelSprite( 364, 674, 104, 60,[ pathToBlank, pathToLvls + "study.png"    ], lvl03);
+        const fairy   = new PointerToLevelSprite( 488, 514, 100, 64,[ pathToBlank, pathToLvls + "fairytale.png"], lvl04);
+        const dark    = new PointerToLevelSprite( 324, 334, 144, 88,[ pathToBlank, pathToLvls + "dark.png"     ], lvl05);
+
+        const book = new Sprite(508, 712, 200, 24, "../Game_01_Ledvadva/sprites/Interactable/Closet/1.png");
         const ChangingRoom = new Closet(508, 636);
-//@------------------------------STRUCTURE----------------------------------@//
-////---------//                     Solid                      ////
-    const _0001 = new Solid( 1624,  480,  128,  240); // pc 
-    const _0002 = new Solid(  920,  276,  604,   52); // shelf  
-    const _0003 = new Solid( 1284,  720,  524,   40); // desk
-    const _0004 = new Solid( 1080,  720,   32,   40); // -//-
-    const _0005 = new Solid( 1830,    0,    4, 1080); // wall
-    const _0006 = new Solid(   90,    0,    4, 1080); // -//-
-    const _0007 = new Solid(    0, 1080, 1920,    4); // floor
-    
-////---------//                    SemiSolid                  ////
-    const _s001 = new SemiSolid( 112,  124,   20,  924,"yellow"); // library-wall-1
-    const _s002 = new SemiSolid( 832,  124,   20,  924,"yellow"); // library-wall-2
-    const _s003 = new SemiSolid(1092,  760,   20,  300,"yellow"); // drawers
-    const _s004 = new SemiSolid(1284,  760,   20,  300,"yellow"); // -//-
-////-----------------//             Platforms                  ////
-    const _3001 = new Platform( 112,  112, 740,   12) // library
-    const _3002 = new Platform( 176,  268, 616,   20) // -//-
-    const _3003 = new Platform( 176,  424, 616,   20) // -//-
-    const _3004 = new Platform( 176,  580, 616,   20) // -//-
-    const _3005 = new Platform( 176,  736, 616,   20) // -//-
-    const _3006 = new Platform( 176,  892, 616,   20) // -//-
-    const _3007 = new Platform( 176, 1048, 616,   24) // -//-
-    const _3008 = new Platform(1128,  720, 140,   30) // drawers
-    const _3009 = new Platform(1128,  804, 140,    8) // -//-
-    const _3010 = new    Solid(1160,  876,  80,    8) // -//-
-    const _3011 = new Platform(1128, 1046, 140,   26) // -//-
-////---------//                   Interactable                 ////
-    ////---------//               LevelSelect                  ////
-        const lvl01 = new LevelSelect( 704,  972, 128,  76, 1);
-        const lvl02 = new LevelSelect( 240,  816, 156,  76, 2);
-        const lvl03 = new LevelSelect( 384,  676,  76,  28, 3);   
-        const lvl04 = new LevelSelect( 488,  516, 100,  64, 4);
-        const lvl05 = new LevelSelect( 356,  364, 104,  32, 5);
-        const _5700 = new Rectangle  ( 142,  856,  92,  36); ///lvl02._addPlatform(_5700);
-        const _5701 = new Rectangle  ( 364,  704, 104,  32); ///lvl03._addPlatform(_5701);
-        const _5702 = new Rectangle  ( 324,  396, 144,  28); ///lvl05._addPlatform(_5702);
-    ////---------//                  Selector                  ////
-    const select_skin = new Selector   ( 580,  712,  56, 24);
-//@
-const Hitboxes = [
-    _0001, _0002, _0003, _0004, _0005, _0006, _0007,
-    _s001, _s002, _s003, _s004, 
-    _3001, _3002, _3003, _3004, _3005, _3006, _3007, _3008, _3009, _3010, _3011, 
-    lvl01, lvl02, lvl03, lvl04, lvl05, 
-    _5700, 
-    select_skin
-];
+
 //@------------------------------ RENDER----------------------------------@//
-function renderLevelSelect(level, sprite, heightOfHover = 1.3){
-    if (level._isComplete) { sprite.render(ctx);}
-    if (isPlayersInterac(level)) {
-        showIndicatorsFor('action', level, heightOfHover);
-        sprite.render(ctx);
-    }
-}
 function isPlayersInterac(interactable){
     const p1 = Ledvadva.players[0];
     const p2 = Ledvadva.players[1];
@@ -165,9 +163,9 @@ const ctx = canvas.getContext('2d');
         Ledvadva.currentlvl = 0;
 
         let x; let y;
-        if (lvl05._isComplete) { x =   0; y =   0; }else 
-        if (lvl04._isComplete) { x =   0; y =   0; }else
-        if (lvl03._isComplete) { x =   0; y =   0; }else
+        if (lvl05._isComplete) { x = 376; y = 236; }else 
+        if (lvl04._isComplete) { x = 516; y = 386; }else
+        if (lvl03._isComplete) { x = 395; y = 545; }else
         if (lvl02._isComplete) { x = 290; y = 690; }else
         if (lvl01._isComplete) { x = 744; y = 844; }else
         /* first spawn point */{ x = 990; y = 940; }
@@ -183,16 +181,22 @@ const ctx = canvas.getContext('2d');
 ////---------//                  HubLoop                      ////
 export function _00_RENDER(){
     if (Ledvadva.shouldRestart){ restart_00();}
+
     Backgrnd.render(ctx,true);
     Fargrnd.render(ctx);
     
     for ( let s of shelfsAndShadow ){ s.render(ctx); }
 
-    renderLevelSelect(lvl01, shoebox);
-    renderLevelSelect(lvl02, games);
-    renderLevelSelect(lvl03, study);
-    renderLevelSelect(lvl04, fairy);
-    renderLevelSelect(lvl05, dark, 1.6);
+    shoebox.render(ctx);
+    games.render(ctx);
+    study.render(ctx);
+    fairy.render(ctx);
+    dark.render(ctx);
+
+    console.log(
+        "x:" + Math.round(Ledvadva.players[0]._x) + "\n" +
+        "y:" + Math.round(Ledvadva.players[0]._y)
+    );
 
     Ledvadva.players[0].updatePos(Hitboxes);
     Ledvadva.players[0].updateImage();
@@ -210,6 +214,7 @@ export function _00_RENDER(){
         select_skin._isInteractableWith[Ledvadva.players[1]._id] 
         && select_skin._canGo(Ledvadva.players[1]._wantInteract)
     );
+
     if(isPlayersInterac(select_skin)){
         ChangingRoom.render(ctx);
         if(select_skin._reactToBackward && !arePlayersInterac(select_skin)){
@@ -229,7 +234,6 @@ export function _00_RENDER(){
             msg.moveTo(select_skin, 2.5); msg.render(ctx);
         }
     }
-
     if(Ledvadva.Modes.infoMode){
         Hitboxes.forEach(hitbox => hitbox.render(ctx));
         Ledvadva.infoBar.render(ctx);
