@@ -5,11 +5,10 @@ import { CharacterSprite0 } from '../Monkey-Engine/CharacterSprite0.js';
 import {  Rectangle } from './Rectangle.js';
 import { Ledvadva } from '../Game_01_Ledvadva/main.js';
 
-//TODO změnit hitbox u Projektilů na kruh
 //TODO přidat Tetragon-Solid
 //TODO Pushable má hodně mušek
-//TODO: EndOfLevel, Switch,LevelSelect
-//TODO: generizuj Selector a Closet
+//TODO Switch,LevelSelect
+//TODO generizuj Selector a Closet
 
 const pathToIndicators = "../Game_01_Ledvadva/sprites/Indicators/";
 const  indicatorKey_Shift  = new InteractableIndicator(0,0,124,44, pathToIndicators + "Press-Shift.png"   );
@@ -41,9 +40,9 @@ export class Ladder extends Rectangle{
 ////
 ////----------------------Interactable--------------------////
 const pathToInteractable = "../Game_01_Ledvadva/sprites/Interactable/";
-// typeOf Interactable     LevelSelect              
+// typeOf Interactable     PointerToLevel              
     //TODO: /*visualisation*/
-    export class LevelSelect extends Interactable{
+    export class PointerToLevel extends Interactable{
         constructor(x, y, width, height, numberOfLevel){
             super(x, y, width, height);
             this._hasToBeOnGround = true;
@@ -69,6 +68,26 @@ const pathToInteractable = "../Game_01_Ledvadva/sprites/Interactable/";
 
         }
     }
+    // visualisation
+        export class PointerToLevelSprite extends SpriteAnim{
+            constructor(x, y, width, height, spritePath, interactable){
+                super(x, y, width, height, spritePath);
+                this._Interactable = interactable;
+            }
+            render(ctx){
+                this._currentFrame = 0;
+                let wasd  = (this._Interactable._isInteractableWith[Ledvadva.players[0]._id]);
+                let arrow = (this._Interactable._isInteractableWith[Ledvadva.players[1]._id]);
+                if(wasd || arrow || this._Interactable._isComplete){
+                    this._currentFrame = 1;
+                    if(wasd && arrow){ indicatorKey_E_Shift.moveTo(this) ; indicatorKey_E_Shift.render(ctx); }
+                    else if ( arrow ){ indicatorKey_Shift.moveTo(this)   ; indicatorKey_Shift.render(ctx)  ; }
+                    else if (  wasd ){ indicatorKey_E.moveTo(this)       ; indicatorKey_E.render(ctx)      ; }     
+                }
+                super.render(ctx);
+            }
+        }
+
 // typeOf Interactable     PointerToHub
     export class PointerToHub extends Interactable{
         constructor(x, y, width, height){
@@ -82,9 +101,9 @@ const pathToInteractable = "../Game_01_Ledvadva/sprites/Interactable/";
     }
     // visualisation
         export class PointerToHubSprite extends SpriteAnim{
-            constructor(x, y, width, height, spritePaths, EndOfLevel){
+            constructor(x, y, width, height, spritePaths, interactable){
                 super(x, y, width, height, spritePaths);
-                this._Interactable = EndOfLevel;
+                this._Interactable = interactable;
             }
             render(ctx){
                 this._currentFrame = 0;
@@ -100,7 +119,6 @@ const pathToInteractable = "../Game_01_Ledvadva/sprites/Interactable/";
             }
         }
 // typeOf Interactable      Switch
-    //TODO: /*visualisation*/
     export class Switch extends Interactable{
         constructor(x, y, width, height){
             super(x, y, width, height);
