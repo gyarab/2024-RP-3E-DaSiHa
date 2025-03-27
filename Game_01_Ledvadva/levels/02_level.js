@@ -76,10 +76,10 @@ endOfLevel0, endOfLevel1
 
 //@-------------------------------VISUALS----------------------------------@//
 const pathTolvl = "../Game_01_Ledvadva/sprites/Lvl-02/";
-const Backgrnd = new Sprite(0, 0, 1920, 1080,"../Game_01_Ledvadva/sprites/Lvl-02/Background.png");
-const Fargrnd  = new Sprite(0, 0, 1920, 1080,"../Game_01_Ledvadva/sprites/Lvl-02/Farground-2.png");
-const Midgrnd  = new Sprite(0, 0, 1920, 1080,"../Game_01_Ledvadva/sprites/Lvl-02/Midground-2.png");
-const Forgrnd  = new Sprite(0, 0, 1920, 1080,"../Game_01_Ledvadva/sprites/Lvl-02/Forground-2.png");
+const Backgrnd = new Sprite(0, 0, 1920, 1080,pathTolvl + "Background.png");
+const Fargrnd  = new Sprite(0, 0, 1920, 1080,pathTolvl + "Farground-2.png");
+const Midgrnd  = new Sprite(0, 0, 1920, 1080,pathTolvl + "Midground-2.png");
+const Forgrnd  = new Sprite(0, 0, 1920, 1080,pathTolvl + "Forground-2.png");
 const Game_0   = new PointerToHubSprite(  820, 704, 152, 73,[
     "../Game_01_Ledvadva/sprites/Interactable/LevelSelect/games_d.png",
     "../Game_01_Ledvadva/sprites/Interactable/LevelSelect/games.png"
@@ -89,10 +89,10 @@ const Game_1   = new PointerToHubSprite(1248, 704, 152, 76,[
     "../Game_01_Ledvadva/sprites/Interactable/LevelSelect/games.png"
 ], endOfLevel1 );
 const Train    = new SpriteDyna(0, 536, 3332, 332, [
-    "../Game_01_Ledvadva/sprites/Lvl-02/train-blueprint-3.png",
-    "../Game_01_Ledvadva/sprites/Lvl-02/train-blueprint-0.png",
-    "../Game_01_Ledvadva/sprites/Lvl-02/train-blueprint-1.png",
-    "../Game_01_Ledvadva/sprites/Lvl-02/train-blueprint-2.png",
+    pathTolvl + "train-blueprint-3.png",
+    pathTolvl + "train-blueprint-0.png",
+    pathTolvl + "train-blueprint-1.png",
+    pathTolvl + "train-blueprint-2.png",
 ]);
 Train._xSpeed = 0.35 * 2; 
 

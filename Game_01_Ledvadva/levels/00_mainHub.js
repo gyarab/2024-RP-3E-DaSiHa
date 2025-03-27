@@ -86,12 +86,16 @@ select_skin
     const shadow5 = new Sprite(124,288,716,136,pathToHub + "shadow.png");
     const shadow6 = new Sprite(124,124,716,144,pathToHub + "shadow.png");
 
+    const candle  = new Sprite( 416, 330, 28, 64,
+        "../Game_01_Ledvadva/sprites/Interactable/LevelSelect/candle.png"
+    );
+
     const shelfsAndShadow = [
         shelf1,shelf2,shelf3,shelf4,shelf5,
         shadow1,shadow2,shadow3,shadow4,shadow5,shadow6 
     ];
 
-    ///const candle  = new Sprite(416,330, 28,64,"../Game_01_Ledvadva/sprites/Interactable/LevelSelect/candle.png");
+    
 ////---------//                             Levels                         ////
     const pathToLvls = "../Game_01_Ledvadva/sprites/Interactable/LevelSelect/"; 
     const pathToBlank = pathToLvls + "blank.png";
@@ -161,7 +165,8 @@ function showIndicatorsFor(interaction, interactable, heightOfHover = 1.3){
             break;
     }
 }
-///const hasY_Axis = [candle, book];
+//TODO: render hasZ_Axis[] acording to the Y axis
+const hasZ_Axis = [candle, book];
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 ////---------//                  Restart                      ////
