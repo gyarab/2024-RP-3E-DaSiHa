@@ -296,13 +296,13 @@ function Mainloop() {
 
     }
     if (showKoule == false) {
-        if (hrac % 2 == 1) {
+        if (hrac % 2 == 1 && pokus < 2) {
             sipecka.render(ctx);
             if (sipeckaStop == false) {
                 sipecka.updateImage();
             }
         }
-        if (hrac % 2 == 0) {
+        if (hrac % 2 == 0 && pokus < 2) {
             sipeckaR.render(ctx);
             if (sipeckaStop == false) {
                 sipeckaR.updateImage();
@@ -333,7 +333,7 @@ function handleClick(event) {
     const scaleY = canvas.height / rect.height;
     const mouseX = (event.clientX - rect.left) * scaleX;
     const mouseY = (event.clientY - rect.top) * scaleY;
-    if(!showKoule){
+    if(!showKoule && pokus < 2){
         if (mouseX >= cudlik._x && mouseX <= cudlik._x + cudlik._width &&
             mouseY >= cudlik._y && mouseY <= cudlik._y + cudlik._height) {
             if (!showpower) {
@@ -353,7 +353,7 @@ window.addEventListener('keypress', event => handleKeyPress(event));
 function handleKeyPress(event) {
     if (event.code === 'Space') {
         event.preventDefault();
-        if (!showKoule) {
+        if (!showKoule && pokus < 2) {
             if (!showpower) {
                 showpower = true;
                 sipeckaStop = true;
@@ -840,7 +840,7 @@ function counter() {
                         offsetB = 8;
                     }
                 } else {
-                    if (tryB > 1) {
+                    if (tryB > 1 && tryB < 18) {
                         offsetB = 8;
                     }
                 }
@@ -849,10 +849,6 @@ function counter() {
                     if (typeB === 'strike') {
                         tryB++;
                     }
-                }
-
-                if(tryB >= 21){
-                    offsetB = 0;
                 }
 
                 strikesB.push({ x: spotB._x + (tryB * 62) + offsetB * roundB, y: spotB._y, type: typeB });
@@ -947,7 +943,7 @@ function counter() {
                         offsetR = 8;
                     }
                 } else {
-                    if (tryR > 1) {
+                    if (tryR > 1 && tryR < 18) {
                         offsetR = 8;
                     }
                 }
@@ -955,9 +951,6 @@ function counter() {
                     if (typeR === 'strike') {
                         tryR++;
                     }
-                }
-                if(tryR >= 21){
-                    offsetR = 0;
                 }
                 strikesR.push({ x: spotR._x + (tryR * 62) + offsetR * roundR, y: spotR._y + 61, type: typeR });
                 pocet_kuzelek_dole = 0;
