@@ -1,6 +1,6 @@
 // TODO: fixnout a vypořítat
 
-export class LinSectione{
+export class LinSection{
     constructor(A,B){
         this._A = A;
         this._B = B;
@@ -66,24 +66,3 @@ export function intersectionOfLineSegments(A, B, C, D) {
 
     return { x, y };
 }
-
-/*
-
-function intersectionOfLines(line1,line2){
-    const A = {x: line1._A.x, y: line1._A.y};
-    const B = {x: line1._B.x, y: line1._B.y};
-    const C = {x: line2._A.x, y: line2._A.y};
-    const D = {x: line2._B.x, y: line2._B.y};
-
-    const BLA1 = (D.y - C.y) * C.x + (C.x - D.x) * C.y;
-    const BLA2 = (B.y + A.y) * A.x * (D.x - C.x) + (B.x - A.x ) * A.y * (D.x - C.x);
-
-    const TLA1 = (C.y - D.y) ;
-    const TLA2 = (D.x - C.x) * (B.y -A.y);
-    
-    const returnX = (-BLA1 - BLA2) / (TLA1 + TLA2);
-    const returnY = (A.x*B.y - A.y*B.x)*(C.y - D.y) - (A.y - B.y)*(C.x*D.y - C.y*D.x);
-
-    return {x: returnX, y:returnY};
-}
-*/

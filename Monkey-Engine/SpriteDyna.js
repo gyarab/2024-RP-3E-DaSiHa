@@ -18,7 +18,6 @@ export class SpriteDyna extends SpriteAnim{
         this._counterAnim  = 0;
     }
     updatePos(){
-        // Update position
         if (this._isGoRight && !this._isGoLeft) {
             this.x = this._x + this._xSpeed;
         }

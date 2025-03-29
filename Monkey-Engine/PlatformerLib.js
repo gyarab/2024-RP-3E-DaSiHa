@@ -34,7 +34,7 @@ export class SemiSolid extends Rectangle{
 }
 export class Ladder extends Rectangle{
     constructor(x, y, width, height){
-        super(x, y, width, height, "green");
+        super(x, y, width, height, "pink");
     }
 }
 ////

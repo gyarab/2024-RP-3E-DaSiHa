@@ -17,7 +17,7 @@ const Ledvadva = {
         infoMode : true,
         EditMode : false            
     },
-    currentlvl : 3,
+    currentlvl : 0,
     shouldRestart : true,
     infoBar : new Sprite(
         0,0,1920,1080,"../Game_01_Ledvadva/sprites/Indicators/infoBar.png"
