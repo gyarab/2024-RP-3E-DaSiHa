@@ -536,7 +536,11 @@ function moveBall() {
         }
         if (ballY <= 579.99 || (hibox_zlabek.doesColideWith(zlabekL) && ballY <= 579.99) || (hibox_zlabek.doesColideWith(zlabekR) && ballY <= 579.99)) {
             showKoule = false;
-            pokus++;
+            if(tryB >= 20){
+                pokus += 2;
+            } else {
+                pokus++;
+            }
             tryB++;
             if (pokus >= 2) {
                 showKoule = false;
@@ -747,7 +751,11 @@ function moveBallR() {
             tryR++;
             if (pokus >= 2) {
                 showKoule = false;
-                roundR++;
+                if(tryR >= 20){
+                    pokus += 2;
+                } else {
+                    pokus++;
+                }
                 setTimeout(() => {
                     showKuzelka1 = true;
                     showKuzelka2 = true;
@@ -840,7 +848,7 @@ function counter() {
                         offsetB = 8;
                     }
                 } else {
-                    if (tryB > 1 && tryB < 18) {
+                    if (tryB > 1) {
                         offsetB = 8;
                     }
                 }
@@ -943,7 +951,7 @@ function counter() {
                         offsetR = 8;
                     }
                 } else {
-                    if (tryR > 1 && tryR < 18) {
+                    if (tryR > 1) {
                         offsetR = 8;
                     }
                 }
@@ -1073,7 +1081,7 @@ function skore_soucet() {
 
         setInterval(() => {
            location.reload();
-        }, 10000);
+        }, 5000);
 
     }
 
