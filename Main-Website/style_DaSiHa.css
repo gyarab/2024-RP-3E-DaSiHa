@@ -4,6 +4,8 @@
 body {
     margin: 0;
     background-color: #492f09;
+    color: antiquewhite;
+    font-style: Times New Roman;
 }
 /* ------------------- Gallery Styles ------------------ */
 .gallery {

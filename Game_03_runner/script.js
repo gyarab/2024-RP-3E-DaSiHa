@@ -9,6 +9,8 @@ import { Rectangle }       from  '../Monkey-Engine/Rectangle.js';
 
 window.addEventListener('keydown', event => handleKey(event, true));
 window.addEventListener('keyup', event => handleKey(event, false));
+let score = 0;
+let startTime = Date.now();
 
 //const audio = new Audio('/Game_03_runner/sprites/hra.wav');
 //audio.loop = true;
@@ -107,6 +109,9 @@ canvas.addEventListener('click', (event) => {
 });
 
 let gameOver = false;
+
+const scoreContainer = null;
+
 //hlavní herní smyčka
 function Mainloop(){
     if (gameOver) {
@@ -117,26 +122,55 @@ function Mainloop(){
         const text = 'Game Over';
         const textWidth = ctx.measureText(text).width;
         const textHeight = 200;
-        
+        const padding = 240;
         ctx.fillStyle = 'white';
-        ctx.fillRect((canvas.width - textWidth) / 2 - 20, (canvas.height - textHeight) / 2 - 20, textWidth + 40, textHeight + 40);
-        
+        ctx.fillRect(
+            (canvas.width - textWidth) / 2 - padding, 
+            (canvas.height - textHeight) / 2 - padding, 
+            textWidth + padding * 2, 
+            textHeight + padding * 2
+        );
+
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 5;
-        ctx.strokeRect((canvas.width - textWidth) / 2 - 20, (canvas.height - textHeight) / 2 - 20, textWidth + 40, textHeight + 40);
-        
+        ctx.strokeRect(
+            (canvas.width - textWidth) / 2 - padding, 
+            (canvas.height - textHeight) / 2 - padding, 
+            textWidth + padding * 2, 
+            textHeight + padding * 2
+        );
+
         ctx.fillStyle = 'black';
         ctx.font = '200px Sheriff';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+        ctx.fillText(text, canvas.width / 2, canvas.height / 2 - 50);
+
+        ctx.font = '90px Arial';
+        ctx.fillText(`Score: ${score}`, canvas.width / 2, canvas.height / 2 + 100);
+
         return;
     }
+
+    const currentTime = Date.now();
+    score = Math.floor((currentTime - startTime) / 500);
 
     pozadi.render(ctx); 
     pozadi.updatePos();
     pozadi2.render(ctx);
     pozadi2.updatePos();
+
+    const scoreWidth = 250;
+    const scoreHeight = 80;
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+    ctx.fillRect(canvas.width - scoreWidth - 30, 30, scoreWidth, scoreHeight);
+
+    ctx.fillStyle = 'black';
+    ctx.font = '50px Arial';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(`Score: ${score}`, canvas.width - 50, 70);
+
     if ( pozadi._x <=  -pozadi._width){ pozadi._x = pozadi2._x + pozadi2._width;}
     if (pozadi2._x <= -pozadi2._width){pozadi2._x =  pozadi._x +  pozadi._width;}
 
@@ -156,6 +190,8 @@ function Mainloop(){
 
     bone_1.render(ctx);
     bone_1.updatePos();
+
+   
 
     if(obstic_1._x < (0 - obstic_1._width)){
         obstic_1.x = pozadi._width;
@@ -185,6 +221,7 @@ function handleKey(event, isDown) {
            
             if(gameOver){
                 gameOver = false;
+                startTime = Date.now();
                 character._x = 100;
                 character._y = 690;
                 obstic_1._x = 600;
