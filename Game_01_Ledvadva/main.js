@@ -1,6 +1,7 @@
 import { _00_RENDER , restart_00} from './levels/00_mainHub.js';
 import { _01_RENDER , restart_01} from './levels/01_level.js';
 import { _02_RENDER , restart_02} from './levels/02_level.js';
+import { _03_RENDER , restart_03} from './levels/03_level.js';
 
 import { Sprite } from  '../Monkey-Engine/Sprite.js';
 import { Player } from  '../Monkey-Engine/PlatformerLib.js';
@@ -13,10 +14,10 @@ const Ledvadva = {
     ],
     Modes : {
         Pause    : false,
-        infoMode : false,
+        infoMode : true,
         EditMode : false            
     },
-    currentlvl : 0,
+    currentlvl : 3,
     shouldRestart : true,
     infoBar : new Sprite(
         0,0,1920,1080,"../Game_01_Ledvadva/sprites/Indicators/infoBar.png"
