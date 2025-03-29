@@ -41,7 +41,7 @@ canvas {
     height: auto;
 }
 
-@media (max-width: 568px) {
+@media (max-width: 768px) {
     .ad-Panel {
         display: none;
     }

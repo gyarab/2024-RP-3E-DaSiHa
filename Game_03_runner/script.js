@@ -171,7 +171,7 @@ function Mainloop(){
     ctx.textBaseline = 'middle';
     ctx.fillText(`Score: ${score}`, canvas.width - 50, 70);
 
-    if ( pozadi._x <=  -pozadi._width){ pozadi._x = pozadi2._x + pozadi2._width;}
+    if (pozadi._x <=  -pozadi._width){ pozadi._x = pozadi2._x + pozadi2._width;}
     if (pozadi2._x <= -pozadi2._width){pozadi2._x =  pozadi._x +  pozadi._width;}
 
     character.render(ctx);
@@ -208,7 +208,9 @@ function Mainloop(){
         console.log('Kolize');
         gameOver = true;
     }
-    if (isSwitched){characterHitbox.render(ctx,true);}  
+    if (isSwitched) {
+        characterHitbox.render();
+    }  
 }
 window.setInterval(Mainloop, 6, true);
 function handleKey(event, isDown) {
