@@ -12,10 +12,6 @@ window.addEventListener('keyup', event => handleKey(event, false));
 let score = 0;
 let startTime = Date.now();
 
-//const audio = new Audio('/Game_03_runner/sprites/hra.wav');
-//audio.loop = true;
-
-//audio.play();
 
 //-----------------Překážky-----------------------
 const obstic_1 = new SpriteDyna(600,750,200,220,[ 
@@ -32,17 +28,6 @@ const obstic_2 = new SpriteDyna(1400,750,200,220,[
 obstic_2._isGoLeft = true;
 obstic_2._xSpeed = 3;
 obstic_2._animSlow = 0;
-//-----------------Colectables-----------------------
-const bone_1 = new SpriteDyna(1100,820,100,110, [ 
-    "/Game_03_runner/sprites/kost.png",
-])
-bone_1._isGoLeft = true;
-bone_1._xSpeed = 3;
-const bone_2 = new SpriteDyna(1100,820,100,110, [ 
-    "/Game_03_runner/sprites/kost.png",
-])
-bone_2._isGoLeft = true;
-bone_2._xSpeed = 3;
 //-----------------Pozadí-----------------------
 const pozadi = new SpriteDyna( 0, 0, 1915, 1080,[
     "/Game_03_runner/sprites/pozadi_les.jpg",
@@ -182,16 +167,11 @@ function Mainloop(){
 
     tlacitko.render(ctx);
 
-    obstic_1.render(ctx,isSwitched);
+    obstic_1.render(ctx);
     obstic_1.updatePos();
 
-    obstic_2.render(ctx,isSwitched);
+    obstic_2.render(ctx);
     obstic_2.updatePos();
-
-    bone_1.render(ctx);
-    bone_1.updatePos();
-
-   
 
     if(obstic_1._x < (0 - obstic_1._width)){
         obstic_1.x = pozadi._width;
@@ -199,18 +179,12 @@ function Mainloop(){
     if (obstic_2._x < (0 - obstic_2._width)) {
         obstic_2.x = pozadi._width;
     }
-    if (bone_1._x < (0 - bone_1._width)) {
-        bone_1.x = (obstic_1._x + obstic_2._x) / 2
-    }
 
     const characterHitbox = new Rectangle(character._x + 60, character._y + 60, character._width - 120, character._height - 120);
     if (characterHitbox.doesColideWith(obstic_1) || characterHitbox.doesColideWith(obstic_2)){
         console.log('Kolize');
         gameOver = true;
     }
-    if (isSwitched) {
-        characterHitbox.render();
-    }  
 }
 window.setInterval(Mainloop, 6, true);
 function handleKey(event, isDown) {
