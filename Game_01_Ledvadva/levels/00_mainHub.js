@@ -181,7 +181,7 @@ const ctx = canvas.getContext('2d');
         if (lvl02._isComplete) { x = 290; y = 690; }else
         if (lvl01._isComplete) { x = 744; y = 844; }else
         /* first spawn point */{ x = 990; y = 940; }
-                               
+
         Ledvadva.players[0].moveTo(x - 32,y);
         Ledvadva.players[0]._xVelocity = 0;
         Ledvadva.players[0]._yVelocity = 0;
@@ -204,11 +204,6 @@ export function _00_RENDER(){
     study.render(ctx);
     fairy.render(ctx);
     dark.render(ctx);
-
-    console.log(
-        "x:" + Math.round(Ledvadva.players[0]._x) + "\n" +
-        "y:" + Math.round(Ledvadva.players[0]._y)
-    );
 
     Ledvadva.players[0].updatePos(Hitboxes);
     Ledvadva.players[0].updateImage();
