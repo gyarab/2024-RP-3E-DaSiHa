@@ -29,7 +29,7 @@ export class Sprite extends Rectangle{
     render(ctx , Rbox = null) {
         this._ctxCache = ctx;
 
-        if(Rbox  != null){this.render_Hitbox(ctx)}
+        if(Rbox  != null){super.render(ctx, false);}
             if(this._isLoaded){
                 ctx.drawImage(this._sprite, this._x, this._y, this._width, this._height);
             }else{

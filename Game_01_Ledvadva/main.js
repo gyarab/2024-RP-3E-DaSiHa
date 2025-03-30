@@ -14,7 +14,7 @@ const Ledvadva = {
     ],
     Modes : {
         Pause    : false,
-        infoMode : true,
+        infoMode : false,
         EditMode : false            
     },
     currentlvl : 0,
