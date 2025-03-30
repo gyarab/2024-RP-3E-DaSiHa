@@ -286,7 +286,8 @@ export class CharacterSprite extends SpriteDyna{
     // * vykresluje sprite podle probíhající akce  
     render(ctx, Rbox = null){
         //
-        if(Rbox){super.render_Hitbox(ctx)}
+        const ofset = ctx.lineWidth / 2;
+        if (Rbox){ctx.strokeRect(this._x + ofset, this._y + ofset, this._width - ctx.lineWidth, this._height - ctx.lineWidth);}
         let img = null;
         /*------------Sprite-for-jumping---------------------- */
         if (this._isJumping) {

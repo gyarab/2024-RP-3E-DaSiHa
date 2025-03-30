@@ -60,7 +60,8 @@ export class SpriteAnim extends Sprite{
                     }
                     ctx.drawImage(img, renderX, renderY, this._renderWidth, this._renderHeight);
                 }
-                if (Rbox){ctx.strokeRect(this._x, this._y, this._width, this._height);}
+                const ofset = ctx.lineWidth / 2;
+                if (Rbox){ctx.strokeRect(this._x + ofset, this._y + ofset, this._width - ctx.lineWidth, this._height - ctx.lineWidth);}
         }else{
             super.render(ctx);
         }

@@ -7,6 +7,7 @@ export class Sprite extends Rectangle{
 
         this._ctxCache = null; 
         this._isLoaded = false;
+        this._color    = 'magenta';
 
         
         if (spritePath){
@@ -28,19 +29,13 @@ export class Sprite extends Rectangle{
     }
     render(ctx , Rbox = null) {
         this._ctxCache = ctx;
-
-        if(Rbox  != null){super.render(ctx, false);}
+        if(Rbox){super.render(ctx);}
             if(this._isLoaded){
                 ctx.drawImage(this._sprite, this._x, this._y, this._width, this._height);
             }else{
                 //console.log("Sprite " + this._id + " nebyl načten");
             } 
-    }
-    render_Hitbox(ctx){
-        ctx.strokeStyle = "magenta";
-        ctx.lineWidth = 3;
-        ctx.strokeRect(this._x, this._y, this._width, this._height);
-    }   
+    } 
 }
 
 /*-----------------------------Sprite-----------------------------------

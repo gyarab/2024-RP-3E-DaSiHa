@@ -55,10 +55,8 @@ export class CharacterSprite0 extends SpriteDyna{
             const renderY = this._y - ((this._renderHeight - this._height) / 2);
             ctx.drawImage( img, renderX, renderY, this._renderWidth, this._renderHeight );
         }
-        if (Rbox) {
-            ctx.strokeStyle = 'magenta';
-            ctx.strokeRect(this._x, this._y, this._width, this._height );
-        }
+        const ofset = ctx.lineWidth / 2;
+        if (Rbox){ctx.strokeRect(this._x + ofset, this._y + ofset, this._width - ctx.lineWidth, this._height - ctx.lineWidth);}
     }
     updateImage() {
         this._animTick += 1;
