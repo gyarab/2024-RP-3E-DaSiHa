@@ -14,7 +14,8 @@ export class CharacterSprite1 extends SpriteDyna{
 
     }    
     render(ctx, Rbox){ 
-        if (Rbox){super.render_Hitbox(ctx)}
+        const ofset = ctx.lineWidth / 2;
+        if (Rbox){ctx.strokeRect(this._x + ofset, this._y + ofset, this._width - ctx.lineWidth, this._height - ctx.lineWidth);}
         let img = null;
         if (this._isJumping) {
             img = this._framesJumping[
