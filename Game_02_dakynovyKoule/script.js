@@ -299,7 +299,7 @@ function Mainloop() {
         if (hrac % 2 == 1 && pokus < 2) {
             sipecka.render(ctx);
             if (sipeckaStop == false) {
-                sipecka.updateImage();
+                //sipecka.updateImage();
             }
         }
         if (hrac % 2 == 0 && pokus < 2) {
@@ -435,7 +435,7 @@ function moveBall() {
 
         if (sipecka._currentFrame == 0) {
             if (pokus == 0) {
-                if (power._currentFrame >= 4 && power._currentFrame <= 10) {
+                if (power._currentFrame >= 6 && power._currentFrame <= 8) {
                     strike = true;
                     if (strike) {
                         if (ballY <= 634) showKuzelka1 = false;
@@ -646,7 +646,7 @@ function moveBallR() {
 
         if (sipeckaR._currentFrame == 0) {
             if (pokus == 0) {
-                if (power._currentFrame >= 4 && power._currentFrame <= 10) {
+                if (power._currentFrame >= 6 && power._currentFrame <= 8) {
                     strike = true;
                     if (strike) {
                         if (ballRY <= 634) showKuzelka1 = false;
@@ -747,15 +747,15 @@ function moveBallR() {
         }
         if (ballRY <= 579.99 || (hiboxR_zlabek.doesColideWith(zlabekL) && ballRY <= 579.99) || (hiboxR_zlabek.doesColideWith(zlabekR) && ballRY <= 579.99)) {
             showKoule = false;
-            pokus++;
+            if(tryR >= 20){
+                pokus += 2;
+            } else {
+                pokus++;
+            }
             tryR++;
             if (pokus >= 2) {
                 showKoule = false;
-                if(tryR >= 20){
-                    pokus += 2;
-                } else {
-                    pokus++;
-                }
+                roundR++;
                 setTimeout(() => {
                     showKuzelka1 = true;
                     showKuzelka2 = true;
@@ -955,7 +955,7 @@ function counter() {
                         offsetR = 8;
                     }
                 }
-                if(tryR <= 18){
+                if(tryR < 18){
                     if (typeR === 'strike') {
                         tryR++;
                     }
@@ -1081,7 +1081,7 @@ function skore_soucet() {
 
         setInterval(() => {
            location.reload();
-        }, 5000);
+        }, 3000);
 
     }
 
