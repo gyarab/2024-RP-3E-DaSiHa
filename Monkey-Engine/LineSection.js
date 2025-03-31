@@ -47,11 +47,11 @@ export function intersectionOfLineSegments(A, B, C, D) {
 
     const delta = a1 * b2 - a2 * b1;
 
-    if (Math.abs(delta) < epsilon) return null; // kontrola rovnoběžnosti
+    if (Math.abs(delta) < epsilon) return null;
 
     const x = (b2 * c1 - b1 * c2) / delta;
     const y = (a1 * c2 - a2 * c1) / delta;
-
+    
     // Kontrola, zda průsečík leží na obou úsečkách (s tolerancí)
     const isOnSegment = (p, q, r) => Math.min(p, q) - epsilon <= r && r <= Math.max(p, q) + epsilon;
 

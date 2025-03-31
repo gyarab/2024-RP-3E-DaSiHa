@@ -53,8 +53,8 @@ export class Tetragon{
                     let C = other._points[j]; 
                     let D = other._points[(j + 1) % other._points.length];
 
-                    const intersection = intersectionOfLineSegments(A, B, C, D);
                     if (colidesAnyPoints(this, other)){return true;}
+                    const intersection = intersectionOfLineSegments(A, B, C, D);
                     if (intersection) {
                         if (intersection === null) {
                             throw new Error("intersectionOfLineSegments() returned null.")
