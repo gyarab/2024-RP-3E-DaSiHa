@@ -299,7 +299,7 @@ function Mainloop() {
         if (hrac % 2 == 1 && pokus < 2) {
             sipecka.render(ctx);
             if (sipeckaStop == false) {
-                //sipecka.updateImage();
+                sipecka.updateImage();
             }
         }
         if (hrac % 2 == 0 && pokus < 2) {
@@ -327,6 +327,7 @@ function Mainloop() {
 
 window.addEventListener('click', event => handleClick(event));
 
+//funkce pro kliknutí myší
 function handleClick(event) {
     const rect = canvas.getBoundingClientRect();
     const scaleX = canvas.width / rect.width;
@@ -350,6 +351,7 @@ function handleClick(event) {
 
 window.addEventListener('keypress', event => handleKeyPress(event));
 
+//funkce pro stisknutí klávesy
 function handleKeyPress(event) {
     if (event.code === 'Space') {
         event.preventDefault();
@@ -374,6 +376,7 @@ let zlabek = false;
 let strike = false;
 let pocet_kuzelek_dole = 0;
 
+//funkce pro pohyb koule modrého hráče
 function moveBall() {
     let ballSpeed = 0.8;
     let ballShrinkSpeed = 0.0018;
@@ -585,6 +588,7 @@ function moveBall() {
 let ballRX = kouleR._x;
 let ballRY = kouleR._y;
 
+//funkce pro pohyb koule červeného hráče
 function moveBallR() {
     let ballSpeed = 0.8;
     let ballShrinkSpeed = 0.0018;
@@ -806,7 +810,7 @@ let roundR = 0;
 let pins_per_roundB = 0;
 let pins_per_roundR = 0;
 
-
+//funkce pro vykreslení skóre do tabulky
 function counter() {
     scoreBoard.render(ctx);
     
@@ -1062,11 +1066,11 @@ eightR.loadImg("/Game_02_dakynovyKoule/foto/osm.png");
 const nineR = new Sprite(280, 43, 49, 49);
 nineR.loadImg("/Game_02_dakynovyKoule/foto/devet.png");
 
+//funkce pro vykreslení a výpočet skóre
 function skore_soucet() {
     finalScore.render(ctx);
 
     if (tryB >= 21 && tryR >= 21) {
-        //sipeckaStop = true;
         showKoule = false;
         showpower = false;
         cudlik._x = -1000;
