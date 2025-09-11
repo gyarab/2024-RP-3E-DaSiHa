@@ -1,8 +1,13 @@
-Game_02_dakynovyKoule
-Game_03_runner
-Game_04_example
-Game_05
-Game_06
+# Ignore specific project folders
+Game_02_dakynovyKoule/
+Game_03_runner/
+Game_04_example/
+Game_05/
+Game_06/
+
+# Ignore log and documentation files
 LOG.md
 README.md
-.vscode
+
+# Ignore VSCode settings
+.vscode/
