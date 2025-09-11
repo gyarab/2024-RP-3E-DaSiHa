@@ -1,0 +1,60 @@
+{
+    "better-comments.tags": [
+
+        {
+            "tag": "!", //! ERROR MASSAGE
+            "color": "#FF2D00",
+            "strikethrough": false,
+            "underline": true,
+            "backgroundColor": "transparent",
+            "bold": true,
+            "italic": false
+        },
+        {
+            "tag": "?", //? FURTHER TESTING NEEDED
+            "color": "#3498DB",
+            "strikethrough": false,
+            "underline": true,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        },
+        {
+            "tag": "//", //// HEADLINE
+            "color": "#E675C6",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "#5C2E4F",
+            "bold": true,
+            "italic": false
+        },
+        {
+            "tag": "todo", //TODO: NEEDS TO BE DONE
+            "color": "#FF8C00",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "#3D270B",
+            "bold": false,
+            "italic": false
+        },
+        {
+            "tag": "typeOf", // typeOf SUBOBJECTS
+            "color": "#E675C6",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "#3B1D32",
+            "bold": true,
+            "italic": false
+        },
+        {
+            "tag": "visualFor", // visualFor set class
+            "color": "#6CEBC2",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "#1A382E",
+            "bold": false,
+            "italic": false
+        }
+    ],
+    "better-comments.multilineComments": false
+}
