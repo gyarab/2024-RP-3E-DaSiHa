@@ -1,3 +1,4 @@
+// @Autor: Bendl Šimon
 import { _00_RENDER , restart_00} from './levels/00_mainHub.js';
 import { _01_RENDER , restart_01} from './levels/01_level.js';
 import { _02_RENDER , restart_02} from './levels/02_level.js';
@@ -6,11 +7,11 @@ import { _03_RENDER , restart_03} from './levels/03_level.js';
 import { Sprite } from  '../Monkey-Engine/Sprite.js';
 import { Player } from  '../Monkey-Engine/PlatformerLib.js';
 
-//@------------------------> Ledvadva Manager <--------------------@//
+////------------------------> Ledvadva Manager <--------------------////
 const Ledvadva = {
     players : [
         new Player(0, 0,"SKIN-00"),
-        new Player(0, 0,"SKIN-01"),
+        new Player(0, 0,"SKIN-01")
     ],
     Modes : {
         Pause    : false,
@@ -24,7 +25,7 @@ const Ledvadva = {
     ),
 };
 window.addEventListener('load', () => {
-    ////-----------------------canvasSetUp-----------------------////
+    ////-----------------------canvasSetUp--------------------------////
     const canvas = document.getElementById('herniRozhraní');
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false; 

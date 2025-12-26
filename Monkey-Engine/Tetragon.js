@@ -1,5 +1,7 @@
-// Autor: Bendl Šimon
-import {intersectionOfLineSegments} from './LineSection.js';
+// @Autor: Bendl Šimon
+import {intersectionOfLineSegments, vectorBetween} from './LineSection.js';
+
+////                   Tetragon                  ////
 export class Tetragon{
     static IdCounter = 0;
     constructor(p1, p2, p3, p4, color = 'magenta'){
@@ -9,8 +11,9 @@ export class Tetragon{
         this._id =  Tetragon.IdCounter.toString().padStart(4, '0');
         Tetragon.IdCounter++;
     }
-
-    //! rendering without fill = true will distort actual size by half of the strokeWidth
+    // !     rendering without fill ...  ! //
+    // !    will distort actual size ..  ! //
+    // !   by half of the strokeWidth    ! //
     render(ctx, fill) {
         ctx.beginPath();
         ctx.moveTo(this._points[0].x, this._points[0].y);
@@ -29,7 +32,8 @@ export class Tetragon{
             ctx.stroke();
         }
     }
-    ///*Moves the Tetragon to the new position
+
+    //* Moves the Tetragon to the new position
     moveTo(newX, newY) {
         let v1 = vectorBetween(this._points[0],this._points[1]) 
         let v2 = vectorBetween(this._points[0],this._points[2])
@@ -41,8 +45,8 @@ export class Tetragon{
             {x: newX + v3.x, y: newY + v3.y}
         ]
     }
-    
-    // * controls if the Tetragon colides with other (Tetragon,...)
+
+    //* controls if the Tetragon colides with other (Tetragon,...)
     doesColideWith(other) {
         //other = Tetragon
         if (other instanceof Tetragon) {
@@ -70,12 +74,17 @@ export class Tetragon{
         return false;
     }
 
-    //*------------------Setters--------------------
+    //*------------------Setters--------------------*//
     set color  (newColor ){ this._color  = newColor; }
     set points (newPoints){ this._points = newPoints;}
     set id     (newId    ){ this._id= newId;}   
 }
-// * contols if any of the points of the Tetragon intersects the other Tetragon and vice versa
+///                colidesAnyPoints               ///
+/**
+ ** calculates if two Tetragons share any point
+ * @param   {Tetragon} {tetragon1}{tetragon2} 
+ * @returns {boolean} true if they share even one point
+ */
 export function colidesAnyPoints(tetragon1, tetragon2){
     for (let point of tetragon1._points) {
         if (pointInPolygon(point, tetragon2._points)) {return true;}
@@ -85,7 +94,13 @@ export function colidesAnyPoints(tetragon1, tetragon2){
     }
     return false;
 }
-// * controls if the point intersects the Polygon
+///                 pointInPolygon                 ///
+/**
+ ** calculates if the point is part of the polygon
+ * @param  {{x: number, y: number}} point 
+ * @param  {Polygon} polygon 
+ * @returns 
+ */
 export function pointInPolygon(point, polygon) {
     let x = point.x, y = point.y;
     let inside = false;
@@ -96,12 +111,6 @@ export function pointInPolygon(point, polygon) {
         if (intersect) inside = !inside;
     }
     return inside;
-}
-function vectorBetween(p1 , p2){
-    let vectorX = p2.x - p1.x;
-    let vectorY = p2.y - p1.y;
-    return {x: vectorX, y: vectorY}
-
 }
 
 /*//*---------------Tetragon-EXAMPLE-------------------

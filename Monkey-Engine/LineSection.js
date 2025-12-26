@@ -1,6 +1,7 @@
-// TODO: fixnout a vypořítat
+// @Autor: Bendl Šimon
 
-export class LinSection{
+////              Line Section             ////
+export class LineSection{
     constructor(A,B){
         this._A = A;
         this._B = B;
@@ -13,15 +14,29 @@ export class LinSection{
         ctx.stroke();
     }
     moveTo(point){
-        this._A =  {x: point.x, y: point.y};
-        this._B = {x: point.x + this._vector.x, y: point.y + this._vector.y};
+        this._A = { x: point.x, y: point.y};
+        this._B = {
+            x: point.x + this._vector.x,
+            y: point.y + this._vector.y
+        };
     }  
 }
-
-function vectorBetween(A,B){
+///              vectorBetween              ///
+/**
+ ** calaculates the vector between two points A and B
+  @param   {{x: number, y: number}} {A}{B}
+  @returns {{x: number, y: number}}
+*/
+export function vectorBetween(A,B){
     return {x: B.x - A.x, y: B.y - A.y}
 }
-
+///           intersectionOfLines           ///
+/**
+ ** calculates the intersection point of two lines <-> AB  and <-> CD
+  @param   {{x: number, y: number}} {A}{B}{C}{D} 
+ ** intersection point or null if the lines are parallel
+  @returns {{x: number, y: number} | null} 
+ */
 export function intersectionOfLines(A,B,C,D){
     const a1 = B.y - A.y;
     const b1 = A.x - B.x;
@@ -34,6 +49,13 @@ export function intersectionOfLines(A,B,C,D){
 
     return {x: (b2*c1 - b1*c2) / delta, y: (a1*c2 - a2*c1) / delta}
 }
+///      intersectionOfLineSegments         ///
+/**
+ ** calculates the intersection point of two line segments |AB| and |CD|
+  @param   {{x: number, y: number}} {A}{B}{C}{D} 
+ ** intersection point or null if no intersection exists on the segments
+  @returns {{x: number, y: number} | null} 
+ */
 export function intersectionOfLineSegments(A, B, C, D) {
     const epsilon = 1e-9; // tolerance pro ztrátu přesnosti
 

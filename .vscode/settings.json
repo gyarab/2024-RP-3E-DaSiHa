@@ -1,8 +1,8 @@
 {
     "better-comments.tags": [
-
-        {
-            "tag": "!", //! ERROR MASSAGE
+        
+        {   // !       ERROR MASSAGE      ! //
+            "tag": "!", 
             "color": "#FF2D00",
             "strikethrough": false,
             "underline": true,
@@ -10,8 +10,8 @@
             "bold": true,
             "italic": false
         },
-        {
-            "tag": "?", //? FURTHER TESTING NEEDED
+        {   // ?   FURTHER TESTING NEEDED ? // 
+            "tag": "?", 
             "color": "#3498DB",
             "strikethrough": false,
             "underline": true,
@@ -19,17 +19,17 @@
             "bold": false,
             "italic": false
         },
-        {
-            "tag": "//", //// HEADLINE
-            "color": "#E675C6",
+        {   // *         HIGHLIGHT        * //
+            "tag": "*", 
+            "color": "#lime",
             "strikethrough": false,
             "underline": false,
-            "backgroundColor": "#5C2E4F",
+            "backgroundColor": "transparent",
             "bold": true,
             "italic": false
         },
-        {
-            "tag": "todo", //TODO: NEEDS TO BE DONE
+        {   // TODO:  NEEDS TO BE DONE      //
+            "tag": "todo", 
             "color": "#FF8C00",
             "strikethrough": false,
             "underline": false,
@@ -37,8 +37,26 @@
             "bold": false,
             "italic": false
         },
-        {
-            "tag": "typeOf", // typeOf SUBOBJECTS
+        {   // //         HEADLINE          //
+            "tag": "//", 
+            "color": "#E675C6",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "#5C2E4F",
+            "bold": true,
+            "italic": false
+        },
+        {   // /         HEADLINE           //
+            "tag": "/", 
+            "color": "#E675C6",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "#27141F",
+            "bold": true,
+            "italic": false
+        },
+        {   // typeOf     SUBOBJECTS        //
+            "tag": "typeOf", 
             "color": "#E675C6",
             "strikethrough": false,
             "underline": false,
@@ -46,15 +64,24 @@
             "bold": true,
             "italic": false
         },
-        {
-            "tag": "visualFor", // visualFor set class
+        {  // visualFor   VISUAL AID        //
+            "tag": "visualFor", 
             "color": "#6CEBC2",
             "strikethrough": false,
             "underline": false,
             "backgroundColor": "#1A382E",
             "bold": false,
             "italic": false
+        },
+        {  // @Autor   AUTHOR OF THE CODE   //
+            "tag": "@Autor", 
+            "color": "white",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": true
         }
     ],
-    "better-comments.multilineComments": false
+    "better-comments.multilineComments": true
 }
