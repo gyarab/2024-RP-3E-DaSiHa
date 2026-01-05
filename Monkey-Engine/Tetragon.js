@@ -11,6 +11,8 @@ export class Tetragon{
         this._id =  Tetragon.IdCounter.toString().padStart(4, '0');
         Tetragon.IdCounter++;
     }
+
+    //* renders the Tetragon on the given context
     // !     rendering without fill ...  ! //
     // !    will distort actual size ..  ! //
     // !   by half of the strokeWidth    ! //
@@ -33,13 +35,13 @@ export class Tetragon{
         }
     }
 
-    //* Moves the Tetragon to the new position
+    //* moves the Tetragon to the new position
     moveTo(newX, newY) {
         let v1 = vectorBetween(this._points[0],this._points[1]) 
         let v2 = vectorBetween(this._points[0],this._points[2])
         let v3 = vectorBetween(this._points[0],this._points[3])
         this.points = [ 
-            {x: newX       , y: newY},
+            {x: newX       , y: newY       },
             {x: newX + v1.x, y: newY + v1.y},
             {x: newX + v2.x, y: newY + v2.y},
             {x: newX + v3.x, y: newY + v3.y}
@@ -72,6 +74,15 @@ export class Tetragon{
             throw new Error("Argument is not instance of Tetragon.")
         }
         return false;
+    }
+
+    //* creates a clone of the Tetragon 
+    // ! color might not be cloned properly ! //
+    clone(){
+        const points = this._points.map(p => ({ ...p }));
+        const clone = new Tetragon(...points, this._color); 
+        clone._strokeWidth = this._strokeWidth;
+        return clone
     }
 
     //*------------------Setters--------------------*//

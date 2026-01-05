@@ -14,21 +14,33 @@ export class Rectangle extends Tetragon{
         this._width = width;
         this._height = height;
     }
+
+    //* renders the Rectangle on the given context
     render(ctx,fill){
         if (fill){
             ctx.fillStyle = this._color;
             ctx.fillRect(this._x, this._y, this._width, this._height);
         }else{
             ctx.strokeStyle = this._color;
-            ctx.lineWidth = 4;
+            ctx.lineWidth = this._lineWidth;
             const offset = ctx.lineWidth / 2;
             ctx.strokeRect(this._x + offset, this._y + offset, this._width - ctx.lineWidth, this._height - ctx.lineWidth);
         }
     }
+
+    //* Moves the Rectangle to the new position
     moveTo(x, y){   
         this.x = x;
         this.y = y;
     }
+
+    //* creates a clone of the Rectangle
+    clone(){
+        const clone = new Rectangle(this._x, this._y, this._width, this._height, this._color);
+        clone._strokeWidth = this._strokeWidth;
+        return clone;
+    }
+    
     /*--------------------------Setters-------------------------------*/
     set x(newX){
         this._x = newX,
@@ -54,6 +66,8 @@ export class Rectangle extends Tetragon{
         this._points[2].y = this._y + newHeight
         this._points[3].y = this._y + newHeight
     }
+
+ 
 }
 
 /*-----------------------------Rectangle----------------------------------- 

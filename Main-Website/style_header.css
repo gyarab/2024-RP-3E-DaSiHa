@@ -47,7 +47,6 @@
     .link-header .mid {
         display: none;
     }
-
     #burger-icon {
         cursor: pointer;
         display: flex;
@@ -58,18 +57,18 @@
         background-color: #ccc;
         border-radius: 5px;
     }
-
     #burger-menu {
         display: none;
         flex-direction: column;
         gap: 10px;
         padding: 0;
     }
-
     #burger-toggle:checked + label + #burger-menu {
         display: flex;
     }
-
+    #burger-toggle:checked ~ .mid img {
+        display: none;
+    }
     #burger-menu a {
         display: flex;
         align-items: center;
@@ -78,15 +77,11 @@
         text-decoration: none;
         color: black;
     }
-
     #burger-menu img {
         width: 40px;
         height: 40px;
     }
 
-    #burger-toggle:checked ~ .mid img {
-        display: none;
-    }
 }
 
 @media (min-width: 769px) {
@@ -102,7 +97,6 @@
     .link-header .mid a img:hover {
         transform: scale(1.5);
     }
-
     #burger-icon,
     #burger-menu {
         display: none;

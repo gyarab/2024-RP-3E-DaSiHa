@@ -9,6 +9,7 @@ export class SpriteAnim extends Sprite{
         this._animSlow = 100;
         this._currentFrame = 0;
         
+        // ? not sure if I want it here (maybe push to Sprite) ? //
         this._renderWidth = width;
         this._renderHeight = height;
         this._renderDir = null;
@@ -17,6 +18,8 @@ export class SpriteAnim extends Sprite{
             this.loadImg(spritePaths);
         }
     }
+
+    //* loads the images from the given paths
     loadImg(spritePaths) {
         spritePaths.forEach(path => {
             const img = new Image();
@@ -24,6 +27,8 @@ export class SpriteAnim extends Sprite{
             this._frames.push(img);
         });
     }
+
+    //* updates the current frame based on the animation speed
     updateImage(){
         this._animTick += 1;
         if (this._animTick > this._animSlow){
@@ -31,6 +36,8 @@ export class SpriteAnim extends Sprite{
             this._animTick = 0;
         }
     }
+
+    //* renders the current frame on the given context
     render(ctx,Rbox) {
         if (this._frames.length > 0){
                 const img = this._frames[this._currentFrame];
@@ -57,18 +64,41 @@ export class SpriteAnim extends Sprite{
                         default:
                             renderX = this._x - ((this._renderWidth - this._width) / 2);
                             renderY = this._y - ((this._renderHeight - this._height) / 2);
-                    }
+                    } 
                     ctx.drawImage(img, renderX, renderY, this._renderWidth, this._renderHeight);
                 }
                 const ofset = ctx.lineWidth / 2;
-                if (Rbox){ctx.strokeRect(this._x + ofset, this._y + ofset, this._width - ctx.lineWidth, this._height - ctx.lineWidth);}
+                if (Rbox){
+                    ctx.strokeStyle = this._color;
+                    ctx.strokeRect(this._x + ofset, this._y + ofset, this._width - ctx.lineWidth, this._height - ctx.lineWidth);
+                }
         }else{
             super.render(ctx);
         }
     }
+
+    //* creates a clone of the SpriteAnim, Sprite images can be shared or reloaded 
+    clone(takesMoreSpace = false) {
+        const clone = new SpriteAnim(this._x, this._y, this._width, this._height);
+        clone._animSlow = this._animSlow;
+        clone._currentFrame = this._currentFrame;
+        clone._renderWidth = this._renderWidth;
+        clone._renderHeight = this._renderHeight;
+        clone._renderDir = this._renderDir;
+
+        if (takesMoreSpace){
+            clone.loadImg(this._frames.map(img => img.src));
+        }else{
+            clone._frames = this._frames;
+        }
+        return clone;
+    }
+
     /*---------------------------Setters------------------------------*/
     set frames(newFrames){
         console.error("použij loadImg() degeši")
+        // ? not sure if I want to tolerate this ? //
+        this.loadImg(newFrames);
     }
     set animSlow(newAnimSlow){
         this._animSlow = newAnimSlow;

@@ -15,7 +15,7 @@ export class Sprite extends Rectangle{
         }
     }
     
-    
+    //* loads the image from the given path
     loadImg(spritePath) {
         this._sprite = new Image();
         this._sprite.src = spritePath;
@@ -27,6 +27,8 @@ export class Sprite extends Rectangle{
             }
         };
     }
+
+    //* renders the Sprite on the given context
     render(ctx , Rbox = null) {
         this._ctxCache = ctx;
         if(Rbox){super.render(ctx);}
@@ -35,7 +37,21 @@ export class Sprite extends Rectangle{
         }else{
             //console.log("Sprite " + this._id + " nebyl načten");
         } 
-    } 
+    }
+
+    //* creates a clone of the Sprite, Sprite image can be shared or reloaded 
+    clone(takesMoreSpace = false){
+        const clone = new Sprite(this._x, this._y, this._width, this._height);
+        clone._strokeWidth = this._strokeWidth; clone._color = this._color;
+        if (takesMoreSpace){
+            clone.loadImg(this._sprite.src);
+            return clone;
+        }else{
+            clone._sprite = this._sprite;
+            clone._isLoaded = this._isLoaded;
+            return clone;
+        }
+    }
 }
 
 /*-----------------------------Sprite-----------------------------------

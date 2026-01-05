@@ -94,7 +94,7 @@ const Train    = new SpriteDyna(0, 536, 3332, 332, [
     pathTolvl + "train-blueprint-1.png",
     pathTolvl + "train-blueprint-2.png",
 ]);
-Train._xSpeed = 0.35 * 2; 
+Train._xSpeed = 0.35 * 10; 
 
 //@-------------------------------RENDER-----------------------------------@//
 
@@ -206,9 +206,11 @@ const ctx = canvas.getContext('2d');
             const spike = new Rectangle(arrow._x , arrow._y , arrow._width , arrow._height);
             spike.color = "white";
             spike.render(ctx);
+            /*
             if (Ledvadva.players[0].doesColideWith(arrow) || Ledvadva.players[1].doesColideWith(arrow)) {
                 Ledvadva.shouldRestart = true;
             }
+            */
         });
 
         Backgrnd.render(ctx);

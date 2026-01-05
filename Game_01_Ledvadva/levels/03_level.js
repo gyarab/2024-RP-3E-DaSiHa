@@ -3,6 +3,7 @@
 import { Ledvadva } from "../../Game_01_Ledvadva/main.js";
 import { Solid, Platform } from "../../Monkey-Engine/PlatformerLib.js";
 import { Sprite }     from '../../Monkey-Engine/Sprite.js';
+import { SpriteStack } from "../../Monkey-Engine/SpriteStack.js";
 import { SpriteAnim } from "../../Monkey-Engine/SpriteAnim.js";
 import { Tetragon } from "../../Monkey-Engine/Tetragon.js";
 
@@ -49,13 +50,13 @@ import { Tetragon } from "../../Monkey-Engine/Tetragon.js";
         _7014, _7015,
     ]
 //@-------------------------------VISUALS-----------------------------------@//
-const pathTolvl = "../Game_01_Ledvadva/sprites/Lvl-03/";
+const pathTolvl   = "../Game_01_Ledvadva/sprites/Lvl-03/";
 const Backgrnd = new Sprite(68, 0, 1760, 1080, pathTolvl +"Background.png");
 const Fargrnd  = new Sprite(0, 0, 1920, 1080,"");
 const Midgrnd  = new Sprite(0, 0, 1920, 1080,"");
 const Forgrnd  = new Sprite(0, 0, 1920, 1080,"");
-//17*4, 24*4
-const barrel = new SpriteAnim(964, 964, 66 * 4, 28 * 4, [ 
+
+const barrel = new SpriteAnim(964, 964, 264, 112, [ 
     pathTolvl +  "spil/1.png", pathTolvl + "spil/2.png" ,
     pathTolvl +  "spil/3.png", pathTolvl + "spil/4.png" ,
     pathTolvl +  "spil/5.png", pathTolvl + "spil/6.png" ,
@@ -63,7 +64,100 @@ const barrel = new SpriteAnim(964, 964, 66 * 4, 28 * 4, [
     pathTolvl +  "spil/9.png", pathTolvl + "spil/10.png",
     pathTolvl + "spil/11.png", pathTolvl + "spil/12.png",
 ]);
-barrel._animSlow = 30;
+barrel._animSlow = 5;
+
+////---------//                    Train                   ////
+    const pathToTrain = "../Game_01_Ledvadva/sprites/Lvl-02/Train/";
+    const tSize = 6; 
+    const base  = new Sprite(0,0,223*tSize, 82*tSize, pathToTrain + "base.png");
+    const train = new SpriteStack();
+
+    ////---------//             wheelsAndPiston            ////
+    const wheels = new SpriteStack();
+    const wheelsAndPiston = new SpriteStack();
+
+    for (let i = 0; i < 4; i++) {
+        const w = new SpriteAnim(0, 0, 23*tSize, 23*tSize, [ 
+            pathToTrain +  "wheel/1.png", pathToTrain + "wheel/2.png" ,
+            pathToTrain +  "wheel/3.png", pathToTrain + "wheel/4.png" ,
+            pathToTrain +  "wheel/5.png",
+        ]);
+        w._animSlow = 20;
+        wheels.push(w);
+    }
+
+    const sw1  = new SpriteAnim(0, 0, 17*tSize, 17*tSize, [pathToTrain +  "wheelie/1.png", pathToTrain + "wheelie/2.png"]);
+    sw1._animSlow = 16 ;
+    const sw2 = sw1.clone(); const sw3 = sw1.clone(); const sw4 = sw1.clone();
+    sw1.moveTo(124*tSize, 11*tSize);    wheels.push(sw1);
+    sw2.moveTo(141*tSize, 11*tSize);    wheels.push(sw2);
+
+    wheels[0].moveTo(  0*tSize, 4*tSize); wheels[0]._currentFrame = 1;
+    wheels[1].moveTo( 33*tSize, 4*tSize); wheels[1]._currentFrame = 1;
+    wheels[2].moveTo( 60*tSize, 4*tSize); wheels[2]._currentFrame = 1;
+    wheels[3].moveTo( 91*tSize, 4*tSize); wheels[3]._currentFrame = 1;
+
+    const piston = new SpriteAnim( 0, 0, 138*tSize, 27*tSize,[
+        pathToTrain + "piston/1.png", pathToTrain + "piston/2.png", pathToTrain + "piston/3.png", pathToTrain + "piston/4.png",
+        pathToTrain + "piston/5.png", pathToTrain + "piston/6.png", pathToTrain + "piston/7.png", pathToTrain + "piston/8.png",
+    ]);
+    piston._animSlow = 32;
+
+    const fenders = new SpriteStack();
+    for (let i = 0; i < 2; i++) {const f = new Sprite(0,0, 21*tSize, 9*tSize, pathToTrain + "fender.png"); fenders.push(f);}
+    fenders[0].moveTo( 34*tSize,  1*tSize);
+    fenders[1].moveTo( 61*tSize,  1*tSize);
+
+
+    wheelsAndPiston.push(wheels, piston, fenders);
+    wheelsAndPiston.moveTo(42*tSize, 55*tSize);
+    train.push(base, wheelsAndPiston);
+
+    ////---------//                Cart                       ////
+    const cWheel = new SpriteStack();
+    const cWheels = new SpriteStack();  
+    const cart    = new SpriteStack();
+    const cTop    = new SpriteStack();
+    const cMiddle = new SpriteStack();
+    const cBottom = new SpriteStack();
+
+    const cRoof = new Sprite(0, 0, 126*tSize, 10*tSize, pathToTrain + "roof/s.png");
+    cTop.push(cRoof); cTop.moveTo(3*tSize, 0*tSize);
+
+    const cMidBase = new SpriteAnim(0, 0, 124*tSize, 46*tSize,[pathToTrain + "cart/t1.png"       , pathToTrain + "cart/t2.png"       ]);
+    const cDoor    = new SpriteAnim(0, 0,  30*tSize, 46*tSize,[pathToTrain + "cart/door/t1.png"  , pathToTrain + "cart/door/t2.png"  ]);
+    const cWin1    = new SpriteAnim(0, 0,  11*tSize,  7*tSize,[pathToTrain + "cart/window/t1.png", pathToTrain + "cart/window/t2.png"]);
+    const topRail  = new SpriteAnim(0, 0, 126*tSize,  5*tSize,[pathToTrain + "topRail/1.png"     , pathToTrain + "topRail/2.png"     ]);
+    const botRail  = new SpriteAnim(0, 0, 126*tSize,  7*tSize,[pathToTrain + "botRail/1.png"]);
+    const cInside  = new SpriteAnim(0, 0, 124*tSize, 46*tSize,[pathToTrain + "cart/1.png"   ]);
+    const cShadow  = new Sprite    (0, 0, 124*tSize, 46*tSize,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
+    const cBars    = new SpriteAnim(0, 0,  18*tSize, 15*tSize,[
+        pathToTrain + "cart/bars/1.png", pathToTrain + "cart/bars/2.png", 
+        pathToTrain + "cart/bars/3.png", pathToTrain + "cart/bars/4.png", 
+        pathToTrain + "cart/bars/5.png", pathToTrain + "cart/bars/6.png",
+    ]);
+
+    botRail.moveTo(0, 43*tSize); cDoor.moveTo(72*tSize, 1*tSize); cBars.moveTo( 78*tSize, 5*tSize);
+    const cWin2 = cWin1.clone(); cWin1.moveTo(57*tSize, 7*tSize); cWin2.moveTo(107*tSize, 7*tSize);
+    
+
+    cMiddle.push(cInside, cShadow, cMidBase, botRail, cDoor, cWin1, cWin2, cBars, topRail); 
+    cMiddle.moveTo(4*tSize, 10*tSize);
+    cMiddle.forEach(part => {part._animSlow = 8;});  
+    
+
+    const cg = new Sprite(17*tSize, 2*tSize,  28*tSize, 12*tSize, pathToTrain + "gear.png");
+    const cBotBase = new Sprite( 0,      0, 132*tSize,  9*tSize, pathToTrain + "undercarriage/s.png");
+    sw3.moveTo( 11*tSize, 3*tSize); sw4.moveTo( 33*tSize, 3*tSize); cWheel.push(sw3,sw4,cg);
+    cWheels.push(cWheel, cWheel.clone().moveTo(81*tSize, 2*tSize));
+    cBottom.push(cBotBase, cWheels); cBottom.moveTo(0,52*tSize);
+
+ 
+    
+
+ 
+    cart.push(cBottom, cMiddle, cTop, topRail);
+
 
 //@-------------------------------RENDER------------------------------------@//
 
@@ -72,33 +166,39 @@ const ctx = canvas.getContext('2d');
 ////---------//                  Restart                      ////
 export function restart_03(){ 
 
-        Ledvadva.players[0].moveTo(1920 / 2, 960);
-        Ledvadva.players[1].moveTo(1920 / 2, 960);
+        Ledvadva.players[0].moveTo(100, 960);
+        Ledvadva.players[1].moveTo(100, 960);
         Ledvadva.shouldRestart = false;
     }
 ////---------//                  LvlLoop                      ////
     export function _03_RENDER(){
         if (Ledvadva.shouldRestart){ restart_03();}
-        ctx.fillStyle = 'blue';
+        ctx.fillStyle = 'white';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        Backgrnd.render(ctx);
-        if (Ledvadva.Modes.infoMode){
-            hitboxes.forEach(hitbox => {hitbox.render(ctx);});
-            ///Ledvadva.infoBar.render(ctx);
-
-        }
+        ///Backgrnd.render(ctx);
+        /*
+            if (Ledvadva.Modes.infoMode){
+                hitboxes.forEach(hitbox => {hitbox.render(ctx);});
+                Ledvadva.infoBar.render(ctx);
+            }
         
+        /*
         barrel.render(ctx);
         barrel.updateImage();
 
-            Ledvadva.players[0].updatePos(hitboxes);
-            Ledvadva.players[0].updateImage();
-            Ledvadva.players[0].render(ctx, Ledvadva.Modes.infoMode);
-        
-            Ledvadva.players[1].updatePos(hitboxes);
-            Ledvadva.players[1].updateImage();
-            Ledvadva.players[1].render(ctx, Ledvadva.Modes.infoMode);
-
+        Ledvadva.players[0].updatePos(hitboxes);
+        Ledvadva.players[0].updateImage();
+        Ledvadva.players[0].render(ctx, Ledvadva.Modes.infoMode);
+    
+        Ledvadva.players[1].updatePos(hitboxes);
+        Ledvadva.players[1].updateImage();
+        Ledvadva.players[1].render(ctx, Ledvadva.Modes.infoMode);
+        */
+        cart.render(ctx, Ledvadva.Modes.infoMode);
+        cart.updateImage();
+        train.moveTo(50, 500);
+        train.render(ctx, Ledvadva.Modes.infoMode);
+        wheelsAndPiston.updateImage();
 
     }
