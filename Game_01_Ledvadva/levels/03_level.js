@@ -3,6 +3,7 @@
 import { Ledvadva } from "../../Game_01_Ledvadva/main.js";
 import { Solid, Platform } from "../../Monkey-Engine/PlatformerLib.js";
 import { Sprite }     from '../../Monkey-Engine/Sprite.js';
+import { SpriteDyna } from "../../Monkey-Engine/SpriteDyna.js";
 import { SpriteStack } from "../../Monkey-Engine/SpriteStack.js";
 import { SpriteAnim } from "../../Monkey-Engine/SpriteAnim.js";
 import { Tetragon } from "../../Monkey-Engine/Tetragon.js";
@@ -68,11 +69,14 @@ barrel._animSlow = 5;
 
 ////---------//                    Train                   ////
     const pathToTrain = "../Game_01_Ledvadva/sprites/Lvl-02/Train/";
-    const tSize = 6; 
+    const tSize = 4; 
     const base  = new Sprite(0,0,223*tSize, 82*tSize, pathToTrain + "base.png");
     const train = new SpriteStack();
 
     ////---------//             wheelsAndPiston            ////
+    const trainBlueprint = new SpriteDyna(0, 0, 833*tSize, 83*tSize, [
+        "../Game_01_Ledvadva/sprites/Lvl-02/train-blueprint-3.png"
+    ]);
     const wheels = new SpriteStack();
     const wheelsAndPiston = new SpriteStack();
 

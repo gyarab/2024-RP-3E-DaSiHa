@@ -12,10 +12,15 @@ export class Tetragon{
         Tetragon.IdCounter++;
     }
 
-    //* renders the Tetragon on the given context
+
     // !     rendering without fill ...  ! //
     // !    will distort actual size ..  ! //
     // !   by half of the strokeWidth    ! //
+    /** /// render() ///
+     ** renders the Tetragon on the given context 
+     * @param {CanvasRenderingContext2D} ctx - the context 
+     * @param {boolean} rBox - whether to render the bounding box
+     */
     render(ctx, fill) {
         ctx.beginPath();
         ctx.moveTo(this._points[0].x, this._points[0].y);
@@ -35,7 +40,12 @@ export class Tetragon{
         }
     }
 
-    //* moves the Tetragon to the new position
+    /** /// moveTo() ///
+     ** moves the Tetragon to the new position
+     * @param {number} x 
+     * @param {number} y 
+     * @returns itself for chaining
+     */
     moveTo(newX, newY) {
         let v1 = vectorBetween(this._points[0],this._points[1]) 
         let v2 = vectorBetween(this._points[0],this._points[2])
@@ -46,6 +56,7 @@ export class Tetragon{
             {x: newX + v2.x, y: newY + v2.y},
             {x: newX + v3.x, y: newY + v3.y}
         ]
+        return this;
     }
 
     //* controls if the Tetragon colides with other (Tetragon,...)
@@ -90,7 +101,8 @@ export class Tetragon{
     set points (newPoints){ this._points = newPoints;}
     set id     (newId    ){ this._id= newId;}   
 }
-///                colidesAnyPoints               ///
+
+///                 colidesAnyPoints                ///
 /**
  ** calculates if two Tetragons share any point
  * @param   {Tetragon} {tetragon1}{tetragon2} 
@@ -105,6 +117,7 @@ export function colidesAnyPoints(tetragon1, tetragon2){
     }
     return false;
 }
+
 ///                 pointInPolygon                 ///
 /**
  ** calculates if the point is part of the polygon
@@ -123,6 +136,9 @@ export function pointInPolygon(point, polygon) {
     }
     return inside;
 }
+
+
+
 
 /*//*---------------Tetragon-EXAMPLE-------------------
 const canvas = document.getElementById('herniRozhraní');

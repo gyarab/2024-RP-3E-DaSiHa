@@ -1,7 +1,12 @@
 // Autor: Bendl Šimon
-import {Rectangle} from './Rectangle.js'; 
+import {Rectangle} from './Rectangle.js';
+
 export class Sprite extends Rectangle{
-    constructor(x = 0, y = 0, width, height, spritePath = "../Monkey-Engine/texture.png") {
+    constructor(
+        x = 0,  y = 0, 
+        width, height,
+        spritePath = "../Monkey-Engine/texture.png"
+    ) {
         super  (x, y, width, height,null);
         this._sprite   = null;
 

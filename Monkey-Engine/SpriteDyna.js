@@ -31,6 +31,7 @@ export class SpriteDyna extends SpriteAnim{
             this.y = this._y + this._ySpeed;
         }
     }
+    //* 
     updateAll(){
         this.updateImage();
         this.updatePos();
@@ -48,6 +49,12 @@ export class SpriteDyna extends SpriteAnim{
     }
     set isGoDown(newIsGoDown) {
         this._isGoDown = newIsGoDown;
+    }
+    set ySpeed(newYSpeed) {
+        this._ySpeed = newYSpeed;
+    }
+    set xSpeed(newXSpeed) {
+        this._xSpeed = newXSpeed;
     }
 }
 /*//*----------------SpriteDyna EXAMPLE----------------
