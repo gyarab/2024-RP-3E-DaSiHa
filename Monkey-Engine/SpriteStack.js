@@ -1,7 +1,9 @@
-// Autor: Bendl Šimon
+// @Autor: Bendl Šimon
+import { _defaultValues } from "./_defaultValues.js";
 import { vectorBetween } from "./LineSection.js";
-import { SpriteAnim } from "./SpriteAnim.js";
-import { SpriteDyna } from "./SpriteDyna.js";
+import { renderPoint } from "./Point.js";
+import { SpriteAnim }    from "./SpriteAnim.js";
+import { SpriteDyna }    from "./SpriteDyna.js";
 
 export class SpriteStack extends Array {
     constructor() {
@@ -16,25 +18,33 @@ export class SpriteStack extends Array {
      ** renders the SpriteStack on the given context 
      * @param {CanvasRenderingContext2D} ctx - the context 
      * @param {boolean} rBox - whether to render the bounding box
+     * @returns {SpriteStack} itself for chaining
      */
     render(ctx, rBox) {
         this.forEach(sprite => {
-            sprite.render(ctx, rBox);
+            sprite.render(ctx);
         });
         if (rBox) {
-
+            // draw bounding box 
             ctx.strokeStyle = "rgba(0, 0, 0, 0.5)";
             ctx.setLineDash([10, 5]);
             ctx.strokeRect(this._farLeft, this._farTop, this._farRight - this._farLeft, this._farBottom - this._farTop);
             ctx.setLineDash([]);
+            // draw all sprites' bounding boxes 
+            this.forEach(sprite => {
+                sprite.rBox(ctx, false);
+            });
+            // draw anchor point
+            renderPoint(this._farLeft, this._farTop, _defaultValues.s_color, ctx);
         } 
+        return this;
     }
 
     /** /// moveTo() ///
      ** moves the whole SpriteStack to the new position
      * @param {number} x 
      * @param {number} y 
-     * @returns itself for chaining
+     * @returns {SpriteStack} itself for chaining
      */
     moveTo(x, y) {
         let v = vectorBetween({x: this._farLeft, y: this._farTop}, {x: x, y: y});
@@ -49,7 +59,7 @@ export class SpriteStack extends Array {
 
     /** /// updateImage() ///
      ** updates the images of all SpriteAnims in the SpriteStack
-     ** @returns itself for chaining
+     ** @returns {SpriteStack} itself for chaining
      */
     updateImage() {
         this.forEach(sprite => {
@@ -60,7 +70,7 @@ export class SpriteStack extends Array {
 
     /** /// updatePos() ///
      ** updates the positions of all SpriteDynas in the SpriteStack
-     ** @returns itself for chaining
+     ** @returns {SpriteStack} itself for chaining
      */
     updatePos() {
         this.forEach(sprite => {
@@ -71,7 +81,7 @@ export class SpriteStack extends Array {
 
     /** /// recalculateSize() ///
      ** recalculates the farthest points of the SpriteStack
-     * @returns itself for chaining
+     * @returns {SpriteStack} itself for chaining
      */
     recalculateSize() {
         let farTop    = Infinity;
@@ -96,8 +106,8 @@ export class SpriteStack extends Array {
 
     /** /// clone() ///
      ** clones the SpriteStack 
-     * @param {*} takesMoreSpace 
-     * @returns {SpriteStack} a clone of the SpriteStack
+     * @param {boolean} takesMoreSpace - whether to clone Sprites with separate images
+     * @returns {SpriteStack} - cloned SpriteStack
      */
     clone(takesMoreSpace = false){
         if (this.length === 0) return new SpriteStack();
@@ -112,7 +122,7 @@ export class SpriteStack extends Array {
     /** /// push() ///
      ** pushes items to the SpriteStack and flattens any arrays
      * @param  {...any} items 
-     * @returns itself for chaining
+     * @returns {SpriteStack} itself for chaining
      */
     push(...items) {
         for (let item of items) {          
@@ -126,13 +136,13 @@ export class SpriteStack extends Array {
         return this;
     }
 
-    /*--------------------------Setters-------------------------------*/
+    /*--------------------------Setters--------------------------*/
     _applyTo(type, fn) {
     this.forEach(obj => {
         if (obj instanceof type) fn(obj);
     });
 }
-    /* non exclusive properties*/
+    /* non exclusive properties */
     set x(newX) {
         console.warn("Sure you want to set x for the whole SpriteStack?");            
         this.forEach(obj => {
@@ -148,18 +158,18 @@ export class SpriteStack extends Array {
     set color(newColor) {
         this._applyTo(Sprite, s => s.color = newColor);
     }
-    /*  Rectangle properties*/ //? will have to be expanded if needed ?//
+    /* Rectangle properties */ //? will have to be expanded if needed ?//
     set height(newHeight) {
         this._applyTo(Rectangle, s => s.height = newHeight);
     }
     set width(newWidth) {
         this._applyTo(Rectangle, s => s.width = newWidth);
     }
-    /* SpriteAnim properties*/
+    /* SpriteAnim properties */
     set animSlow(newAnimSlow) {
         this._applyTo(SpriteAnim, s => s._animSlow = newAnimSlow);
     }
-    /*  SpriteDyna properties*/
+    /* SpriteDyna properties */
     set isGoRight(newIsGoRight) {
         this._applyTo(SpriteDyna, s => s.isGoRight = newIsGoRight);
     }

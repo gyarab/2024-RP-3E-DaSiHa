@@ -1,18 +1,19 @@
-// Autor: Bendl Šimon
+// @Autor: Bendl Šimon
+import { _defaultValues } from './_defaultValues.js';
+import { renderPoint } from './Point.js';
 import {Rectangle} from './Rectangle.js';
 
 export class Sprite extends Rectangle{
     constructor(
-        x = 0,  y = 0, 
-        width, height,
-        spritePath = "../Monkey-Engine/texture.png"
+        x = 0,  y = 0, width, height,
+        spritePath = _defaultValues.s_spritePath
     ) {
         super  (x, y, width, height,null);
         this._sprite   = null;
 
         this._ctxCache = null; 
         this._isLoaded = false;
-        this._color    = 'magenta';
+        this._color = _defaultValues.s_color;
 
         
         if (spritePath){
@@ -20,7 +21,11 @@ export class Sprite extends Rectangle{
         }
     }
     
-    //* loads the image from the given path
+    /** /// loadImg() ///
+     ** loads the image from the given path 
+     * @param {string} spritePath - path to the image
+     * @returns {Sprite} itself for chaining
+     */
     loadImg(spritePath) {
         this._sprite = new Image();
         this._sprite.src = spritePath;
@@ -31,20 +36,43 @@ export class Sprite extends Rectangle{
                 this.render(this._ctxCache);
             }
         };
+        return this;
     }
 
-    //* renders the Sprite on the given context
-    render(ctx , Rbox = null) {
+    /** /// render() ///
+     ** renders the Sprite on the given context 
+     * @param {CanvasRenderingContext2D} ctx - the context 
+     * @param {boolean} rBox - whether to render the bounding box
+     * @returns {Sprite} itself for chaining
+     */
+    render(ctx , rBox = null) {
         this._ctxCache = ctx;
-        if(Rbox){super.render(ctx);}
+        if(rBox) this.rBox(ctx, true);
         if(this._isLoaded){
             ctx.drawImage(this._sprite, this._x, this._y, this._width, this._height);
         }else{
             //console.log("Sprite " + this._id + " nebyl načten");
         } 
+        return this;
     }
 
-    //* creates a clone of the Sprite, Sprite image can be shared or reloaded 
+    /** /// rBox() ///
+     ** renders the bounding box of the Sprite
+     * @param {CanvasRenderingContext2D} ctx - the context
+     * @param {boolean} rPoint - whether to render the anchor point
+     * @returns {Sprite} itself for chaining
+     */
+    rBox(ctx, rPoint = _defaultValues.s_renderPointAsWell){
+        super.render(ctx);
+        if (rPoint) renderPoint(this, ctx);
+        return this;
+    }
+
+    /** /// clone() ///
+     ** clone the Sprite, Sprite image can be shared or reloaded
+     * @param {boolean} takesMoreSpace - whether to clone will share or reload image
+     * @returns {Sprite} cloned Sprite
+     */
     clone(takesMoreSpace = false){
         const clone = new Sprite(this._x, this._y, this._width, this._height);
         clone._strokeWidth = this._strokeWidth; clone._color = this._color;
@@ -59,7 +87,8 @@ export class Sprite extends Rectangle{
     }
 }
 
-/*-----------------------------Sprite-----------------------------------
+
+/*------------------------Sprite-EXAMPLE---------------------------
 
 import { colides } from './Tetragon.js';
 const canvas = document.getElementById('herniRozhraní');

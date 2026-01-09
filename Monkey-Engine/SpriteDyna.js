@@ -1,22 +1,30 @@
-// Autor: Bendl Šimon
+// @Autor: Bendl Šimon
 import { SpriteAnim } from './SpriteAnim.js';
+
 export class SpriteDyna extends SpriteAnim{
     constructor(x, y, width, height, spritePath = []){
         super  (x, y, width, height, spritePath); 
 
-        //probíhající akce
+        //movement flags
         this._isGoLeft   = false;
         this._isGoRight  = false;
         this._isGoUp     = false;
         this._isGoDown   = false;
         this._isBothWay  = false;
-        //rychlosti 
+        //speeds 
         this._ySpeed  = 2;
         this._xSpeed  = 2;
-
+        //counters (used in objects with more animations for different actions)
+        //? maybe best to move to those more complex objects ?//
         this._timeOfAction = 0;
         this._counterAnim  = 0;
     }
+
+    /** /// updatePos() ///
+     ** updates the positions of SpriteDyna
+     ** based on their movement flags and speeds
+     ** @returns {SpriteDyna} itself for chaining
+     */
     updatePos(){
         if (this._isGoRight && !this._isGoLeft) {
             this.x = this._x + this._xSpeed;
@@ -30,12 +38,20 @@ export class SpriteDyna extends SpriteAnim{
         if (this._isGoDown && !this._isGoUp) {
             this.y = this._y + this._ySpeed;
         }
+        return this;
     }
-    //* 
+
+    /** /// updateAll() ///
+    ** updates both images and positions of SpriteDyna
+    *? not well kept up ?
+    ** @returns {SpriteDyna} itself for chaining
+    */
     updateAll(){
         this.updateImage();
         this.updatePos();
+        return this;
     }
+
     /*--------------------------Setters-------------------------------*/ 
 
     set isGoRight(newIsGoRight) {
@@ -57,7 +73,9 @@ export class SpriteDyna extends SpriteAnim{
         this._xSpeed = newXSpeed;
     }
 }
-/*//*----------------SpriteDyna EXAMPLE----------------
+
+
+/*----------------SpriteDyna EXAMPLE----------------
 import { Tetragon } from './Tetragon.js';
 
 const canvas = document.getElementById('herniRozhraní');

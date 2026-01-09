@@ -1,25 +1,25 @@
 // @Autor: Bendl Šimon
+import { _defaultValues } from './_defaultValues.js';
 import {intersectionOfLineSegments, vectorBetween} from './LineSection.js';
 
-////                   Tetragon                  ////
 export class Tetragon{
     static IdCounter = 0;
-    constructor(p1, p2, p3, p4, color = 'magenta'){
+    constructor(p1, p2, p3, p4, color = _defaultValues.bS_color){
         this._points = [p1, p2, p3, p4];
         this._color  = color;
-        this._strokeWidth = 10;
+        this._strokeWidth = _defaultValues.bS_strokeWidth;
         this._id =  Tetragon.IdCounter.toString().padStart(4, '0');
         Tetragon.IdCounter++;
     }
 
-
-    // !     rendering without fill ...  ! //
-    // !    will distort actual size ..  ! //
-    // !   by half of the strokeWidth    ! //
     /** /// render() ///
      ** renders the Tetragon on the given context 
+     *?     rendering without fill ...  ?
+     *?    will distort actual size ..  ?
+     *?   by half of the strokeWidth    ?
      * @param {CanvasRenderingContext2D} ctx - the context 
-     * @param {boolean} rBox - whether to render the bounding box
+     * @param {boolean} fill - whether to fill the Tetragon
+     * @returns {Tetragon} itself for chaining
      */
     render(ctx, fill) {
         ctx.beginPath();
@@ -38,13 +38,14 @@ export class Tetragon{
             ctx.lineWidth = this._strokeWidth;
             ctx.stroke();
         }
+        return this;
     }
 
     /** /// moveTo() ///
      ** moves the Tetragon to the new position
      * @param {number} x 
      * @param {number} y 
-     * @returns itself for chaining
+     * @returns {Tetragon} itself for chaining
      */
     moveTo(newX, newY) {
         let v1 = vectorBetween(this._points[0],this._points[1]) 
@@ -59,7 +60,12 @@ export class Tetragon{
         return this;
     }
 
-    //* controls if the Tetragon colides with other (Tetragon,...)
+    /** /// doesColideWith() ///
+     ** checks if the Tetragon colides with other (Tetragon,...) 
+     * TODO: other shapes
+     * @param {Tetragon, ...} other - the other shape
+     * @returns {boolean} true if they colide
+     */
     doesColideWith(other) {
         //other = Tetragon
         if (other instanceof Tetragon) {
@@ -87,8 +93,11 @@ export class Tetragon{
         return false;
     }
 
-    //* creates a clone of the Tetragon 
-    // ! color might not be cloned properly ! //
+    /** /// clone() ///
+     ** creates a clone of the Tetragon 
+     *? color might not be cloned properly ?
+     * @returns {Tetragon} cloned Tetragon
+     */
     clone(){
         const points = this._points.map(p => ({ ...p }));
         const clone = new Tetragon(...points, this._color); 
@@ -123,7 +132,7 @@ export function colidesAnyPoints(tetragon1, tetragon2){
  ** calculates if the point is part of the polygon
  * @param  {{x: number, y: number}} point 
  * @param  {Polygon} polygon 
- * @returns 
+ * @returns {boolean} true if the point is in the polygon
  */
 export function pointInPolygon(point, polygon) {
     let x = point.x, y = point.y;
@@ -138,9 +147,7 @@ export function pointInPolygon(point, polygon) {
 }
 
 
-
-
-/*//*---------------Tetragon-EXAMPLE-------------------
+/*---------------Tetragon-EXAMPLE-------------------
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 const t1 = new Tetragon(

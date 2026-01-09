@@ -1,12 +1,14 @@
-// Autor: Bendl Šimon
+// @Autor: Bendl Šimon
+import { _defaultValues } from './_defaultValues.js';
 import { Sprite } from './Sprite.js';
+
 export class SpriteAnim extends Sprite{
-    constructor(x, y, width, height,spritePaths = []){
-        super  (x, y, width, height,null); 
+    constructor(x, y, width, height, spritePaths = []){
+        super  (x, y, width, height, null); 
         
         this._frames = [];
         this._animTick = 0;
-        this._animSlow = 100;
+        this._animSlow = _defaultValues.sA_animSlow;
         this._currentFrame = 0;
         
         // ? not sure if I want it here (maybe push to Sprite) ? //
@@ -19,25 +21,39 @@ export class SpriteAnim extends Sprite{
         }
     }
 
-    //* loads the images from the given paths
+    /** /// loadImg() ///
+     ** loads the images from the given paths
+     * @param {string[]} spritePaths 
+     * @returns {SpriteAnim} itself for chaining
+     */
     loadImg(spritePaths) {
         spritePaths.forEach(path => {
             const img = new Image();
             img.src = path;
             this._frames.push(img);
         });
+        return this;
     }
 
-    //* updates the current frame based on the animation speed
+    /** /// updateImage() ///
+     ** updates the current frame based on the animation speed  
+     * @returns {SpriteAnim} itself for chaining
+     */
     updateImage(){
         this._animTick += 1;
         if (this._animTick > this._animSlow){
             this._currentFrame = (this._currentFrame + 1) % this._frames.length;
             this._animTick = 0;
         }
+        return this;
     }
 
-    //* renders the current frame on the given context
+    /** /// render() ///
+     ** renders the SpriteAnim on the given context 
+     * @param {CanvasRenderingContext2D} ctx - the context 
+     * @param {boolean} rBox - whether to render the bounding box
+     * @returns {SpriteAnim} itself for chaining
+     */
     render(ctx,Rbox) {
         if (this._frames.length > 0){
                 const img = this._frames[this._currentFrame];
@@ -72,12 +88,15 @@ export class SpriteAnim extends Sprite{
                     ctx.strokeStyle = this._color;
                     ctx.strokeRect(this._x + ofset, this._y + ofset, this._width - ctx.lineWidth, this._height - ctx.lineWidth);
                 }
-        }else{
-            super.render(ctx);
-        }
+        } else { super.render(ctx); }
+        return this;
     }
 
-    //* creates a clone of the SpriteAnim, Sprite images can be shared or reloaded 
+    /** /// clone() ///
+     ** clones the SpriteAnim, Sprite images can be shared or reloaded 
+     * @param {boolean} takesMoreSpace - whether to clone will share or reload images
+     * @returns {SpriteAnim} cloned SpriteAnim
+     */
     clone(takesMoreSpace = false) {
         const clone = new SpriteAnim(this._x, this._y, this._width, this._height);
         clone._animSlow = this._animSlow;
@@ -94,7 +113,7 @@ export class SpriteAnim extends Sprite{
         return clone;
     }
 
-    /*---------------------------Setters------------------------------*/
+    /*--------------------------Setters--------------------------*/
     set frames(newFrames){
         console.error("použij loadImg() degeši")
         // ? not sure if I want to tolerate this ? //
@@ -116,7 +135,9 @@ export class SpriteAnim extends Sprite{
         this._height = newHeight;
     }
 }
-/*---------------------------SpriteAnim-------------------------------
+
+
+/*------------------------SpriteAnim-EXAMPLE---------------------
 import { Tetragon, colides } from '../Monkey-Engine/Tetragon.js';
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
