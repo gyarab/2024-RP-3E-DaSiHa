@@ -1,15 +1,12 @@
 // @Autor: Bendl Šimon
 import { _defaultValues } from './_defaultValues.js';
 import {intersectionOfLineSegments, vectorBetween} from './LineSection.js';
+import { Point } from './Point.js';
 
-export class Tetragon{
-    static IdCounter = 0;
+export class Tetragon extends Point{
     constructor(p1, p2, p3, p4, color = _defaultValues.bS_color){
+        super(p1.x, p1.y, color);
         this._points = [p1, p2, p3, p4];
-        this._color  = color;
-        this._strokeWidth = _defaultValues.bS_strokeWidth;
-        this._id =  Tetragon.IdCounter.toString().padStart(4, '0');
-        Tetragon.IdCounter++;
     }
 
     /** /// render() ///
@@ -21,6 +18,64 @@ export class Tetragon{
      * @param {boolean} fill - whether to fill the Tetragon
      * @returns {Tetragon} itself for chaining
      */
+    /** /// render() ///
+     ** renders the Tetragon on the given context
+    * @param {CanvasRenderingContext2D} ctx - the context 
+    * @param {boolean} fill - whether to fill the Tetragon
+    * @returns {Tetragon} itself for chaining
+    */
+    render(ctx, fill) {
+        ctx.beginPath();
+
+        if (!fill) {
+            // Use points directly if filling
+            ctx.moveTo(this._points[0].x, this._points[0].y);
+            for (let i = 1; i < this._points.length; i++) {
+                ctx.lineTo(this._points[i].x, this._points[i].y);
+            }
+        } else {
+            offset = this._strokeWidth / 2;
+            // Offset each point inward along edges
+            // Simple approximation: shrink polygon toward centroid
+            const centroid = this._points.reduce((c, p) => {
+                return { x: c.x + p.x / this._points.length, y: c.y + p.y / this._points.length };
+            }, { x: 0, y: 0 });
+
+            ctx.moveTo(
+                this._points[0].x + (centroid.x - this._points[0].x) * offset / this._approxMaxDist(),
+                this._points[0].y + (centroid.y - this._points[0].y) * offset / this._approxMaxDist()
+            );
+
+            for (let i = 1; i < this._points.length; i++) {
+                ctx.lineTo(
+                    this._points[i].x + (centroid.x - this._points[i].x) * offset / this._approxMaxDist(),
+                    this._points[i].y + (centroid.y - this._points[i].y) * offset / this._approxMaxDist()
+                );
+            }
+        }
+
+        ctx.closePath();
+
+        if (fill) {
+            ctx.fillStyle = this._color;
+            ctx.fill();
+        } else {
+            ctx.strokeStyle = this._color;
+            ctx.lineWidth = this._strokeWidth;
+            ctx.stroke();
+        }
+
+        return this;
+    }
+
+    /** Helper to estimate maximum distance from centroid to a vertex */
+    _approxMaxDist() {
+        const centroid = this._points.reduce((c, p) => {
+            return { x: c.x + p.x / this._points.length, y: c.y + p.y / this._points.length };
+        }, { x: 0, y: 0 });
+
+        return Math.max(...this._points.map(p => Math.hypot(p.x - centroid.x, p.y - centroid.y)));
+    }
     render(ctx, fill) {
         ctx.beginPath();
         ctx.moveTo(this._points[0].x, this._points[0].y);
@@ -57,6 +112,24 @@ export class Tetragon{
             {x: newX + v2.x, y: newY + v2.y},
             {x: newX + v3.x, y: newY + v3.y}
         ]
+        return this;
+    }
+
+    /** /// rotateAround() ///
+     * rotates the Tetragon by the given angle in degrees
+     * @param {number} angleInDegrees - angle in degrees
+     * @returns {Tetragon} itself for chaining 
+     */
+    rotateAround(angleInDegrees, pivotX, pivotY){
+        return this;
+    }
+
+    /** /// rotateBy() ///
+     * rotates the Tetragon by the given angle in degrees
+     * @param {number} angleInDegrees - angle in degrees
+     * @returns {Tetragon} itself for chaining 
+     */
+    rotateBy(angleInDegrees){
         return this;
     }
 
@@ -106,9 +179,7 @@ export class Tetragon{
     }
 
     //*------------------Setters--------------------*//
-    set color  (newColor ){ this._color  = newColor; }
     set points (newPoints){ this._points = newPoints;}
-    set id     (newId    ){ this._id= newId;}   
 }
 
 ///                 colidesAnyPoints                ///

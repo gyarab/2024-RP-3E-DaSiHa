@@ -5,7 +5,7 @@ export class Point{
     static IdCounter = 0;
     constructor(x, y, color = _defaultValues.bS_color){
         this._strokeWidth = _defaultValues.bS_strokeWidth;
-        this.x = x; this.y = y;
+        this._x = x; this._y = y;
         this._color = color;
 
         this._id =  Point.IdCounter.toString().padStart(4, '0');
@@ -21,21 +21,26 @@ export class Point{
         renderPoint(this, ctx);
         return this;
     }
+    //*------------------Setters--------------------*//
+    set x( newX ){ this._x = newX; }
+    set y( newY ){ this._y = newY; }
+    set id(newId){ this._id= newId;} 
+    set color(newColor){ this._color = newColor; }
 }   
 
 /** /// renderPoint() ///
  ** renders a point as a cross on the given context
  *
  ** rendering existing Point object
- * @param {Point} arg1 - Point object
- * @param {CanvasRenderingContext2D} arg2 - context
+   * @param {Point} arg1 - Point object
+   * @param {CanvasRenderingContext2D} arg2 - context
  * 
  ** rendering imaginary Point
- * @param {number} arg1 - x coordinate
- * @param {number} arg2 - y coordinate
- * @param {number} arg3 - color for the point
- * @param {CanvasRenderingContext2D} arg4 - context
- */
+   * @param {number} arg1 - x coordinate
+   * @param {number} arg2 - y coordinate
+   * @param {number} arg3 - color for the point
+   * @param {CanvasRenderingContext2D} arg4 - context
+   */
 export function renderPoint(arg1, arg2, arg3, arg4) {
     let x, y, color, ctx, d;
     const defWidth = _defaultValues.bS_strokeWidth;

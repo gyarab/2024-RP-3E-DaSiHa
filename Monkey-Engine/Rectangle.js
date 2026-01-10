@@ -3,16 +3,14 @@ import { _defaultValues } from './_defaultValues.js';
 import {Tetragon} from './Tetragon.js';
 
 export class Rectangle extends Tetragon{
-    constructor(x, y, width, height,color = _defaultValues.bS_color){
+    constructor(x, y, width, height, color = _defaultValues.bS_color){
         super(
-            {x: x , y: y},              //p1
-            {x: x + width, y: y},          //p2
-            {x: x + width, y: y + height},    //p3
-            {x: x, y: y + height},               //p4 
+            {x: x        , y: y         }, //p1
+            {x: x + width, y: y         }, //p2
+            {x: x + width, y: y + height}, //p3
+            {x: x        , y: y + height}, //p4 
             color  //color for fill or stroke style
         );
-        this._x = x;
-        this._y = y;
         this._width = width;
         this._height = height;
     }
