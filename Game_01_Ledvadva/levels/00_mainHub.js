@@ -170,7 +170,8 @@ const hasZ_Axis = [candle, book];
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 ////---------//                  Restart                      ////
-    export function restart_00(){ 
+    export function RESTART_00(){ 
+        ctx.reset();
         Ledvadva.shouldRestart = false;
         Ledvadva.currentlvl = 0;
 
@@ -191,8 +192,8 @@ const ctx = canvas.getContext('2d');
 
     }
 ////---------//                  HubLoop                      ////
-export function _00_RENDER(){
-    if (Ledvadva.shouldRestart){ restart_00();}
+export function RENDER_00(){
+    if (Ledvadva.shouldRestart){ RESTART_00();}
 
     Backgrnd.render(ctx,true);
     Fargrnd.render(ctx);
@@ -207,11 +208,11 @@ export function _00_RENDER(){
 
     Ledvadva.players[0].updatePos(Hitboxes);
     Ledvadva.players[0].updateImage();
-    Ledvadva.players[0].render(ctx, Ledvadva.Modes.infoMode);
+    Ledvadva.players[0].render(ctx, Ledvadva.modes.infoMode);
 
     Ledvadva.players[1].updatePos(Hitboxes);
     Ledvadva.players[1].updateImage();
-    Ledvadva.players[1].render(ctx, Ledvadva.Modes.infoMode);
+    Ledvadva.players[1].render(ctx, Ledvadva.modes.infoMode);
 
     ChangingRoom.updateImage(Ledvadva.players[0]._wantInteract, 
         select_skin._isInteractableWith[Ledvadva.players[0]._id]
@@ -241,7 +242,7 @@ export function _00_RENDER(){
             msg.moveTo(select_skin, 2.5); msg.render(ctx);
         }
     }
-    if(Ledvadva.Modes.infoMode){
+    if(Ledvadva.modes.infoMode){
         Hitboxes.forEach(hitbox => hitbox.render(ctx));
         Ledvadva.infoBar.render(ctx);
     }

@@ -101,7 +101,7 @@ Train._xSpeed = 0.35 * 10;
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 ////---------//                  Restart                      ////
-    export function restart_02(){ 
+    export function RESTART_02(){ 
         Train._x = -3332; Train.y = 536;
         Train._isGoRight = true;
         relWawe = 1; absWawe = 1; activ = 0; 
@@ -199,18 +199,18 @@ const ctx = canvas.getContext('2d');
         arrowsRenderAndColisons(lastOne);
     }
 ////---------//                  LvlLoop                      ////
-    export function _02_RENDER(){
-        if (Ledvadva.shouldRestart){ restart_02();}
+    export function RENDER_02(){
+        if (Ledvadva.shouldRestart){ RESTART_02();}
 
         arrows.forEach(arrow => {
             const spike = new Rectangle(arrow._x , arrow._y , arrow._width , arrow._height);
             spike.color = "white";
             spike.render(ctx);
-            /*
+            //*
             if (Ledvadva.players[0].doesColideWith(arrow) || Ledvadva.players[1].doesColideWith(arrow)) {
                 Ledvadva.shouldRestart = true;
             }
-            */
+            /**/
         });
 
         Backgrnd.render(ctx);
