@@ -5,6 +5,7 @@ import { _defaultValues } from "./_defaultValues.js";
 export class Circle extends Point {
     constructor(x, y, radius, color= _defaultValues.bS_color){
         super(x, y, color);
+
         this._radius = radius;
     }
 
@@ -22,6 +23,70 @@ export class Circle extends Point {
     //*------------------Setters--------------------*//
     set radius(newRadius){ this._radius = newRadius; }
 }
+
+export class Iris extends Circle{
+    constructor(x, y, radius){
+        super(x, y, radius);
+        this._color = _defaultValues.i_color;
+        // dangerous to change so treat accordingly !!!
+        this._MAX_RADIUS = Math.hypot(1920, 1080);
+        this._MIN_RADIUS = 0;
+        // zoomDir = -1 for zooming out
+        //   -//-  =  1 for zooming in
+        this._zoomDir = 0;
+        this._isZoomin = false
+        this._zoomSpeed = _defaultValues.i_zoomSpeed;
+        //iris can be locked on the obj for auto position update
+        this._lockedOn = null
+    }
+
+    /** /// render() ///
+     * renders the iris effect on the given context
+     * ! should be called first in the render loop !
+     * @param {CanvasRenderingContext2D} ctx - the context
+     * @returns {Iris} itself for chaining
+     */
+    render(ctx){
+        ctx.fillStyle = this._color;
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        ctx.beginPath();
+        ctx.arc(this._x, this._y, this._radius, 0, Math.PI * 2);
+        ctx.clip();
+
+        return this;
+    }
+
+    /** /// updatePos() ///
+     * updates the position and focus of iris based on flags and speeds
+     */
+    updatePos(){
+        this._lockedOn && this.moveTo(this._lockedOn._x, this._lockedOn._y);        
+        if (this._isZoomin && this._zoomDir ===  1 && this._radius < this._MAX_RADIUS){
+            this._radius += this._zoomSpeed;
+        }
+        if(!this._isZoomin && this._zoomDir === -1 && this._radius > this._MIN_RADIUS){
+            this._radius -= this._zoomSpeed;
+        }
+    }
+
+    //*------------------Setters--------------------*//
+    set isZoomin (value){
+        this._isZoomin = value;
+    }
+     set zoomDir (value){
+        this._zoomDir = value;
+        if (     value ===  0){ this._isZoomin = false; this._zoomDir = 0;}
+        else if (value ===  1){ this._isZoomin =  true; this._zoomDir = 1;}
+        else if (value === -1){ this._isZoomin =  true; this._zoomDir =-1;}
+    }
+    set zoomSpeed (value){
+        this._zoomSpeed = value;
+    }
+    set lockedOn (value){
+        this._lockedOn = value;
+    }
+}
+
 ///                 renderCircle                 ///
 /**
  ** renders a circle on the given context
@@ -38,7 +103,7 @@ export class Circle extends Point {
     * @param {string} arg4 - color of line/fill
     * @param {CanvasRenderingContext2D} arg5 - context
     * @param {boolean} arg6 - whether to fill in the circle
-    */
+*****/
 export function renderCircle(arg1, arg2, arg3, arg4, arg5, arg6){
     let x, y, radius, color, ctx, fill;
     const defWidth = _defaultValues.bS_strokeWidth;
@@ -72,7 +137,7 @@ export function renderCircle(arg1, arg2, arg3, arg4, arg5, arg6){
     } else {
         ctx.strokeStyle = color;
         ctx.stroke();
-    }   
+    }
 }
 
 /*-----------------Circle-EXAMPLE-------------------
@@ -87,6 +152,4 @@ circle1.render(ctx, false);
 
 const circle2 = new Circle(300, 100, 75, 'blue');
 circle2.render(ctx, false);
-
-
 /*---*/

@@ -3,6 +3,7 @@ import { _defaultValues } from './_defaultValues.js';
 import { renderPoint } from './Point.js';
 import {Rectangle} from './Rectangle.js';
 
+
 export class Sprite extends Rectangle{
     constructor(
         x = 0,  y = 0, width, height,
@@ -14,6 +15,9 @@ export class Sprite extends Rectangle{
         this._ctxCache = null; 
         this._isLoaded = false;
         this._color = _defaultValues.s_color;
+
+        this._blur = null;
+        this._rFilter = null;
 
         
         if (spritePath){
@@ -49,9 +53,14 @@ export class Sprite extends Rectangle{
         this._ctxCache = ctx;
         if(rBox) this.rBox(ctx, true);
         if(this._isLoaded){
+            ctx.save();
+            if (this._blur    !== null) ctx.filter = `blur(${this._blur}px)`;
+            if (this._rFilter !== null) ctx.filter = this._rFilter;
             ctx.drawImage(this._sprite, this._x, this._y, this._width, this._height);
+            ctx.restore();
+            ctx.filter = 'none';
         }else{
-            //console.log("Sprite " + this._id + " nebyl načten");
+            console.warn("Sprite " + this._id + " was not able to load");
         } 
         return this;
     }

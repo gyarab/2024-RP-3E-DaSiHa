@@ -21,6 +21,19 @@ export class Point{
         renderPoint(this, ctx);
         return this;
     }
+
+    //TODO: ADD MOVING CIRCLE BY "CORNER" 
+    /** /// moveTo() ///
+     ** moves the Circle to the new position
+     * @param {number} x 
+     * @param {number} y 
+     * @returns {Tetragon} itself for chaining
+     */
+    moveTo(x, y){
+        this.x = x;
+        this.y = y;
+        return this;
+    }
     //*------------------Setters--------------------*//
     set x( newX ){ this._x = newX; }
     set y( newY ){ this._y = newY; }
