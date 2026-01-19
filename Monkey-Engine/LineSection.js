@@ -51,7 +51,7 @@ export function vectorBetween(A,B){
 /**
  ** calculates the intersection point of two lines <-> AB  and <-> CD
  *@param   {{x: number, y: number}} {A}{B}{C}{D} - points of |AB| and |CD|
- *@returns {{x: number, y: number} | null} intersection point or null
+ *@returns {{x: number, y: number} || null} intersection point or null
  */
 export function intersectionOfLines(A,B,C,D){
     const a1 = B.y - A.y;

@@ -10,15 +10,6 @@ export class Tetragon extends Point{
     }
 
     /** /// render() ///
-     ** renders the Tetragon on the given context 
-     *?     rendering without fill ...  ?
-     *?    will distort actual size ..  ?
-     *?   by half of the strokeWidth    ?
-     * @param {CanvasRenderingContext2D} ctx - the context 
-     * @param {boolean} fill - whether to fill the Tetragon
-     * @returns {Tetragon} itself for chaining
-     */
-    /** /// render() ///
      ** renders the Tetragon on the given context
     * @param {CanvasRenderingContext2D} ctx - the context 
     * @param {boolean} fill - whether to fill the Tetragon
@@ -28,28 +19,23 @@ export class Tetragon extends Point{
         ctx.beginPath();
 
         if (!fill) {
-            // Use points directly if filling
             ctx.moveTo(this._points[0].x, this._points[0].y);
             for (let i = 1; i < this._points.length; i++) {
                 ctx.lineTo(this._points[i].x, this._points[i].y);
             }
         } else {
             offset = this._strokeWidth / 2;
-            // Offset each point inward along edges
-            // Simple approximation: shrink polygon toward centroid
-            const centroid = this._points.reduce((c, p) => {
-                return { x: c.x + p.x / this._points.length, y: c.y + p.y / this._points.length };
-            }, { x: 0, y: 0 });
+            const centroid = this._centroid();
 
             ctx.moveTo(
-                this._points[0].x + (centroid.x - this._points[0].x) * offset / this._approxMaxDist(),
-                this._points[0].y + (centroid.y - this._points[0].y) * offset / this._approxMaxDist()
+                this._points[0].x + this._vectorToCentroid(0).x / Math.hypot(this._points[0].x, centroid.x) * offset ,
+                this._points[0].y + this._vectorToCentroid(0).y / Math.hypot(this._points[0].y, centroid.y) * offset ,
             );
 
             for (let i = 1; i < this._points.length; i++) {
                 ctx.lineTo(
-                    this._points[i].x + (centroid.x - this._points[i].x) * offset / this._approxMaxDist(),
-                    this._points[i].y + (centroid.y - this._points[i].y) * offset / this._approxMaxDist()
+                    this._points[0].x + this._vectorToCentroid(0).x / Math.hypot(this._points[0].x, centroid.x) * offset ,
+                    this._points[0].y + this._vectorToCentroid(0).y / Math.hypot(this._points[0].y, centroid.y) * offset ,
                 );
             }
         }
@@ -68,32 +54,33 @@ export class Tetragon extends Point{
         return this;
     }
 
-    /** Helper to estimate maximum distance from centroid to a vertex */
-    _approxMaxDist() {
-        const centroid = this._points.reduce((c, p) => {
-            return { x: c.x + p.x / this._points.length, y: c.y + p.y / this._points.length };
-        }, { x: 0, y: 0 });
+    /** /// _centroid() ///
+     ** calculates the centroid of an polygon
+     * @private
+     * @returns {{x: number, y: number}} centroid
+     */
+    _centroid(){
+        let x = 0;  let y = 0;
 
-        return Math.max(...this._points.map(p => Math.hypot(p.x - centroid.x, p.y - centroid.y)));
+        for (const point of this._points) {
+            x += point.x;  y += point.y;
+        }
+ 
+        return {
+            x: x / this._points.length,
+            y: y / this._points.length
+        };
     }
-    render(ctx, fill) {
-        ctx.beginPath();
-        ctx.moveTo(this._points[0].x, this._points[0].y);
-        for(let i = 1; i < this._points.length; i++){
-            ctx.lineTo(this._points[i].x, this._points[i].y);
-        }
-        ctx.lineWidth = this._strokeWidth;
-        ctx.closePath();
-        if(fill){
-            ctx.fillStyle = this._color;
-            ctx.fill();
-        }
-        if(!fill){
-            ctx.strokeStyle = this._color;
-            ctx.lineWidth = this._strokeWidth;
-            ctx.stroke();
-        }
-        return this;
+
+    /** /// _vectorToCentroid() ///
+     ** calculates vector from given vertex to centroid
+     * @private 
+     * @param {number} numberOfVertex - index of vertex
+     * @returns {{x: number, y: number}} vector
+     */
+    _vectorToCentroid(numberOfVertex = 0){ 
+        const centroid = this._centroid();
+        return vectorBetween(centroid, this._points[numberOfVertex]);
     }
 
     /** /// moveTo() ///
@@ -115,12 +102,39 @@ export class Tetragon extends Point{
         return this;
     }
 
+    /** /// clone() ///
+     ** creates a clone of the Tetragon 
+     *? color might not be cloned properly ?
+     * @returns {Tetragon} cloned Tetragon
+     */
+    clone(){
+        const points = this._points.map(p => ({ ...p }));
+        const clone = new Tetragon(...points, this._color); 
+        clone._strokeWidth = this._strokeWidth;
+        return clone
+    }
+    
+    //TODO: rotateAround, rotateBy
     /** /// rotateAround() ///
      * rotates the Tetragon by the given angle in degrees
+     * @param {number} pivotX - x coordinate of the pivot point
+     * @param {number} pivotY - y coordinate of the pivot point
      * @param {number} angleInDegrees - angle in degrees
      * @returns {Tetragon} itself for chaining 
      */
-    rotateAround(angleInDegrees, pivotX, pivotY){
+    rotateAround(pivotX, pivotY, angleInDegrees){
+        this._points = this._points.map(point => {
+            const sinAngle = Math.sin((angleInDegrees * Math.PI) / 180);
+            const cosAngle = Math.cos((angleInDegrees * Math.PI) / 180);
+            const translatedX = point.x - pivotX;
+            const translatedY = point.y - pivotY;
+            const rotatedX = translatedX * cosAngle - translatedY * sinAngle;
+            const rotatedY = translatedX * sinAngle + translatedY * cosAngle;
+            return {
+                x: rotatedX + pivotX,
+                y: rotatedY + pivotY
+            };
+        });
         return this;
     }
 
@@ -166,22 +180,9 @@ export class Tetragon extends Point{
         return false;
     }
 
-    /** /// clone() ///
-     ** creates a clone of the Tetragon 
-     *? color might not be cloned properly ?
-     * @returns {Tetragon} cloned Tetragon
-     */
-    clone(){
-        const points = this._points.map(p => ({ ...p }));
-        const clone = new Tetragon(...points, this._color); 
-        clone._strokeWidth = this._strokeWidth;
-        return clone
-    }
-
     //*------------------Setters--------------------*//
     set points (newPoints){ this._points = newPoints;}
 }
-
 ///                 colidesAnyPoints                ///
 /**
  ** calculates if two Tetragons share any point
