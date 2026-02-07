@@ -1,6 +1,6 @@
 //@-------------------------------IMPORTS-----------------------------------@//
 
-import { Ledvadva } from "../../Game_01_Ledvadva/main.js";
+import { Ledvadva, RENDER_IRIS, RENDER_MODES, RENDER_PLAYERS, RESET_IRIS, RESET_PLAYERS } from "../../Game_01_Ledvadva/main.js";
 import { Solid, Platform } from "../../Monkey-Engine/PlatformerLib.js";
 import { Sprite }     from '../../Monkey-Engine/Sprite.js';
 import { SpriteDyna } from "../../Monkey-Engine/SpriteDyna.js";
@@ -168,41 +168,44 @@ barrel._animSlow = 5;
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 ////---------//                  Restart                      ////
-export function restart_03(){ 
+export function RESTART_03(){ 
+        ctx.reset();
 
-        Ledvadva.players[0].moveTo(100, 960);
-        Ledvadva.players[1].moveTo(100, 960);
-        Ledvadva.shouldRestart = false;
+        RESET_PLAYERS( {X:100, Y:960}, {X:100, Y:960} );
+        RESET_IRIS();   
     }
 ////---------//                  LvlLoop                      ////
-    export function _03_RENDER(){
-        if (Ledvadva.shouldRestart){ restart_03();}
+    //* flags for Mainloop *//
+    let infoM;
+    let pauseM;
+
+    export function RENDER_03(){
+        infoM = Ledvadva.modes.infoMode;
+        pauseM = Ledvadva.modes.pause;
+
+        if (Ledvadva.shouldRestart){
+            Ledvadva.iris.zoomDir = 1;
+            Ledvadva.iris.lockedOn = Ledvadva.players[0];
+            Ledvadva.modes.pause = true;
+            RESTART_03();
+        }
+        RENDER_IRIS(ctx);
+
         ctx.fillStyle = 'white';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ///Backgrnd.render(ctx);
-        /*
-            if (Ledvadva.Modes.infoMode){
-                hitboxes.forEach(hitbox => {hitbox.render(ctx);});
-                Ledvadva.infoBar.render(ctx);
-            }
-        
-        /*
+        Backgrnd.render(ctx);
++
         barrel.render(ctx);
         barrel.updateImage();
 
-        Ledvadva.players[0].updatePos(hitboxes);
-        Ledvadva.players[0].updateImage();
-        Ledvadva.players[0].render(ctx, Ledvadva.Modes.infoMode);
-    
-        Ledvadva.players[1].updatePos(hitboxes);
-        Ledvadva.players[1].updateImage();
-        Ledvadva.players[1].render(ctx, Ledvadva.Modes.infoMode);
-        */
-        cart.render(ctx, Ledvadva.Modes.infoMode);
+        RENDER_PLAYERS(ctx, hitboxes);
+
+        cart.render(ctx, infoM);
         cart.updateImage();
         train.moveTo(50, 500);
-        train.render(ctx, Ledvadva.Modes.infoMode);
+        train.render(ctx, infoM);
         wheelsAndPiston.updateImage();
 
+        RENDER_MODES(ctx);
     }

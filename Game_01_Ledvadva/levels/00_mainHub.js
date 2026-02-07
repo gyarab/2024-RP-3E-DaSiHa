@@ -1,10 +1,12 @@
 //@------------------------------IMPORTS----------------------------------@//
 import { Sprite }    from  '../../Monkey-Engine/Sprite.js';
-import { Ledvadva }  from '../main.js';
 import { Rectangle } from '../../Monkey-Engine/Rectangle.js';
-import { 
-    InteractableIndicator 
-} from '../../Monkey-Engine/Interactable.js';
+import { Tetragon }  from '../../Monkey-Engine/Tetragon.js';
+import { SpriteStack } from '../../Monkey-Engine/SpriteStack.js';
+import { Ledvadva, playersColideWith, RENDER_PLAYERS, RENDER_MODES, RENDER_IRIS,
+        RESET_PLAYERS, RESET_IRIS,                                             }
+from '../main.js';
+import { InteractableIndicator } from '../../Monkey-Engine/Interactable.js';
 import { 
     PointerToLevel, PointerToLevelSprite, 
     Platform, SemiSolid, Solid, Selector, Closet
@@ -15,6 +17,7 @@ import {
     IndicatorKey_G, IndicatorKey_L, IndicatorKey_Right, 
     IndicatorKey_DiS_Left, IndicatorKey_DiS_Right
 } from  '../../Monkey-Engine/PlatformerLib.js';
+
 
 //@------------------------------STRUCTURE----------------------------------@//
 ////---------//                     Solid                      ////
@@ -56,15 +59,16 @@ const _3011 = new Platform(1128, 1046, 140,   26) // -//-
         const _5703 = new Rectangle  ( 324,  396, 144,  28); lvl05._addPlatform(_5703);
     ////---------//                  Selector                  ////
     const select_skin = new Selector   ( 580,  712,  56, 24);
-//@
-const Hitboxes = [
+
+const Hitboxes = new SpriteStack();
+Hitboxes.push(
 _0001, _0002, _0003, _0004, _0005, _0006, _0007,
 _s001, _s002, _s003, _s004, 
 _3001, _3002, _3003, _3004, _3005, _3006, _3007, _3008, _3009, _3010, _3011, 
 lvl01, lvl02, lvl03, lvl04, lvl05, 
 _5700, _5701, _5702, _5703,
 select_skin
-];
+);
 //@------------------------------ VISUALS----------------------------------@//
 
 ////---------//                             Room                         ////
@@ -89,11 +93,12 @@ select_skin
     const candle  = new Sprite( 416, 330, 28, 64,
         "../Game_01_Ledvadva/sprites/Interactable/LevelSelect/candle.png"
     );
-
-    const shelfsAndShadow = [
-        shelf1,shelf2,shelf3,shelf4,shelf5,
-        shadow1,shadow2,shadow3,shadow4,shadow5,shadow6 
-    ];
+    const shelfsAndShadow = new SpriteStack;
+    shelfsAndShadow.push(
+        shelf1, shelf2, shelf3, shelf4,
+        shelf5, shadow1, shadow2, shadow3,
+        shadow4, shadow5, shadow6 
+    )
 
     
 ////---------//                             Levels                         ////
@@ -118,6 +123,9 @@ select_skin
     const msgShadow = new InteractableIndicator(0,0,160,76, pathToHub + "shadow.png")
 
 //@------------------------------ RENDER----------------------------------@//
+const canvas = document.getElementById('herniRozhraní');
+const ctx = canvas.getContext('2d');
+
 function isPlayersInterac(interactable){
     const p1 = Ledvadva.players[0];
     const p2 = Ledvadva.players[1];
@@ -165,14 +173,12 @@ function showIndicatorsFor(interaction, interactable, heightOfHover = 1.3){
             break;
     }
 }
-//TODO: render hasZ_Axis[] acording to the Y axis
-const hasZ_Axis = [candle, book];
-const canvas = document.getElementById('herniRozhraní');
-const ctx = canvas.getContext('2d');
+//TODO: fix candle rendering 
+
 ////---------//                  Restart                      ////
     export function RESTART_00(){ 
         ctx.reset();
-        Ledvadva.shouldRestart = false;
+
         Ledvadva.currentlvl = 0;
 
         let x; let y;
@@ -183,17 +189,19 @@ const ctx = canvas.getContext('2d');
         if (lvl01._isComplete) { x = 744; y = 844; }else
         /* first spawn point */{ x = 990; y = 940; }
 
-        Ledvadva.players[0].moveTo(x - 32,y);
-        Ledvadva.players[0]._xVelocity = 0;
-        Ledvadva.players[0]._yVelocity = 0;
-        Ledvadva.players[1].moveTo(x + 32,y);
-        Ledvadva.players[1]._xVelocity = 0;
-        Ledvadva.players[1]._yVelocity = 0;
+        RESET_PLAYERS( {X:x - 32, Y:y}, {X:x + 32, Y:y} );
+        RESET_IRIS();
 
     }
 ////---------//                  HubLoop                      ////
 export function RENDER_00(){
-    if (Ledvadva.shouldRestart){ RESTART_00();}
+    if (Ledvadva.shouldRestart){
+        Ledvadva.iris.zoomDir = 1;
+        Ledvadva.iris.lockedOn = Ledvadva.players[0];
+        Ledvadva.modes.pause = true;
+        RESTART_00();
+    }
+    RENDER_IRIS(ctx);    
 
     Backgrnd.render(ctx,true);
     Fargrnd.render(ctx);
@@ -206,13 +214,7 @@ export function RENDER_00(){
     fairy.render(ctx);
     dark.render(ctx);
 
-    Ledvadva.players[0].updatePos(Hitboxes);
-    Ledvadva.players[0].updateImage();
-    Ledvadva.players[0].render(ctx, Ledvadva.modes.infoMode);
-
-    Ledvadva.players[1].updatePos(Hitboxes);
-    Ledvadva.players[1].updateImage();
-    Ledvadva.players[1].render(ctx, Ledvadva.modes.infoMode);
+    RENDER_PLAYERS(ctx, Hitboxes);
 
     ChangingRoom.updateImage(Ledvadva.players[0]._wantInteract, 
         select_skin._isInteractableWith[Ledvadva.players[0]._id]
@@ -242,8 +244,7 @@ export function RENDER_00(){
             msg.moveTo(select_skin, 2.5); msg.render(ctx);
         }
     }
-    if(Ledvadva.modes.infoMode){
-        Hitboxes.forEach(hitbox => hitbox.render(ctx));
-        Ledvadva.infoBar.render(ctx);
-    }
+
+
+    RENDER_MODES(ctx, Hitboxes);
 }

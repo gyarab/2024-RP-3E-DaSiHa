@@ -1,18 +1,18 @@
 //@------------------------------IMPORTS----------------------------------@//
-
-import { Ledvadva } from "../../Game_01_Ledvadva/main.js";
+import { SpriteStack } from "../../Monkey-Engine/SpriteStack.js";
 import { Sprite } from "../../Monkey-Engine/Sprite.js";
 import { Rectangle } from "../../Monkey-Engine/Rectangle.js";
-import { 
-    Platform, SemiSolid, Solid, PointerToHub, PointerToHubSprite
-    } from "../../Monkey-Engine/PlatformerLib.js";
 import { SpriteDyna } from "../../Monkey-Engine/SpriteDyna.js";
 import { SpriteAnim } from "../../Monkey-Engine/SpriteAnim.js";
+import { Platform, SemiSolid, Solid, PointerToHub, PointerToHubSprite }
+from "../../Monkey-Engine/PlatformerLib.js";
+import { RENDER_PLAYERS , RENDER_IRIS, RENDER_MODES, 
+         Ledvadva, RESET_PLAYERS, RESET_IRIS, playersColideWith,      }
+from "../../Game_01_Ledvadva/main.js";
 
 //@------------------------------STRUCTURE---------------------------------@//
-
 ////---------//                 Arrows                        ////
-const arrows = [];
+const arrows = new SpriteStack();
 for (let i = 0; i < 16; i++) {
     const arrow = new SpriteDyna(50 + (i * 120), -800, 12, 12, [
         "../Game_01_Ledvadva/sprites/Pushable/Arrow/DOWN/1.png",
@@ -25,13 +25,13 @@ for (let i = 0; i < 16; i++) {
     arrows.push(arrow);
 }
 ////---------//                 Warnings                      ////
-const warnings = [];
+const warnings = new SpriteStack();
 for (let i = 0; i < 16; i++) {
     const warn = new SpriteAnim(0,0,20,100,[
         "../Game_01_Ledvadva/sprites/Indicators/warn-0.png",
         "../Game_01_Ledvadva/sprites/Indicators/warn-1.png"
     ]);
-warn._animSlow = 20;
+warn.animSlow = 20;
 warnings.push(warn);
 }
 ////---------//                 Solid                         ////
@@ -94,76 +94,95 @@ const Train    = new SpriteDyna(0, 536, 3332, 332, [
     pathTolvl + "train-blueprint-1.png",
     pathTolvl + "train-blueprint-2.png",
 ]);
-Train._xSpeed = 0.35 * 10; 
+Train._xSpeed = 0.35 * 5; 
 
 //@-------------------------------RENDER-----------------------------------@//
 
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 ////---------//                  Restart                      ////
-    export function RESTART_02(){ 
-        Train._x = -3332; Train.y = 536;
-        Train._isGoRight = true;
-        relWawe = 1; absWawe = 1; activ = 0; 
-        arrows.forEach((arrow, index) => {
-            arrow.y = defY;
-            arrow.x = 50 + (index * 120);
-            arrow._isGoDown = false;
-            arrow._isGoRight = false;
-            arrow._isGoLeft = false;
-            arrow._xSpeed = 0;
+    export function RESTART_02(){
+        ctx.reset();
+        
+        Train.moveTo(-3332, 536);
+        Train.isGoRight = true;
+
+        relWawe = 1; 
+        absWawe = 1; 
+        activ = 0; 
+
+        arrows.y = defArrY;
+        arrows.isGoDown = false;
+        arrows.isGoRight = false;
+        arrows.isGoLeft = false;
+        arrows.xSpeed = 0;
+
+        arrows.forEach((arr, i) => {
+            arr.x = 50 + (i * 120);
         });
-        warnings.forEach(warn => {
-            warn.x = 0;
-        });
-        Ledvadva.players[0].moveTo(1000,900);
-        Ledvadva.players[1].moveTo(1300,900);
-        Ledvadva.shouldRestart = false;
+
+        warnings.y = -2000;
+
+        RESET_PLAYERS( {X:1000, Y:900}, {X:1300, Y:900} );
+        RESET_IRIS();
     }
 ////---------//                  Wawe_01                      ////
     let activ = 0;
     let relWawe = 1;
     let absWawe = 1;
-    const defY = -800;
+    const defArrY = -800;
     const wind = 0.3;
 
-    function arrowsRenderAndColisons(lastOne = false){
-        arrows.forEach(arrow => {
-            if (arrow._y > defY && arrow._y < (- arrow._height)) {
-                const distance = Math.abs(arrow._y + arrow._height);
-                arrow._animSlow = Math.max(2, 10 - Math.floor(distance));
-                warnings[arrows.indexOf(arrow)].x = arrow._x;
-                warnings[arrows.indexOf(arrow)].y = 0;
-                warnings[arrows.indexOf(arrow)].render(ctx);
-                warnings[arrows.indexOf(arrow)].updateImage();
-            }
-            if (arrow._y > 1080 + arrow._renderHeight) { 
-                arrow._isGoDown = false;
-                if (arrows.every(a => !a._isGoDown)) {
-                    if (!lastOne){relWawe += 1; absWawe += 1;} 
-                    else relWawe = 1;
-                    arrows.forEach((arrow, index) => {     
-                        let ofset = (Math.random() * 100) - 40;
-                        arrow.x = 50 + (index * 120) + ofset; 
-                        arrow.y = defY;
-                        arrow._isGoDown = false;
-                        arrow._isGoRight = false;
-                        arrow._isGoLeft = false;
-                        activ = 0;
-                    });
+    function RENDER_ARROWS(lastOne = false){
+        if (!Ledvadva.modes.pause){
+            arrows.forEach(arrow => {
+                //const under = arrow._y > 1080;
+                //const onScreen = arrow._y >= 0 && arrow._y <= 1080;
+                //const above = arrow._y + arrow._height < 0;            
+
+                // above the screen
+                if (arrow._y > defArrY && arrow._y < (- arrow._height)) {
+                    //const distance = Math.abs(arrow._y + arrow._height); 
+                    //arrow._animSlow = Math.max(2, 10 - Math.floor(distance));
+                    warnings[arrows.indexOf(arrow)].moveTo(arrow._x, 0);
+                    warnings[arrows.indexOf(arrow)].updateImage();
+                }else
+                // falling down the screen
+                if (arrow._isGoDown == true) { 
+                    if (arrow._isGoDown == true){
+                        warnings[arrows.indexOf(arrow)].y = -2000;
+                        arrow.xSpeed = wind;
+                        arrow.isGoRight = wind > 0;
+                        arrow.isGoLeft  = wind < 0;
+                    }
                 }
-            }else if (wind && arrow._isGoDown == true){
-                arrow._isGoRight = wind > 0;
-                arrow._isGoLeft = wind < 0;
-                arrow._xSpeed = wind;
-            }
-            arrow.render(ctx, Ledvadva.Modes.infoMode);
-            if (Math.random() > 0.5) { arrow.updateImage(); }
-            arrow.updatePos();
-        });
+                // under the screen (already fallen)
+                if (arrow._y > 1080 + arrow._renderHeight) { 
+                    arrow._isGoDown = false;
+                    if (arrows.every(a => !a._isGoDown)) {
+                        if (!lastOne){relWawe += 1; absWawe += 1;} 
+                        else relWawe = 1;
+                        arrows.forEach((arrow, index) => {     
+                            let ofset = (Math.random() * 100) - 40;
+                            arrow.x = 50 + (index * 120) + ofset; 
+                            arrow.y = defArrY;
+                            arrow._isGoDown = false;
+                            arrow._isGoRight = false;
+                            arrow._isGoLeft = false;
+                            activ = 0;
+                        });
+                    }
+                }
+                arrow.updatePos();
+            });
+        }
+        //randomly animated arrows
+        if (Math.random() > 0.5) { arrows.updateImage(); }
+        arrows.render(ctx, infoM); warnings.render(ctx);
+        
     }
     function wawe_type(type, lastOne = false){
-        const lineOfActiv = 1080 / 8 + defY;
+        const lineOfActiv = 1080 / 8 + defArrY;
         switch (type){
             case "wawe-forward":
                 if (activ < arrows.length) {
@@ -196,11 +215,24 @@ const ctx = canvas.getContext('2d');
                 }
             break;
         }
-        arrowsRenderAndColisons(lastOne);
+        RENDER_ARROWS(lastOne);
     }
 ////---------//                  LvlLoop                      ////
+    //* flags for Mainloop *//
+    let infoM;
+    let pauseM;
+
     export function RENDER_02(){
-        if (Ledvadva.shouldRestart){ RESTART_02();}
+        infoM = Ledvadva.modes.infoMode;
+        pauseM = Ledvadva.modes.pause;
+        
+        if (Ledvadva.shouldRestart){
+            Ledvadva.iris.zoomDir = 1;
+            Ledvadva.iris.lockedOn = Ledvadva.players[0];
+            Ledvadva.modes.pause = true;
+            RESTART_02();
+        }
+        RENDER_IRIS(ctx);
 
         arrows.forEach(arrow => {
             const spike = new Rectangle(arrow._x , arrow._y , arrow._width , arrow._height);
@@ -213,8 +245,10 @@ const ctx = canvas.getContext('2d');
             /**/
         });
 
+
         Backgrnd.render(ctx);
         Fargrnd.render(ctx);
+
         let renderInside = [];
         if (Train._x >= 0) { 
             Train._isGoRight = false;
@@ -247,34 +281,19 @@ const ctx = canvas.getContext('2d');
         if(renderInside[0]){Game_0.render(ctx);}
         if(renderInside[1]){Game_1.render(ctx);}
 
-        Ledvadva.players[0].updatePos(HitBoxes);
-        Ledvadva.players[0].updateImage();
-        Ledvadva.players[0].render(ctx, Ledvadva.Modes.infoMode);
-
-        Ledvadva.players[1].updatePos(HitBoxes);
-        Ledvadva.players[1].updateImage();
-        Ledvadva.players[1].render(ctx, Ledvadva.Modes.infoMode);
+        RENDER_PLAYERS(ctx, HitBoxes);
 
         Midgrnd.render(ctx);
-        if(!Ledvadva.Modes.infoMode)Forgrnd.render(ctx);
 
+        //RENDER ARROWS AND WARNINGS
         switch (relWawe) {
             case 1: wawe_type("wawe-forward"); break;
             case 2: wawe_type("wawe-backward"); break;
             case 3: wawe_type("umbrella"); break;
-            case 4: wawe_type("arrow", Train._isGoRight); break;
-            
+            case 4: wawe_type("arrow", Train._isGoRight); break;  
         }
-        if (Ledvadva.Modes.infoMode) {
-            /*
-            const pointOfJ = new Rectangle(
-                Ledvadva.players[0]._pointOfJump.x -5,
-                Ledvadva.players[0]._pointOfJump.y -5,
-                10,10, "GREEN"
-            );pointOfJ.render(ctx);
-            */
-            HitBoxes.forEach(hitbox => hitbox.render(ctx));
-            Ledvadva.infoBar.render(ctx);
-        }        
+
+        if(!infoM)Forgrnd.render(ctx);
+        RENDER_MODES(ctx, HitBoxes);
     }
     

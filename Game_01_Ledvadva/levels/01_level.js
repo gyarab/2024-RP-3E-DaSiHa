@@ -1,14 +1,13 @@
 //@------------------------------IMPORTS----------------------------------@//
-
-
-import { Scissors, Solid, Platform, Box, PointerToHub, PointerToHubSprite} from '../../Monkey-Engine/PlatformerLib.js';
 import { Sprite }     from '../../Monkey-Engine/Sprite.js';
 import { SpriteStack }from '../../Monkey-Engine/SpriteStack.js';
-import { Ledvadva }   from '../main.js';
-import { RENDER_PLAYERS, RENDER_MODES, RENDER_IRIS, playersColideWith } from '../main.js';
+import { Ledvadva, playersColideWith, RENDER_PLAYERS, RENDER_MODES, RENDER_IRIS,
+        RESET_PLAYERS, RESET_IRIS,                                             }
+from '../main.js';
+import { Scissors, Solid, Platform, Box, PointerToHub, PointerToHubSprite}
+from '../../Monkey-Engine/PlatformerLib.js';
 
-//@------------------------------STRUCTURE----------------------------------@//
-
+//@------------------------------STRUCTURE---------------------------------@//
 ////---------//                Platform                        ////
     const pl = new SpriteStack();
     pl.push(
@@ -42,18 +41,20 @@ import { RENDER_PLAYERS, RENDER_MODES, RENDER_IRIS, playersColideWith } from '..
     const _0007 = new Solid( 1444, 488,  128,  128);
     const _0008 = new Solid(    0,   0,    8, 1080);
     const _0009 = new Solid( 1912,   0,    8, 1080);
-////---------//                Projectiles                      ////
+////---------//                Projectiles                    ////
     const scissors = new Scissors(200, 744);
     scissors._isGoRight = true
     scissors._xSpeed = 3.5;
-////---------//                 Pushable                    ////
+////---------//                   Pushable                    ////
     const box  = new Box(1000, 870, 3);
-////---------//                 Interactable               ////
-    ////---------//               Endlevel                 ////
+////---------//                 Interactable                  ////
         const endOfLevel = new PointerToHub(1740, 924, 128, 76);
-//@
-const HitBoxes = [_0001,_0002,_0003,_0004,_0005,_0006,_0007,_0008, _0009];
-HitBoxes.push(... pl, endOfLevel);
+        
+const HitBoxes = new SpriteStack
+HitBoxes.push(
+    _0001, _0002, _0003, _0004,
+    _0005, _0006, _0007, _0008,
+    _0009, pl, endOfLevel);
 
 let Structure;
 
@@ -71,22 +72,10 @@ const endOfLevelSprite  = new PointerToHubSprite( 1740, 924, 128, 76, [
 const steps = new Sprite(742,820,116,180,"../Game_01_Ledvadva/sprites/Random/ladder.png");
 
 //@------------------------------RENDER----------------------------------@//
-
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 
 ////---------//                  Restart                      ////
-
-    export function RESET_PLAYERS({X:x0, Y:y0}, {X:x1, Y:y1}){
-        x0  &&   y0  && Ledvadva.players[0].moveTo(x0, y0);
-        Ledvadva.players[0]._xVelocity = 0; 
-        Ledvadva.players[0]._yVelocity = 0;
-        Ledvadva.players[1]._currentFrame = 0;
-        x1  &&   y1  && Ledvadva.players[1].moveTo(x1, y1);
-        Ledvadva.players[1]._xVelocity = 0; 
-        Ledvadva.players[1]._yVelocity = 0;
-        Ledvadva.players[1]._currentFrame = 0;
-    }
     export function RESTART_01(){ 
             ctx.reset();
 
@@ -95,24 +84,10 @@ const ctx = canvas.getContext('2d');
             box.moveTo(1000, 870);
             box._xVelocity = 0;
 
-            Ledvadva.players[0].moveTo(1200,860);
-            Ledvadva.players[0]._xVelocity = 0;
-            Ledvadva.players[0]._yVelocity = 0;
-            Ledvadva.players[1].moveTo(1300,860);
-            Ledvadva.players[1]._xVelocity = 0;
-            Ledvadva.players[1]._yVelocity = 0;
-            if ( Ledvadva.iris._radius >= Ledvadva.iris._MAX_RADIUS ){ 
-                Ledvadva.shouldRestart = false;
-                Ledvadva.modes.pause = false;
-                Ledvadva.iris.zoomDir = 0;
-                Ledvadva.iris.radius = Ledvadva.iris._MIN_RADIUS; 
-            }        
+            RESET_PLAYERS( {X:1200, Y:860}, {X:1300, Y:860} );
+
+            RESET_IRIS();   
         }
-    ////---------//                  Iris                     ////
-
-
-////---------//                zoomInAndOut                   ////
-
 ////---------//                  LvlLoop                      ////
     //* flags for Mainloop *//
     let infoM;

@@ -1,13 +1,15 @@
 // @Autor: Bendl Šimon
-
+//@------------------------------IMPORTS----------------------------------@//
 import { RENDER_00, RESTART_00} from './levels/00_mainHub.js';
 import { RENDER_01, RESTART_01} from './levels/01_level.js';
-import { RENDER_02, RESTART_02} from './levels/02_level.js';
+import { RENDER_02, RESTART_02} from './levels/02_level.js';  
+import { RENDER_03, RESTART_03} from './levels/03_level.js';
+import { RENDER_04, RESTART_04} from './levels/04_level.js';
 
 import { Sprite } from  '../Monkey-Engine/Sprite.js';
 import { Iris }   from  '../Monkey-Engine/Circle.js';
 import { Player } from  '../Monkey-Engine/PlatformerLib.js';
-
+//@------------------------------MAIN-------------------------------------@//
 ////------------------------> Ledvadva Manager <--------------------////
 const Ledvadva = {
     players : [
@@ -19,7 +21,7 @@ const Ledvadva = {
         infoMode : false,
         editMode : false            
     },
-    currentlvl : 0,
+    currentlvl : 4,
     shouldRestart : true,
     infoBar : new Sprite(
         0,0,1920,1080,"../Game_01_Ledvadva/sprites/Indicators/infoBar.png"
@@ -102,14 +104,17 @@ window.addEventListener('load', () => {
             case 0: RENDER_00(); break;
             case 1: RENDER_01(); break;
             case 2: RENDER_02(); break;
+            case 3: RENDER_03(); break;
+            case 4: RENDER_04(); break;
             default: console.error("Level not found"); break;
         }
         Ledvadva.players[0]._wantInteract = "none";
         Ledvadva.players[1]._wantInteract = "none";
     }
     window.setInterval(Mainloop, 6, true);
+});
+//@---------------------------Ledvadva functions--------------------------------@//
 
-});    
 /** /// playersColideWith() ///
  *  Checks if any of the players colides with the given object
  *  TODO: doesColide works only for Tetragons so far
@@ -141,16 +146,21 @@ export function RENDER_PLAYERS(ctx, LvlStructure){
     Ledvadva.players[0].render(ctx, Ledvadva.modes.infoMode);  
 }
 
-/** /// RENDER_IRIS() ///
- * renders the iris effect if active
- * @param {CanvasRenderingContext2D} ctx - context
- * @returns void
+/** /// RESET_PLAYERS() ///
+ * resets both players to given positions and stops their movement
+ * @param {x: number, y: number}
+ * @param {x: number, y: number}
+ * @return void
  */
-export function RENDER_IRIS(ctx){
-        if (Ledvadva.iris._isZoomin){
-        Ledvadva.iris.render(ctx);
-        Ledvadva.iris.updatePos();
-    }
+export function RESET_PLAYERS({X:x0, Y:y0}, {X:x1, Y:y1}){
+    x0  &&   y0  && Ledvadva.players[0].moveTo(x0, y0);
+    Ledvadva.players[0]._xVelocity = 0; 
+    Ledvadva.players[0]._yVelocity = 0;
+    Ledvadva.players[1]._currentFrame = 0;
+    x1  &&   y1  && Ledvadva.players[1].moveTo(x1, y1);
+    Ledvadva.players[1]._xVelocity = 0; 
+    Ledvadva.players[1]._yVelocity = 0;
+    Ledvadva.players[1]._currentFrame = 0;
 }
 
 /** /// RENDER_MODES() ///
@@ -158,9 +168,35 @@ export function RENDER_IRIS(ctx){
  * @param {CanvasRenderingContext2D} ctx - context
  * @param {SpriteStack} HitBoxes 
  */
-export function RENDER_MODES(ctx, HitBoxes){
+export function RENDER_MODES(ctx, HitBoxes = false){
     if (Ledvadva.modes.infoMode){
-        HitBoxes.forEach(hitbox => hitbox.render(ctx));
+        if (HitBoxes) HitBoxes.render(ctx);
         Ledvadva.infoBar.render(ctx);
+    }
+}
+
+/** /// RENDER_IRIS() ///
+ * renders the iris effect if active
+ * @param {CanvasRenderingContext2D} ctx - context
+ * @returns void
+ */
+export function RENDER_IRIS(ctx){
+    if (Ledvadva.iris._isZoomin){
+        Ledvadva.iris.render(ctx);
+        Ledvadva.iris.updatePos();
+    }
+}
+    
+
+/** /// RESET_IRIS() ///
+ * resets the iris to default state
+ * @return void
+ */
+export function RESET_IRIS(){
+    if (Ledvadva.iris._radius >= Ledvadva.iris._MAX_RADIUS){
+        Ledvadva.shouldRestart = false;
+        Ledvadva.modes.pause = false;
+        Ledvadva.iris.zoomDir = 0;
+        Ledvadva.iris.radius = Ledvadva.iris._MIN_RADIUS;
     }
 }
