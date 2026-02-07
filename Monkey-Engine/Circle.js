@@ -1,7 +1,9 @@
-// @Autor: Bendl Šimon
+//@Autor: Bendl Šimon
+//@-------------------------------imports-----------------------------------@//
 import { Point } from "./Point.js";
 import { _defaultValues } from "./_defaultValues.js";
 
+//@-------------------------------Circle-----------------------------------@//
 export class Circle extends Point {
     constructor(x, y, radius, color= _defaultValues.bS_color){
         super(x, y, color);
@@ -16,13 +18,16 @@ export class Circle extends Point {
      * @returns {Circle} itself for chaining
      */
     render(ctx, fill = false){
-        renderCircle(this, ctx, fill);
+        renderCircle(
+            this._x, this._y, this._radius, this._color, ctx,fill , this._strokeWidth
+        );
         return this;
     }
 
     //*------------------Setters--------------------*//
     set radius(newRadius){ this._radius = newRadius; }
 }
+//@-------------------------------Iris-------------------------------------@//
 
 export class Iris extends Circle{
     constructor(x, y, radius){
@@ -41,8 +46,8 @@ export class Iris extends Circle{
     }
 
     /** /// render() ///
-     * renders the iris effect on the given context
-     * ! should be called first in the render loop !
+     ** renders the iris effect on the given context ,
+     ** !! should be called first in the render loop !!
      * @param {CanvasRenderingContext2D} ctx - the context
      * @returns {Iris} itself for chaining
      */
@@ -58,6 +63,7 @@ export class Iris extends Circle{
 
     /** /// updatePos() ///
      * updates the position and focus of iris based on flags and speeds
+     * @returns {Iris} itself for chaining
      */
     updatePos(){
         this._lockedOn && this.moveTo(this._lockedOn._x, this._lockedOn._y);        
@@ -67,6 +73,7 @@ export class Iris extends Circle{
         if(!this._isZoomin && this._zoomDir === -1 && this._radius > this._MIN_RADIUS){
             this._radius -= this._zoomSpeed;
         }
+        return this;
     }
 
     //*------------------Setters--------------------*//
@@ -86,46 +93,25 @@ export class Iris extends Circle{
         this._lockedOn = value;
     }
 }
+//@------------------------------helpFunc----------------------------------@//
 
-///                 renderCircle                 ///
-/**
- ** renders a circle on the given context
- *
- ** rendering existing Circle object    
-    * @param {Circle} arg1 - Circle object
-    * @param {CanvasRenderingContext2D} arg2 - context
-    * @param {boolean} arg3 - whether to fill in the circle
- ****  
- ** rendering imaginary Circle
-    * @param {number} arg1 - x coordinate of center
-    * @param {number} arg2 - y coordinate of center
-    * @param {number} arg3 - radius
-    * @param {string} arg4 - color of line/fill
-    * @param {CanvasRenderingContext2D} arg5 - context
-    * @param {boolean} arg6 - whether to fill in the circle
-*****/
-export function renderCircle(arg1, arg2, arg3, arg4, arg5, arg6){
-    let x, y, radius, color, ctx, fill;
-    const defWidth = _defaultValues.bS_strokeWidth;
-
-    //? perhapstypeOf Point instead of object ?//
-    if(typeof arg1 === 'object'){
-        x      = arg1._x;        
-        y      = arg1._y;
-        radius = arg1._radius;
-        color  = arg1._color;
-        ctx    = arg2;
-        fill   = arg3;
-        ctx.lineWidth = arg1._strokeWidth;
-    } else {
-        x      = arg1;   
-        y      = arg2;
-        radius = arg3;
-        color  = arg4;
-        ctx    = arg5;
-        fill   = arg6;
-        ctx.lineWidth = defWidth;
-    }
+/** /// renderCircle() ///
+ ** renders an imaginary circle on the given context
+ * @private
+ * @param {number} x - x coordinate of center
+ * @param {number} y - y coordinate of center
+ * @param {number} radius - radius
+ * @param {string} color - color of line/fill
+ * @param {CanvasRenderingContext2D} ctx - context
+ * @param {boolean} fill - whether to fill in the circle
+ * @param {number} strokeWidth - stroke width (only for non-filled)
+ * @returns {void}
+ */
+function renderCircle(
+    x, y, radius, color, ctx, fill = false, 
+    strokeWidth = _defaultValues.bS_strokeWidth
+){
+    ctx.lineWidth = strokeWidth;
     const adjustedRadius = fill ? radius : radius - ctx.lineWidth / 2;
 
     ctx.beginPath();
@@ -139,8 +125,8 @@ export function renderCircle(arg1, arg2, arg3, arg4, arg5, arg6){
         ctx.stroke();
     }
 }
-
-/*-----------------Circle-EXAMPLE-------------------
+//@------------------------------examples----------------------------------@// 
+/*--------------------------------------------------------------------------
 import { Rectangle } from "./Rectangle.js";
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');

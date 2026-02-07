@@ -1,6 +1,8 @@
 // @Autor: Bendl Šimon
+//@-------------------------------imports-----------------------------------@//
 import { _defaultValues } from "./_defaultValues.js";
 
+//@--------------------------------Point------------------------------------@//
 export class Point{
     static IdCounter = 0;
     constructor(x, y, color = _defaultValues.bS_color){
@@ -18,16 +20,15 @@ export class Point{
      * @returns {Point} itself for chaining
      */
     render(ctx){
-        renderPoint(this, ctx);
+        renderPoint(this._x, this._y, ctx, this._color, this._strokeWidth);
         return this;
     }
 
-    //TODO: ADD MOVING CIRCLE BY "CORNER" 
     /** /// moveTo() ///
-     ** moves the Circle to the new position
+     ** moves the Point to the new position
      * @param {number} x 
      * @param {number} y 
-     * @returns {Tetragon} itself for chaining
+     * @returns {Point} itself for chaining
      */
     moveTo(x, y){
         this.x = x;
@@ -39,44 +40,28 @@ export class Point{
     set y( newY ){ this._y = newY; }
     set id(newId){ this._id= newId;} 
     set color(newColor){ this._color = newColor; }
-}   
+}
 
+//@------------------------------helpFunc-----------------------------------@//
 /** /// renderPoint() ///
- ** renders a point as a cross on the given context
+ ** renders an imaginary point as a cross on the given context
+ * @public
  *
- ** rendering existing Point object
-   * @param {Point} arg1 - Point object
-   * @param {CanvasRenderingContext2D} arg2 - context
- * 
- ** rendering imaginary Point
-   * @param {number} arg1 - x coordinate
-   * @param {number} arg2 - y coordinate
-   * @param {number} arg3 - color for the point
-   * @param {CanvasRenderingContext2D} arg4 - context
-   */
-export function renderPoint(arg1, arg2, arg3, arg4) {
-    let x, y, color, ctx, d;
-    const defWidth = _defaultValues.bS_strokeWidth;
-    const diagonal = _defaultValues.p_diagonalLength;
-
-    if (typeof arg1 === 'object') {
-        x = arg1._x;        
-        y = arg1._y;
-        color = arg1._color;
-        ctx = arg2;
-
-        d = arg1._strokeWidth * diagonal;
-        ctx.lineWidth = arg1._strokeWidth;
-    } else {
-        x     = arg1;   
-        y     = arg2;
-        color = arg3  ?? _defaultValues.bS_color;
-        ctx   = arg4;
-
-        d = diagonal * defWidth;
-        ctx.lineWidth = defWidth;
-    }
+ * @param {number} arg1 - x coordinate
+ * @param {number} arg2 - y coordinate
+ * @param {number} arg3 - color for the point
+ * @param {CanvasRenderingContext2D} arg4 - context
+ */
+export function renderPoint(
+    x, y, ctx,
+    color       = _defaultValues.bS_color,
+    strokeWidth = _defaultValues.bS_strokeWidth,
+    diagonal    = _defaultValues.p_diagonalLength
+){
+    const d = diagonal * strokeWidth;
+    ctx.lineWidth = strokeWidth;
     ctx.strokeStyle = color;
+
     ctx.beginPath();
     ctx.moveTo(x - d, y - d);
     ctx.lineTo(x + d, y + d);
@@ -87,3 +72,19 @@ export function renderPoint(arg1, arg2, arg3, arg4) {
     ctx.lineTo(x + d, y - d);
     ctx.stroke();
 }
+
+/**
+ * 
+ */
+export function xyToPolar(x, y) {
+    const radius = Math.sqrt(x * x + y * y);
+    const theta = Math.atan2(y, x);
+    return { radius, theta };
+}
+export function xFromPolar(r, theta) {
+    return r * Math.cos(theta);
+}
+export function yFromPolar(r, theta) {
+    return r * Math.sin(theta);
+}
+

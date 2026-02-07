@@ -1,7 +1,8 @@
-// @Autor: Bendl Šimon
+//@Autor: Bendl Šimon
+//@-------------------------------imports-----------------------------------@//
 import { _defaultValues } from './_defaultValues.js';
 import {Tetragon} from './Tetragon.js';
-
+//@------------------------------Rectangle----------------------------------@//
 export class Rectangle extends Tetragon{
     constructor(x, y, width, height, color = _defaultValues.bS_color){
         super(
@@ -84,8 +85,8 @@ export class Rectangle extends Tetragon{
     }
 }
 
-
-/*-------------------------Rectangle-EXAMPLE------------------------ 
+//@------------------------------examples----------------------------------@// 
+/*---------------------------------------------------------------------------
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 

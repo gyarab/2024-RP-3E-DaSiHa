@@ -81,7 +81,17 @@
             "backgroundColor": "transparent",
             "bold": false,
             "italic": true
+        },
+        { // @-----------STRUCTURE----------//
+            "tag": "@--", 
+            "color": "white",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": true
         }
+
     ],
     "better-comments.multilineComments": true
 }

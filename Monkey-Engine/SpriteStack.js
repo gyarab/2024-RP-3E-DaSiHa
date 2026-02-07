@@ -1,10 +1,13 @@
 // @Autor: Bendl Šimon
+//@-------------------------------imports-----------------------------------@//
 import { _defaultValues } from "./_defaultValues.js";
 import { vectorBetween } from "./LineSection.js";
 import { renderPoint } from "./Point.js";
 import { SpriteAnim }    from "./SpriteAnim.js";
 import { SpriteDyna }    from "./SpriteDyna.js";
+import { renderSpriteCollisionBox } from "./Sprite.js";
 
+//@------------------------------SpriteStack--------------------------------@//
 export class SpriteStack extends Array {
     constructor() {
         super();
@@ -21,6 +24,7 @@ export class SpriteStack extends Array {
      * @returns {SpriteStack} itself for chaining
      */
     render(ctx, rBox) {
+        const renderOnlyOneAnchor = false;
         this.forEach(sprite => {
             sprite.render(ctx);
         });
@@ -32,10 +36,13 @@ export class SpriteStack extends Array {
             ctx.setLineDash([]);
             // draw all sprites' bounding boxes 
             this.forEach(sprite => {
-                sprite.rBox(ctx, false);
+                renderSpriteCollisionBox(
+                    sprite._x, sprite._y, sprite._width, sprite._height,
+                    ctx, sprite._color, sprite._strokeWidth, !renderOnlyOneAnchor
+                );
             });
             // draw anchor point
-            renderPoint(this._farLeft, this._farTop, _defaultValues.s_color, ctx);
+            renderPoint(this._farLeft, this._farTop, ctx, "grey");
         } 
         return this;
     }
@@ -144,13 +151,13 @@ export class SpriteStack extends Array {
 }
     /* non exclusive properties */
     set x(newX) {
-        console.warn("Sure you want to set x for the whole SpriteStack?");            
+        //console.warn("Sure you want to set x for the whole SpriteStack?");            
         this.forEach(obj => {
             obj.x = newX;
         });
     }   
     set y(newY) {
-        console.warn("Sure you want to set y for the whole SpriteStack?");
+        //console.warn("Sure you want to set y for the whole SpriteStack?");
         this.forEach(obj => {
             obj.y = newY;
         });

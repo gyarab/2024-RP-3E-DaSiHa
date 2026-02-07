@@ -1,12 +1,15 @@
-// @Autor: Bendl Šimon
+//@Autor: Bendl Šimon
+//@-------------------------------imports-----------------------------------@//
 import { _defaultValues } from './_defaultValues.js';
 import {intersectionOfLineSegments, vectorBetween} from './LineSection.js';
-import { Point } from './Point.js';
+import { Point, xFromPolar, xyToPolar, yFromPolar } from './Point.js';
 
+//@------------------------------Tetragon-----------------------------------@//
 export class Tetragon extends Point{
     constructor(p1, p2, p3, p4, color = _defaultValues.bS_color){
         super(p1.x, p1.y, color);
         this._points = [p1, p2, p3, p4];
+        this._strokeWidth = _defaultValues.bS_strokeWidth;
     }
 
     /** /// render() ///
@@ -18,26 +21,22 @@ export class Tetragon extends Point{
     render(ctx, fill) {
         ctx.beginPath();
 
-        if (!fill) {
-            ctx.moveTo(this._points[0].x, this._points[0].y);
-            for (let i = 1; i < this._points.length; i++) {
-                ctx.lineTo(this._points[i].x, this._points[i].y);
-            }
-        } else {
-            offset = this._strokeWidth / 2;
-            const centroid = this._centroid();
+        const center = this._centroid();
+        const offset = fill ? 0 : this._strokeWidth / 2;
 
-            ctx.moveTo(
-                this._points[0].x + this._vectorToCentroid(0).x / Math.hypot(this._points[0].x, centroid.x) * offset ,
-                this._points[0].y + this._vectorToCentroid(0).y / Math.hypot(this._points[0].y, centroid.y) * offset ,
-            );
+        for (let i = 0; i < this._points.length; i++) {
+            const p = this._points[i];
+            const vecToCenter = {
+                x: center.x - p.x, 
+                y: center.y - p.y
+            };
 
-            for (let i = 1; i < this._points.length; i++) {
-                ctx.lineTo(
-                    this._points[0].x + this._vectorToCentroid(0).x / Math.hypot(this._points[0].x, centroid.x) * offset ,
-                    this._points[0].y + this._vectorToCentroid(0).y / Math.hypot(this._points[0].y, centroid.y) * offset ,
-                );
-            }
+            const vecLength = Math.hypot(vecToCenter.x, vecToCenter.y) || 1;
+
+            const x = p.x + vecToCenter.x / vecLength * offset;
+            const y = p.y + vecToCenter.y / vecLength * offset;
+
+            i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
         }
 
         ctx.closePath();
@@ -72,17 +71,6 @@ export class Tetragon extends Point{
         };
     }
 
-    /** /// _vectorToCentroid() ///
-     ** calculates vector from given vertex to centroid
-     * @private 
-     * @param {number} numberOfVertex - index of vertex
-     * @returns {{x: number, y: number}} vector
-     */
-    _vectorToCentroid(numberOfVertex = 0){ 
-        const centroid = this._centroid();
-        return vectorBetween(centroid, this._points[numberOfVertex]);
-    }
-
     /** /// moveTo() ///
      ** moves the Tetragon to the new position
      * @param {number} x 
@@ -114,36 +102,31 @@ export class Tetragon extends Point{
         return clone
     }
     
-    //TODO: rotateAround, rotateBy
     /** /// rotateAround() ///
-     * rotates the Tetragon by the given angle in degrees
+     * rotates the Tetragon by the given angle in radians
      * @param {number} pivotX - x coordinate of the pivot point
      * @param {number} pivotY - y coordinate of the pivot point
-     * @param {number} angleInDegrees - angle in degrees
+     * @param {number} angleInRadians - angle in radians
      * @returns {Tetragon} itself for chaining 
      */
-    rotateAround(pivotX, pivotY, angleInDegrees){
-        this._points = this._points.map(point => {
-            const sinAngle = Math.sin((angleInDegrees * Math.PI) / 180);
-            const cosAngle = Math.cos((angleInDegrees * Math.PI) / 180);
-            const translatedX = point.x - pivotX;
-            const translatedY = point.y - pivotY;
-            const rotatedX = translatedX * cosAngle - translatedY * sinAngle;
-            const rotatedY = translatedX * sinAngle + translatedY * cosAngle;
+    rotateAround(pivotX, pivotY, angleInRadians){
+;        this._points = this._points.map(point => {
+            const polar = xyToPolar(point.x - pivotX, point.y - pivotY);
+            const newAngle = polar.theta + angleInRadians;
             return {
-                x: rotatedX + pivotX,
-                y: rotatedY + pivotY
+                x: pivotX + xFromPolar(polar.radius, newAngle),
+                y: pivotY + yFromPolar(polar.radius, newAngle)
             };
         });
         return this;
     }
 
     /** /// rotateBy() ///
-     * rotates the Tetragon by the given angle in degrees
-     * @param {number} angleInDegrees - angle in degrees
+     * rotates the Tetragon by the given angle in radians
+     * @param {number} angleInRadians - angle in radians
      * @returns {Tetragon} itself for chaining 
      */
-    rotateBy(angleInDegrees){
+    rotateBy(angleInRadians){
         return this;
     }
 
@@ -154,59 +137,63 @@ export class Tetragon extends Point{
      * @returns {boolean} true if they colide
      */
     doesColideWith(other) {
-        //other = Tetragon
-        if (other instanceof Tetragon) {
-            for (let j = 0; j < other._points.length; j++) {
-                for (let i = 0; i < this._points.length; i++) {
-                    let A = this._points[i]; 
-                    let B = this._points[(i + 1) % this._points.length];
-                    let C = other._points[j]; 
-                    let D = other._points[(j + 1) % other._points.length];
-
-                    if (colidesAnyPoints(this, other)){return true;}
-                    const intersection = intersectionOfLineSegments(A, B, C, D);
-                    if (intersection) {
-                        if (intersection === null) {
-                            throw new Error("intersectionOfLineSegments() returned null.")
-                        }
-                        return true;
-                    }  
-                }
-            }
-        //TODO: other != Tetragon
-        }else{
-            throw new Error("Argument is not instance of Tetragon.")
+        if (!other instanceof Tetragon) {
+            throw new Error("Argument is not instance of Tetragon.");
         }
+        if (    hasVertexInside(this, other)) { return true;}
+        if (hasEdgeIntersection(this, other)) { return true;}
         return false;
     }
 
     //*------------------Setters--------------------*//
     set points (newPoints){ this._points = newPoints;}
 }
-///                 colidesAnyPoints                ///
-/**
- ** calculates if two Tetragons share any point
+//@------------------------------helpFunc-----------------------------------@//
+/** /// hasVertexInside() ///
+ ** calculates if two Tetragons pierce each other by any vertex
+ * @private
  * @param   {Tetragon} {tetragon1}{tetragon2} 
  * @returns {boolean} true if they share even one point
  */
-export function colidesAnyPoints(tetragon1, tetragon2){
+function hasVertexInside(tetragon1, tetragon2){
     for (let point of tetragon1._points) {
-        if (pointInPolygon(point, tetragon2._points)) {return true;}
+        if (isPointInPolygon(point, tetragon2._points)) {return true;}
     }
     for (let point of tetragon2._points) {
-        if (pointInPolygon(point, tetragon1._points)) {return true;}
+        if (isPointInPolygon(point, tetragon1._points)) {return true;}
     }
     return false;
 }
 
-///                 pointInPolygon                 ///
-/**
- ** calculates if the point is part of the polygon
+/** /// hasEdgeIntersection() ///
+ ** calculates if two Tetragons pierce each other by any edge
+ * @private
+ * @param   {Tetragon} {tetragon1}{tetragon2} 
+ * @returns {boolean} true if they share even one edge intersection
+ */
+function hasEdgeIntersection(tetragon1, tetragon2){
+    for (let j = 0; j < tetragon2._points.length; j++) {
+        for (let i = 0; i < tetragon1._points.length; i++) {
+            let A = tetragon1._points[i]; 
+            let B = tetragon1._points[(i + 1) % tetragon1._points.length];
+            let C = tetragon2._points[j]; 
+            let D = tetragon2._points[(j + 1) % tetragon2._points.length];
+
+            const intersection = intersectionOfLineSegments(A, B, C, D);
+            if (intersection) return true; 
+        }
+    }
+    return false;
+}
+
+/** /// isPointInPolygon() ///
+ ** calculates if a point is part of the polygon
+ * @private
  * @param  {{x: number, y: number}} point 
  * @param  {Polygon} polygon 
  * @returns {boolean} true if the point is in the polygon
  */
-export function pointInPolygon(point, polygon) {
+function isPointInPolygon(point, polygon) {
     let x = point.x, y = point.y;
     let inside = false;
     for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
@@ -218,8 +205,35 @@ export function pointInPolygon(point, polygon) {
     return inside;
 }
 
+/** /// colidingPointsOfTetragons() ///
+ ** calculates and returnsthe coliding points of two Tetragons
+ ** shaeres code with hasEdgeIntersection but returns after chceking all
+ * @private
+ * @param {Tetragon} tetragon1 
+ * @param {Tetragon} tetragon2 
+ * @returns {Array<{x: number, y: number}>} array of colision points
+ */
+function colidingPointsOfTetragons(tetragon1, tetragon2){
+    let colidingPointsArray = [];
 
-/*---------------Tetragon-EXAMPLE-------------------
+    // Check not vertexes but edges intersections
+    // shares code with hasEdgeIntersection but
+    for (let j = 0; j < tetragon2._points.length; j++) {
+        for (let i = 0; i < tetragon1._points.length; i++) {
+            let A = tetragon1._points[i];
+            let B = tetragon1._points[(i + 1) % tetragon1._points.length];
+            let C = tetragon2._points[j];
+            let D = tetragon2._points[(j + 1) % tetragon2._points.length];
+            const intersection = intersectionOfLineSegments(A, B, C, D);
+            if (intersection) colidingPointsArray.push(intersection);
+        }
+    }
+
+    return colidingPointsArray;
+}
+
+//@------------------------------examples----------------------------------@// 
+/*--------------------------------------------------------------------------
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 const t1 = new Tetragon(
@@ -251,8 +265,11 @@ const t4 = new Tetragon(
     'yellow'
 );
 
-t1.moveTo(100,200)
+t1.moveTo(300,275)
+
 t2.moveTo(300,100)
+t2.rotateAround(300,100,0);
+
 t3.moveTo(850,500)
 t4.moveTo(700,650)
 
@@ -263,9 +280,9 @@ t4.render(ctx,true);
 
 console.log(
     "ColidesAnyPoints pro \n" +
-    "   t1 a t2: " + colidesAnyPoints(t1, t2) + "\n" +
-    "   t3 a t4: " + colidesAnyPoints(t3, t4) + "\n" +
-    "   t1 a t3: " + colidesAnyPoints(t1, t3) + "\n" +
+    "   t1 a t2: " + hasVertexInside(t1, t2) + "\n" +
+    "   t3 a t4: " + hasVertexInside(t3, t4) + "\n" +
+    "   t1 a t3: " + hasVertexInside(t1, t3) + "\n" +
     "doesColideWith pro \n" +
     "   t1 a t2: " + t1.doesColideWith(t2) + "\n" +
     "   t3 a t4: " + t3.doesColideWith(t4) + "\n" +

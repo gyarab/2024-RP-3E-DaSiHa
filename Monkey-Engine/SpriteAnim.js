@@ -1,7 +1,10 @@
 // @Autor: Bendl Šimon
+//@-------------------------------imports-----------------------------------@//
 import { _defaultValues } from './_defaultValues.js';
+import { renderSpriteCollisionBox } from './Sprite.js';
 import { Sprite } from './Sprite.js';
 
+//@-------------------------------SpriteAnim--------------------------------@//
 export class SpriteAnim extends Sprite{
     constructor(x, y, width, height, spritePaths = []){
         super  (x, y, width, height, null); 
@@ -55,40 +58,34 @@ export class SpriteAnim extends Sprite{
      * @returns {SpriteAnim} itself for chaining
      */
     render(ctx,Rbox) {
-        if (this._frames.length > 0){
-                const img = this._frames[this._currentFrame];
-                if (img.complete) {
-                    let renderX;
-                    let renderY;
-                    switch (this._renderDir){
-                        case "top":
-                            renderX = this._x - ((this._renderWidth - this._width) / 2);
-                            renderY = this._y - this._renderHeight;
-                        break;
-                        case "bottom":
-                            renderX = this._x - ((this._renderWidth - this._width) / 2);
-                            renderY = this._y + this._height;
-                        break;
-                        case "left":
-                            renderX = this._x - this._renderWidth;
-                            renderY = this._y - ((this._renderHeight - this._height) / 2);
-                        break;
-                        case "right":
-                            renderX = this._x + this._width;
-                            renderY = this._y - ((this._renderHeight - this._height) / 2);
-                        break;
-                        default:
-                            renderX = this._x - ((this._renderWidth - this._width) / 2);
-                            renderY = this._y - ((this._renderHeight - this._height) / 2);
-                    } 
-                    ctx.drawImage(img, renderX, renderY, this._renderWidth, this._renderHeight);
-                }
-                const ofset = ctx.lineWidth / 2;
-                if (Rbox){
-                    ctx.strokeStyle = this._color;
-                    ctx.strokeRect(this._x + ofset, this._y + ofset, this._width - ctx.lineWidth, this._height - ctx.lineWidth);
-                }
-        } else { super.render(ctx); }
+        // even if calling super it should return {SpriteAnim}
+        if (!this._frames.length > 0) return super.render(ctx);
+        ctx.save();
+        const img = this._frames[this._currentFrame];
+        let renderX;
+        let renderY;
+        if (img.complete) {
+            const offsets = {
+                top:    {x: - (this._renderWidth - this._width) / 2, y: -this._renderHeight                      },
+                left:   {x: -  this._renderWidth,                    y: - (this._renderHeight - this._height) / 2},
+                bottom: {x: - (this._renderWidth - this._width) / 2, y:                       + this._height     },
+                default:{x: - (this._renderWidth - this._width) / 2, y: - (this._renderHeight - this._height) / 2},
+                right:  {x:                      + this._width,      y: - (this._renderHeight - this._height) / 2}
+                
+            };
+            const {x: dx, y: dy} = offsets[this._renderDir] || offsets.default;
+            renderX = this._x + dx;
+            renderY = this._y + dy;
+    
+            ctx.drawImage(img, renderX, renderY, this._renderWidth, this._renderHeight);
+        }
+        if (Rbox){
+            renderSpriteCollisionBox(
+                renderX, renderY, this._renderWidth, this._renderHeight,
+                ctx, this._color, this._strokeWidth
+            );
+        }
+        ctx.restore(); 
         return this;
     }
 
@@ -114,33 +111,43 @@ export class SpriteAnim extends Sprite{
     }
 
     /*--------------------------Setters--------------------------*/
-    set frames(newFrames){
+    set currentFrame(newValue){
+        this.__currentFrame = newValue;
+        return this;
+    }
+    set frames(newValue){
         console.error("použij loadImg() degeši")
         // ? not sure if I want to tolerate this ? //
-        this.loadImg(newFrames);
+        this.loadImg(newValue);
+        return this
     }
-    set animSlow(newAnimSlow){
-        this._animSlow = newAnimSlow;
+    set animSlow(newValue){
+        this._animSlow = newValue;
+        return this;
     }
-    set width(newWidth){
+    set width(newValue){
         if (this._renderWidth == this._width){
-            this._renderWidth = newWidth;
+            this._renderWidth = newValue;
         }
-        this._width = newWidth;
+        this._width = newValue;
+        return this;
     }
-    set height(newHeight){
+    set height(newValue){
         if (this._renderHeight == this._height){
-            this._renderHeight = newHeight;
+            this._renderHeight = newValue;
         }
-        this._height = newHeight;
+        this._height = newValue;
+        return this;
     }
 }
 
+//@------------------------------examples----------------------------------@// 
+/*-------------------------------------------------------------------------
+import { Tetragon } from '../Monkey-Engine/Tetragon.js';
 
-/*------------------------SpriteAnim-EXAMPLE---------------------
-import { Tetragon, colides } from '../Monkey-Engine/Tetragon.js';
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
+const pathToImgs = "/Game_01_Ledvadva/sprites/Player/RED/";
 
 
 const bluescreen = new Tetragon(
@@ -150,8 +157,8 @@ const bluescreen = new Tetragon(
     {x:0,y:400}
 )
 const sA = new SpriteAnim(10,150,90,160, [ 
-    "/Game_01_Ledvadva/sprites/BLU/stand.png",
-    "/Game_01_Ledvadva/sprites/BLU/rR/5.png"
+    pathToImgs + "stand.png",
+    pathToImgs + "rR/5.png"
 ])
 
 sA.id = "spriteAnim"
