@@ -13,140 +13,34 @@ import { Tetragon } from "../../Monkey-Engine/Tetragon.js";
 //@-------------------------------VISUALS-----------------------------------@//
 const pathToLvl   = "../Game_01_Ledvadva/sprites/Lvl-04/";
 
-////---------//                    Clock                   ////
-const pathToHub = "../Game_01_Ledvadva/sprites/Hub/";
-const cSize = 4;
-class Clock extends Sprite {
-    
-    constructor(x, y) {
-
-        super(x, y, 45 * cSize, 45 * cSize, pathToHub + "dial.png");
-
-        this.size = cSize;
-        this.lastUpdate = 0;   
-
-        this._radius = 20 * cSize;
-        this._armPos = {
-            _hour:   0,
-            _minute: 0,
-            _second: 0
-        }
-    }
-
-    /** /// updatePos() ///
-     * 
-     * @param {number} animSlow 
-     */
-    updatePos(animSlow = 10){
-       this.lastUpdate += 1;
-        if (this.lastUpdate <  animSlow) return;
-        else this.lastUpdate = 0;
-
-        const now = new Date();
-        console.log(now.getSeconds());
-        
-        const seconds = now.getSeconds();
-        const minutes = now.getMinutes() + seconds / 60;
-        const hours   = (now.getHours() % 12) + minutes / 60;
-        
-        this._armPos._second  = seconds * (Math.PI * 2 / 60);
-        this._armPos._minute  = minutes * (Math.PI * 2 / 60);
-        this._armPos._hour    = hours   * (Math.PI * 2 / 12);
-    
-    }
-
-    /** /// render() ///
-     * 
-     * @param {CanvasRenderingContext2D} ctx 
-     * @param {boolean} rBox 
-     */
-    render(ctx, rBox) {
-        super.render(ctx, rBox);
-        const centerX = this._x + (this._width / 2) - (cSize / 2);
-        const centerY = this._y + (this._height / 2) - (cSize / 2);
-
-        ctx.fillStyle = "#2f2f2f"
-        drawClockHand(ctx, {x: centerX, y: centerY}, this._radius,   'hour',   this._armPos._hour, this.size);
-        ctx.fillStyle = "#515151"
-        drawClockHand(ctx, {x: centerX, y: centerY}, this._radius, 'minute', this._armPos._minute, this.size);
-        ctx.fillStyle = "#717171"
-        drawClockHand(ctx, {x: centerX, y: centerY}, this._radius, 'second', this._armPos._second, this.size);
-        
-    }
-}
-
-/** /// drawClockHand() ///
- * 
- * @param {CanvasRenderingContext2D} ctx - convest context
- * @param {{x: number, y: number}} cPoint - center point
- * @param {number} radius - length of the clock hand
- * @param {'hour' | 'minute' | 'second'} type - type of hand to draw 
- * @param {number} angle - (0 to 2pi) clockwise from 12 o'clock
- */
-function drawClockHand(ctx, cPoint, radius, type, angle) {
-    const styles = {
-        hour:   { length: 0.5, width: 2 },
-        minute: { length: 0.7, width: 2 },
-        second: { length: 0.8, width: 2 }
-    };
-
-    const a = angle - Math.PI / 2;
-    const s = styles[type].length;
-
-    const ex = cPoint.x + Math.cos(a) * radius * s;
-    const ey = cPoint.y + Math.sin(a) * radius * s;
-
-    drawPixelLine(ctx, { x: cPoint.x, y: cPoint.y}, { x: ex , y: ey  }, styles[type].width * cSize);
-}
-
-/** /// drawPixelLine() ///
- * 
- * @param {CanvasRenderingContext2D} ctx 
- * @param {{x: number, y: number}} start 
- * @param {{x: number, y: number}} end 
- * @param {number} size 
- * @returns 
- */
-function drawPixelLine(ctx, start, end, size) {
-    const dx = end.x - start.x;
-    const dy = end.y - start.y;
-
-        const steps = Math.max(Math.abs(dx), Math.abs(dy))/ (size * 0.5);
-
-    if (steps === 0) return;
-
-    const xInc = dx / steps;
-    const yInc = dy / steps;
-
-    let x = start.x;
-    let y = start.y;
-
-    for (let i = 0; i <= steps; i++) {
-        ctx.fillRect(
-            Math.round(x),
-            Math.round(y),
-            cSize,
-            cSize
-        );
-        x += xInc;
-        y += yInc;
-    }
-}
-
-
-const c = new Clock(0, 0);
 ////---------//                    Train                   ////
 const pathToTrain = "../Game_01_Ledvadva/sprites/Lvl-02/Train/";
 const tSize = 4;
 const engine = new SpriteStack();
 const cart   = new SpriteStack();
+const test = new SpriteStack();
 const trainBlueprint = new Sprite(0, 0, 833*tSize, 83*tSize, pathToTrain + "train-blueprint-3.png");
 ////---------//                   Engine                   ////
+const pathToEngine = pathToTrain + "engine/";;
+
+const bTop = new Sprite(44*tSize,  0*tSize, 106*tSize, 47*tSize, pathToEngine + "baseTop.png");
+const bMid = new Sprite( 6*tSize, 46*tSize, 142*tSize, 10*tSize, pathToEngine + "baseMid.png");
+const bBot = new Sprite( 0*tSize, 54*tSize, 131*tSize, 15*tSize, pathToEngine + "baseBot.png");
+test.push(bBot,bMid,bTop).moveTo(0, 25*tSize);
+
+const lantern = new Sprite(  0*tSize,  0*tSize, 16*tSize, 28*tSize, pathToEngine + "lantern.png");
+const cabin   = new Sprite( 0*tSize,  0*tSize, 75*tSize, 45*tSize, pathToEngine + "cabin.png"  );
+const wheeler = new Sprite(131*tSize, 81*tSize, 40*tSize, 13*tSize, pathToEngine + "wheeler.png");
+const chimney = new Sprite(133*tSize, 16*tSize, 19*tSize, 37*tSize, pathToEngine + "chimney.png");
+const bell    = new Sprite( 95*tSize, 36*tSize, 11*tSize, 17*tSize, pathToEngine + "bell.png"   );
+const plow    = new Sprite(149*tSize, 67*tSize, 43*tSize, 27*tSize, pathToEngine + "plow.png"   );
+
+test.push(wheeler, plow, bell, chimney, lantern);
 
 const wheels = new SpriteStack();
 const fenders = new SpriteStack();
 const undercarriage = new SpriteStack();
-const base  = new Sprite(0,0,223*tSize, 82*tSize, pathToTrain + "base.png");
+const eBase  = new Sprite(0,0,223*tSize, 82*tSize, pathToTrain + "base.png");
 
 const bW = new SpriteAnim(0, 0, 23*tSize, 23*tSize, [ 
     pathToTrain +  "wheel/1.png", pathToTrain + "wheel/2.png" ,
@@ -186,7 +80,7 @@ undercarriage.push(wheels, piston, fenders);
 
 
 engine.push(
-    base, undercarriage.moveTo(42*tSize, 55*tSize)
+    eBase, undercarriage.moveTo(42*tSize, 55*tSize)
 );
 
 /*
@@ -265,15 +159,15 @@ export function RESTART_04(){
         RENDER_IRIS(ctx);
 
         ctx.fillStyle = 'white';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        c.render(ctx, infoM);
-        c.updatePos();
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
 
         //cart.render(ctx, infoM);
         //cart.updateImage();
         engine.moveTo(50, 500);
-        //engine.render(ctx, infoM);
+        engine.render(ctx, infoM);
         undercarriage.updateImage();
+
+        test.render(ctx, infoM);
 
         RENDER_MODES(ctx, );
     }

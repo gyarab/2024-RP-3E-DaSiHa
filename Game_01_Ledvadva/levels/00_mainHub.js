@@ -7,6 +7,7 @@ import { Ledvadva, playersColideWith, RENDER_PLAYERS, RENDER_MODES, RENDER_IRIS,
         RESET_PLAYERS, RESET_IRIS,                                             }
 from '../main.js';
 import { InteractableIndicator } from '../../Monkey-Engine/Interactable.js';
+import { Clock  }   from '../assets/clock.js';
 import { 
     PointerToLevel, PointerToLevelSprite, 
     Platform, SemiSolid, Solid, Selector, Closet
@@ -93,6 +94,7 @@ select_skin
     const candle  = new Sprite( 416, 330, 28, 64,
         "../Game_01_Ledvadva/sprites/Interactable/LevelSelect/candle.png"
     );
+    const clock = new Clock(389 *4, 15*4);
     const shelfsAndShadow = new SpriteStack;
     shelfsAndShadow.push(
         shelf1, shelf2, shelf3, shelf4,
@@ -194,57 +196,64 @@ function showIndicatorsFor(interaction, interactable, heightOfHover = 1.3){
 
     }
 ////---------//                  HubLoop                      ////
-export function RENDER_00(){
-    if (Ledvadva.shouldRestart){
-        Ledvadva.iris.zoomDir = 1;
-        Ledvadva.iris.lockedOn = Ledvadva.players[0];
-        Ledvadva.modes.pause = true;
-        RESTART_00();
+    //* flags for Mainloop *//
+    let infoM;
+    let pauseM;
+    export function RENDER_00(){
+        infoM = Ledvadva.modes.infoMode;
+        pauseM = Ledvadva.modes.pause;
+
+        if (Ledvadva.shouldRestart){
+            Ledvadva.iris.zoomDir = 1;
+            Ledvadva.iris.lockedOn = Ledvadva.players[0];
+            Ledvadva.modes.pause = true;
+            RESTART_00();
+        }
+        RENDER_IRIS(ctx);    
+
+        Backgrnd.render(ctx,true);
+        Fargrnd.render(ctx);
+        clock.render(ctx, infoM).updatePos();
+        
+        for ( let s of shelfsAndShadow ){ s.render(ctx); }
+
+        shoebox.render(ctx);
+        games.render(ctx);
+        study.render(ctx);
+        fairy.render(ctx);
+        dark.render(ctx);
+
+        RENDER_PLAYERS(ctx, Hitboxes);
+
+        ChangingRoom.updateImage(Ledvadva.players[0]._wantInteract, 
+            select_skin._isInteractableWith[Ledvadva.players[0]._id]
+            && select_skin._canGo(Ledvadva.players[0]._wantInteract)
+        );
+        ChangingRoom.updateImage(Ledvadva.players[1]._wantInteract,
+            select_skin._isInteractableWith[Ledvadva.players[1]._id] 
+            && select_skin._canGo(Ledvadva.players[1]._wantInteract)
+        );
+
+        if(isPlayersInterac(select_skin)){
+            ChangingRoom.render(ctx);
+            if(select_skin._reactToBackward && !arePlayersInterac(select_skin)){
+                Left.moveTo(ChangingRoom, -40, -10); Left.render(ctx);
+                showIndicatorsFor('backward',select_skin, Left);
+            }else{
+                DisL.moveTo(ChangingRoom, -40, -10); DisL.render(ctx);
+            }
+            if (select_skin._reactToForward && !arePlayersInterac(select_skin)){
+                Right.moveTo(ChangingRoom, -40, -10); Right.render(ctx);
+                showIndicatorsFor('forward',select_skin, Right);
+            }else{
+                DisR.moveTo(ChangingRoom, -40, -10); DisR.render(ctx);
+            }
+            if (arePlayersInterac(select_skin)){
+                msgShadow.moveTo(select_skin, 2.5); msgShadow.render(ctx);
+                msg.moveTo(select_skin, 2.5); msg.render(ctx);
+            }
+        }
+
+
+        RENDER_MODES(ctx, Hitboxes);
     }
-    RENDER_IRIS(ctx);    
-
-    Backgrnd.render(ctx,true);
-    Fargrnd.render(ctx);
-    
-    for ( let s of shelfsAndShadow ){ s.render(ctx); }
-
-    shoebox.render(ctx);
-    games.render(ctx);
-    study.render(ctx);
-    fairy.render(ctx);
-    dark.render(ctx);
-
-    RENDER_PLAYERS(ctx, Hitboxes);
-
-    ChangingRoom.updateImage(Ledvadva.players[0]._wantInteract, 
-        select_skin._isInteractableWith[Ledvadva.players[0]._id]
-        && select_skin._canGo(Ledvadva.players[0]._wantInteract)
-    );
-    ChangingRoom.updateImage(Ledvadva.players[1]._wantInteract,
-        select_skin._isInteractableWith[Ledvadva.players[1]._id] 
-        && select_skin._canGo(Ledvadva.players[1]._wantInteract)
-    );
-
-    if(isPlayersInterac(select_skin)){
-        ChangingRoom.render(ctx);
-        if(select_skin._reactToBackward && !arePlayersInterac(select_skin)){
-            Left.moveTo(ChangingRoom, -40, -10); Left.render(ctx);
-            showIndicatorsFor('backward',select_skin, Left);
-        }else{
-            DisL.moveTo(ChangingRoom, -40, -10); DisL.render(ctx);
-        }
-        if (select_skin._reactToForward && !arePlayersInterac(select_skin)){
-            Right.moveTo(ChangingRoom, -40, -10); Right.render(ctx);
-            showIndicatorsFor('forward',select_skin, Right);
-        }else{
-            DisR.moveTo(ChangingRoom, -40, -10); DisR.render(ctx);
-        }
-        if (arePlayersInterac(select_skin)){
-            msgShadow.moveTo(select_skin, 2.5); msgShadow.render(ctx);
-            msg.moveTo(select_skin, 2.5); msg.render(ctx);
-        }
-    }
-
-
-    RENDER_MODES(ctx, Hitboxes);
-}
