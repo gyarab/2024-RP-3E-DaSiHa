@@ -66,7 +66,7 @@ const barrel = new SpriteAnim(964, 964, 264, 112, [
     pathTolvl + "spil/11.png", pathTolvl + "spil/12.png",
 ]);
 barrel._animSlow = 5;
-
+/*
 ////---------//                    Train                   ////
     const pathToTrain = "../Game_01_Ledvadva/sprites/Lvl-02/Train/";
     const tSize = 4; 
@@ -161,7 +161,7 @@ barrel._animSlow = 5;
 
  
     cart.push(cBottom, cMiddle, cTop, topRail);
-
+*/
 
 //@-------------------------------RENDER------------------------------------@//
 
