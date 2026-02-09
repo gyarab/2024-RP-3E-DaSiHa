@@ -41,7 +41,7 @@ export class Rectangle extends Tetragon{
      * @param {number} y 
      * @returns {Rectangle} itself for chaining
      */
-    moveTo(x, y){   
+    moveTo(x = this._x, y = this._y){   
         this.x = x;
         this.y = y;
         return this;

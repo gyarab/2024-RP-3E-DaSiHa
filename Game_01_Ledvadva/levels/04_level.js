@@ -18,50 +18,42 @@ const pathToTrain = "../Game_01_Ledvadva/sprites/Lvl-02/Train/";
 const tSize = 4;
 const engine = new SpriteStack();
 const cart   = new SpriteStack();
-const test = new SpriteStack();
+const test   = new SpriteStack();
 const trainBlueprint = new Sprite(0, 0, 833*tSize, 83*tSize, pathToTrain + "train-blueprint-3.png");
 ////---------//                   Engine                   ////
 const pathToEngine = pathToTrain + "engine/";;
 
-const bTop = new Sprite(44*tSize,  0*tSize, 106*tSize, 47*tSize, pathToEngine + "baseTop.png");
-const bMid = new Sprite( 6*tSize, 46*tSize, 142*tSize, 10*tSize, pathToEngine + "baseMid.png");
-const bBot = new Sprite( 0*tSize, 54*tSize, 131*tSize, 15*tSize, pathToEngine + "baseBot.png");
-test.push(bBot,bMid,bTop).moveTo(0, 25*tSize);
+const bTop = new Sprite(44*tSize, 25*tSize, 106*tSize, 22*tSize, pathToEngine + "baseTop.png");
+const bMid = new Sprite( 6*tSize, 46*tSize, 142*tSize, 11*tSize, pathToEngine + "baseMid.png");
+const bBot = new Sprite( 0*tSize, 53*tSize, 131*tSize, 15*tSize, pathToEngine + "baseBot.png");
+test.push(bMid,bTop,bBot,).moveTo(0, 51*tSize);
 
-const lantern = new Sprite(  0*tSize,  0*tSize, 16*tSize, 28*tSize, pathToEngine + "lantern.png");
-const cabin   = new Sprite( 0*tSize,  0*tSize, 75*tSize, 45*tSize, pathToEngine + "cabin.png"  );
-const wheeler = new Sprite(131*tSize, 81*tSize, 40*tSize, 13*tSize, pathToEngine + "wheeler.png");
+const lantern = new Sprite( 45*tSize, 55*tSize,  8*tSize, 15*tSize, pathToEngine + "lantern.png");
+const weight  = new Sprite( 58*tSize, 65*tSize, 15*tSize,  6*tSize, pathToEngine + "weight.png" );
+const cabin   = new Sprite(  0*tSize,  0*tSize, 75*tSize, 45*tSize, pathToEngine + "cabin.png"  );
+const wheeler = new Sprite(131*tSize, 81*tSize, 41*tSize, 13*tSize, pathToEngine + "wheeler.png");
 const chimney = new Sprite(133*tSize, 16*tSize, 19*tSize, 37*tSize, pathToEngine + "chimney.png");
 const bell    = new Sprite( 95*tSize, 36*tSize, 11*tSize, 17*tSize, pathToEngine + "bell.png"   );
 const plow    = new Sprite(149*tSize, 67*tSize, 43*tSize, 27*tSize, pathToEngine + "plow.png"   );
-
-test.push(wheeler, plow, bell, chimney, lantern);
-
-const wheels = new SpriteStack();
-const fenders = new SpriteStack();
-const undercarriage = new SpriteStack();
-const eBase  = new Sprite(0,0,223*tSize, 82*tSize, pathToTrain + "base.png");
-
+const sBoil   = new Sprite(113*tSize, 28*tSize, 18*tSize, 26*tSize, pathToEngine + "sBoil.png" );
+const bBoil   = new Sprite( 68*tSize, 24*tSize, 18*tSize, 30*tSize, pathToEngine + "bBoil.png" );
+test.push(wheeler, plow, bell, chimney, lantern, weight, weight.clone().moveTo(115*tSize), sBoil, bBoil);
+///----------//                   Wheels                   ////
+// bigWheel
 const bW = new SpriteAnim(0, 0, 23*tSize, 23*tSize, [ 
     pathToTrain +  "wheel/1.png", pathToTrain + "wheel/2.png" ,
     pathToTrain +  "wheel/3.png", pathToTrain + "wheel/4.png" ,
     pathToTrain +  "wheel/5.png",
-]); 
+]);
 bW._animSlow = 20;
+// smallWheel
 const sW  = new SpriteAnim(0, 0, 17*tSize, 17*tSize, [
     pathToTrain +  "wheelie/1.png", pathToTrain + "wheelie/2.png"
 ]);
 sW._animSlow = 16 ;
-
-wheels.push(
-    bW.clone().moveTo(  0*tSize,  4*tSize),
-    bW.clone().moveTo( 33*tSize,  4*tSize),
-    bW.clone().moveTo( 60*tSize,  4*tSize),
-    bW.clone().moveTo( 91*tSize,  4*tSize),
-    sW.clone().moveTo(124*tSize, 11*tSize),
-    sW.clone().moveTo(141*tSize, 11*tSize)
-);
-
+// fender
+const fender = new Sprite(0,0, 21*tSize, 9*tSize, pathToTrain + "fender.png");
+// piston
 const piston = new SpriteAnim( 0, 0, 138*tSize, 27*tSize,[
     pathToTrain + "piston/1.png", pathToTrain + "piston/2.png", 
     pathToTrain + "piston/3.png", pathToTrain + "piston/4.png",
@@ -70,19 +62,34 @@ const piston = new SpriteAnim( 0, 0, 138*tSize, 27*tSize,[
 ]);
 piston._animSlow = 32;
 
-const bF = new Sprite(0,0, 21*tSize, 9*tSize, pathToTrain + "fender.png");
+const gears  = new SpriteStack();
+const wheels = new SpriteStack();
+const fenders = new SpriteStack();
+const eBase  = new Sprite(0,0,223*tSize, 82*tSize, pathToTrain + "base.png");
+
+wheels.push(
+    bW.clone().moveTo(  0*tSize,  4*tSize),
+    bW.clone().moveTo( 33*tSize,  4*tSize),
+    bW.clone().moveTo( 60*tSize,  4*tSize),
+    bW.clone().moveTo( 91*tSize,  4*tSize),
+    sW.clone().moveTo(124*tSize, 10*tSize),
+    sW.clone().moveTo(142*tSize, 10*tSize)
+);
+
 fenders.push(
-    bF.clone().moveTo( 34*tSize,  1*tSize),
-    bF.clone().moveTo( 61*tSize,  1*tSize)
+    fender.clone().moveTo( 34*tSize,  1*tSize),
+    fender.clone().moveTo( 61*tSize,  1*tSize)
 );
 
-undercarriage.push(wheels, piston, fenders);
+gears.push(
+    wheels,
+    piston,
+    fender.clone().moveTo( 34*tSize,  1*tSize),
+    fender.clone().moveTo( 61*tSize,  1*tSize)
 
-
-engine.push(
-    eBase, undercarriage.moveTo(42*tSize, 55*tSize)
 );
-
+gears.moveTo(10*tSize, 71*tSize);
+test.push(gears)
 /*
 ////---------//                Cart                       ////
 const cWheel = new SpriteStack();
@@ -165,9 +172,18 @@ export function RESTART_04(){
         //cart.updateImage();
         engine.moveTo(50, 500);
         engine.render(ctx, infoM);
-        undercarriage.updateImage();
+        gears.updateImage();
 
+        let y = [];
+        test.updateImage();
+        test.forEach((element, index) => {
+             y[index] = element._y;
+            element.moveTo(undefined, y[index] +  (Math.random() < 0.5 ? -0.5 : 0.5));
+        });
         test.render(ctx, infoM);
+        test.forEach((element, index) => {
+            element.moveTo(undefined, y[index]);
+        });
 
         RENDER_MODES(ctx, );
     }

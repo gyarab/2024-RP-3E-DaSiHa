@@ -53,7 +53,7 @@ export class SpriteStack extends Array {
      * @param {number} y 
      * @returns {SpriteStack} itself for chaining
      */
-    moveTo(x, y) {
+    moveTo(x = this._farLeft, y = this._farTop) {
         let v = vectorBetween({x: this._farLeft, y: this._farTop}, {x: x, y: y});
         this.forEach(sprite => {
             if (sprite?.moveTo) {
