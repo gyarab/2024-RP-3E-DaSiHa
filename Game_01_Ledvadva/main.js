@@ -168,9 +168,9 @@ export function RESET_PLAYERS({X:x0, Y:y0}, {X:x1, Y:y1}){
  * @param {CanvasRenderingContext2D} ctx - context
  * @param {SpriteStack} HitBoxes 
  */
-export function RENDER_MODES(ctx, HitBoxes = false){
+export function RENDER_MODES(ctx, HitBoxes){
     if (Ledvadva.modes.infoMode){
-        if (HitBoxes) HitBoxes.render(ctx);
+        if (HitBoxes.length > 0) HitBoxes.render(ctx, true);
         Ledvadva.infoBar.render(ctx);
     }
 }

@@ -5,7 +5,7 @@ import { Sprite }     from '../../Monkey-Engine/Sprite.js';
 import { SpriteStack } from "../../Monkey-Engine/SpriteStack.js";
 import { SpriteAnim } from "../../Monkey-Engine/SpriteAnim.js";
 //@------------------------------STRUCTURE----------------------------------@//
-
+const Hitboxes = new SpriteStack();
 
 //@-------------------------------VISUALS-----------------------------------@//
 
@@ -197,7 +197,5 @@ export function RESTART_04(){
         cart.render(ctx, infoM);
         cart.updateImage();
 
-
-
-        RENDER_MODES(ctx, );
+        RENDER_MODES(ctx, Hitboxes);
     }

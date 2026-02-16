@@ -2,7 +2,9 @@
 //@-------------------------------imports-----------------------------------@//
 import { _defaultValues } from "./_defaultValues.js";
 
-//@--------------------------------Point------------------------------------@//
+//@--------------------------------Point------------------------------------@//¨
+//: not point as in simple coordinate it is more of a base class for renderable entities
+//: with position, color and id 
 export class Point{
     static IdCounter = 0;
     constructor(x, y, color = _defaultValues.bS_color){
@@ -73,17 +75,34 @@ export function renderPoint(
     ctx.stroke();
 }
 
-/**
- * 
+/** /// rotatePointAround() ///
+ ** rotates a point around a pivot by the given angle in radians
+ * @public
+ * @param  {{x: number, y: number}} point
+ * @param  {{x: number, y: number}} pivot
+ * @param  {number} angleInRadians 
+ * @returns {{x: number, y: number}} rotated point
  */
+export function rotatePointAround(point, pivot, angleInRadians){
+    const polar = xyToPolar(point.x - pivot.x, point.y - pivot.y);
+    const newAngle = polar.theta + angleInRadians;
+    return {
+        x: pivot.x + xFromPolar(polar.radius, newAngle),
+        y: pivot.y + yFromPolar(polar.radius, newAngle)
+    };
+}
+
+//* converts cartesian coordinates to polar coordinates
 export function xyToPolar(x, y) {
     const radius = Math.sqrt(x * x + y * y);
     const theta = Math.atan2(y, x);
     return { radius, theta };
 }
+//* finds x coordinate from polar coordinates
 export function xFromPolar(r, theta) {
     return r * Math.cos(theta);
 }
+//* finds y coordinate from polar coordinates
 export function yFromPolar(r, theta) {
     return r * Math.sin(theta);
 }

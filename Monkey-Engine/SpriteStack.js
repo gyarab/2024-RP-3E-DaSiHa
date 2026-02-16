@@ -5,7 +5,7 @@ import { vectorBetween } from "./LineSection.js";
 import { renderPoint } from "./Point.js";
 import { SpriteAnim }    from "./SpriteAnim.js";
 import { SpriteDyna }    from "./SpriteDyna.js";
-import { renderSpriteCollisionBox } from "./Sprite.js";
+import { renderCollisionBox } from "./Sprite.js";
 
 //@------------------------------SpriteStack--------------------------------@//
 export class SpriteStack extends Array {
@@ -23,7 +23,7 @@ export class SpriteStack extends Array {
      * @param {boolean} rBox - whether to render the bounding box
      * @returns {SpriteStack} itself for chaining
      */
-    render(ctx, rBox) {
+    render(ctx, rBox = false) {
         const renderOnlyOneAnchor = false;
         this.forEach(sprite => {
             sprite.render(ctx);
@@ -36,9 +36,8 @@ export class SpriteStack extends Array {
             ctx.setLineDash([]);
             // draw all sprites' bounding boxes 
             this.forEach(sprite => {
-                renderSpriteCollisionBox(
-                    sprite._x, sprite._y, sprite._width, sprite._height,
-                    ctx, sprite._color, sprite._strokeWidth, !renderOnlyOneAnchor
+                renderCollisionBox(
+                    sprite, ctx, !renderOnlyOneAnchor
                 );
             });
             // draw anchor point

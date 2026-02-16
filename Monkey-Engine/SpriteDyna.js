@@ -1,6 +1,8 @@
 // @Autor: Bendl Šimon
+//@-------------------------------imports-----------------------------------@//
 import { SpriteAnim } from './SpriteAnim.js';
 
+//@-----------------------------SpriteDyna----------------------------------@//
 export class SpriteDyna extends SpriteAnim{
     constructor(x, y, width, height, spritePath = []){
         super  (x, y, width, height, spritePath); 
@@ -26,18 +28,18 @@ export class SpriteDyna extends SpriteAnim{
      ** @returns {SpriteDyna} itself for chaining
      */
     updatePos(){
-        if (this._isGoRight && !this._isGoLeft) {
-            this.x = this._x + this._xSpeed;
-        }
-        if (this._isGoLeft && !this._isGoRight) {
-            this.x = this._x - this._xSpeed;
-        }
-        if (this._isGoUp && !this._isGoDown) {
-            this.y = this._y - this._ySpeed;
-        }
-        if (this._isGoDown && !this._isGoUp) {
-            this.y = this._y + this._ySpeed;
-        }
+        let dx = 0;
+        let dy = 0;
+
+        if (this._isGoRight) dx += this._xSpeed;
+        if (this._isGoLeft)  dx -= this._xSpeed;
+
+        if (this._isGoDown) dy += this._ySpeed;
+        if (this._isGoUp)   dy -= this._ySpeed;
+
+        this.x = this._x + dx;
+        this.y = this._y + dy;
+
         return this;
     }
 

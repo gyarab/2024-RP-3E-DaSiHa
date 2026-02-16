@@ -1,6 +1,7 @@
 //@Autor: Bendl Šimon
 //@-------------------------------imports-----------------------------------@//
 import { _defaultValues } from './_defaultValues.js';
+import { renderPolygon } from './Tetragon.js';
 import { renderPoint } from './Point.js';
 import {Rectangle} from './Rectangle.js';
 
@@ -18,20 +19,20 @@ export class Sprite extends Rectangle{
         this._color = _defaultValues.s_color;
 
         this._blur = null;
-        this._rFilter = null;
-
         
         if (spritePath){
             this.loadImg(spritePath);
         }
     }
     
+    //@---functions---@//
     /** /// loadImg() ///
      ** loads the image from the given path 
      * @param {string} spritePath - path to the image
      * @returns {Sprite} itself for chaining
      */
     loadImg(spritePath) {
+        this._spritePath = spritePath;
         this._sprite = new Image();
         this._sprite.src = spritePath;
         this._sprite.onload = () => {
@@ -52,20 +53,18 @@ export class Sprite extends Rectangle{
      */
     render(ctx , rBox = null) {
         this._ctxCache = ctx;
-        if(rBox) renderSpriteCollisionBox(
-            this._x, this._y, this._width, this._height,
-            ctx, this._color, this._strokeWidth
-        );
-        if(this._isLoaded){
-            ctx.save();
-            if (this._blur    !== null) ctx.filter = `blur(${this._blur}px)`;
-            if (this._rFilter !== null) ctx.filter = this._rFilter;
-            ctx.drawImage(this._sprite, this._x, this._y, this._width, this._height);
-            ctx.restore();
-            ctx.filter = 'none';
-        }else{
+        if (rBox) renderCollisionBox(this, ctx);
+        if (!this._isLoaded) { 
             console.warn("Sprite " + this._id + " was not able to load");
+            return this;
         }
+        renderImg(
+            this._sprite, ctx,
+            {    x: this._x    ,      y: this._y     },
+            {width: this._width, height: this._height},
+            this._rotation(), this._blur
+        );
+
         return this;
     }
 
@@ -77,6 +76,7 @@ export class Sprite extends Rectangle{
     clone(takesMoreSpace = false){
         const clone = new Sprite(this._x, this._y, this._width, this._height);
         clone._strokeWidth = this._strokeWidth; clone._color = this._color;
+
         if (takesMoreSpace){
             clone.loadImg(this._sprite.src);
             return clone;
@@ -86,34 +86,88 @@ export class Sprite extends Rectangle{
             return clone;
         }
     }
+
+    //@---setters---@//
+    set blur(newValue){
+        this._blur = newValue;
+        return this;
+    }
+    set rFilter(newValue){
+        this._rFilter = newValue;
+        return this;
+    }
+    /** //? not sure if I want to tolerate this ?
+     * @deprecated Use loadImg(path) instead.
+     */
+    set spritePath(newValue){
+        this.loadImg(newValue);
+        return this;
+    }
+    /** //? not sure if I want to tolerate this ?
+     * @deprecated Use loadImg(path) instead.
+     */
+    set sprite(newValue){
+        this.loadImg(newValue);
+        return this;
+    }
+
 }
 
-//@------------------------------helpFunc-----------------------------------@//¨
+//@------------------------------helpFunc-----------------------------------@//
 /** /// renderSpriteCollisionBox() ///
-** renders the bounding box of the Sprite
-* @public
-* @param {CanvasRenderingContext2D} ctx - the context
-* @param {boolean} rPoint - whether to render the anchor point
-* @returns {Sprite} itself for chaining
-*/
-export function renderSpriteCollisionBox(
-    x,y,width,height,ctx,
-    color       = _defaultValues.bS_color,
-    strokeWidth = _defaultValues.bS_strokeWidth,
-    rPoint = _defaultValues.s_renderPointAsWell
-){
-    const ofset = strokeWidth / 2;
-    x += ofset; width  -= strokeWidth; 
-    y += ofset; height -= strokeWidth;
-    ctx.strokeStyle = color;
-    ctx.lineWidth = strokeWidth;
-    ctx.strokeRect(x, y, width, height);
-    if (rPoint) renderPoint(x, y, ctx, color, strokeWidth);
-    return this;
+ ** renders the bounding box of the Sprite
+ * @public
+ * @param {Sprite} Sprite - the Sprite to render the bounding box for
+ * @param {CanvasRenderingContext2D} ctx - the context
+ * @param {boolean} rPoint - whether to render the anchor point
+ * @returns {void}
+ */
+export function renderCollisionBox(Sprite, ctx,
+    rPoint = _defaultValues.s_renderPointAsWell){
+        renderPolygon(Sprite._points, ctx, Sprite._color, Sprite._strokeWidth);
+        if (rPoint)renderPoint(Sprite._x, Sprite._y, ctx, Sprite._color, Sprite._strokeWidth);
 }
 
-/*------------------------Sprite-EXAMPLE---------------------------
+/** /// renderImg() ///
+ ** renders image on the given context
+ * @public
+ * @param {Image} img
+ * @param {CanvasRenderingContext2D} ctx - the context
+ * @param {Array<{x: number, y: number}>} position to render
+ * @param {Array<{width: number, height: number}>} size
+ * @param {roation} Rbox - whether to render the bounding box
+ * @returns {void}
+ * 
+ */
+export function renderImg(img, ctx, position, size,  rotation = 0, blur = null){
+    ctx.save();
+    if (blur !== null) ctx.filter = `blur(${blur}px)`;
 
+    if (Math.abs(rotation) > 0.00001) {
+        const center = {
+            x: position.x + size.width / 2,
+            y: position.y + size.height / 2
+        }
+        ctx.translate(center.x, center.y);
+        ctx.rotate(rotation);
+
+        ctx.drawImage(
+            img,
+            -size.width / 2,
+            -size.height / 2,
+            size.width,
+            size.height
+        );
+    } else {
+        ctx.drawImage( img, position.x, position.y, size.width, size.height);
+    }
+    ctx.restore();
+}
+
+
+
+//@------------------------------examples----------------------------------@// 
+/*--------------------------------------------------------------------------
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 const pathToImgs = "/Game_01_Ledvadva/sprites/Player/RED/";
@@ -150,6 +204,7 @@ const s5 = new Sprite(1010,10,200, 250);
 s5.loadImg(pathToImgs + "rR/6.png");
 await wait(1000);
 
+s5.rotateBy(Math.PI / 4);
 s5.render(ctx,true);
 
 const s6 = new Sprite(1260,10,200, 250);

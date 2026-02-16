@@ -67,12 +67,13 @@ const _0006 = new Rectangle(1808,  908,   72, 124, 'green');
 ////---------//               Endlevel                 ////
 const endOfLevel0 = new PointerToHub( 820, 704, 152, 76,);
 const endOfLevel1 = new PointerToHub(1248, 704, 152, 76);
-const HitBoxes = [
-_s001, _s002, _s003, _s004,
-_0001, _0002, _0003, _0004, _0005, _0006, _0007, _0008,
-_1001, _1002, _1003, _1004, _1005, _1006, _1007, _1008, _1009, _1010,
-endOfLevel0, endOfLevel1
-];
+const HitBoxes = new SpriteStack();
+HitBoxes.push(
+    _s001, _s002, _s003, _s004,
+    _0001, _0002, _0003, _0004, _0005, _0006, _0007, _0008,
+    _1001, _1002, _1003, _1004, _1005, _1006, _1007, _1008, _1009, _1010,
+    endOfLevel0, endOfLevel1
+);
 
 //@-------------------------------VISUALS----------------------------------@//
 const pathTolvl = "../Game_01_Ledvadva/sprites/Lvl-02/";

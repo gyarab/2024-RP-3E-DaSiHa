@@ -28,13 +28,22 @@
             "bold": true,
             "italic": false
         },
+        {   // :        HIGHLIGHT         : //
+            "tag": ":", 
+            "color": "#FF8C00",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "#transparent",
+            "bold": true,
+            "italic": false
+        },
         {   // TODO:  NEEDS TO BE DONE      //
             "tag": "todo", 
             "color": "#FF8C00",
             "strikethrough": false,
             "underline": false,
             "backgroundColor": "#3D270B",
-            "bold": false,
+            "bold": true,
             "italic": false
         },
         {   // //         HEADLINE          //

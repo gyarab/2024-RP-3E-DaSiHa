@@ -42,9 +42,11 @@ from '../../Monkey-Engine/PlatformerLib.js';
     const _0008 = new Solid(    0,   0,    8, 1080);
     const _0009 = new Solid( 1912,   0,    8, 1080);
 ////---------//                Projectiles                    ////
+/*
     const scissors = new Scissors(200, 744);
     scissors._isGoRight = true
     scissors._xSpeed = 3.5;
+*/
 ////---------//                   Pushable                    ////
     const box  = new Box(1000, 870, 3);
 ////---------//                 Interactable                  ////
@@ -79,7 +81,7 @@ const ctx = canvas.getContext('2d');
     export function RESTART_01(){ 
             ctx.reset();
 
-            scissors.moveTo(200, 744);
+            //scissors.moveTo(200, 744);
 
             box.moveTo(1000, 870);
             box._xVelocity = 0;
@@ -122,12 +124,12 @@ const ctx = canvas.getContext('2d');
 
         if (!pauseM) box.updatePos(Structure); 
         box.render(ctx, infoM);
-
+        /*
         if (scissors._x  > 1920 ){ scissors._x = 0 - scissors._width; };
         scissors.render(ctx, infoM); scissors.updateImage();
         if (!pauseM) scissors.updatePos(); 
         if (playersColideWith(scissors) !== false){ Ledvadva.shouldRestart = true;}
-
+        */
         steps.render(ctx);
         if (infoM ||  playersColideWith(Forgrnd) !== false){
             ForgAct.render(ctx); } else { Forgrnd.render(ctx); 

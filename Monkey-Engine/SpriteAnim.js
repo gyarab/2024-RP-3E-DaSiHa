@@ -1,56 +1,20 @@
 // @Autor: Bendl Šimon
 //@-------------------------------imports-----------------------------------@//
 import { _defaultValues } from './_defaultValues.js';
-import { renderSpriteCollisionBox } from './Sprite.js';
-import { Sprite } from './Sprite.js';
+import { Sprite, renderImg,renderCollisionBox } from './Sprite.js';
 
 //@-------------------------------SpriteAnim--------------------------------@//
 export class SpriteAnim extends Sprite{
     constructor(x, y, width, height, spritePaths = []){
         super  (x, y, width, height, null); 
         
-        this._frames = [];
-        this._animTick = 0;
-        this._animSlow = _defaultValues.sA_animSlow;
-        this._currentFrame = 0;
-        
-        // ? not sure if I want it here (maybe push to Sprite) ? //
-        this._renderWidth = width;
-        this._renderHeight = height;
-        this._renderDir = null;
-
+        this.Anim = new Animator(spritePaths);
         if (spritePaths){
             this.loadImg(spritePaths);
         }
     }
 
-    /** /// loadImg() ///
-     ** loads the images from the given paths
-     * @param {string[]} spritePaths 
-     * @returns {SpriteAnim} itself for chaining
-     */
-    loadImg(spritePaths) {
-        spritePaths.forEach(path => {
-            const img = new Image();
-            img.src = path;
-            this._frames.push(img);
-        });
-        return this;
-    }
-
-    /** /// updateImage() ///
-     ** updates the current frame based on the animation speed  
-     * @returns {SpriteAnim} itself for chaining
-     */
-    updateImage(){
-        this._animTick += 1;
-        if (this._animTick > this._animSlow){
-            this._currentFrame = (this._currentFrame + 1) % this._frames.length;
-            this._animTick = 0;
-        }
-        return this;
-    }
-
+    //@---functions---@//
     /** /// render() ///
      ** renders the SpriteAnim on the given context 
      * @param {CanvasRenderingContext2D} ctx - the context 
@@ -59,36 +23,44 @@ export class SpriteAnim extends Sprite{
      */
     render(ctx,Rbox) {
         // even if calling super it should return {SpriteAnim}
-        if (!this._frames.length > 0) return super.render(ctx);
-        ctx.save();
-        const img = this._frames[this._currentFrame];
-        let renderX;
-        let renderY;
+        if (!this.Anim._frames.length > 0) return super.render(ctx);
+        const img = this.Anim._frames[this.Anim._currentFrame];
         if (img.complete) {
-            const offsets = {
-                top:    {x: - (this._renderWidth - this._width) / 2, y: -this._renderHeight                      },
-                left:   {x: -  this._renderWidth,                    y: - (this._renderHeight - this._height) / 2},
-                bottom: {x: - (this._renderWidth - this._width) / 2, y:                       + this._height     },
-                default:{x: - (this._renderWidth - this._width) / 2, y: - (this._renderHeight - this._height) / 2},
-                right:  {x:                      + this._width,      y: - (this._renderHeight - this._height) / 2}
-                
-            };
-            const {x: dx, y: dy} = offsets[this._renderDir] || offsets.default;
-            renderX = this._x + dx;
-            renderY = this._y + dy;
-    
-            ctx.drawImage(img, renderX, renderY, this._renderWidth, this._renderHeight);
+            renderImg(
+                img, ctx,
+                {    x: this._x    ,      y: this._y     },
+                {width: this._width, height: this._height},
+                this._rotation(), this._blur
+            )
         }
-        if (Rbox){
-            renderSpriteCollisionBox(
-                renderX, renderY, this._renderWidth, this._renderHeight,
-                ctx, this._color, this._strokeWidth
-            );
-        }
+        if (Rbox) renderCollisionBox( this, ctx);
+        
         ctx.restore(); 
         return this;
     }
 
+    //: proxi to Animator function
+    /** /// loadImg() ///
+     ** loads the images from the given paths
+     * @param {string[]} spritePaths 
+     * @returns {SpriteAnim} itself for chaining
+     */
+    loadImg(spritePaths) {
+        this.Anim.loadImg(spritePaths);
+        return this;
+    }
+
+    //: proxi to Animator functions
+    /** /// updateImage() ///
+     ** updates the current frame based on the animation speed  
+     * @returns {SpriteAnim} itself for chaining
+     */
+    updateImage(){
+        this.Anim.updateImage();
+        return this;
+    }
+
+    //: proxi to Animator functions
     /** /// clone() ///
      ** clones the SpriteAnim, Sprite images can be shared or reloaded 
      * @param {boolean} takesMoreSpace - whether to clone will share or reload images
@@ -96,59 +68,110 @@ export class SpriteAnim extends Sprite{
      */
     clone(takesMoreSpace = false) {
         const clone = new SpriteAnim(this._x, this._y, this._width, this._height);
-        clone._animSlow = this._animSlow;
-        clone._currentFrame = this._currentFrame;
-        clone._renderWidth = this._renderWidth;
-        clone._renderHeight = this._renderHeight;
-        clone._renderDir = this._renderDir;
-
-        if (takesMoreSpace){
-            clone.loadImg(this._frames.map(img => img.src));
-        }else{
-            clone._frames = this._frames;
-        }
+        clone.Anim = this.Anim.clone(takesMoreSpace);
         return clone;
     }
 
-    /*--------------------------Setters--------------------------*/
+    //@---setters---@//
     set currentFrame(newValue){
-        this.__currentFrame = newValue;
+        this.Anim.currentFrame = newValue;
+    }
+    set animTick (newValue){
+        this.Anim.animTick = newValue;
         return this;
     }
+    set animSlow(newValue){
+        this.Anim.animSlow = newValue;
+        return this;
+    }
+    /** //? not sure if I want to tolerate this ?
+     * @deprecated Use loadImg(paths) instead.
+     */
     set frames(newValue){
-        console.error("použij loadImg() degeši")
-        // ? not sure if I want to tolerate this ? //
-        this.loadImg(newValue);
+        this.Anim.loadImg(newValue);
         return this
     }
-    set animSlow(newValue){
+}
+//@-------------------------------helpClass----------------------------------@//
+//TODO: add frameWeight for more control over animation speed
+//TODO: add animation loop control (ping-pong, reverse, etc.)
+export class Animator {
+    constructor(frames = []) {
+        this._frames = [];
+        this._animTick = 0;
+        this._currentFrame = 0;
+        this._animSlow = _defaultValues.sA_animSlow;
+
+        if (frames.length) {this.loadImg(frames);}
+    }
+
+    //@---functions---@//
+    /** Loads image paths */
+    loadImg(paths) {
+        this._frames = [];
+        paths.forEach(path => {
+            const img = new Image();
+            img.src = path;
+            this._frames.push(img);
+        });
+        return this;
+    }
+
+    /** Updates animation frame */
+    updateImage() {
+        if (this._frames.length === 0) return this;
+
+        this._animTick++;
+        if (this._animTick > this._animSlow) {
+            this._currentFrame =
+                (this._currentFrame + 1) % this._frames.length;
+            this._animTick = 0;
+        }
+        return this;
+    }
+
+    /** Clone (share frames by default) */
+    clone(deep = false) {
+        const clone = new Animator([], this._animSlow);
+        clone._currentFrame = this._currentFrame;
+
+        if (deep) {
+            clone.load(this._frames.map(img => img.src));
+        } else {
+            clone._frames = this._frames;
+        }
+
+        return clone;
+    }
+
+    //@---setters---@//
+    set currentFrame(newValue) {
+        this._currentFrame = newValue;
+        return this;
+    }
+    set animTick(newValue) {
+        this._animTick = newValue;
+        return this;
+    }
+    set animSlow(newValue) {
         this._animSlow = newValue;
         return this;
     }
-    set width(newValue){
-        if (this._renderWidth == this._width){
-            this._renderWidth = newValue;
-        }
-        this._width = newValue;
-        return this;
-    }
-    set height(newValue){
-        if (this._renderHeight == this._height){
-            this._renderHeight = newValue;
-        }
-        this._height = newValue;
+    /** //? not sure if I want to tolerate this ?
+     * @deprecated Use loadImg(paths) instead.
+     * */
+    set frames(newValue) {
+        this.loadImg(newValue);
         return this;
     }
 }
-
 //@------------------------------examples----------------------------------@// 
-/*-------------------------------------------------------------------------
+/*--------------------------------------------------------------------------
 import { Tetragon } from '../Monkey-Engine/Tetragon.js';
 
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 const pathToImgs = "/Game_01_Ledvadva/sprites/Player/RED/";
-
 
 const bluescreen = new Tetragon(
     {x:0,y:0},
