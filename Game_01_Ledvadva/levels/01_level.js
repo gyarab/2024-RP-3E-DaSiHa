@@ -56,9 +56,8 @@ const HitBoxes = new SpriteStack
 HitBoxes.push(
     _0001, _0002, _0003, _0004,
     _0005, _0006, _0007, _0008,
-    _0009, pl, endOfLevel);
-
-let Structure;
+    _0009, pl, endOfLevel
+);
 
 //@------------------------------ VISUALS----------------------------------@//
 
@@ -79,26 +78,41 @@ const ctx = canvas.getContext('2d');
 
 ////---------//                  Restart                      ////
     export function RESTART_01(){ 
-            ctx.reset();
+        ctx.reset();
 
-            //scissors.moveTo(200, 744);
+        //scissors.moveTo(200, 744);
 
-            box.moveTo(1000, 870);
-            box._xVelocity = 0;
+        box.moveTo(1000, 870);
+        box._xVelocity = 0;
 
-            RESET_PLAYERS( {X:1200, Y:860}, {X:1300, Y:860} );
+        RESET_PLAYERS( {X:1200, Y:860}, {X:1300, Y:860} );
 
-            RESET_IRIS();   
-        }
-////---------//                  LvlLoop                      ////
+        RESET_IRIS();   
+    }
+////---------//                Initialize                     ////
     //* flags for Mainloop *//
     let infoM;
     let pauseM;
 
-    export function RENDER_01(){
+    //* structure of the level *//
+    let Structure;
+
+    export function INIT_01() {
+        Structure = new SpriteStack();
+        Structure.push(
+            _0001, _0002, _0003, _0004, _0005, _0006, _0007, _0008, _0009,
+            pl, box, endOfLevel,
+            Ledvadva.players[0], Ledvadva.players[1]
+        );
+    }
+    
+////---------//                  LvlLoop                      ////
+    export function RENDER_01(dt){
+
         infoM = Ledvadva.modes.infoMode;
         pauseM = Ledvadva.modes.pause;
 
+        if(!Structure) INIT_01();
 
         if(Ledvadva.shouldRestart){ 
             Ledvadva.iris.zoomDir = 1;
@@ -107,15 +121,6 @@ const ctx = canvas.getContext('2d');
             RESTART_01(); 
         }
         RENDER_IRIS(ctx);
-
-        //! why ut has to be in loop idk !!!
-        let Structure = new SpriteStack();
-        Structure.push( 
-            _0001, _0002, _0003, _0004, _0005, _0006, _0007, _0008, _0009,
-            pl,
-            box, endOfLevel,
-            Ledvadva.players[0], Ledvadva.players[1]
-        );
 
         backgrnd.render(ctx);
         endOfLevelSprite.render(ctx);

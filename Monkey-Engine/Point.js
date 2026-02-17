@@ -2,9 +2,9 @@
 //@-------------------------------imports-----------------------------------@//
 import { _defaultValues } from "./_defaultValues.js";
 
-//@--------------------------------Point------------------------------------@//¨
-//: not point as in simple coordinate it is more of a base class for renderable entities
-//: with position, color and id 
+//@--------------------------------Point------------------------------------@//
+//: not point as in simple coordinate it is more of a base class
+//: for renderable entities with position, color and id 
 export class Point{
     static IdCounter = 0;
     constructor(x, y, color = _defaultValues.bS_color){
@@ -32,7 +32,7 @@ export class Point{
      * @param {number} y 
      * @returns {Point} itself for chaining
      */
-    moveTo(x, y){
+    moveTo(x = this._x, y = this._y){
         this.x = x;
         this.y = y;
         return this;
@@ -98,12 +98,13 @@ export function xyToPolar(x, y) {
     const theta = Math.atan2(y, x);
     return { radius, theta };
 }
+
 //* finds x coordinate from polar coordinates
 export function xFromPolar(r, theta) {
     return r * Math.cos(theta);
 }
+
 //* finds y coordinate from polar coordinates
 export function yFromPolar(r, theta) {
     return r * Math.sin(theta);
 }
-

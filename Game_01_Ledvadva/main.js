@@ -99,19 +99,27 @@ window.addEventListener('load', () => {
         if (actions[key]) actions[key]();
     }
     ////--------------------------Mainloop---------------------------////
-    function Mainloop() {
+    let lastTime = performance.now();
+    function Mainloop(time) {
+        let dt = (time - lastTime) / 1000;
+        lastTime = time;
+        dt = Math.min(dt, 0.05);
+        
         switch (Ledvadva.currentlvl) {
-            case 0: RENDER_00(); break;
-            case 1: RENDER_01(); break;
-            case 2: RENDER_02(); break;
-            case 3: RENDER_03(); break;
-            case 4: RENDER_04(); break;
+            case 0: RENDER_00(dt); break;
+            case 1: RENDER_01(dt); break;
+            case 2: RENDER_02(dt); break;
+            case 3: RENDER_03(dt); break;
+            case 4: RENDER_04(dt); break;
             default: console.error("Level not found"); break;
         }
         Ledvadva.players[0]._wantInteract = "none";
         Ledvadva.players[1]._wantInteract = "none";
+
+         requestAnimationFrame(Mainloop);
     }
-    window.setInterval(Mainloop, 6, true);
+    requestAnimationFrame(Mainloop);
+
 });
 //@---------------------------Ledvadva functions--------------------------------@//
 
@@ -187,7 +195,6 @@ export function RENDER_IRIS(ctx){
     }
 }
     
-
 /** /// RESET_IRIS() ///
  * resets the iris to default state
  * @return void

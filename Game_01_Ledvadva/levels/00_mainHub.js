@@ -199,7 +199,7 @@ function showIndicatorsFor(interaction, interactable, heightOfHover = 1.3){
     //* flags for Mainloop *//
     let infoM;
     let pauseM;
-    export function RENDER_00(){
+    export function RENDER_00(dt){
         infoM = Ledvadva.modes.infoMode;
         pauseM = Ledvadva.modes.pause;
 

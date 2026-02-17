@@ -3,7 +3,7 @@
 import { _defaultValues } from './_defaultValues.js';
 import { renderPolygon } from './Tetragon.js';
 import { renderPoint } from './Point.js';
-import {Rectangle} from './Rectangle.js';
+import { Rectangle } from './Rectangle.js';
 
 //@-------------------------------Sprite------------------------------------@//
 export class Sprite extends Rectangle{

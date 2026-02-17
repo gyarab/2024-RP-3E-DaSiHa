@@ -14,31 +14,13 @@ export class SpriteAnim extends Sprite{
         }
     }
 
-    //@---functions---@//
-    /** /// render() ///
-     ** renders the SpriteAnim on the given context 
-     * @param {CanvasRenderingContext2D} ctx - the context 
-     * @param {boolean} rBox - whether to render the bounding box
-     * @returns {SpriteAnim} itself for chaining
-     */
-    render(ctx,Rbox) {
-        // even if calling super it should return {SpriteAnim}
-        if (!this.Anim._frames.length > 0) return super.render(ctx);
-        const img = this.Anim._frames[this.Anim._currentFrame];
-        if (img.complete) {
-            renderImg(
-                img, ctx,
-                {    x: this._x    ,      y: this._y     },
-                {width: this._width, height: this._height},
-                this._rotation(), this._blur
-            )
-        }
-        if (Rbox) renderCollisionBox( this, ctx);
-        
-        ctx.restore(); 
-        return this;
+    //@---getters---@//
+    //: proxi to Animator function
+    //  /// _currentSprite() ///  
+    _currentSprite(){
+         return this.Anim._currentSprite(); 
     }
-
+    //@---functions---@//
     //: proxi to Animator function
     /** /// loadImg() ///
      ** loads the images from the given paths
@@ -72,6 +54,30 @@ export class SpriteAnim extends Sprite{
         return clone;
     }
 
+    /** /// render() ///
+     ** renders the SpriteAnim on the given context 
+     * @param {CanvasRenderingContext2D} ctx - the context 
+     * @param {boolean} rBox - whether to render the bounding box
+     * @returns {SpriteAnim} itself for chaining
+     */
+    render(ctx,Rbox) {
+        // even if calling super it should return {SpriteAnim}
+        if (!this.Anim._frames.length > 0) return super.render(ctx);
+        const img = this.Anim._frames[this.Anim._currentFrame];
+        if (img.complete) {
+            renderImg(
+                img, ctx,
+                {    x: this._x    ,      y: this._y     },
+                {width: this._width, height: this._height},
+                this._rotation(), this._blur
+            )
+        }
+        if (Rbox) renderCollisionBox( this, ctx);
+        
+        ctx.restore(); 
+        return this;
+    }
+
     //@---setters---@//
     set currentFrame(newValue){
         this.Anim.currentFrame = newValue;
@@ -92,6 +98,7 @@ export class SpriteAnim extends Sprite{
         return this
     }
 }
+
 //@-------------------------------helpClass----------------------------------@//
 //TODO: add frameWeight for more control over animation speed
 //TODO: add animation loop control (ping-pong, reverse, etc.)
@@ -103,6 +110,11 @@ export class Animator {
         this._animSlow = _defaultValues.sA_animSlow;
 
         if (frames.length) {this.loadImg(frames);}
+    }
+    //@---getters---@//
+    /** Returns the current sprite*/
+    _currentSprite() {
+        return this._frames[this._currentFrame];
     }
 
     //@---functions---@//
