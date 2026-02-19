@@ -24,6 +24,32 @@ export class Circle extends Point {
         return this;
     }
 
+    /**
+     * 
+     */
+    moveTo(){
+        super.moveTo()
+
+    }
+
+    /**
+     * 
+     */
+    moveBy(){
+        super.moveBy
+    }
+
+    /** /// rotateAround() ///
+     ** rotates the Circle around pivot point by radians
+     * @param {number} pivotX
+     * @param {number} pivotY
+     * @param {number} angleInRadians
+     * @returns {Circle} itself for chaining
+     */
+    rotateAround(pivotX, pivotY, angleInRadians){
+        this.moveTo()
+    }
+
     //*------------------Setters--------------------*//
     set radius(newRadius){ this._radius = newRadius; }
 }
@@ -94,7 +120,6 @@ export class Iris extends Circle{
     }
 }
 //@------------------------------helpFunc----------------------------------@//
-
 /** /// renderCircle() ///
  ** renders an imaginary circle on the given context
  * @private
@@ -125,6 +150,10 @@ function renderCircle(
         ctx.stroke();
     }
 }
+
+/**
+ * 
+ */
 //@------------------------------examples----------------------------------@// 
 /*--------------------------------------------------------------------------
 import { Rectangle } from "./Rectangle.js";

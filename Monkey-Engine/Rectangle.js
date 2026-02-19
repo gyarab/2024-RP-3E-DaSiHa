@@ -7,30 +7,36 @@ import {Tetragon} from './Tetragon.js';
 export class Rectangle extends Tetragon{
     constructor(x, y, width, height, color = _defaultValues.bS_color){
         super(
-            {x: x        , y: y         }, //p1
-            {x: x + width, y: y         }, //p2
-            {x: x + width, y: y + height}, //p3
-            {x: x        , y: y + height}, //p4 
-            color  //color for fill or stroke style
+            {x: x        , y: y         },
+            {x: x + width, y: y         },
+            {x: x + width, y: y + height},
+            {x: x        , y: y + height}, 
+            color
         );
+        //* new properties
         this._width = width;
         this._height = height;
     }
+    //@---privateFunctions---@//
+    /** /// _copyPropsTo() ///
+     ** all new properties of Rectangle to copy, used for cloning
+     * @private
+     * @param {Object} target -ed object to copy into
+     * @returns {void} 
+     */
+    _copyPropsTo(target){
+        super._copyPropsTo(target);
+        target._x = this._x;
+        target._y = this._y;
+    }
 
-    //@---getters---@//
     /** /// _rotation() ///
      ** calculates the rotation angle of the Rectangle in radians based on its points 
      * @private
-     * @returns {number}angle in radians
+     * @returns {number} angle in radians
      */
     _rotation(){
-        const p0 = this._points[0];
-        const p1 = this._points[1];
-
-        return Math.atan2(
-            p1.y - p0.y,
-            p1.x - p0.x
-        );
+        return rotationOfRectangle(this._points);
     }
 
     /** /// _isRotated() ///
@@ -42,7 +48,7 @@ export class Rectangle extends Tetragon{
         return Math.abs(this._rotation()) > 0.00001;
     }
 
-    //@---functions---@//
+    //@---publicFunctions---@//
     //: kinda useless @override 
     /** /// render() ///
      ** renders the Rectangle on the given context 
@@ -50,7 +56,7 @@ export class Rectangle extends Tetragon{
      * @param {boolean} fill - whether to fill the Rectangle
      * @returns {Rectangle} itself for chaining
      */
-    render(ctx, fill){
+    render(ctx, fill = true){
         super.render(ctx, fill);
         return this;
     } 
@@ -107,17 +113,6 @@ export class Rectangle extends Tetragon{
         return this;
     }
 
-    /** /// clone() ///
-     ** creates a clone of the Rectangle 
-     *? color might not be cloned properly ?
-     * @returns {Rectangle} cloned Rectangle
-     */
-    clone(){
-        const clone = new Rectangle(this._x, this._y, this._width, this._height, this._color);
-        clone._strokeWidth = this._strokeWidth;
-        return clone;
-    }
-
     //@---setters---@//
     set x(newX){
         this._x = newX,
@@ -144,7 +139,7 @@ export class Rectangle extends Tetragon{
         this._points[3].y = this._y + newHeight
     }
     set points(newPoints){
-        console.error(
+        this._errOf(
             "Cannot set points of Rectangle directly,"+
             "risk of breaking the shape."+ "\n" +
             "Use setters for x, y, width and height instead."
@@ -152,18 +147,43 @@ export class Rectangle extends Tetragon{
     }
 
 }
-
+//@------------------------------helpFunc-----------------------------------@//
+/** /// rotationOfRectangle() ///
+ ** calculates the rotation angle of the Rectangle in radians based on its points
+ * @param {Array<{x: number, y: number}>} ptsOfRect 
+ * @returns {number} rotation angle in radians
+ */
+export function rotationOfRectangle(ptsOfRect){
+    const p0 = ptsOfRect[0];
+    const p1 = ptsOfRect[1];
+    return Math.atan2(
+        p1.y - p0.y,
+        p1.x - p0.x
+    );
+}
 //@------------------------------examples----------------------------------@// 
-/*---------------------------------------------------------------------------
+/*--------------------------------------------------------------------------
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 
-const r1 = new Rectangle(40, 25, 100, 100);
-const r2 = new Rectangle(50, 20, 60, 50);
-r1.render(ctx);
-r2.render(ctx);
+const r1 = new Rectangle( 40,  25, 100, 100, "red"  );
+const r2 = new Rectangle( 50,  20,  60,  50, "green");
+r1.render(ctx, true);
 
-if(r1.colides(r2)){
+const r3 = r1.clone()
+             .moveBy(600)
+             .render(ctx);
+
+const r4 = r1.clone()
+             .moveBy(600, 200)
+             .rotateBy(Math.PI / 4)
+             .render(ctx);
+
+if(r1.doesColideWith(r2)){
     r2.render(ctx, true);
 }
+
+console.log( "r1 a r3 type: " + r1.constructor.name + " a " + r3.constructor.name );
+
+
 /**/

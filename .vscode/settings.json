@@ -21,7 +21,7 @@
         },
         {   // *         HIGHLIGHT        * //
             "tag": "*", 
-            "color": "#lime",
+            "color": "#22c12c",
             "strikethrough": false,
             "underline": false,
             "backgroundColor": "transparent",

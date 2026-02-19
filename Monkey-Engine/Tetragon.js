@@ -2,17 +2,33 @@
 //@-------------------------------imports-----------------------------------@//
 import { _defaultValues } from './_defaultValues.js';
 import {intersectionOfLineSegments, vectorBetween} from './LineSection.js';
-import { Point, rotatePointAround} from './Point.js';
+import { Point, isPointInPolygon, rotatePointAround} from './Point.js';
 
 //@------------------------------Tetragon-----------------------------------@//
 export class Tetragon extends Point{
     constructor(p1, p2, p3, p4, color = _defaultValues.bS_color){
         super(p1.x, p1.y, color);
+        //* new properties
         this._points = [p1, p2, p3, p4];
+
+        //* old properties
         this._strokeWidth = _defaultValues.bS_strokeWidth;
     }
+    //@---privateFunctions---@//
+    /** /// _copyPropsTo() ///
+     ** all new properties of Tetragon to copy, used for cloning
+     * @private
+     * @param {Object} target -ed object to copy into
+     * @returns {void} 
+     */
+    _copyPropsTo(target){
+        super._copyPropsTo(target);
+        
+        //? shalow copy of points need further testing ?//
+        if ( target._isDeepClone) target._points = this._points.map(p => ({ x: p.x, y: p.y }));
+        if (!target._isDeepClone) target._points = this._points;
+    }
 
-    //@---getters---@//
     /** /// _centroid() ///
      ** calculates the centroid of an Tetragon
      * @private
@@ -22,14 +38,14 @@ export class Tetragon extends Point{
         return centroidOfPolygon(this._points);
     }
 
-    //@---functions---@//
+    //@---publicFunctions---@//
     /** /// render() ///
      ** renders the Tetragon on the given context
      * @param {CanvasRenderingContext2D} ctx - the context 
      * @param {boolean} fill - whether to fill the Tetragon
      * @returns {Tetragon} itself for chaining
      */
-    render(ctx, fill) {
+    render(ctx, fill = true) {
         renderPolygon(this._points, ctx, this._color, this._strokeWidth, fill);
         return this;
     }
@@ -78,18 +94,6 @@ export class Tetragon extends Point{
         this.rotateAround(centroid.x, centroid.y, angleInRadians)
         return this;
     }
-    
-    /** /// clone() ///
-     ** creates a clone of the Tetragon
-     *? color might not be cloned properly ?
-     * @returns {Tetragon} cloned Tetragon
-     */
-    clone(){
-        const points = this._points.map(p => ({ ...p }));
-        const clone = new Tetragon(...points, this._color); 
-        clone._strokeWidth = this._strokeWidth;
-        return clone
-    }
 
     /** /// doesColideWith() ///
      ** checks if the Tetragon colides with other (Tetragon,...)
@@ -108,7 +112,11 @@ export class Tetragon extends Point{
     }
     
     //@---setters---@//
-    set points (newPoints){ this._points = newPoints;}
+    set points (newPoints){
+        this.x = newPoints[0].x;
+        this.y = newPoints[0].y;
+        this._points = newPoints;
+    }
 }
 //@------------------------------helpFunc-----------------------------------@//
 /** /// rotatePolygonAround() ///
@@ -155,32 +163,13 @@ function movePolygonTo(ptsOfPoly, destPoint){
     }));
 }
 
-/** /// isPointInPolygon() ///
- ** calculates if a point is part of a polygon
- * @private
- * @param  {{x: number, y: number}} point
- * @param  {Array<{x: number, y: number}>} ptsOfPoly points of set polygon
- * @returns {boolean} true if the point is part of the polygon, false otherwise
- */
-function isPointInPolygon(point, ptsOfPoly) {
-    let x = point.x, y = point.y;
-    let inside = false;
-    for (let i = 0, j = ptsOfPoly.length - 1; i < ptsOfPoly.length; j = i++) {
-        let xi = ptsOfPoly[i].x, yi = ptsOfPoly[i].y;
-        let xj = ptsOfPoly[j].x, yj = ptsOfPoly[j].y;
-        let intersect = ((yi > y) != (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-        if (intersect) inside = !inside;
-    }
-    return inside;
-}
-
 /** /// centroidOfPolygon() ///
  ** calculates the centroid of a homogeneous polygon
- * @private
+ * @public
  * @param  {Array<{x: number, y: number}>} ptsOfPoly points of set polygon
  * @returns {{x: number, y: number}} centroid (center of mass) of the polygon
  */
-function centroidOfPolygon(ptsOfPoly){
+export function centroidOfPolygon(ptsOfPoly){
     let x = 0;  let y = 0;
     for (const point of ptsOfPoly) {
         x += point.x;  y += point.y;
@@ -324,24 +313,29 @@ const t4 = new Tetragon(
     'yellow'
 );
 
+
 t1.moveTo(300,275).render(ctx,true);
 t2.moveTo(300,100).render(ctx,true);
 t3.moveTo(850,500).render(ctx,true);
 t4.moveTo(700,650).render(ctx,true);
 
 
+const t5 = t3.clone().moveBy(500).render(ctx, true);
+const t6 = t4.clone().moveBy(500).render(ctx, true);
 
 console.log(
     "ColidesAnyPoints pro \n" +
-    "   t1 a t2: " + hasVertexInside(t1, t2) + "\n" +
-    "   t3 a t4: " + hasVertexInside(t3, t4) + "\n" +
-    "   t1 a t3: " + hasVertexInside(t1, t3) + "\n" +
+    "   t1 a t2: " + hasVertexInside(t1._points , t2._points) + "\n" +
+    "   t3 a t4: " + hasVertexInside(t3._points , t4._points) + "\n" +
+    "   t1 a t3: " + hasVertexInside(t1._points , t3._points) + "\n" +
     "doesColideWith pro \n" +
     "   t1 a t2: " + t1.doesColideWith(t2) + "\n" +
     "   t3 a t4: " + t3.doesColideWith(t4) + "\n" +
-    "   t1 a t3: " + t1.doesColideWith(t3)
+    "   t1 a t3: " + t1.doesColideWith(t3)  + "\n" +
+    "   t1 type: " + t1.constructor.name + "\n" +
+    "   t5 type: " + t5.constructor.name
 );
-
+/*
 function TetragonLoop (){
     t2.rotateAround(t2._x, t2._y, 0.02).render(ctx,true);
     t4.rotateBy(0.01).render(ctx,true);
