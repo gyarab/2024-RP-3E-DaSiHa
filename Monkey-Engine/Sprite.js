@@ -16,6 +16,7 @@ export class Sprite extends Rectangle{
 
         //* old properties
         this._color = _defaultValues.s_color;
+
         
     }
     //@---privateFunctions---@//
@@ -32,10 +33,9 @@ export class Sprite extends Rectangle{
         target._blur = this._blur;
         target._spritePath = this._spritePath;
         
-        if(this._ignoreLogsOf["Sprite"]) return;
         if (target._spritePath == null){
             target._isDeepClone = false;
-            this._errOf(
+            this._errs(
                 '! COPYING A SPRITE WITHOUT A PATH! (-_- )···' + "\n" +
                 "is being copied shallowly to " + target.constructor.name + 
                 "(" + target._id + "), sprite will be shared"
@@ -57,7 +57,7 @@ export class Sprite extends Rectangle{
         super._initializeFunc();
 
         if(this._isDeepClone){
-            if (this._sprite != null) return;
+            if (this._sprite == null) return;
             Sprite.prototype.loadImg.call(this, this._spritePath);
         }
     }
@@ -83,9 +83,11 @@ export class Sprite extends Rectangle{
      * @returns {Sprite} itself for chaining
      */
     render(ctx , rBox = false) {
+        ctx.save();
         if (rBox) renderCollisionBox(this, ctx);
         if (!this._isLoaded) return this;
         renderImg( this._sprite, ctx, this._points, this._blur);
+        ctx.restore();
         return this;
     }
 

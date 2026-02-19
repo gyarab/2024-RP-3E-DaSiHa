@@ -253,7 +253,7 @@ const sA = new SpriteAnim(
 )
 const sAs = sA.clone()
 
-console.log(sAs._animSlow);
+console.log(sAs.id);
 sAs.animSlow = 10;
 function SpriteAnimLoop (){
     bluescreen.render(ctx,true)
@@ -262,5 +262,5 @@ function SpriteAnimLoop (){
     sA.updateImage();
     sAs.updateImage();
 }
-window.setInterval(SpriteAnimLoop, 1);
+window.setInterval(SpriteAnimLoop, 1000);
 /**/ 

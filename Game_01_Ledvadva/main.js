@@ -13,7 +13,7 @@ import { Player } from  '../Monkey-Engine/PlatformerLib.js';
 ////------------------------> Ledvadva Manager <--------------------////
 const Ledvadva = {
     players : [
-        new Player(0, 0,"SKIN-01"),
+        new Player(0, 0,"SKIN-00"),
         new Player(0, 0,"SKIN-01")
     ],
     modes : {
@@ -116,7 +116,7 @@ window.addEventListener('load', () => {
         Ledvadva.players[0]._wantInteract = "none";
         Ledvadva.players[1]._wantInteract = "none";
 
-         requestAnimationFrame(Mainloop);
+        requestAnimationFrame(Mainloop);
     }
     requestAnimationFrame(Mainloop);
 

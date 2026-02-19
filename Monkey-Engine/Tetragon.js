@@ -13,6 +13,8 @@ export class Tetragon extends Point{
 
         //* old properties
         this._strokeWidth = _defaultValues.bS_strokeWidth;
+
+        if (!(this._ignoreInitOf["Tetragon"]))this._initializeFunc();
     }
     //@---privateFunctions---@//
     /** /// _copyPropsTo() ///
