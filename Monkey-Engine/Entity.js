@@ -54,7 +54,6 @@ export class Entity{
      * @return {void}
      */
     _initializeFunc(){
-        //console.log(this.constructor.name);
          if (this._id === undefined || this._id?.startsWith("TEMP")) {
             this._id =  Entity.IdCounter.toString().padStart(4, '0');
             Entity.IdCounter++;
@@ -110,7 +109,7 @@ export class Entity{
      */
     clone(deep = false){
         const clone = Object.create(this.constructor.prototype);
-        clone._isDeepClone = deep;
+        clone._cloneState = deep;
 
         this._copyPropsTo(clone);
         clone._initializeFunc();
@@ -121,6 +120,17 @@ export class Entity{
     //@---setters---@//
     set id (newId){
         this._errs("ID is read-only and auto-generated, cannot be set manually");
+    }
+
+    //@---getters---@//
+    get _isClone(){
+        return this._cloneState !== undefined;
+    }
+    get _isDeepClone(){
+        return this._cloneState === true;
+    }
+    get _isShallowClone(){
+        return this._cloneState === false;
     }
 }
 //@------------------------------helpFunc-----------------------------------@//

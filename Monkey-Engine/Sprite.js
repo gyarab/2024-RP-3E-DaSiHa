@@ -17,7 +17,7 @@ export class Sprite extends Rectangle{
         //* old properties
         this._color = _defaultValues.s_color;
 
-        
+        if (!(this._ignoreInitOf["Sprite"]))this._initializeFunc();
     }
     //@---privateFunctions---@//
     /** /// _copyPropsTo() ///
@@ -34,14 +34,18 @@ export class Sprite extends Rectangle{
         target._spritePath = this._spritePath;
         
         if (target._spritePath == null){
-            target._isDeepClone = false;
+            target.__isDeepClone = false;
             this._errs(
                 '! COPYING A SPRITE WITHOUT A PATH! (-_- )···' + "\n" +
                 "is being copied shallowly to " + target.constructor.name + 
-                "(" + target._id + "), sprite will be shared"
+                "(" + target._id + "), without loading the image"
             );
         }
-        if (!target._isDeepClone){
+        if (target._isShallowClone){
+            if (this._sprite == null){
+                target._sprite = null;
+                return;
+            }
             this._sprite.addEventListener('load', () => {                
                 target._sprite = this._sprite; 
             });
@@ -55,9 +59,11 @@ export class Sprite extends Rectangle{
      */
     _initializeFunc(){
         super._initializeFunc();
-
-        if(this._isDeepClone){
-            if (this._sprite == null) return;
+        console.log(this._color);
+        if(!this._isClone){
+            Sprite.prototype.loadImg.call(this, this._spritePath);
+        }
+        if(this._isDeepClone && this._spritePath != null){
             Sprite.prototype.loadImg.call(this, this._spritePath);
         }
     }
@@ -69,6 +75,10 @@ export class Sprite extends Rectangle{
      * @returns {Sprite} itself for chaining
      */
     loadImg(spritePath) {
+        if (spritePath === undefined || spritePath === null) {
+            this._errs("spritePath is not set");
+            return this;
+        }
         this._spritePath = spritePath;
         this._sprite = new Image();
         this._sprite.src = spritePath;
@@ -97,7 +107,7 @@ export class Sprite extends Rectangle{
         return this;
     }
     set rFilter(newValue){
-        this._rFilter = newValue;
+        this._rFilter = newValue; 
         return this;
     }
     /** //? not sure if I want to tolerate this ?
@@ -111,7 +121,7 @@ export class Sprite extends Rectangle{
      * @deprecated Use loadImg(path) instead.
      */
     set sprite(newValue){
-        this.loadImg(newValue);
+       this.loadImg(newValue);
         return this;
     }
 
@@ -124,7 +134,6 @@ export class Sprite extends Rectangle{
         return false;
     }
 }
-
 //@------------------------------helpFunc-----------------------------------@//
 /** /// renderSpriteCollisionBox() ///
  ** renders the bounding box of the Sprite
@@ -197,8 +206,6 @@ export function isImgLoaded(img){
     if (img && img.complete)return true;
     return false;
 }
-
-
 //@------------------------------examples----------------------------------@// 
 /*--------------------------------------------------------------------------
 const canvas = document.getElementById('herniRozhraní');
@@ -213,21 +220,20 @@ function wait(ms) {
 const s1 = new Sprite(10,10,200, 250, pathToImgs + "stand.png");
 const s2 = new Sprite(260,10,200, 250);
 const s3 = new Sprite(510,10,200, 250).loadImg(pathToImgs + "stand.png");
-await wait(1000);
 const s4 = s3.clone().moveBy(250,0); s3.color = "blue"; s4.color = "green";
 const s5 = new Sprite(1010,10,200, 250).loadImg(pathToImgs + "rR/6.png");
+
 console.log(s1._id, s2._id, s3._id, s4._id, s5._id);
 
 window.setInterval(SpriteLoop, 8);
+SpriteLoop()
 function SpriteLoop (){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     s1.render(ctx);
     s2.render(ctx);
-    s3.render(ctx, true);
-    s4.render(ctx);
+    s3.render(ctx,true);
+    s4.render(ctx,true);
     s5.render(ctx,true);
-    s5.render(ctx,true);
-    s5.rotateBy(Math.PI / 400);
     
 }
 
