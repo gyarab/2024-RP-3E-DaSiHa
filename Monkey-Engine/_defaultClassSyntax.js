@@ -10,17 +10,19 @@ class MainClass extends Entity{
         //* old properties
 
         if (!(this._ignoreInitOf["MainClass"]))this._initializeFunc();
+
     }
-    //@---privateFunctions---@//
+    //@--- private ---@//
+
+    //@--- publice ---@//
    
-    //@---publicFunctions---@//
 
-    //@---setters---@//
+    //@--- setters ---@//
 
-    //@---getters---@//
+    //@--- getters ---@//
 
 }
-//@------------------------------CompClass---------------------------------@//
+//@---                           CompClass                               ---@//
 class CompClass extends Entity{
     constructor(){
         super();
@@ -40,9 +42,9 @@ class CompClass extends Entity{
     //@---getters---@//
 
 }
-//@------------------------------helpFunc-----------------------------------@//
+//@---                           helpFunc                                ---@//
+//@---                           examples                                ---@//
 
-//@------------------------------examples----------------------------------@// 
 /*--------------------------------------------------------------------------
 
 /**/ 

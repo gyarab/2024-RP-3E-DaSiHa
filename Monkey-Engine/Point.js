@@ -14,8 +14,8 @@ export class Point extends Entity{
         this._x = x; this._color = color;
         this._y = y; this._strokeWidth = _defaultValues.bS_strokeWidth;
 
-        if (!(this._ignoreInitOf["Point"]))this._initializeFunc();
-    }
+        this._INIT("Point");    
+        }
     //@---privateFunctions---@//
     /** /// _copyPropsTo() ///
      ** all new properties of Point to copy, used for cloning

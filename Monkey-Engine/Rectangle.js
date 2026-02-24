@@ -16,7 +16,7 @@ export class Rectangle extends Tetragon{
         //* new properties
         this._width = width;
         this._height = height;
-
+        this._ignoreLogsOf["Rectangle"] = true;
         if (!(this._ignoreInitOf["Rectangle"]))this._initializeFunc();
     }
     //@---privateFunctions---@//

@@ -3,12 +3,12 @@ import { SpriteStack } from "../../Monkey-Engine/SpriteStack.js";
 import { Sprite } from "../../Monkey-Engine/Sprite.js";
 import { Rectangle } from "../../Monkey-Engine/Rectangle.js";
 import { SpriteDyna } from "../../Monkey-Engine/SpriteDyna.js";
-import { SpriteAnim } from "../../Monkey-Engine/SpriteAnim.js";
 import { Platform, SemiSolid, Solid, PointerToHub, PointerToHubSprite }
 from "../../Monkey-Engine/PlatformerLib.js";
 import { RENDER_PLAYERS , RENDER_IRIS, RENDER_MODES, 
          Ledvadva, RESET_PLAYERS, RESET_IRIS, playersColideWith,      }
 from "../../Game_01_Ledvadva/main.js";
+import { SpriteA } from "../../Monkey-Engine/SpriteAnim.js";
 
 //@------------------------------STRUCTURE---------------------------------@//
 ////---------//                 Arrows                        ////
@@ -27,7 +27,7 @@ for (let i = 0; i < 16; i++) {
 ////---------//                 Warnings                      ////
 const warnings = new SpriteStack();
 for (let i = 0; i < 16; i++) {
-    const warn = new SpriteAnim(0,0,20,100,[
+    const warn = new SpriteA(0,0,20,100,[
         "../Game_01_Ledvadva/sprites/Indicators/warn-0.png",
         "../Game_01_Ledvadva/sprites/Indicators/warn-1.png"
     ]);

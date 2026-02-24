@@ -5,7 +5,7 @@ import { Solid, Platform } from "../../Monkey-Engine/PlatformerLib.js";
 import { Sprite }     from '../../Monkey-Engine/Sprite.js';
 import { SpriteDyna } from "../../Monkey-Engine/SpriteDyna.js";
 import { SpriteStack } from "../../Monkey-Engine/SpriteStack.js";
-import { SpriteAnim } from "../../Monkey-Engine/SpriteAnim.js";
+import { SpriteA } from "../../Monkey-Engine/SpriteAnim.js";
 import { Tetragon } from "../../Monkey-Engine/Tetragon.js";
 
 //@------------------------------STRUCTURE----------------------------------@//
@@ -57,7 +57,7 @@ const Fargrnd  = new Sprite(0, 0, 1920, 1080,"");
 const Midgrnd  = new Sprite(0, 0, 1920, 1080,"");
 const Forgrnd  = new Sprite(0, 0, 1920, 1080,"");
 
-const barrel = new SpriteAnim(964, 964, 264, 112, [ 
+const barrel = new SpriteA(964, 964, 264, 112, [ 
     pathTolvl +  "spil/1.png", pathTolvl + "spil/2.png" ,
     pathTolvl +  "spil/3.png", pathTolvl + "spil/4.png" ,
     pathTolvl +  "spil/5.png", pathTolvl + "spil/6.png" ,
@@ -81,7 +81,7 @@ barrel._animSlow = 5;
     const wheelsAndPiston = new SpriteStack();
 
     for (let i = 0; i < 4; i++) {
-        const w = new SpriteAnim(0, 0, 23*tSize, 23*tSize, [ 
+        const w = new SpriteA(0, 0, 23*tSize, 23*tSize, [ 
             pathToTrain +  "wheel/1.png", pathToTrain + "wheel/2.png" ,
             pathToTrain +  "wheel/3.png", pathToTrain + "wheel/4.png" ,
             pathToTrain +  "wheel/5.png",
@@ -90,7 +90,7 @@ barrel._animSlow = 5;
         wheels.push(w);
     }
 
-    const sw1  = new SpriteAnim(0, 0, 17*tSize, 17*tSize, [pathToTrain +  "wheelie/1.png", pathToTrain + "wheelie/2.png"]);
+    const sw1  = new SpriteA(0, 0, 17*tSize, 17*tSize, [pathToTrain +  "wheelie/1.png", pathToTrain + "wheelie/2.png"]);
     sw1._animSlow = 16 ;
     const sw2 = sw1.clone(); const sw3 = sw1.clone(); const sw4 = sw1.clone();
     sw1.moveTo(124*tSize, 11*tSize);    wheels.push(sw1);
@@ -101,7 +101,7 @@ barrel._animSlow = 5;
     wheels[2].moveTo( 60*tSize, 4*tSize); wheels[2]._currentFrame = 1;
     wheels[3].moveTo( 91*tSize, 4*tSize); wheels[3]._currentFrame = 1;
 
-    const piston = new SpriteAnim( 0, 0, 138*tSize, 27*tSize,[
+    const piston = new SpriteA( 0, 0, 138*tSize, 27*tSize,[
         pathToTrain + "piston/1.png", pathToTrain + "piston/2.png", pathToTrain + "piston/3.png", pathToTrain + "piston/4.png",
         pathToTrain + "piston/5.png", pathToTrain + "piston/6.png", pathToTrain + "piston/7.png", pathToTrain + "piston/8.png",
     ]);
@@ -128,14 +128,14 @@ barrel._animSlow = 5;
     const cRoof = new Sprite(0, 0, 126*tSize, 10*tSize, pathToTrain + "roof/s.png");
     cTop.push(cRoof); cTop.moveTo(3*tSize, 0*tSize);
 
-    const cMidBase = new SpriteAnim(0, 0, 124*tSize, 46*tSize,[pathToTrain + "cart/t1.png"       , pathToTrain + "cart/t2.png"       ]);
-    const cDoor    = new SpriteAnim(0, 0,  30*tSize, 46*tSize,[pathToTrain + "cart/door/t1.png"  , pathToTrain + "cart/door/t2.png"  ]);
-    const cWin1    = new SpriteAnim(0, 0,  11*tSize,  7*tSize,[pathToTrain + "cart/window/t1.png", pathToTrain + "cart/window/t2.png"]);
-    const topRail  = new SpriteAnim(0, 0, 126*tSize,  5*tSize,[pathToTrain + "topRail/1.png"     , pathToTrain + "topRail/2.png"     ]);
-    const botRail  = new SpriteAnim(0, 0, 126*tSize,  7*tSize,[pathToTrain + "botRail/1.png"]);
-    const cInside  = new SpriteAnim(0, 0, 124*tSize, 46*tSize,[pathToTrain + "cart/1.png"   ]);
+    const cMidBase = new SpriteA(0, 0, 124*tSize, 46*tSize,[pathToTrain + "cart/t1.png"       , pathToTrain + "cart/t2.png"       ]);
+    const cDoor    = new SpriteA(0, 0,  30*tSize, 46*tSize,[pathToTrain + "cart/door/t1.png"  , pathToTrain + "cart/door/t2.png"  ]);
+    const cWin1    = new SpriteA(0, 0,  11*tSize,  7*tSize,[pathToTrain + "cart/window/t1.png", pathToTrain + "cart/window/t2.png"]);
+    const topRail  = new SpriteA(0, 0, 126*tSize,  5*tSize,[pathToTrain + "topRail/1.png"     , pathToTrain + "topRail/2.png"     ]);
+    const botRail  = new SpriteA(0, 0, 126*tSize,  7*tSize,[pathToTrain + "botRail/1.png"]);
+    const cInside  = new SpriteA(0, 0, 124*tSize, 46*tSize,[pathToTrain + "cart/1.png"   ]);
     const cShadow  = new Sprite    (0, 0, 124*tSize, 46*tSize,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
-    const cBars    = new SpriteAnim(0, 0,  18*tSize, 15*tSize,[
+    const cBars    = new SpriteA(0, 0,  18*tSize, 15*tSize,[
         pathToTrain + "cart/bars/1.png", pathToTrain + "cart/bars/2.png", 
         pathToTrain + "cart/bars/3.png", pathToTrain + "cart/bars/4.png", 
         pathToTrain + "cart/bars/5.png", pathToTrain + "cart/bars/6.png",

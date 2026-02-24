@@ -59,7 +59,6 @@ export class Sprite extends Rectangle{
      */
     _initializeFunc(){
         super._initializeFunc();
-        console.log(this._color);
         if(!this._isClone){
             Sprite.prototype.loadImg.call(this, this._spritePath);
         }

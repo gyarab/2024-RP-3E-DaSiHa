@@ -3,11 +3,11 @@
 import { Ledvadva, RENDER_IRIS, RENDER_MODES, RENDER_PLAYERS, RESET_IRIS, RESET_PLAYERS } from "../../Game_01_Ledvadva/main.js";
 import { Sprite }     from '../../Monkey-Engine/Sprite.js';
 import { SpriteStack } from "../../Monkey-Engine/SpriteStack.js";
-import { SpriteAnim } from "../../Monkey-Engine/SpriteAnim.js";
+import { SpriteAnim } from "../../Monkey-Engine/2.0.js";
 //@------------------------------STRUCTURE----------------------------------@//
 const Hitboxes = new SpriteStack();
 
-//@-------------------------------VISUALS-----------------------------------@//
+//@-------------------------------VISUALS-----------------------------------@/
 
 
 ////---------//                    Train                   ////
@@ -25,12 +25,12 @@ const bW = new SpriteAnim(0, 0, 23*tSize, 23*tSize, [
     pathToTrain +  "wheel/3.png", pathToTrain + "wheel/4.png" ,
     pathToTrain +  "wheel/5.png",
 ]);
-bW._animSlow = 20;
+bW.Anim._slow = 20;
 // smallWheel
 const sW  = new SpriteAnim(0, 0, 17*tSize, 17*tSize, [
     pathToTrain +  "wheelie/1.png", pathToTrain + "wheelie/2.png" 
 ]);
-sW._animSlow = 16 ;
+sW.Anim._slow = 16 ;
 ////---------//                   Engine                   ////
 export class Engine extends SpriteStack{
     constructor(){
@@ -75,7 +75,7 @@ export class Engine extends SpriteStack{
             pathToTrain + "piston/5.png", pathToTrain + "piston/6.png", 
             pathToTrain + "piston/7.png", pathToTrain + "piston/8.png",
         ]);
-        piston._animSlow = 32;
+        piston.Anim._slow = 4;
         const gears  = new SpriteStack();
         gears.push(
             wheels,
@@ -85,6 +85,7 @@ export class Engine extends SpriteStack{
         );
         this.push(gears.moveTo(10*tSize, 71*tSize)).moveTo(0, 0);
 
+        console.warn(piston.Anim._slow)
     }
 
     /** /// render() ///
@@ -125,7 +126,7 @@ export class Cart extends SpriteStack{
         const topRail  = new SpriteAnim(0, 0, 126*tSize,  5*tSize,[pathToTrain + "topRail/1.png"     , pathToTrain + "topRail/2.png"     ]);
         const botRail  = new SpriteAnim(0, 0, 126*tSize,  7*tSize,[pathToTrain + "botRail/1.png"]);
         const cInside  = new SpriteAnim(0, 0, 124*tSize, 46*tSize,[pathToTrain + "cart/1.png"   ]);
-        const cShadow  = new Sprite    (0, 0, 124*tSize, 46*tSize,"../Game_01_Ledvadva/sprites/Hub/shadow.png");
+        const cShadow  = new SpriteAnim(0, 0, 124*tSize, 46*tSize,["../Game_01_Ledvadva/sprites/Hub/shadow.png"]);
         const cBars    = new SpriteAnim(0, 0,  18*tSize, 15*tSize,[
             pathToTrain + "cart/bars/1.png", pathToTrain + "cart/bars/2.png", 
             pathToTrain + "cart/bars/3.png", pathToTrain + "cart/bars/4.png", 
@@ -138,7 +139,7 @@ export class Cart extends SpriteStack{
 
         cMiddle.push(cInside, cShadow, cMidBase, botRail, cDoor, cWin1, cWin2, cBars, topRail); 
         cMiddle.moveTo(4*tSize, 10*tSize);
-        cMiddle.forEach(part => {part._animSlow = 8;});  
+        cMiddle.forEach(part => {part.Anim._slow = 8;});  
 
 
         const cg = new Sprite(17*tSize, 2*tSize,  28*tSize, 12*tSize, pathToTrain + "gear.png");

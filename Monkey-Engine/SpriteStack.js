@@ -3,7 +3,10 @@
 import { _defaultValues } from "./_defaultValues.js";
 import { vectorBetween } from "./LineSection.js";
 import { renderPoint } from "./Point.js";
-import { SpriteAnim }    from "./SpriteAnim.js";
+import { SpriteA }    from "./SpriteAnim.js";
+import { Sprite }     from "./Sprite.js";
+import { Rectangle }  from "./Rectangle.js";
+import { SpriteAnim }     from "./2.0.js";
 import { SpriteDyna }    from "./SpriteDyna.js";
 import { renderCollisionBox } from "./Sprite.js";
 
@@ -26,7 +29,8 @@ export class SpriteStack extends Array {
     render(ctx, rBox = false) {
         const renderOnlyOneAnchor = false;
         this.forEach(sprite => {
-            sprite.render(ctx);
+            sprite.render(ctx); 
+            console.warn()
         });
         if (rBox) {
             // draw bounding box 
@@ -64,11 +68,12 @@ export class SpriteStack extends Array {
     }
 
     /** /// updateImage() ///
-     ** updates the images of all SpriteAnims in the SpriteStack
+     ** updates the images of all SpriteAs in the SpriteStack
      ** @returns {SpriteStack} itself for chaining
      */
     updateImage() {
         this.forEach(sprite => {
+            if (sprite instanceof SpriteA) sprite.updateImage();
             if (sprite instanceof SpriteAnim) sprite.updateImage();
         });
         return this;    
@@ -171,9 +176,10 @@ export class SpriteStack extends Array {
     set width(newWidth) {
         this._applyTo(Rectangle, s => s.width = newWidth);
     }
-    /* SpriteAnim properties */
+    /* SpriteA properties */
     set animSlow(newAnimSlow) {
-        this._applyTo(SpriteAnim, s => s._animSlow = newAnimSlow);
+        this._applyTo(SpriteA,    s => s._animSlow = newAnimSlow);
+        this._applyTo(SpriteAnim, s => s.Anim._slow = newAnimSlow);
     }
     /* SpriteDyna properties */
     set isGoRight(newIsGoRight) {

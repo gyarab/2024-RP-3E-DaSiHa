@@ -55,9 +55,27 @@
             "bold": true,
             "italic": false
         },
+        {   // / _       HEADLINE           //
+            "tag": "/ _", 
+            "color": "#A0708E",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "#27141F40",
+            "bold": false,
+            "italic": false
+        },
         {   // /         HEADLINE           //
             "tag": "/", 
             "color": "#E675C6",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "#27141F",
+            "bold": true,
+            "italic": false
+        },
+        {   // proxiTO    PROXIFUNC()      //
+            "tag": "proxiTO", 
+            "color": "#A0708E",
             "strikethrough": false,
             "underline": false,
             "backgroundColor": "#27141F",
@@ -71,6 +89,15 @@
             "underline": false,
             "backgroundColor": "#3B1D32",
             "bold": true,
+            "italic": false
+        },
+        {  // CONST        CONSTANTA        //
+            "tag": "CONST", 
+            "color": "#6CEBC2",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "#1A382E",
+            "bold": false,
             "italic": false
         },
         {  // visualFor   VISUAL AID        //
@@ -90,6 +117,15 @@
             "backgroundColor": "transparent",
             "bold": false,
             "italic": true
+        },
+        {  // @final                        //
+            "tag": "@final", 
+            "color": "#3498DB",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
         },
         { // @-----------STRUCTURE----------//
             "tag": "@--", 

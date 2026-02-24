@@ -1,180 +1,223 @@
 // @Autor: Bendl Šimon
 //@-------------------------------imports-----------------------------------@//
-import { Entity } from './Entity.js';
 import { _defaultValues } from './_defaultValues.js';
-import { Sprite, renderImg,renderCollisionBox, isImgLoaded } from './Sprite.js';
+import { renderCollisionBox } from './Sprite.js';
+import { Sprite } from './Sprite.js';
+
 //@-------------------------------SpriteAnim--------------------------------@//
-//: De
-export class SpriteAnim extends Sprite{
-    constructor(x, y, width, height, spritePaths  =  [], animSlow){
-        super  (x, y, width, height, _defaultValues._sA_spritePath);
-        //* new properties
-        this.Anim = new Animator(spritePaths, animSlow);
-        if (this._ignoreInitOf[this.constructor.name]) this._initializeFunc();
-
-        if (!(this._ignoreInitOf["SpriteAnim"]))this._initializeFunc();
-    }
-    //@---privateFunctions---@//
-    /** /// _copyPropsTo() ///
-     ** all new properties of SpriteAnim to copy, used for cloning
-     * @private 
-     * @param {Object} target -ed object to copy into
-     * @return {void}
-     */
-    _copyPropsTo(target){
-        super._copyPropsTo(target);
-        target.Anim = this.Anim.clone(target._isDeepClone);
-    }
-
-    //@---publicFunctions---@//
-    /** /// render() ///
-     ** renders the SpriteAnim on the given context 
-     * @param {CanvasRenderingContext2D} ctx - the context 
-     * @param {boolean} rBox - whether to render the bounding box
-     * @returns {SpriteAnim} itself for chaining
-     */
-    render(ctx, rColBox = false) {
-        ctx.save();
-        if (this.Anim._frames.length === 0) {
-            this._errs("Animator has no frames to render => skipping render");
-            if (rColBox) renderCollisionBox( this, ctx);
-            ctx.restore();
-            return this;
-        }
-        if (rColBox) renderCollisionBox( this, ctx);
-        const img = this.Anim._currentFrame;
-        renderImg( img, ctx, this._points, this._blur);
-        ctx.restore(); 
-        return this;
-    }
-
-    //: proxi to Animator function
-    loadImg(spritePaths = []) {
-        this.Anim.loadFrame(spritePaths);
-        return this;
-        //or
-        return this.Anim.loadFrame(spritePaths);
-    }
-
-    //: proxi to Animator functions
-    updateImage(){
-        this.Anim.updateImage();
-        return this;
-        //or
-        return this.Anim.updateImage();
-    }
-
-
-
-}
-
-class Animator extends Entity{
-    constructor(spritePaths = [], animSlow = 10){
-        super();
-
-        //* new properties
-        this._tick = 0;
+export class SpriteA extends Sprite{
+    constructor(x, y, width, height, spritePaths = []){
+        super  (x, y, width, height, null); 
+        
         this._frames = [];
-        this._slow = animSlow;
-        this._currentFrameIndex = 0;
-        this._framePaths = spritePaths;
+        this._animTick = 0;
+        this._animSlow = _defaultValues.sA_animSlow;
+        this._currentFrame = 0;
         
-        if (!(this._ignoreInitOf["Animator"]))this._initializeFunc(); 
-    }
+        // ? not sure if I want it here (maybe push to Sprite) ? //
+        this._renderWidth = width;
+        this._renderHeight = height;
+        this._renderDir = null;
 
-    //@---privateFunctions---@//
-    /** /// _copyPropsTo() ///
-     * ** all new properties of Animator to copy, used for cloning
-     * @private
-     * @param {Object} target -ed object to copy into
-     * @return {void}   
-     */
-    _copyPropsTo(target){
-        super._copyPropsTo(target);
-        target._frames = [];
-        target._tick = this._tick;
-        target._slow = this._slow;
-        target._currentFrameIndex = this._currentFrameIndex;
-        target._framePaths = this._framePaths;
-        if(target._framePaths == null){
-            target._isDeepClone = false;
-            this._errs(
-                '! COPYING AN ANIMATOR WITHOUT FRAME PATHS! (-_- )···' + "\n" +
-                "is being copied shallowly to " + target.constructor.name + 
-                "(" + target._id + "), frames will be shared"
-            );
-        }
-        if(!target._isDeepClone){
-            this._frames.forEach((frame, index) => {
-                frame.addEventListener('load', () => {
-                    target._frames[index] = frame;
-                });
-            });
-
+        if (spritePaths){
+            this.loadImg(spritePaths);
         }
     }
 
-    /** /// _initializeFunc() ///
-     * ** all operation called in constructor, used for cloning
-     * @private
-     * @return {void}
-     */
-    _initializeFunc(){
-        super._initializeFunc();
-
-        if (this._cloneState)return;
-        
-        if (this._frames.length === 0){Animator.prototype.loadImg.call(this, this._framePaths);}
-        else this._errs("Animator already has frames in _initializeFunc");
-
-    }
-
-    //@---publicFunctions---@//
     /** /// loadImg() ///
-     * ** loads the frames from the given paths
-     * @param {string[]} framePaths
-     * @return {Animator} itself for chaining
+     ** loads the images from the given paths
+     * @param {string[]} spritePaths 
+     * @returns {SpriteA} itself for chaining
      */
-    loadImg(framePaths = []) {
-        this._frames = [];
-        this._framePaths = framePaths;
-        framePaths.forEach((path, index) => {
-            this._logs("Loading frame from path: " + path);
+    loadImg(spritePaths) {
+        spritePaths.forEach(path => {
             const img = new Image();
             img.src = path;
-            img.addEventListener('load', () => {
-                this._frames[index] = img;
-            });
+            this._frames.push(img);
         });
         return this;
     }
 
-    updateImage() {
-        this._tick++;
-        if (this._tick > this._slow) {
-            this._currentFrameIndex =
-                (this._currentFrameIndex + 1) % this._frames.length;
-            this._tick = 0;
+    /** /// updateImage() ///
+     ** updates the current frame based on the animation speed  
+     * @returns {SpriteA} itself for chaining
+     */
+    updateImage(){
+        this._animTick += 1;
+        if (this._animTick > this._animSlow){
+            this._currentFrame = (this._currentFrame + 1) % this._frames.length;
+            this._animTick = 0;
         }
         return this;
     }
 
-    //@---getters---@//
-    get _currentFrame(){
-        return this._frames[this._currentFrameIndex];
+    /** /// render() ///
+     ** renders the SpriteAnim on the given context 
+     * @param {CanvasRenderingContext2D} ctx - the context 
+     * @param {boolean} rBox - whether to render the bounding box
+     * @returns {SpriteA} itself for chaining
+     */
+    render(ctx,Rbox) {
+        // even if calling super it should return {SpriteAnim}
+        if (!this._frames.length > 0) return super.render(ctx);
+        ctx.save();
+        const img = this._frames[this._currentFrame];
+        let renderX;
+        let renderY;
+        if (img.complete) {
+            const offsets = {
+                top:    {x: - (this._renderWidth - this._width) / 2, y: -this._renderHeight                      },
+                left:   {x: -  this._renderWidth,                    y: - (this._renderHeight - this._height) / 2},
+                bottom: {x: - (this._renderWidth - this._width) / 2, y:                       + this._height     },
+                default:{x: - (this._renderWidth - this._width) / 2, y: - (this._renderHeight - this._height) / 2},
+                right:  {x:                      + this._width,      y: - (this._renderHeight - this._height) / 2}
+                
+            };
+            const {x: dx, y: dy} = offsets[this._renderDir] || offsets.default;
+            renderX = this._x + dx;
+            renderY = this._y + dy;
+    
+            ctx.drawImage(img, renderX, renderY, this._renderWidth, this._renderHeight);
+        }
+        if (Rbox){
+            renderCollisionBox(
+                renderX, renderY, this._renderWidth, this._renderHeight,
+                ctx, this._color, this._strokeWidth
+            );
+        }
+        ctx.restore(); 
+        return this;
+    }
+
+    /** /// clone() ///
+     ** clones the SpriteAnim, Sprite images can be shared or reloaded 
+     * @param {boolean} takesMoreSpace - whether to clone will share or reload images
+     * @returns {SpriteA} cloned SpriteAnim
+     */
+    clone(takesMoreSpace = false) {
+        const clone = new SpriteA(this._x, this._y, this._width, this._height);
+        clone._animSlow = this._animSlow;
+        clone._currentFrame = this._currentFrame;
+        clone._renderWidth = this._renderWidth;
+        clone._renderHeight = this._renderHeight;
+        clone._renderDir = this._renderDir;
+
+        if (takesMoreSpace){
+            clone.loadImg(this._frames.map(img => img.src));
+        }else{
+            clone._frames = this._frames;
+        }
+        return clone;
+    }
+
+    /*--------------------------Setters--------------------------*/
+    set currentFrame(newValue){
+        this.__currentFrame = newValue;
+        return this;
+    }
+    set frames(newValue){
+        console.error("použij loadImg() degeši")
+        // ? not sure if I want to tolerate this ? //
+        this.loadImg(newValue);
+        return this
+    }
+    set animSlow(newValue){
+        this._animSlow = newValue;
+        return this;
+    }
+    set width(newValue){
+        if (this._renderWidth == this._width){
+            this._renderWidth = newValue;
+        }
+        this._width = newValue;
+        return this;
+    }
+    set height(newValue){
+        if (this._renderHeight == this._height){
+            this._renderHeight = newValue;
+        }
+        this._height = newValue;
+        return this;
     }
 }
+//@-------------------------------Animator-----------------------------------@//
+export class Animator {
+    constructor(frames = []) {
+        this._frames = [];
+        this._animTick = 0;
+        this._animSlow = _defaultValues.sA_animSlow;
+        this._currentFrame = 0;
 
-class Animators extends Animator{
+        if (frames.length) {
+            this.load(frames);
+        }
+    }
 
+    /** Loads image paths */
+    load(paths) {
+        this._frames = [];
+        paths.forEach(path => {
+            const img = new Image();
+            img.src = path;
+            this._frames.push(img);
+        });
+        return this;
+    }
+
+    /** Updates animation frame */
+    update() {
+        if (this._frames.length === 0) return this;
+
+        this._animTick++;
+        if (this._animTick > this._animSlow) {
+            this._currentFrame =
+                (this._currentFrame + 1) % this._frames.length;
+            this._animTick = 0;
+        }
+
+        return this;
+    }
+
+    /** Returns current image */
+    getFrame() {
+        if (this._frames.length === 0) return null;
+        return this._frames[this._currentFrame];
+    }
+
+    /** Clone (share frames by default) */
+    clone(deep = false) {
+        const clone = new Animator([], this._animSlow);
+        clone._currentFrame = this._currentFrame;
+
+        if (deep) {
+            clone.load(this._frames.map(img => img.src));
+        } else {
+            clone._frames = this._frames;
+        }
+
+        return clone;
+    }
+
+    /*--------------------------Setters--------------------------*/
+
+    set animSlow(value) {
+        this._animSlow = value;
+        return this;
+    }
+
+    set currentFrame(value) {
+        this._currentFrame = value;
+        return this;
+    }
 }
 //@------------------------------examples----------------------------------@// 
-/*--------------------------------------------------------------------------
+/*-------------------------------------------------------------------------
 import { Tetragon } from '../Monkey-Engine/Tetragon.js';
 
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 const pathToImgs = "/Game_01_Ledvadva/sprites/Player/RED/";
+
 
 const bluescreen = new Tetragon(
     {x:0,y:0},
@@ -182,25 +225,17 @@ const bluescreen = new Tetragon(
     {x:800,y:400},
     {x:0,y:400}
 )
-const sA = new SpriteAnim(
-    10,150,90,160, [ 
-        pathToImgs + "stand.png",
-        pathToImgs + "rR/5.png"
-    ], 
-    4
-)
+const sA = new SpriteAnim(10,150,90,160, [ 
+    pathToImgs + "stand.png",
+    pathToImgs + "rR/5.png"
+])
 
-const sAs = sA.clone().moveBy(800);
-console.log(sA._spritePath)
-console.log(sAs);
-
-
+sA.id = "spriteAnim"
+sA.animSlow = 40;
 function SpriteAnimLoop (){
     bluescreen.render(ctx,true)
     sA.render(ctx,true);
-    sAs.render(ctx,true);
     sA.updateImage();
-    sAs.updateImage();
 }
-window.setInterval(SpriteAnimLoop, 100);
+window.setInterval(SpriteAnimLoop, 1);
 /**/ 

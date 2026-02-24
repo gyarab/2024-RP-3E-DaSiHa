@@ -21,17 +21,17 @@ export class Entity{
         let proto = this;
         while (proto) {
             const name = proto.constructor.name;
-            if (!(name in this._ignoreInitOf)) {
-                this._ignoreWarnsOf[name] = false; 
-                this._ignoreInitOf[name]  = true ;
-                this._ignoreLogsOf[name]  = false;
-                this._ignoreErrsOf[name]  = false;
+            if (!(name in this._ignoreInitOf)) {   //turn off all debug wa
+                this._ignoreWarnsOf[name] =  false ; 
+                this._ignoreInitOf[name]  =  true  ;
+                this._ignoreLogsOf[name]  =  false ;
+                this._ignoreErrsOf[name]  =  false ;
             }
             proto = Object.getPrototypeOf(proto);
         }
         this._ignoreInitOf[this.constructor.name] = false;
 
-        if (!(this._ignoreInitOf["Entity"]))this._initializeFunc();
+        this._INIT("Entity");
     }
     //@---privateFunctions---@//
     /** /// _copyPropsTo() ///
@@ -54,15 +54,20 @@ export class Entity{
      * @return {void}
      */
     _initializeFunc(){
-         if (this._id === undefined || this._id?.startsWith("TEMP")) {
+        if (this._id === undefined || this._id?.startsWith("TEMP")) {
             this._id =  Entity.IdCounter.toString().padStart(4, '0');
             Entity.IdCounter++;
         }
+        this._logs("Initialized");
+
     }
 
+    _INIT(name){
+        if (!(this._ignoreInitOf[name]))this._initializeFunc();
+    }
     /** /// _logs() ///
-     ** logs in console with the entity's class and id as prefix
-     ** can be muted with the _ignoreLogsOf switch
+     * logs in console with the entity's class and id as prefix
+     * can be muted with the _ignoreLogsOf switch
      * @private
      * @param {string} message to log
      * @returns {void}
@@ -74,8 +79,8 @@ export class Entity{
     }
 
     /** /// _warns() ///
-     ** warns in console with the entity's class and id as prefix
-     ** can be muted with the _ignoreWarnOf switch
+     * warns in console with the entity's class and id as prefix
+     * can be muted with the _ignoreWarnOf switch
      * @private
      * @param {string} message to warn
      * @returns {void}
@@ -87,8 +92,8 @@ export class Entity{
     }
 
     /** /// _errs() ///
-     ** throws error in console with the entity's class and id as prefix
-     ** can be muted with the _ignoreErrOf switch
+     * throws error in console with the entity's class and id as prefix
+     * can be muted with the _ignoreErrOf switch
      * @private
      * @param {string} message to error
      * @returns {void}
@@ -102,7 +107,8 @@ export class Entity{
 
     //@---publicFunctions---@//
     /** /// clone() ///
-     ** creates a clone of this without using constructor so _copyParamsTo() needed
+     * creates a clone of this without using constructor so _copyParamsTo() is needed
+     * equil to "stucturedClone" but more control and acces for clone to prototype
      * @final
      * @param {boolean} deep - shared media
      * @returns {ThisParameterType} cloned entity

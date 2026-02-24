@@ -1,9 +1,9 @@
 // @Autor: Bendl Šimon
 //@-------------------------------imports-----------------------------------@//
-import { SpriteAnim } from './SpriteAnim.js';
+import { SpriteA } from './SpriteAnim.js';
 
 //@-----------------------------SpriteDyna----------------------------------@//
-export class SpriteDyna extends SpriteAnim{
+export class SpriteDyna extends SpriteA{
     constructor(x, y, width, height, spritePath = []){
         super  (x, y, width, height, spritePath); 
 

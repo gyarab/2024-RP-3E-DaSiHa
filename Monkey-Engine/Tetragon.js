@@ -10,7 +10,7 @@ export class Tetragon extends Point{
         super(p1.x, p1.y, color);
         //* new properties
         this._points = [p1, p2, p3, p4];
-
+        this._strike = false;
         //* old properties
         this._strokeWidth = _defaultValues.bS_strokeWidth;
 
@@ -26,6 +26,7 @@ export class Tetragon extends Point{
     _copyPropsTo(target){
         super._copyPropsTo(target);
         
+        target._strike = this._strike;
         //? shalow copy of points need further testing ?//
         if ( target._isDeepClone) target._points = this._points.map(p => ({ x: p.x, y: p.y }));
         if (!target._isDeepClone) target._points = this._points;
@@ -48,7 +49,7 @@ export class Tetragon extends Point{
      * @returns {Tetragon} itself for chaining
      */
     render(ctx, fill = true) {
-        renderPolygon(this._points, ctx, this._color, this._strokeWidth, fill);
+        renderPolygon(this._points, ctx, this._color, this._strokeWidth, fill, this._strike);
         return this;
     }
 
@@ -190,9 +191,13 @@ export function centroidOfPolygon(ptsOfPoly){
  * @param  {string} color color of the polygon
  * @param  {number} strokeWidth width of the stroke
  * @param  {boolean} fill whether to fill the polygon
+ * @param  {[number, number]} strike whether to render the stroke as dashed line with given pattern
  * @returns {void}
  */
-export function renderPolygon(ptsOfPoly, ctx, color, strokeWidth = 1, fill = false){
+export function renderPolygon(
+    ptsOfPoly, ctx, color, strokeWidth = 1,
+     fill = false, strike = false // optional parameters
+    ){
     ctx.beginPath();
 
     const center = centroidOfPolygon(ptsOfPoly);
@@ -217,8 +222,10 @@ export function renderPolygon(ptsOfPoly, ctx, color, strokeWidth = 1, fill = fal
         ctx.fill();
     } else {
         ctx.strokeStyle = color;
+        if(strike)ctx.setLineDash(strike);
         ctx.lineWidth = strokeWidth;
         ctx.stroke();
+        if(strike)ctx.setLineDash([]);
     }
 }
 
@@ -230,12 +237,27 @@ export function renderPolygon(ptsOfPoly, ctx, color, strokeWidth = 1, fill = fal
  * @param   {Array<{x: number, y: number}>} ptsOfPoly2 points of set second polygon
  * @returns {boolean} true if they share even one point, false otherwise
  */
-function hasVertexInside(ptsOfPoly1, ptsOfPoly2){
+export function hasVertexInside(ptsOfPoly1, ptsOfPoly2){
     for (let point of ptsOfPoly1) {
         if (isPointInPolygon(point, ptsOfPoly2)) {return true;}
     }
     for (let point of ptsOfPoly2) {
         if (isPointInPolygon(point, ptsOfPoly1)) {return true;}
+    }
+    return false;
+}
+
+export function hasTetraEdgeIntersection(ptsOfPoly1, ptsOfPoly2){
+    for (let j = 0; j < ptsOfPoly2.length; j++) {
+        for (let i = 0; i < ptsOfPoly1.length; i++) {
+            let A = ptsOfPoly1[i]; 
+            let B = ptsOfPoly1[(i + 1) % ptsOfPoly1.length];
+            let C = ptsOfPoly2[j]; 
+            let D = ptsOfPoly2[(j + 1) % ptsOfPoly2.length];
+
+            const intersection = intersectionOfLineSegments(A, B, C, D);
+            if (intersection) return true; 
+        }
     }
     return false;
 }

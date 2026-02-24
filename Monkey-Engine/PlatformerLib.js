@@ -1,5 +1,5 @@
 import { Interactable, InteractableIndicator } from './Interactable.js';
-import { SpriteAnim } from  '../Monkey-Engine/SpriteAnim.js';
+import { SpriteA } from  '../Monkey-Engine/SpriteAnim.js';
 import {  CharacterSprite } from '../Monkey-Engine/CharacterSprite.js';
 import { CharacterSprite0 } from '../Monkey-Engine/CharacterSprite0.js';
 import {  Rectangle } from './Rectangle.js';
@@ -37,6 +37,7 @@ const indicatorKey_E       = new InteractableIndicator(0,0, 44,44, pathToIndicat
             super(x, y, width, height, "pink");
         }
     }
+
 ////--------                  Interactable                   --------////
 const pathToInteractable = "../Game_01_Ledvadva/sprites/Interactable/";
 const pathToCloset       = pathToInteractable + "Closet/";
@@ -49,6 +50,8 @@ const pathToCloset       = pathToInteractable + "Closet/";
             this._lvlNumber  = numberOfLevel
             this._platforms  = [this];
             this._isComplete = false;
+
+            if (!(this._ignoreInitOf["PointerToLevel"]))this._initializeFunc();
         }
         _addPlatform(platform){
             this._platforms.push(platform);
@@ -68,10 +71,12 @@ const pathToCloset       = pathToInteractable + "Closet/";
         }
     }
     // visualFor                                    -//- 
-    export class PointerToLevelSprite extends SpriteAnim{
+    export class PointerToLevelSprite extends SpriteA{
         constructor(x, y, width, height, spritePath, interactable){
             super(x, y, width, height, spritePath);
             this._Interactable = interactable;
+
+            if (!(this._ignoreInitOf["PointerToLevelSprite"]))this._initializeFunc();
         }
         render(ctx){
             this._currentFrame = 0;
@@ -91,6 +96,8 @@ const pathToCloset       = pathToInteractable + "Closet/";
         constructor(x, y, width, height){
             super(x, y, width, height);
             this._hasToBeOnGround = true;
+
+            if (!(this._ignoreInitOf["PointerToHub"]))this._initializeFunc();
         };
         _action(){
             Ledvadva.currentlvl = 0;
@@ -98,10 +105,12 @@ const pathToCloset       = pathToInteractable + "Closet/";
         }
     }
     // visualFor                                    -//- 
-    export class PointerToHubSprite extends SpriteAnim{
+    export class PointerToHubSprite extends SpriteA{
         constructor(x, y, width, height, spritePaths, interactable){
             super(x, y, width, height, spritePaths);
             this._Interactable = interactable;
+
+            if (!(this._ignoreInitOf["PointerToHubSprite"]))this._initializeFunc();
         }
         render(ctx){
             this._currentFrame = 0;
@@ -169,7 +178,7 @@ const pathToCloset       = pathToInteractable + "Closet/";
         }
     }
     // visualFor                                    -//- 
-    export class Closet extends SpriteAnim{
+    export class Closet extends SpriteA{
                 constructor(x, y){
                     super(x, y, 200, 100, [
                         // 0-10
@@ -193,6 +202,8 @@ const pathToCloset       = pathToInteractable + "Closet/";
                     this._triggered = 0;
                     this._animSlow  = 7;
                     this._currentFrame = 11;
+
+                    this._INIT("Closet");    
                     
                 }
                 updateImage(direction, canBeTriggered){
@@ -230,6 +241,8 @@ const pathToPushable = "../Game_01_Ledvadva/sprites/Pushable/";
             this._drag = 0.005;
             this._gravity = 0.05;
             this._isPickable = false;
+
+            this._INIT("Pushable");
         }
         cantPassThru(ob){
             return (
@@ -292,7 +305,8 @@ const pathToPushable = "../Game_01_Ledvadva/sprites/Pushable/";
             super  (x, y, 128, 128, [
                 pathToPushable + "Box/" + skin +  ".png",
                 pathToPushable + "Box/" + skin + "d.png",
-            ]);            
+            ]);
+            this._INIT("Box");           
         }
     }
     // visualFor                      -//- 
@@ -301,7 +315,8 @@ const pathToPushable = "../Game_01_Ledvadva/sprites/Pushable/";
             super  (x, y, 128, 128, [
                 pathToPushable + "Crate/" + skin +  ".png",
                 pathToPushable + "Crate/" + skin + "d.png",
-            ]);            
+            ]);
+            this._INIT("Crate");       
         }
     }
     // visualFor                      -//- 
@@ -310,7 +325,8 @@ const pathToPushable = "../Game_01_Ledvadva/sprites/Pushable/";
             super  (x, y, 128, 128, [
                 pathToPushable + "Binder/" + skin +  ".png",
                 pathToPushable + "Binder/" + skin + "d.png",
-            ]);            
+            ]);
+            this._INIT("Binder");            
         }
     }
         //typeOf          Pushable         Wheel 
@@ -326,7 +342,8 @@ const pathToPushable = "../Game_01_Ledvadva/sprites/Pushable/";
                     pathToPushable + "Basketball/6.png",
                     pathToPushable + "Basketball/7.png",
                 ]); 
-                this._drag = 0.0025;         
+                this._drag = 0.0025; 
+                this._INIT("Wheel");        
             }
             updateImage(){
                 this._animMovingSlow = 1 / (Math.abs(this._xVelocity) + 0.1) * 15;
@@ -504,46 +521,55 @@ const pathToPlayer = "../Game_01_Ledvadva/sprites/Player/";
         }
     }
 ////--------              Interactable indicators                   --------////
+
     // typeOf             InteractableIndicators              Shift 
     export class IndicatorKey_Shift extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 124,44,pathToIndicators + "Press-Shift.png");
+            this._INIT("IndicatorKey_Shift");
+            
         }
     }
     // typeOf             InteractableIndicators            E/Shift 
     export class IndicatorKey_E_Shift extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 200,44, pathToIndicators + "Press-E-Shift.png");
+            this._INIT("IndicatorKey_E_Shift")
         }
     }
     // typeOf             InteractableIndicators                  E 
     export class IndicatorKey_E extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 44,44, pathToIndicators + "Press-E.png");
+            this._INIT("IndicatorKey_E")
         }
     }
     // typeOf             InteractableIndicators                  F 
     export class IndicatorKey_F extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 44,44,pathToIndicators + "Press-F.png");
+            this._INIT("IndicatorKey_F")
         }
     }
     // typeOf             InteractableIndicators                  K 
     export class IndicatorKey_K extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 44,44,pathToIndicators + "Press-K.png");
+            this._INIT("IndicatorKey_K")
         }
     }
     // typeOf             InteractableIndicators                  G 
     export class IndicatorKey_G extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 44,44,pathToIndicators + "Press-G.png");
+            this._INIT("IndicatorKey_G")
         }
     }
     // typeOf             InteractableIndicators                  L 
     export class IndicatorKey_L extends InteractableIndicator{
         constructor(x = 0, y = 0){
             super(x, y, 44,44,pathToIndicators + "Press-L.png");
+            this._INIT("IndicatorKey_L")
         }
     }
     // typeOf             InteractableIndicators             ToLeft 
@@ -556,14 +582,18 @@ const pathToPlayer = "../Game_01_Ledvadva/sprites/Player/";
     //typeOf              Indicator_ToLeft                     Left 
         export class IndicatorKey_Left extends Indicator_ToLeft{
             constructor(x = 0, y = 0){
-                super(x, y, 44,44,pathToIndicators + "To-Left.png");
-            }      
+                
+    super(x, y, 44,44,pathToIndicators + "To-Left.png");
+                this._INIT("IndicatorKey_Left")
+}      
     }
     //typeOf              Indicator_ToLeft                 DiS_Left 
         export class IndicatorKey_DiS_Left extends Indicator_ToLeft{
             constructor(x = 0, y = 0){
-                super(x, y, 44,44,pathToIndicators + "dis_left.png");
-            }
+                
+    super(x, y, 44,44,pathToIndicators + "dis_left.png");
+                this._INIT("IndicatorKey_DiS_Left")
+}
     }
     // typeOf             InteractableIndicators            ToRight 
     export class Indicator_ToRight extends InteractableIndicator{
@@ -576,11 +606,16 @@ const pathToPlayer = "../Game_01_Ledvadva/sprites/Player/";
     export class IndicatorKey_Right extends Indicator_ToRight{
         constructor(x = 0, y = 0){
             super(x, y, 44,44,pathToIndicators + "To-Right.png");
+            this._INIT("IndicatorKey_IndicatorKey_Right")
         }
     }
     //typeOf              Indicator_ToRight               DiS_Right 
     export class IndicatorKey_DiS_Right extends Indicator_ToRight{
         constructor(x = 0, y = 0){
             super(x, y, 44,44,pathToIndicators + "dis_right.png");
+            this._INIT("IndicatorKey_DiS_Right")
         }
     }
+    IndicatorKey_Shift   = new InteractableIndicator(0,0,124,44,pathToIndicators + "Press-Shift.png");
+    IndicatorKey_E_Shift = new InteractableIndicator(0,0,200,44, pathToIndicators + "Press-E-Shift.png");
+    IndicatorKey_E       = new InteractableIndicator(0,0, 44,44, pathToIndicators + "Press-E.png"       );

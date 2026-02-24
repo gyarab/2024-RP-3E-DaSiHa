@@ -29,7 +29,8 @@ export class Interactable extends Rectangle{
 export class InteractableIndicator extends Sprite{
     constructor(x, y, width, height, SpritePath){
         super(x, y, width, height, SpritePath);
-        
+
+        this._INIT("InteractableIndicator");        
     }
     moveTo(object, heightOfHover = 1.3){
         super.moveTo(object._x + object._width / 2 - this._width / 2 , object._y - this._height * heightOfHover);

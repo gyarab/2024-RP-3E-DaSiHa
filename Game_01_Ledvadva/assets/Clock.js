@@ -6,7 +6,6 @@ const pathToHub = "../Game_01_Ledvadva/sprites/Hub/";
 const cSize = 4;
 export class Clock extends Sprite {
     constructor(x, y) {
-
         super(x, y, 45 * cSize, 45 * cSize, pathToHub + "dial.png");
 
         this.size = cSize;
@@ -19,6 +18,7 @@ export class Clock extends Sprite {
             _minute: 0,
             _second: 0
         }
+        this._INIT("Clock");    
     }
 
     /** /// updatePos() ///
