@@ -4,7 +4,7 @@ import { Entity } from './Entity.js';
 import { _defaultValues } from './_defaultValues.js';
 import { Sprite, renderImg,renderCollisionBox, isImgLoaded } from './Sprite.js';
 import { Rectangle } from './Rectangle.js';
-import { hasTetraEdgeIntersection, hasVertexInside, Tetragon } from './Tetragon.js';
+import { hasTetraEdgeIntersection, hasVertexInside, Tetragon, colidingPointsOfTetragons, centroidOfPolygon } from './Tetragon.js';
 //@-----------------------------Graphic-Objects-----------------------------@//
 
 //@---                           helpFunc                                ---@//
@@ -501,7 +501,6 @@ export class Anims extends Entity{
 //@---                           ObjectClass                             ---@//
 
 
-
 /// SpriteAnims ///
 export class SpriteAnims extends Rectangle{
     constructor(x, y, width, height, Anims){
@@ -561,7 +560,6 @@ export class SpriteAnims extends Rectangle{
      */
     render(ctx, rColBox = false){
         ctx.save();
-        console.error(this);
         if (rColBox) renderCollisionBox( this, ctx);
         const img = this.Graphic._currentAnimator._currentFrame;
         renderImg( img, ctx, this._points, this._blur);
@@ -604,7 +602,7 @@ export class SpriteAnims extends Rectangle{
 /// SpriteAnimCaracter ///
 export class SpriteAnimCaracter extends SpriteAnims{
     constructor(
-        
+
     ){
         super();
         this._pathToSKIN = "../../Game_01_Ledvadva/sprites/SKIN-00/";
@@ -617,8 +615,6 @@ export class SpriteAnimCaracter extends SpriteAnims{
         this._width  = this._width ?? 90;
         this._height = this._height ?? 160;
         this.Graphic
-
-
     }
 
 
@@ -627,7 +623,6 @@ export class SpriteAnimCaracter extends SpriteAnims{
 
 
 //@-----------------------------Dynamic-Objects-----------------------------@//
-const MAX_STEP = 4;
 
 //@---                           CompClass                               ---@//
 /** /// Materials ///
@@ -726,9 +721,9 @@ export class SoftMate extends RealMate{
     constructor(){
         super();
         //* old properties
-        this.self  = 0.5;
-        this.other = 0.5;
-        this.loss  = 0;
+        this.self  = 0.3;
+        this.other = 0.3;
+        this.loss  = 0.4;
 
         this._INIT("SoftMate");
     }
@@ -750,7 +745,7 @@ export class BetaMate extends RealMate{
 function isCollision(ptsOfPoly1, pthsOfPoly2){
     return hasVertexInside(ptsOfPoly1, pthsOfPoly2) || hasTetraEdgeIntersection(ptsOfPoly1, pthsOfPoly2);
 }
-function stepingOfCollison(ptsOfPoly1, velo1, ptsOfPoly2, velo2, dt){
+export function stepingOfCollison(ptsOfPoly1, velo1, ptsOfPoly2, velo2, dt){
     const dv1 = {x: velo1.x * dt, y: velo1.y * dt};
     const dv2 = {x: velo2.x * dt, y: velo2.y * dt};
 
@@ -781,59 +776,150 @@ function stepingOfCollison(ptsOfPoly1, velo1, ptsOfPoly2, velo2, dt){
     }
     return null;
 }
-function transfearVelo(v1,m1, v2, m2){
-
-    //const v1_out = (v1 * m1.self + v2 * m1.other) * (1 - m1.loss);
-    //const v2_out = (v2 * m2.self + v1 * m2.other) * (1 - m2.loss);
-    
-    const v2_out = -(v1 * m1.self + v2 * m1.other) * (1 - m1.loss)
-    const v1_out = -(v2 * m2.self + v1 * m2.other) * (1 - m2.loss)
+function transfearVelo(v1, m1, v2, m2) {
+    const v2_out = -(v1 * m1.self + v2 * m1.other) * (1 - m1.loss);
+    const v1_out = -(v2 * m2.self + v1 * m2.other) * (1 - m2.loss);
     return [v1_out, v2_out];
 }
-function CollisionResponse(obj1, obj2, dt){
-    if (!(obj1 instanceof Tetragon) || !(obj2 instanceof Tetragon)){
-        obj1._errs("Trying to updateColl with non-Tetragos ("+ obj2 +", " + obj1 +")");
-        return ;
-    }
-    const v1 = obj1.Dyna._velocity;
-    const v2 = obj2.Dyna._velocity;
-    const p1 = obj1._points;
-    const p2 = obj2._points;
-
-    const coll = stepingOfCollison(p1, v1, p2, v2, dt);
-    if (!coll){return;}
-
-    obj1.moveBy(
-        v1.x * dt * coll.timeOfCollision,
-        v1.y * dt * coll.timeOfCollision
-    );
-    
-    obj2.moveBy(
-        v2.x * dt * coll.timeOfCollision,
-        v2.y * dt * coll.timeOfCollision
-    );
-
-    const m1 = obj1.Mate;
-    const m2 = obj2.Mate;
-
-    const resultXVelo = transfearVelo(
-        v1.x, m1, 
-        v2.x, m2
-    );
-    const resultYVelo = transfearVelo(
-        v1.y, m1, 
-        v2.y, m2
-    );
-
-    const dv1x = resultXVelo[0] - v1.x;
-    const dv1y = resultYVelo[0] - v1.y;
-
-    const dv2x = resultXVelo[1] - v2.x;
-    const dv2y = resultYVelo[1] - v2.y;
-
-    obj1.Dyna.push([{ x: dv1x, y: dv1y, i: true }]);
-    obj2.Dyna.push([{ x: dv2x, y: dv2y, i: true }]);
+function BounceVelo(vx, vy, m1, m2) {
+    const vx_out = -(vx * m1.self * m2.other) * (1 - m1.loss);
+    const vy_out = -(vy * m1.self + m2.other) * (1 - m2.loss);
+    return [vx_out, vy_out];
 }
+function getAABB(points) {
+    let minX = Infinity, maxX = -Infinity;
+    let minY = Infinity, maxY = -Infinity;
+
+    for (const p of points) {
+        minX = Math.min(minX, p.x);
+        maxX = Math.max(maxX, p.x);
+        minY = Math.min(minY, p.y);
+        maxY = Math.max(maxY, p.y);
+    }
+
+    return { minX, maxX, minY, maxY };
+}
+export function CollisionResponse(obj1, obj2, dt) {
+    if (!(obj1 instanceof Tetragon) || !(obj2 instanceof Tetragon)) {
+        obj1._errs("CollisionResponse called with non-Tetragon objects.");
+        return;
+    }
+    if(!obj1 || !obj2){return}
+    const imm1 = obj1.Mate instanceof MasivMate;
+    const imm2 = obj2.Mate instanceof MasivMate;
+
+    if(imm1) obj1.Dyna._velocity = {x: 0, y: 0};
+    if(imm2) obj2.Dyna._velocity = {x: 0, y: 0};
+
+    // --- get AABBs ---
+    const a = getAABB(obj1._points);
+    const b = getAABB(obj2._points);
+
+    // --- compute penetration per axis ---
+    const penetrationX = Math.min(a.maxX - b.minX, b.maxX - a.minX);
+    const penetrationY = Math.min(a.maxY - b.minY, b.maxY - a.minY);
+
+    // --- pick the shortest axis ---
+    const axis = penetrationX < penetrationY ? 'x' : 'y';
+
+    // --- determine direction: obj1 relative to obj2 ---
+    const centroid1 = centroidOfPolygon(obj1._points);
+    const centroid2 = centroidOfPolygon(obj2._points);
+    const EPSILON = 0.05;
+
+    if (axis === 'x') {
+        const dir = centroid1.x < centroid2.x ? -1 : 1;
+
+        if (!imm1 && !imm2) {
+            obj1.moveBy((penetrationX / 2 + EPSILON) * dir, 0);
+            obj2.moveBy(-(penetrationX / 2 + EPSILON) * dir, 0);
+        } else if (!imm1 && imm2) {
+            obj1.moveBy((penetrationX + EPSILON) * dir, 0);
+        } else if (imm1 && !imm2) {
+            obj2.moveBy(-(penetrationX + EPSILON) * dir, 0);
+        }
+        // --- simple velocity transfer along X ---
+        const v1x = obj1.Dyna._velocity.x;
+        const v2x = obj2.Dyna._velocity.x;
+
+
+        if (!imm1 && !imm2) {
+            let avg = (v1x + v2x) / 2;
+            obj1.Dyna._velocity.x = avg;
+            obj2.Dyna._velocity.x = avg;
+        } else if (!imm1 && imm2) {
+            obj1.Dyna._velocity.x = v2x; 
+        } else if (imm1 && !imm2) {
+            obj2.Dyna._velocity.x = v1x;
+        }
+    } else {
+        const dir = centroid1.y < centroid2.y ? -1 : 1;
+        // grounded check
+        if (dir === -1) obj1.Dyna._isGrounded = true;
+        if (dir === 1)  obj2.Dyna._isGrounded = true;
+        
+
+        if (!imm1 && !imm2) {
+            obj1.moveBy(0, (penetrationY / 2 + EPSILON) * dir);
+            obj2.moveBy(0, -(penetrationY / 2 + EPSILON) * dir);
+        } else if (!imm1 && imm2) {
+            obj1.moveBy(0, (penetrationY + EPSILON) * dir);
+        } else if (imm1 && !imm2) {
+            obj2.moveBy(0, -(penetrationY + EPSILON) * dir);
+        }
+        if(obj1.doesColideWith(obj2))return
+        // --- simple velocity transfer along Y ---
+        const v1y = obj1.Dyna._velocity.y;
+        const v2y = obj2.Dyna._velocity.y;
+        if (!imm1 && !imm2 ) {
+            const avgY = (v1y + v2y) / 2;
+            if(true){ 
+                let c = (centroid1.y - centroid2.y)
+                if(c > 0 ){
+                    let cycle = false;
+                    for(let i = 0; i < obj2._hasOnTop.length; i++){
+                        if(obj2._hasOnTop[i] === obj1)cycle = true
+                        if(obj2._hasOnTop[i] === obj2)cycle = true
+                    }
+                    if(!cycle){
+                        obj1._hasOnTop.push(obj2);
+                    } else console.warn("cycle detected in _hasOnTop, skipping push");
+                }
+                if(c < 0){
+                    let cycle = false;
+                    for(let i = 0; i < obj1._hasOnTop.length; i++){
+                        if(obj1._hasOnTop[i] === obj2)cycle = true
+                        if(obj1._hasOnTop[i] === obj1)cycle = true
+                    }
+                    if(!cycle){
+                        obj2._hasOnTop.push(obj1);
+                    }
+                    else{
+                        console.warn("cycle detected in _hasOnTop, skipping push");
+                    }
+                }
+            }
+            obj1.Dyna._velocity.y = avgY;
+            obj2.Dyna._velocity.y = avgY;
+        } else if (!imm1 && imm2) {
+            obj1.Dyna._velocity.y = v2y;
+        } else if (imm1 && !imm2) {
+            obj2.Dyna._velocity.y = v1y;
+        }
+            if(imm1) obj1.Dyna._velocity = {x: 0, y: 0};
+        if(imm2) obj2.Dyna._velocity = {x: 0, y: 0};
+    }
+
+    /* --- optional sanity check ---
+    if (obj1.doesColideWith(obj2)) {
+        obj1._warns("Objects still colliding after CollisionResponse.");
+        obj2._warns("Objects still colliding after CollisionResponse.");
+    }
+    /*-----------------------------------*/
+}
+
+
+
 /// Ace related ///
 function sumOfAces(acelerations){
     fieldingAce(acelerations);
@@ -881,12 +967,10 @@ function isValidAce(ace){
 function fieldingAce(ace){
     if (!isValidFieldOrAce(ace)){return;}
     if (!Array.isArray(ace)){
-        if(!isValidAce(ace)){console.warn(
+        if (!isValidAce(ace)){console.warn(
             "Passed field of non-Aces"
-        );return;}
-        console.warn(
-            "Ace turned into single lenght field"
-        );
+        ); return;}
+        //console.warn("Ace turned into single lenght field");
         return [ace]; 
     }
     return ace;
@@ -916,8 +1000,8 @@ export class Dyna extends Entity{
         super();
         //* new properties
         this._velocity = { ...velocityVector};
-        this._MAX_X_VELOCITY = 1000;                                  // CONSTANT
-        this._MAX_Y_VELOCITY = 1000;                                  // CONSTANT
+        this._MAX_X_VELOCITY = 10000;                                  // CONSTANT
+        this._MAX_Y_VELOCITY = 10000;                                  // CONSTANT
 
         this._INIT("Dyna");    
     }
@@ -948,6 +1032,10 @@ export class Dyna extends Entity{
         this._velocity.y = this._velocity.y ?? 0;
     }
 
+    _updateAces(){
+        return this;
+    }
+
     /** /// update() ///
      ** updates the velocity based on the current velocity and the max velocity
      * @public
@@ -968,20 +1056,7 @@ export class Dyna extends Entity{
      * @return {Dyna} itself for chaining
      */
     push(velocityVector){
-        this._logs(" is unsucessfully affected by others");
-    }
-
-    get _isGoUp(){
-        return this._velocity.y < 0; 
-    }
-    get _isGoDown(){
-        return this._velocity.y > 0; 
-    }
-    get _isGoLeft(){
-        return this._velocity.x < 0; 
-    }
-    get _isGoRight(){
-        return this._velocity.x > 0; 
+        //this._logs(" is unsucessfully affected by others");
     }
 }
 
@@ -1027,6 +1102,9 @@ export class DynaAce extends Dyna{
         
     }
 
+    _updateAces(){
+        return this;
+    }
 
     /** /// update() ///    
      ** updates the velocity based on the current velocity, max velocity and aceleration    
@@ -1063,6 +1141,7 @@ export class DynaAces extends DynaAce{
 
         //* new properties
         this._acelerations = acelerationVectors;
+        this._isGrounded = false;
 
         this._INIT("DynaAces");
     }
@@ -1175,8 +1254,7 @@ export class DynaAces extends DynaAce{
         this._updateAces(true);
         const sumOfInst = sumOfAces(this._acelerations.filter(a => a.i === true));
 
-        this._velocity.x = Math.max(-this._MAX_X_VELOCITY, Math.min(this._velocity.x, this._MAX_X_VELOCITY));
-        this._velocity.y = Math.max(-this._MAX_Y_VELOCITY, Math.min(this._velocity.y, this._MAX_Y_VELOCITY));
+
 
         this._velocity.x =  Math.max(
             -this._MAX_X_VELOCITY, Math.min((
@@ -1188,6 +1266,9 @@ export class DynaAces extends DynaAce{
                 this._velocity.y + (this._aceleration.y * dt) + sumOfInst.y), this._MAX_Y_VELOCITY
             )
         );
+                
+        this._velocity.x = Math.max(-this._MAX_X_VELOCITY, Math.min(this._velocity.x, this._MAX_X_VELOCITY));
+        this._velocity.y = Math.max(-this._MAX_Y_VELOCITY, Math.min(this._velocity.y, this._MAX_Y_VELOCITY));
 
         this._acelerations = this._acelerations.filter(a => a.i === false);
         return this;
@@ -1195,12 +1276,112 @@ export class DynaAces extends DynaAce{
     }
 }
 
+/** /// DynaBisc ///
+ * 
+ */
+export class DynaBisc extends DynaAces{
+    constructor(velocityVector, acelerationVectors){
+        super(velocityVector, acelerationVectors);
+
+        // * new properties
+        this._wantGoRight = false;
+        this._wantGoLeft  = false;
+        this._wantGoDown  = false;
+        this._wantGoUp    = false;
+        this._wantJump    = false;
+
+        this._isGoBothWays = false;
+        this._isJumping = false;
+
+        this._isGoRight = false; 
+        this._isGoLeft  = false;
+        this._isGoDown  = false;
+        this._isGoUp    = false;
+
+        this._isPushRight = false;
+        this._isPushLeft = false;
+
+        this._wasGrounded = false;
+        this._isOnTop = false;
+
+
+        // * old properties
+        this._MAX_X_VELOCITY = 1000;
+        this._MAX_Y_VELOCITY = 10000;
+
+        this._RUN_POWER = 300;
+        this._JUMP_POWER = 1500;
+        this._JUMP_CTRL = 100;
+
+        this._INIT("DynaBisc");
+    }
+
+    updateVelo(dt){
+        /*----------------------je-nohama-na-zemi--------------------- */
+        //if(this._isGrounded && !this._isJumping && !this._wantJump  && !this.isOnTop)this._velocity.x = 0  
+        if(this._isGrounded && !this._wantJump )this._isJumping = false;
+        /*-----------------------pokud chce doleva-------------------- */
+        if (this._wantGoLeft && !  this._wantGoRight){
+            if (this._isGrounded){
+                this.isGoLeft = true;
+                this._velocity.x -= this._RUN_POWER;
+                console.log("go left");
+                
+            }else{
+                this._velocity.x += -this._JUMP_CTRL;
+            }     
+        }
+        /*-----------------------pokud chce doprava------------------ */
+        if(this._wantGoRight && !this._wantGoLeft){
+            if(this._isGrounded){
+                this.isGoRight = true;
+                this._velocity.x += this._RUN_POWER;
+                console.log("go right");
+            }else{
+                this._velocity.x += this._JUMP_CTRL;
+            }
+        }
+        /*-------------pokud nechci ani doleva ani doprava------------ */
+        if( this._wantGoLeft &&  this._wantGoRight && !this._isJumping){
+            this.isGoLeft = false;
+            this.isGoRight = false;
+            this.isGoBothWays = true;
+            console.log("go nowhere");
+        }
+        /*------------------pokud chci doleva a doprava--------------- */
+        if(!this._wantGoLeft && !this._wantGoRight && !this._isJumping){
+            this.isGoLeft = false;
+            this.isGoRight = false;
+            this.isGoBothWays = true;
+            console.log("go nowhere" + this._isGrounded);
+        }
+        /*---------------------pokud chce skočit---------------------- */
+        if((!this._isJumping && this._isGrounded) && this._wantJump){
+            console.log("jumping");
+            this._isJumping = true;
+            this._velocity.y = -this._JUMP_POWER;
+            if (this._isGoLeft && !this._isGoRight) this._velocity.x += -this._RUN_POWER;
+            if (!this._isGoLeft && this._isGoRight) this._velocity.x +=  this._RUN_POWER; 
+        }
+        this._wasGrounded = false;
+        if(this._isGrounded)this._wasGrounded = true;
+        this._isGrounded = false;
+        super.updateVelo(dt);
+    }
+}
+
+
+
+
+
+
+
 //@---                           ObjectClass                             ---@//
 
 /** /// RectangleDynaPrototype ///
  * - base structure for dynamic rectangles with velocity and material
  */
-class RectangleDynaPrototype extends Rectangle{
+export class RectangleDynaPrototype extends Rectangle{
     constructor(x, y, width, height){
         super(x, y, width, height);
 
@@ -1240,6 +1421,12 @@ class RectangleDynaPrototype extends Rectangle{
         }
     }
 
+    updateVelo(dt){
+        this.Dyna._updateAces();
+        this.Dyna.updateVelo(dt);
+
+    }
+
     /** /// updatePos() ///
      * updates the position of the RectangleDynaPrototype based on its Dyna
      * @public
@@ -1255,9 +1442,7 @@ class RectangleDynaPrototype extends Rectangle{
         return this;
     };
 
-    updateColl(other, dt){
 
-    }
 }
 
 /** ///  RectDyna  ///
@@ -1280,6 +1465,8 @@ export class RectDyna extends RectangleDynaPrototype{
 
         this.Dyna = this.Dyna ?? new Dyna();
     }
+
+
     
 }
 
@@ -1347,22 +1534,12 @@ export class RectMasiv extends RectDyna{
         super._initializeFunc();
 
         this.Mate = this.Mate ??  new MasivMate();
+        this.Dyna._MAX_X_VELOCITY = 0;
+        this.Dyna._MAX_Y_VELOCITY = 0;
     }
-    
-    /** /// updateColl() ///
-     ** updates the collision state of the Rectangle
-     ** in regards to other Rectangle
-     * @public
-     * @param {RectSolid} otherRects
-     * @return {RectSolid} itself for chaining
-     */
-    updateColl(other, dt){
-        CollisionResponse(this, other, dt);
-        if(this.Dyna._velocity.x !== 0 || this.Dyna._velocity.y !== 0){
-            this._errs(" was affected by others but is immovable, check if the collision response is working properly");
 
-        }
-
+    moveBy(dx, dy){
+        // override moveBy to prevent movement
     }
     
 }
@@ -1375,6 +1552,8 @@ export class RectMasiv extends RectDyna{
 export class RectSolid extends RectDynaAces{
     constructor(x, y, width, height){
         super(x, y, width, height, new DeffMate());
+        //* new properties
+        this._hasOnTop = [];
 
         //* old properties
         this._color = "red";
@@ -1407,29 +1586,21 @@ export class RectSolid extends RectDynaAces{
 
         this.Mate = this.Mate ??  new MasivMate();
     }
-    
-    /** /// updateColl() ///
-     ** updates the collision state of the Rectangle
-     ** in regards to other Rectangle
-     * @public
-     * @param {RectSolid} otherRects
-     * @return {RectSolid} itself for chaining
-     */
-    updateColl(other, dt){
-        CollisionResponse(this, other, dt);
-        this.Dyna._updateAces();
-        
-        
-    }
+
     
 }
 
+/**
+ * 
+ */
+export class CharRect extends RectSolid{
+    constructor(x, y, width, height){
+        super(x, y, width, height);
 
+        this._INIT("CharRect");
+    }
 
-
-
-
-
+}
 //@--------------------------Visual-Decorator-For--------------------------@//
 
 export class VisualsFor extends Entity{

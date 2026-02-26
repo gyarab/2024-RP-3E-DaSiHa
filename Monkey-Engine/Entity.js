@@ -24,11 +24,12 @@ export class Entity{
             if (!(name in this._ignoreInitOf)) {   //turn off all debug wa
                 this._ignoreWarnsOf[name] =  false ; 
                 this._ignoreInitOf[name]  =  true  ;
-                this._ignoreLogsOf[name]  =  false ;
+                this._ignoreLogsOf[name]  =  true ;
                 this._ignoreErrsOf[name]  =  false ;
             }
             proto = Object.getPrototypeOf(proto);
         }
+        this._ignoreLogsOf["Entity"] = true;
         this._ignoreInitOf[this.constructor.name] = false;
 
         this._INIT("Entity");

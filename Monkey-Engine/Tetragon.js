@@ -107,7 +107,7 @@ export class Tetragon extends Point{
      */
     doesColideWith(other) {
         if (!(other instanceof Tetragon)) {
-            throw new Error("Argument is not instance of Tetragon.");
+            this._errs("Colision detection with non-Tetragon is not implemented yet");
         }
         if ( hasVertexInside(this._points, other._points)) { return true;}
         if (hasEdgeIntersection(this, other)) { return true;}
@@ -293,19 +293,40 @@ function hasEdgeIntersection(tetragon1, tetragon2){
  * @param {Tetragon} tetragon2 
  * @returns {Array<{x: number, y: number}>} array of colision points
  */
-function colidingPointsOfTetragons(tetragon1, tetragon2){
+export function colidingPointsOfTetragons(ptsOfPoly1, ptsOfPoly2){
     let colidingPointsArray = [];
+    const EPS = 0.001;
+
 
     // Check not vertexes but edges intersections
     // shares code with hasEdgeIntersection but
-    for (let j = 0; j < tetragon2._points.length; j++) {
-        for (let i = 0; i < tetragon1._points.length; i++) {
-            let A = tetragon1._points[i];
-            let B = tetragon1._points[(i + 1) % tetragon1._points.length];
-            let C = tetragon2._points[j];
-            let D = tetragon2._points[(j + 1) % tetragon2._points.length];
+    for (let j = 0; j < ptsOfPoly2.length; j++) {
+        for (let i = 0; i < ptsOfPoly1.length; i++) {
+            let A = ptsOfPoly1[i];
+            let B = ptsOfPoly1[(i + 1) % ptsOfPoly1.length];
+            let C = ptsOfPoly2[j];
+            let D = ptsOfPoly2[(j + 1) % ptsOfPoly2.length];
             const intersection = intersectionOfLineSegments(A, B, C, D);
-            if (intersection) colidingPointsArray.push(intersection);
+
+            if (!intersection) continue;
+
+            let exists = false;
+            for (const p of colidingPointsArray) {
+                if (Math.hypot(p.x - intersection.x, p.y - intersection.y) < EPS) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists)colidingPointsArray.push(intersection);
+        }
+    }
+    
+    // Fallback: one shape inside the other (no edge intersections)
+    if (colidingPointsArray.length === 0) {
+        if (hasVertexInside(ptsOfPoly1, ptsOfPoly2)) {
+            colidingPointsArray.push(centroidOfPolygon(ptsOfPoly1));
+        } else if (hasVertexInside(ptsOfPoly2, ptsOfPoly1)) {
+            colidingPointsArray.push(centroidOfPolygon(ptsOfPoly2));
         }
     }
 

@@ -4,32 +4,18 @@ import { Rectangle } from "./Rectangle.js";
 import { Sprite } from "./Sprite.js";
 import { 
     SpriteAnims, RectSolid, Dyna, Material, DeffMate, RealMate, BetaMate, RectDynaAces, VisualsFor,
-        Anims, SoftMate,
+        Anims, SoftMate, RectangleDynaPrototype, stepingOfCollison, CollisionResponse,
         BounceMate,
-        RectDyna,
         MasivMate,
         RectMasiv,
-        SpriteAnimCaracter,
-        Anim
+        Anim,
+        AlphaMate,
+        DynaBisc
 } from "./2.0.js";
 
 const canvas = document.getElementById('herniRozhraní');
 const ctx = canvas.getContext('2d');
 const pathToImgs = "/Game_01_Ledvadva/sprites/Player/SKIN-00/";
-
-////---------------------------------------------------------------------------------------------////
-/*
-let elements = [1, 2, 3, 4];
-
-while (elements.length > 0) {
-  let e = elements[0]; // peek at first
-  process(e);           // your <element(elements)> logic
-  elements.shift();     // remove first
-}
-*/
-function wait(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 const s = new SpriteAnims(
     600,150,90,160, new Anims({
@@ -94,66 +80,168 @@ const s = new SpriteAnims(
     }, "stand")
 
 )
-
-await wait(100)
-const floor = new RectMasiv(0, 800, 1900, 50);
-const block = new RectSolid(900, 200, 200, 200);
-floor.Mate  = new BounceMate();
-block.Mate  = new SoftMate(); 
+////---------------------------------------------------------------------------------------------////
+function movementPhase(dt){ /// MOVEMENT PHASE ///
+    let elements = [floor, box, body,  rody];
 
 
-//const player = new VisualsFor(block, p);
-
-let graphicObjects = [
-    s //player
-]
-
-function collisionPhase(dt){ /// COLLISION PHASE ///
-    block.Dyna._velocity.y += 1200 * dt;
-    let elements = [floor, block];
-
-    while (elements.length > 1) {
-        let e = elements[0];
-            for (let i = 1; i < elements.length; i++) {
-                e.updateColl(elements[i], dt);
+    for (const el of elements) {
+        if (el._hasOnTop?.length > 0) {
+                for (const top of el._hasOnTop) {
+                    console.error(top._color);
+                    if (!(top instanceof RectSolid)) console.error(top.constructor.name );
+                    top.Dyna._velocity.x += el.Dyna._velocity.x;
+                    top.updateVelo(dt)
+                    break
+                }
             }
-        elements.shift();             
+        el._hasOnTop = []; 
+        if (el instanceof RectSolid) el.updateVelo(dt);
     }
 
+    //gravity
+        for(const el of elements){
+        const GRAVITY = 100 ;
+        if (!el.Dyna_isGrounded){
+            el.Dyna._velocity.y += GRAVITY ;
+        }
+    }
+    //steping
+    let maxDisplacement = 0;
+    for (const el of elements) {
+        maxDisplacement = Math.max(maxDisplacement, Math.hypot(
+            el.Dyna._velocity.x * dt, 
+            el.Dyna._velocity.y * dt
+        ));
+    }
 
+    const MAX_STEP = 2;
+    const steps = Math.max(1, Math.ceil(maxDisplacement / MAX_STEP));
+    const dtStep = dt / steps;
+
+    for (let s = 0; s < steps; s++) {
+        for (const el of elements) {
+
+        } 
+        // moven
+        for (const el of elements) {
+            const dis = {
+                x: el.Dyna._velocity.x * dtStep ,
+                y: el.Dyna._velocity.y * dtStep
+            }
+            el.moveBy(dis.x, dis.y);
+        }
+
+        // collisions
+        for (let i = 0; i < elements.length; i++) {
+            for (let j = i + 1; j < elements.length; j++) {
+                const a = elements[i];
+                const b = elements[j];
+
+                if (a.doesColideWith(b)) {
+                    CollisionResponse(a, b, dtStep);
+                }
+            }
+        }
+    }
+
+    //adding friction
+    for(const el of elements){
+        if(!el._frictioned){
+            if(el.Dyna._isGrounded)el.Dyna._velocity.x *= 0.5 //friction
+            el.Dyna._velocity.y *= 0.99; //air resistance
+        
+        }
+    }
 }
 
-function updatingPhase(dt){ /// UPDATING PHASE ///
-    floor.updatePos(dt);
-    block.updatePos(dt);
-    
-}
 
 function renderPhase(){ ///  RENDERING PHASE  ///
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
     for (let obj of graphicObjects){
-        console.log(obj.GraphicPart);
-        obj.render(ctx);
-        obj.updateImage();
 
+        obj.render(ctx);
+        if (!(Dyna in obj) && !(obj instanceof RectangleDynaPrototype)) obj.updateImage();
+        
+    }
+}
+
+const body  = new RectSolid(900, 200, 17*4, 31*4);
+const rody = new RectSolid(800, 200, 17*4, 31*4);rody._color = "blue";
+
+const box   = new RectSolid(400, 200, 200, 200);box._color = "brown";
+const floor = new RectMasiv(0, 800, 1500, 50);
+
+body.Dyna = new DynaBisc();
+body.Mate = new SoftMate();
+rody.Dyna = new DynaBisc();
+rody.Mate = new SoftMate(); // for collision
+
+box.Mate  = new SoftMate(); // for collision
+
+let graphicObjects = [
+    floor, box, body, rody
+];
+
+
+////------------------------>  Keyboard Binds  <--------------------////
+window.addEventListener('load', () => {
+    const pressedKeys = new Set();
+    window.addEventListener('keydown' , event => { handleKeyDown(event,  true); });
+    window.addEventListener('keyup', event => { handleKeyUp(event, true);});
+    let lastTime = performance.now();
+
+    function Mainloop(time) {
+        let dt = (time - lastTime) / 1000;
+        lastTime = time;
+        dt = Math.min(dt, 0.05);
+
+        movementPhase(dt);
+        renderPhase();
+
+        requestAnimationFrame(Mainloop);
+    }
+    
+requestAnimationFrame(Mainloop);
+});
+
+////----------------------- Pressed keys -----------------------////
+function handleKeyUp (event){
+    const key = event.key//.toLowerCase();  // normalize to lowercase
+    const actions = {
+        w: () => { body.Dyna._wantJump     = false;},
+        s: () => { body.Dyna._wantGoDown   = false;},
+        a: () => { body.Dyna._wantGoLeft   = false;},
+        d: () => { body.Dyna._wantGoRight  = false;},
+        'ArrowUp'   : () => {rody.Dyna._wantJump     = false;},
+        'ArrowLeft' : () =>{ rody.Dyna._wantGoLeft   = false;},
+        'ArrowRight': () => {rody.Dyna._wantGoRight  = false;},
+        'ArrowDown' : () => {rody.Dyna._wantGoDown   = false;}
+    };
+     if (actions[key]) {
+        event.preventDefault();
+        actions[key]();
+    }
+}
+function handleKeyDown (event){
+    const key = event.key//.toLowerCase();  // normalize to lowercase
+    const actions = {
+        w: () => {  body.Dyna._wantJump     = true;},
+        s: () => {  body.Dyna._wantGoDown   = true;},
+        a: () => {  body.Dyna._wantGoLeft   = true;},
+        d: () => {  body.Dyna._wantGoRight  = true;},
+        'ArrowUp'   : () => {rody.Dyna._wantJump     = true;},
+        'ArrowLeft' : () => {rody.Dyna._wantGoLeft   = true;},
+        'ArrowRight': () => {rody.Dyna._wantGoRight  = true;},
+        'ArrowDown' : () => {rody.Dyna._wantGoDown   = true;}
+    };
+    if (actions[key]) {
+        event.preventDefault();
+        actions[key]();
     }
 }
 
 
 
 
-let lastTime = performance.now();
-function Mainloop(time) {
-    let dt = (time - lastTime) / 1000;
-    lastTime = time;
 
-    dt = Math.min(dt, 0.05);
-    collisionPhase(dt);
-    updatingPhase(dt);
-    renderPhase();
-
-    requestAnimationFrame(Mainloop);
-}
-
-requestAnimationFrame(Mainloop);
