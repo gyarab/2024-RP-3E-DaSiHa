@@ -1,36 +1,79 @@
 // @Autor: Bendl Šimon
-//@------------------------------IMPORTS----------------------------------@//
-import { RENDER_00, RESTART_00} from './levels/00_mainHub.js';
-import { RENDER_01, RESTART_01} from './levels/01_level.js';
-import { RENDER_02, RESTART_02} from './levels/02_level.js';  
-import { RENDER_03, RESTART_03} from './levels/03_level.js';
-import { RENDER_04, RESTART_04} from './levels/04_level.js';
+//@------------------------------imports----------------------------------@//
+import { Sprite } from "../../Monkey-Engine/Sprite.js";
+import {  Iris  } from "../../Monkey-Engine/Circle.js";
 
-import { Sprite } from  '../Monkey-Engine/Sprite.js';
-import { Iris }   from  '../Monkey-Engine/Circle.js';
-import { Player } from  '../Monkey-Engine/PlatformerLib.js';
-//@------------------------------MAIN-------------------------------------@//
-////------------------------> Ledvadva Manager <--------------------////
-const Ledvadva = {
-    players : [
-        new Player(0, 0,"SKIN-00"),
-        new Player(0, 0,"SKIN-01")
-    ],
-    modes : {
-        pause    : false,
-        infoMode : false,
-        editMode : false            
-    },
-    currentlvl : 4,
+//@------------------------------exports-----------------------------------@//
+/// pathTo ///
+const pathToGame = "../../Game_00/";
+const pathTo =  {
+    game   : pathToGame              ,
+    engine : "../../Monkey-Engine/"  ,
+    levels  : pathToGame + "levels/" ,
+    assets  : pathToGame + "assets/" ,
+    sounds  : pathToGame + "sounds/" ,
+    sprites : pathToGame + "sprites/",
+    hints   : pathToGame + "sprites/hints/"  ,
+
+}
+export { pathTo };
+
+/// Ledvadva ///
+const Ledvadva =  {
     shouldRestart : true,
-    infoBar : new Sprite(
-        0,0,1920,1080,"../Game_01_Ledvadva/sprites/Indicators/infoBar.png"
-    ),
-    iris : new Iris(0, 0, 0),
+    currentlvl : 0,
+    modes : {
+        pause : false,
+        info  : false,
+        edit  : false            
+    },
+    bars : {
+        pause : new Sprite( 0, 0, 1920, 1080,
+            pathTo.hints + "pauseMode.png"
+        ),
+        info : new Sprite( 0, 0, 1920, 1080,
+            pathTo.hints + "infoMode.png"
+        ),
+        edit : new Sprite( 0, 0, 1920, 1080,
+            pathTo.hints + "editMode.png"
+        )
+    },
+
 };
 export { Ledvadva };
-////------------------------>  Keyboard Binds  <--------------------////
+
+/// Players ///
+const Players =  {
+    RED : 0, // new Player(),
+    BLU : 1 // new Player(),
+
+}
+export { Players };
+
+/// Effects ///
+const Effects =  {
+    iris : new Iris(0, 0, 0),
+}
+export { Effects };
+
+//@-------------------------------helpFunc---------------------------------@//
+
+/// switchMode() ///
+function switchMode(mode){
+    Ledvadva.modes[mode] = !Ledvadva.modes[mode];
+}
+/// backToLobby() ///
+function backToLobby(){
+    Ledvadva.currentlvl = 0;
+    Ledvadva.shouldRestart = true;
+}
+
+//@---------------------------------main-----------------------------------@//
 window.addEventListener('load', () => {
+
+    //// Keyboard ////
+
+    /// setup ///
     const pressedKeys = new Set();
     window.addEventListener('keydown' , event => {
         handleKeyUpAndDown(event,  true);
@@ -49,16 +92,8 @@ window.addEventListener('load', () => {
         pressedKeys.delete(event.key);
         handleKeyWasPressed(event); 
     }
-    ////-----------------------canvasSetUp--------------------------////
-    const canvas = document.getElementById('herniRozhraní');
-    const ctx = canvas.getContext('2d');
-    ctx.imageSmoothingEnabled = false; 
-    const _reset = ctx.reset.bind(ctx);
-    ctx.reset = function () {
-        _reset();
-        this.imageSmoothingEnabled = false;
-    };
-    ////----------------------- Clicked keys -----------------------////
+
+    /// clicked keys ///
     function handleKeyWasPressed(event){
         const { key } = event;
         const actions = {
@@ -70,13 +105,16 @@ window.addEventListener('load', () => {
             'k'    : () => Ledvadva.players[1]._wantInteract = 'backward',
             'l'    : () => Ledvadva.players[1]._wantInteract = 'forward',
 
-            'i'    : () => Ledvadva.modes.infoMode = !Ledvadva.modes.infoMode,
-            'p'    : () => Ledvadva.modes.pause    = !Ledvadva.modes.pause,
+            'i'    : () => switchMode(info ),
+            'p'    : () => switchMode(pause),
+            '>'    : () => backToLobby(),
+
             'r'    : () => Ledvadva.shouldRestart = true,
         }; 
         if (actions[key]) actions[key]();
     }
-    ////----------------------- Pressed keys -----------------------////
+
+    /// pressed keys ///
     function handleKeyUpAndDown(event, isDown){
         const { key } = event;
         const actions = {
@@ -89,8 +127,6 @@ window.addEventListener('load', () => {
             'ArrowLeft' : () => Ledvadva.players[1]._wantGoLeft   = isDown,
             'ArrowRight': () => Ledvadva.players[1]._wantGoRight  = isDown,
             'ArrowDown' : () => Ledvadva.players[1]._wantGoDown   = isDown,
-
-            '>'    : () => {Ledvadva.currentlvl = 0; Ledvadva.shouldRestart = true},
         };
         if (actions[key]) {
             event.preventDefault();
@@ -98,7 +134,19 @@ window.addEventListener('load', () => {
         }
         if (actions[key]) actions[key]();
     }
-    ////--------------------------Mainloop---------------------------////
+
+    //// Canvas setup  ////
+    const canvas = document.getElementById('herniRozhraní');
+    const ctx = canvas.getContext('2d');
+    
+    /// @Override default canvas reset function  
+    const _reset = ctx.reset.bind(ctx);
+    ctx.reset = function () {
+        _reset();
+        this.imageSmoothingEnabled = false;
+    };
+    
+    ////  Mainloop()  ////
     let lastTime = performance.now();
     function Mainloop(time) {
         let dt = (time - lastTime) / 1000;
@@ -107,14 +155,14 @@ window.addEventListener('load', () => {
         
         switch (Ledvadva.currentlvl) {
             case 0: RENDER_00(dt); break;
-            case 1: RENDER_01(dt); break;
-            case 2: RENDER_02(dt); break;
-            case 3: RENDER_03(dt); break;
-            case 4: RENDER_04(dt); break;
+            //case 1: RENDER_01(dt); break;
+            //case 2: RENDER_02(dt); break;
+            //case 3: RENDER_03(dt); break;
+            //case 4: RENDER_04(dt); break;
             default: console.error("Level not found"); break;
         }
-        Ledvadva.players[0]._wantInteract = "none";
-        Ledvadva.players[1]._wantInteract = "none";
+        //Ledvadva.players[0]._wantInteract = "none";
+        //Ledvadva.players[1]._wantInteract = "none";
 
         requestAnimationFrame(Mainloop);
     }
@@ -124,19 +172,19 @@ window.addEventListener('load', () => {
 //@---------------------------Ledvadva functions--------------------------------@//
 
 /** /// playersColideWith() ///
+ *  TODO: PLAYER NEEDS TO BE SET UP FIRST
  *  Checks if any of the players colides with the given object
- *  TODO: doesColide works only for Tetragons so far
  *  @param {Point} object - object to check colision with
- *  ? returns are a bit funky clunky ?
  *  @returns the index of the player coliding or false
  */
 export function playersColideWith(object){
-    if (Ledvadva.players[0].doesColideWith(object)) return 0;
-    if (Ledvadva.players[1].doesColideWith(object)) return 1;
+    if (Players.RED.doesColideWith(object)) return 0;
+    if (Players.BLU.doesColideWith(object)) return 1;
     return false;
 }
 
 /** /// RENDER_PLAYERS() ///
+ * TODO: PLAYER NEEDS TO BE SET UP FIRST
  * renders and updates both players if not paused 
  * @param {CanvasRenderingContext2D} ctx - context
  * @param {*} LvlStructure
@@ -144,31 +192,28 @@ export function playersColideWith(object){
  */
 export function RENDER_PLAYERS(ctx, LvlStructure){
     if (!Ledvadva.modes.pause){
-        Ledvadva.players[1].updatePos(LvlStructure);
-        Ledvadva.players[1].updateImage();
-        Ledvadva.players[0].updatePos(LvlStructure);
-        Ledvadva.players[0].updateImage();
-        
+        //TODO: player needs to beset up first
     }
-    Ledvadva.players[1].render(ctx, Ledvadva.modes.infoMode);
-    Ledvadva.players[0].render(ctx, Ledvadva.modes.infoMode);  
+    Players.BLU.render(ctx, Ledvadva.modes.info);
+    Players.RED.render(ctx, Ledvadva.modes.info);  
 }
 
 /** /// RESET_PLAYERS() ///
+ * TODO: PLAYER NEEDS TO BE SET UP FIRST
  * resets both players to given positions and stops their movement
  * @param {x: number, y: number}
  * @param {x: number, y: number}
  * @return void
  */
 export function RESET_PLAYERS({x:x0, y:y0}, {x:x1, y:y1}){
-    x0  &&   y0  && Ledvadva.players[0].moveTo(x0, y0);
-    Ledvadva.players[0]._xVelocity = 0; 
-    Ledvadva.players[0]._yVelocity = 0;
-    Ledvadva.players[1]._currentFrame = 0;
-    x1  &&   y1  && Ledvadva.players[1].moveTo(x1, y1);
-    Ledvadva.players[1]._xVelocity = 0; 
-    Ledvadva.players[1]._yVelocity = 0;
-    Ledvadva.players[1]._currentFrame = 0;
+    x0  &&   y0  && Players.RED.moveTo(x0, y0);
+    Players.RED._xVelocity = 0; 
+    Players.RED._yVelocity = 0;
+    Players.BLU._currentFrame = 0;
+    x1  &&   y1  && Players.BLU.moveTo(x1, y1);
+    Players.BLU._xVelocity = 0; 
+    Players.BLU._yVelocity = 0;
+    Players.BLU._currentFrame = 0;
 }
 
 /** /// RENDER_MODES() ///
@@ -177,7 +222,7 @@ export function RESET_PLAYERS({x:x0, y:y0}, {x:x1, y:y1}){
  * @param {SpriteStack} HitBoxes 
  */
 export function RENDER_MODES(ctx, HitBoxes){
-    if (Ledvadva.modes.infoMode){
+    if (Ledvadva.modes.info){
         if (HitBoxes.length > 0) HitBoxes.render(ctx, true);
         Ledvadva.infoBar.render(ctx);
     }
