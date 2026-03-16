@@ -1,9 +1,6 @@
 // @Autor: Bendl Šimon
 //@------------------------------IMPORTS----------------------------------@//
-import { RENDER_00, RESTART_00} from './levels/00_mainHub.js';
-import { RENDER_01, RESTART_01} from './levels/01_level.js';
-import { RENDER_02, RESTART_02} from './levels/02_level.js';  
-import { RENDER_03, RESTART_03} from './levels/03_level.js';
+
 import { RENDER_04, RESTART_04} from './levels/04_level.js';
 
 import { Sprite } from  '../Monkey-Engine/Sprite.js';

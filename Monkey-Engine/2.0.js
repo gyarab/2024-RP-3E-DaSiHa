@@ -201,7 +201,7 @@ export class Anim extends GraphicPrototype{
     }
 
 }
-
+//
 ////   MixAnim  ////
 export class MixAnim extends Anim{
     constructor(spritePaths, slow, weights, mode){
@@ -241,6 +241,7 @@ export class MixAnim extends Anim{
         super._initializeFunc();
 
         this._mode = this._mode ?? "loop";
+        this._weights = this._weights ?? [];
 
         const wLength = this._weights.length;
         if (this._length - wLength === 0 )return;
@@ -257,7 +258,7 @@ export class MixAnim extends Anim{
      */
     _resetCurr(){
         this._current = 0;
-        if (this._mode === "linearEnd") this._mode = "linear";
+        if (this._mode === 2.2) this._mode = 2;
         return this;
     }
 
@@ -269,32 +270,43 @@ export class MixAnim extends Anim{
     update(){
         this._tick++;
 
-        if (this._length === 0){ this._errs(
-            "Trying to update an animation with no frames loaded"
-        );return this;}
+        if (this._length === 0){
+            this._errs("Trying to update an animation with no frames loaded");
+            return this;
+        }
 
         if (this._tick > (this._slow * this._currentWeight)){
             this._tick = 0;
-
-            if (this._mode === "loop"){
+        
+            if (this._mode === 1  ){ //* loop 
                this._current = (this._current + 1) % this._length;
                return this;
             }
-            if (this._mode === "linear"){
-                if (this._current < this._length - 1) this._current++;
-                else this._mode = "linearEnd"; 
-                return this;
-            }
-            if(this._mode === "pingpong"){
-                this._current++;
-                if (this._current == this._length - 1){
-                    this._mode = "pingpongBack";
+            if (this._mode === 2  ){ //* linear 
+                if (this._current < this._length - 1) {
+                    this._current++;
+                    return this;
                 }
+                this._mode = 2.2;   // linearEnd 
                 return this;
             }
-            if(this._mode === "pingpongBack"){
-                this._current--;
-                if (this._current === 0) this._mode = "pingpong";
+            if (this._mode === 2.2){ //* linearEnd 
+                return this;
+            }
+            if (this._mode === 3  ){ //* pingpong 
+                if (this._current == this._length - 1){
+                    this._mode = 3.2;// pingpongBack 
+                    return this;
+                }
+                this._current = this._current + 1;
+                return this;
+            }
+            if (this._mode === 3.2){ //* pingpongBack 
+                if (this._current === 0){
+                    this._mode = 3;// pingpong
+                    return this;
+                }
+                this._current =  this._current - 1;
                 return this;
             }
             this._errs("Unknown animation mode: " + this._mode);
@@ -309,12 +321,6 @@ export class MixAnim extends Anim{
       /// _setters ///
     set _currentWeight(value){
         this._weights[this._current] = value;
-    }
-    set _current(value){
-        super._currentFrame = value;        this._warns(
-            "Setting current frame manually on a MixAnim" +
-            " may cause desynchronization of the modes"
-        );
     }
 
 }
@@ -601,9 +607,7 @@ export class SpriteAnims extends Rectangle{
 
 /// SpriteAnimCaracter ///
 export class SpriteAnimCaracter extends SpriteAnims{
-    constructor(
-
-    ){
+    constructor(){
         super();
         this._pathToSKIN = "../../Game_01_Ledvadva/sprites/SKIN-00/";
         this._skins = ["SKIN-00"];
@@ -811,28 +815,29 @@ export function CollisionResponse(obj1, obj2, dt) {
     if(imm1) obj1.Dyna._velocity = {x: 0, y: 0};
     if(imm2) obj2.Dyna._velocity = {x: 0, y: 0};
 
-    // --- get AABBs ---
     const a = getAABB(obj1._points);
     const b = getAABB(obj2._points);
 
-    // --- compute penetration per axis ---
+    // compute penetration
     const penetrationX = Math.min(a.maxX - b.minX, b.maxX - a.minX);
     const penetrationY = Math.min(a.maxY - b.minY, b.maxY - a.minY);
 
-    // --- pick the shortest axis ---
     const axis = penetrationX < penetrationY ? 'x' : 'y';
-
-    // --- determine direction: obj1 relative to obj2 ---
     const centroid1 = centroidOfPolygon(obj1._points);
     const centroid2 = centroidOfPolygon(obj2._points);
     const EPSILON = 0.05;
 
     if (axis === 'x') {
         const dir = centroid1.x < centroid2.x ? -1 : 1;
-
+        obj1.Dyna._isLeanLeft  = (dir ===  1);
+        obj1.Dyna._isLeanRight = (dir === -1);
+        obj2.Dyna._isLeanRight = (dir ===  1);
+        obj2.Dyna._isLeanLeft  = (dir === -1);
         if (!imm1 && !imm2) {
             obj1.moveBy((penetrationX / 2 + EPSILON) * dir, 0);
+
             obj2.moveBy(-(penetrationX / 2 + EPSILON) * dir, 0);
+
         } else if (!imm1 && imm2) {
             obj1.moveBy((penetrationX + EPSILON) * dir, 0);
         } else if (imm1 && !imm2) {
@@ -868,7 +873,7 @@ export function CollisionResponse(obj1, obj2, dt) {
             obj2.moveBy(0, -(penetrationY + EPSILON) * dir);
         }
         if(obj1.doesColideWith(obj2))return
-        // --- simple velocity transfer along Y ---
+        //  simple velocity transfer along Y 
         const v1y = obj1.Dyna._velocity.y;
         const v2y = obj2.Dyna._velocity.y;
         if (!imm1 && !imm2 ) {
@@ -910,7 +915,7 @@ export function CollisionResponse(obj1, obj2, dt) {
         if(imm2) obj2.Dyna._velocity = {x: 0, y: 0};
     }
 
-    /* --- optional sanity check ---
+    /* optional sanity check
     if (obj1.doesColideWith(obj2)) {
         obj1._warns("Objects still colliding after CollisionResponse.");
         obj2._warns("Objects still colliding after CollisionResponse.");
@@ -1296,36 +1301,48 @@ export class DynaBisc extends DynaAces{
         this._isGoRight = false; 
         this._isGoLeft  = false;
         this._isGoDown  = false;
-        this._isGoUp    = false;
 
         this._isPushRight = false;
         this._isPushLeft = false;
 
         this._wasGrounded = false;
-        this._isOnTop = false;
+        this._isLeanLeft = false;
+        this._isLeanRight = false;
+        this._dirOfJump = 0;
+
+
 
 
         // * old properties
-        this._MAX_X_VELOCITY = 1000;
+        this._MAX_X_VELOCITY = 400;
         this._MAX_Y_VELOCITY = 10000;
 
         this._RUN_POWER = 300;
         this._JUMP_POWER = 1500;
-        this._JUMP_CTRL = 100;
+        this._JUMP_CTRL = 30;
 
         this._INIT("DynaBisc");
     }
 
     updateVelo(dt){
+        this._logs(this._dirOfJump);
         /*----------------------je-nohama-na-zemi--------------------- */
-        //if(this._isGrounded && !this._isJumping && !this._wantJump  && !this.isOnTop)this._velocity.x = 0  
-        if(this._isGrounded && !this._wantJump )this._isJumping = false;
+        if(this._isJumping && this._velocity.y >= 0){
+            this._isFalling = true;
+        }
+        
+        if(this._isGrounded ){
+            this._isJumping = false;
+            this._isFalling = false;
+        }
         /*-----------------------pokud chce doleva-------------------- */
         if (this._wantGoLeft && !  this._wantGoRight){
             if (this._isGrounded){
-                this.isGoLeft = true;
+                this._isGoLeft = true;
+                this._isGoRight = false; 
+
                 this._velocity.x -= this._RUN_POWER;
-                console.log("go left");
+                this._logs("go left");
                 
             }else{
                 this._velocity.x += -this._JUMP_CTRL;
@@ -1334,46 +1351,66 @@ export class DynaBisc extends DynaAces{
         /*-----------------------pokud chce doprava------------------ */
         if(this._wantGoRight && !this._wantGoLeft){
             if(this._isGrounded){
-                this.isGoRight = true;
+                this._isGoRight = true;
+                this._isGoLeft = false;
+
                 this._velocity.x += this._RUN_POWER;
-                console.log("go right");
+                this._logs("go right");
             }else{
                 this._velocity.x += this._JUMP_CTRL;
             }
         }
         /*-------------pokud nechci ani doleva ani doprava------------ */
-        if( this._wantGoLeft &&  this._wantGoRight && !this._isJumping){
-            this.isGoLeft = false;
-            this.isGoRight = false;
-            this.isGoBothWays = true;
-            console.log("go nowhere");
+        if( this._wantGoLeft &&  this._wantGoRight){
+            this._isGoBothWays = true;
+            this._isGoRight = false;
+            this._isGoLeft = false;
+
+            this._logs("go nowhere");
         }
         /*------------------pokud chci doleva a doprava--------------- */
-        if(!this._wantGoLeft && !this._wantGoRight && !this._isJumping){
-            this.isGoLeft = false;
-            this.isGoRight = false;
-            this.isGoBothWays = true;
-            console.log("go nowhere" + this._isGrounded);
+        if(!this._wantGoLeft && !this._wantGoRight){
+            this._isGoBothWays = true;        
+            this._isGoRight = false;
+            this._isGoLeft = false;
+ 
+            this._logs("go nowhere" + this._isGrounded);
         }
         /*---------------------pokud chce skočit---------------------- */
         if((!this._isJumping && this._isGrounded) && this._wantJump){
-            console.log("jumping");
+            this._logs("jumping");
             this._isJumping = true;
+            this._dirOfJump = 0;
             this._velocity.y = -this._JUMP_POWER;
-            if (this._isGoLeft && !this._isGoRight) this._velocity.x += -this._RUN_POWER;
-            if (!this._isGoLeft && this._isGoRight) this._velocity.x +=  this._RUN_POWER; 
+            if (this._isGoLeft && !this._isGoRight){
+                this._dirOfJump = -1;
+            }
+            if (!this._isGoLeft && this._isGoRight){
+                this._dirOfJump = 1;
+            }
         }
-        this._wasGrounded = false;
-        if(this._isGrounded)this._wasGrounded = true;
         this._isGrounded = false;
+        this._isLeanLeft = false;
+        this._isLeanRight = false;
         super.updateVelo(dt);
     }
+    get _isJumpUp(){
+        return this._isJumping && this._dirOfJump === 0;
+    }
+    get _isJumpUpRight(){
+        return this._isJumpUp && this._wantGoRight;
+    }
+    get _isJumpUpLeft(){
+        return this._isJumpUp && this._wantGoLeft;
+    }
+    get _isJumpLeft(){
+        return this._isJumping && this._dirOfJump === -1;
+    }
+    get _isJumpRight(){
+        return this._isJumping && this._dirOfJump === 1;
+    }
+
 }
-
-
-
-
-
 
 
 //@---                           ObjectClass                             ---@//
@@ -1426,23 +1463,6 @@ export class RectangleDynaPrototype extends Rectangle{
         this.Dyna.updateVelo(dt);
 
     }
-
-    /** /// updatePos() ///
-     * updates the position of the RectangleDynaPrototype based on its Dyna
-     * @public
-     * @param {number} dt - delta time
-     * @return {RectangleDynaPrototype} itself for chaining
-     */
-    updatePos(dt){
-        this.Dyna.updateVelo(dt);
-        this.moveBy(
-            this.Dyna._velocity.x * dt,
-            this.Dyna._velocity.y * dt
-        );
-        return this;
-    };
-
-
 }
 
 /** ///  RectDyna  ///
@@ -1551,9 +1571,10 @@ export class RectMasiv extends RectDyna{
  */
 export class RectSolid extends RectDynaAces{
     constructor(x, y, width, height){
-        super(x, y, width, height, new DeffMate());
+        super(x, y, width, height);
         //* new properties
         this._hasOnTop = [];
+        this.Mate = new DeffMate();
 
         //* old properties
         this._color = "red";
@@ -1599,7 +1620,9 @@ export class CharRect extends RectSolid{
 
         this._INIT("CharRect");
     }
-
+    updateVelo(dt){
+        this
+    }   
 }
 //@--------------------------Visual-Decorator-For--------------------------@//
 
@@ -1682,7 +1705,6 @@ export class VisualsFor extends Entity{
      */
     render(ctx, rColBox = false){
         this.GraphicPart.render(ctx, rColBox);
-
         if (!rColBox) return this;
         this.DynamicPart.render(ctx);
     }
@@ -1719,7 +1741,6 @@ export class VisualsFor extends Entity{
         this._errs(msgErr +"Unhandled Graphic object type or Graphic-Dynamic combination");
 
     }
-
 }
 
 //@---                           helpFunc                                ---@//

@@ -24,13 +24,7 @@ export class Circle extends Point {
         return this;
     }
 
-    /**
-     * 
-     */
-    moveTo(){
-        super.moveTo()
 
-    }
 
     /**
      * 
@@ -62,11 +56,11 @@ export class Iris extends Circle{
         // dangerous to change so treat accordingly !!!
         this._MAX_RADIUS = Math.hypot(1920, 1080);
         this._MIN_RADIUS = 0;
-        // zoomDir = -1 for zooming out
-        //   -//-  =  1 for zooming in
+        // zoomDir = -1 for zooming in
+        //   -//-  =  1 for zooming out
         this._zoomDir = 0;
         this._isZoomin = false
-        this._zoomSpeed = _defaultValues.i_zoomSpeed;
+        this._zoomSpeed = 1000;
         //iris can be locked on the obj for auto position update
         this._lockedOn = null
     }
@@ -83,7 +77,6 @@ export class Iris extends Circle{
         ctx.beginPath();
         ctx.arc(this._x, this._y, this._radius, 0, Math.PI * 2);
         ctx.clip();
-
         return this;
     }
 
@@ -91,14 +84,22 @@ export class Iris extends Circle{
      * updates the position and focus of iris based on flags and speeds
      * @returns {Iris} itself for chaining
      */
-    updatePos(){
-        this._lockedOn && this.moveTo(this._lockedOn._x, this._lockedOn._y);        
-        if (this._isZoomin && this._zoomDir ===  1 && this._radius < this._MAX_RADIUS){
-            this._radius += this._zoomSpeed;
+    updatePos(dt){
+        if (this._lockedOn){
+            this.moveTo(this._lockedOn._x, this._lockedOn._y);
         }
-        if(!this._isZoomin && this._zoomDir === -1 && this._radius > this._MIN_RADIUS){
-            this._radius -= this._zoomSpeed;
+
+        if (this._zoomDir === 1){
+            this._radius += this._zoomSpeed * dt;
         }
+
+        if (this._zoomDir === -1){
+            this._radius -= this._zoomSpeed * dt;
+        }
+
+        if (this._radius > this._MAX_RADIUS) this._radius = this._MAX_RADIUS;
+        if (this._radius < this._MIN_RADIUS) this._radius = this._MIN_RADIUS;
+
         return this;
     }
 

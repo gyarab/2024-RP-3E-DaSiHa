@@ -138,5 +138,6 @@
         }
 
     ],
-    "better-comments.multilineComments": true
+    "better-comments.multilineComments": true,
+    "liveServer.settings.port": 5501
 }

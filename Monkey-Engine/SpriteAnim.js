@@ -11,7 +11,7 @@ export class SpriteA extends Sprite{
         
         this._frames = [];
         this._animTick = 0;
-        this._animSlow = _defaultValues.sA_animSlow;
+        this._slow = _defaultValues.sA_animSlow;
         this._currentFrame = 0;
         
         // ? not sure if I want it here (maybe push to Sprite) ? //
@@ -44,7 +44,7 @@ export class SpriteA extends Sprite{
      */
     updateImage(){
         this._animTick += 1;
-        if (this._animTick > this._animSlow){
+        if (this._animTick > this._slow){
             this._currentFrame = (this._currentFrame + 1) % this._frames.length;
             this._animTick = 0;
         }
@@ -96,7 +96,7 @@ export class SpriteA extends Sprite{
      */
     clone(takesMoreSpace = false) {
         const clone = new SpriteA(this._x, this._y, this._width, this._height);
-        clone._animSlow = this._animSlow;
+        clone._slow = this._slow;
         clone._currentFrame = this._currentFrame;
         clone._renderWidth = this._renderWidth;
         clone._renderHeight = this._renderHeight;
@@ -121,8 +121,8 @@ export class SpriteA extends Sprite{
         this.loadImg(newValue);
         return this
     }
-    set animSlow(newValue){
-        this._animSlow = newValue;
+    set slow(newValue){
+        this._slow = newValue;
         return this;
     }
     set width(newValue){

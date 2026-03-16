@@ -2,7 +2,9 @@
 //@------------------------------imports----------------------------------@//
 import { Sprite } from "../../Monkey-Engine/Sprite.js";
 import {  Iris  } from "../../Monkey-Engine/Circle.js";
-
+import { RENDER_00, RESTART_00 } from "../../Game_00/levels/00_lobby.js";
+import { Player } from "../../Game_00/assets/PlatformerLib2.0.js";
+import { RectSolid, DynaBisc } from "../../Monkey-Engine/2.0.js";
 //@------------------------------exports-----------------------------------@//
 /// pathTo ///
 const pathToGame = "../../Game_00/";
@@ -44,17 +46,32 @@ export { Ledvadva };
 
 /// Players ///
 const Players =  {
-    RED : 0, // new Player(),
-    BLU : 1 // new Player(),
-
+    RED : {
+        skin : new Player(0,0,"SKIN-00"),
+        body : new RectSolid(0, 0, 14*4, 31*4)  //todo: player rig 
+    },
+    BLU :{
+        skin : new Player(0,0,"SKIN-01"),
+        body : new RectSolid(0, 0, 14*4, 31*4) //todo: player rig
+    }
 }
+Players.RED.body.Dyna = Players.RED.skin.Dyna = new DynaBisc();
+Players.BLU.body.Dyna = Players.BLU.skin.Dyna = new DynaBisc();
+
 export { Players };
 
 /// Effects ///
 const Effects =  {
-    iris : new Iris(0, 0, 0),
+    iris : new Iris(0,0,0),
 }
 export { Effects };
+
+/// LevelRestarts ///
+const LevelRestarts = {
+    0: RESTART_00,
+    // add more as you add levels
+};
+export { LevelRestarts };
 
 //@-------------------------------helpFunc---------------------------------@//
 
@@ -105,8 +122,8 @@ window.addEventListener('load', () => {
             'k'    : () => Ledvadva.players[1]._wantInteract = 'backward',
             'l'    : () => Ledvadva.players[1]._wantInteract = 'forward',
 
-            'i'    : () => switchMode(info ),
-            'p'    : () => switchMode(pause),
+            'i'    : () => switchMode("info"),
+            'p'    : () => switchMode("pause"),
             '>'    : () => backToLobby(),
 
             'r'    : () => Ledvadva.shouldRestart = true,
@@ -172,19 +189,17 @@ window.addEventListener('load', () => {
 //@---------------------------Ledvadva functions--------------------------------@//
 
 /** /// playersColideWith() ///
- *  TODO: PLAYER NEEDS TO BE SET UP FIRST
  *  Checks if any of the players colides with the given object
  *  @param {Point} object - object to check colision with
  *  @returns the index of the player coliding or false
  */
 export function playersColideWith(object){
-    if (Players.RED.doesColideWith(object)) return 0;
-    if (Players.BLU.doesColideWith(object)) return 1;
+    if (Players.RED.body.doesColideWith(object)) return 0;
+    if (Players.BLU.body.doesColideWith(object)) return 1;
     return false;
 }
 
 /** /// RENDER_PLAYERS() ///
- * TODO: PLAYER NEEDS TO BE SET UP FIRST
  * renders and updates both players if not paused 
  * @param {CanvasRenderingContext2D} ctx - context
  * @param {*} LvlStructure
@@ -192,28 +207,27 @@ export function playersColideWith(object){
  */
 export function RENDER_PLAYERS(ctx, LvlStructure){
     if (!Ledvadva.modes.pause){
-        //TODO: player needs to beset up first
+        Players.BLU.skin.updateImage();
+        Players.RED.skin.updateImage();
     }
-    Players.BLU.render(ctx, Ledvadva.modes.info);
-    Players.RED.render(ctx, Ledvadva.modes.info);  
+    Players.BLU.skin.render(ctx, Ledvadva.modes.info);
+    Players.RED.skin.render(ctx, Ledvadva.modes.info);  
 }
 
 /** /// RESET_PLAYERS() ///
- * TODO: PLAYER NEEDS TO BE SET UP FIRST
  * resets both players to given positions and stops their movement
  * @param {x: number, y: number}
  * @param {x: number, y: number}
  * @return void
  */
 export function RESET_PLAYERS({x:x0, y:y0}, {x:x1, y:y1}){
-    x0  &&   y0  && Players.RED.moveTo(x0, y0);
-    Players.RED._xVelocity = 0; 
-    Players.RED._yVelocity = 0;
-    Players.BLU._currentFrame = 0;
+    x0  &&   y0  && Players.RED.body.moveTo(x0, y0);
+    Players.RED.body.Dyna._velocity = {x:0, y:0};
+    Players.RED.skin.Graphic._setCurrentNamed("stand")
+
     x1  &&   y1  && Players.BLU.moveTo(x1, y1);
-    Players.BLU._xVelocity = 0; 
-    Players.BLU._yVelocity = 0;
-    Players.BLU._currentFrame = 0;
+    Players.BLU.body.Dyna._velocity = {x:0, y:0};
+    Players.BLU.skin.Graphic._setCurrentNamed("stand")
 }
 
 /** /// RENDER_MODES() ///
@@ -233,22 +247,21 @@ export function RENDER_MODES(ctx, HitBoxes){
  * @param {CanvasRenderingContext2D} ctx - context
  * @returns void
  */
-export function RENDER_IRIS(ctx){
-    if (Ledvadva.iris._isZoomin){
-        Ledvadva.iris.render(ctx);
-        Ledvadva.iris.updatePos();
+export function RENDER_IRIS(ctx, dt){
+    Effects.iris.updatePos(dt);
+    if (Effects.iris._zoomDir !== 0){
+        Effects.iris.render(ctx);
     }
-}
-    
-/** /// RESET_IRIS() ///
- * resets the iris to default state
- * @return void
- */
-export function RESET_IRIS(){
-    if (Ledvadva.iris._radius >= Ledvadva.iris._MAX_RADIUS){
-        Ledvadva.shouldRestart = false;
-        Ledvadva.modes.pause = false;
-        Ledvadva.iris.zoomDir = 0;
-        Ledvadva.iris.radius = Ledvadva.iris._MIN_RADIUS;
+    if ( Effects.iris._zoomDir === -1){
+        if (Effects.iris._radius <= Effects.iris._MIN_RADIUS){
+            Effects.iris.zoomDir = 1;        }
+    }
+    if ( Effects.iris._zoomDir === 1){
+        if(Effects.iris._radius >= Effects.iris._MAX_RADIUS ){
+            Effects.iris.zoomDir = 0;
+            Ledvadva.modes.pause = false;
+            Ledvadva.shouldRestart = false;
+        }
+       
     }
 }

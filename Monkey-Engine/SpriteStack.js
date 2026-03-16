@@ -3,10 +3,9 @@
 import { _defaultValues } from "./_defaultValues.js";
 import { vectorBetween } from "./LineSection.js";
 import { renderPoint } from "./Point.js";
-import { SpriteA }    from "./SpriteAnim.js";
 import { Sprite }     from "./Sprite.js";
 import { Rectangle }  from "./Rectangle.js";
-import { SpriteAnim }     from "./2.0.js";
+import { SpriteA }     from "./SpriteAnim.js";
 import { SpriteDyna }    from "./SpriteDyna.js";
 import { renderCollisionBox } from "./Sprite.js";
 
@@ -74,7 +73,6 @@ export class SpriteStack extends Array {
     updateImage() {
         this.forEach(sprite => {
             if (sprite instanceof SpriteA) sprite.updateImage();
-            if (sprite instanceof SpriteAnim) sprite.updateImage();
         });
         return this;    
     }

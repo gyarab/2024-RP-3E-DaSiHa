@@ -3,7 +3,7 @@
 import { Ledvadva, RENDER_IRIS, RENDER_MODES, RENDER_PLAYERS, RESET_IRIS, RESET_PLAYERS } from "../../Game_01_Ledvadva/main.js";
 import { Sprite }     from '../../Monkey-Engine/Sprite.js';
 import { SpriteStack } from "../../Monkey-Engine/SpriteStack.js";
-import { SpriteAnim } from "../../Monkey-Engine/2.0.js";
+import { SpriteA } from "../../Monkey-Engine/SpriteAnim.js";
 //@------------------------------STRUCTURE----------------------------------@//
 const Hitboxes = new SpriteStack();
 
@@ -20,17 +20,17 @@ const trainBlueprint = new Sprite(-1440, 0, 833*tSize, 83*tSize, pathToTrain + "
 
 ////---------//                   Wheels                   ////
 // bigWheel
-const bW = new SpriteAnim(0, 0, 23*tSize, 23*tSize, [ 
+const bW = new SpriteA(0, 0, 23*tSize, 23*tSize, [ 
     pathToTrain +  "wheel/1.png", pathToTrain + "wheel/2.png" ,
     pathToTrain +  "wheel/3.png", pathToTrain + "wheel/4.png" ,
     pathToTrain +  "wheel/5.png",
 ]);
-bW.Anim._slow = 20;
+bW.slow = 20;
 // smallWheel
-const sW  = new SpriteAnim(0, 0, 17*tSize, 17*tSize, [
+const sW  = new SpriteA(0, 0, 17*tSize, 17*tSize, [
     pathToTrain +  "wheelie/1.png", pathToTrain + "wheelie/2.png" 
 ]);
-sW.Anim._slow = 16 ;
+sW.slow = 16 ;
 ////---------//                   Engine                   ////
 export class Engine extends SpriteStack{
     constructor(){
@@ -60,22 +60,22 @@ export class Engine extends SpriteStack{
         ///----------//                   Wheels                   ////
         const wheels = new SpriteStack();
         wheels.push(
-            bW.clone().moveTo(  0*tSize,  4*tSize),
-            bW.clone().moveTo( 33*tSize,  4*tSize),
-            bW.clone().moveTo( 60*tSize,  4*tSize),
-            bW.clone().moveTo( 91*tSize,  4*tSize),
-            sW.clone().moveTo(124*tSize, 10*tSize),
-            sW.clone().moveTo(142*tSize, 10*tSize)
+            bW.clone(true).moveTo(  0*tSize,  4*tSize),
+            bW.clone(true).moveTo( 33*tSize,  4*tSize),
+            bW.clone(true).moveTo( 60*tSize,  4*tSize),
+            bW.clone(true).moveTo( 91*tSize,  4*tSize),
+            sW.clone(true).moveTo(124*tSize, 10*tSize),
+            sW.clone(true).moveTo(142*tSize, 10*tSize)
         );
         ///----------//                    Gear                    ////
         const fender = new Sprite(0,0, 21*tSize, 9*tSize, pathToTrain + "fender.png");
-        const piston = new SpriteAnim( 0, 0, 138*tSize, 27*tSize,[
+        const piston = new SpriteA( 0, 0, 138*tSize, 27*tSize,[
             pathToTrain + "piston/1.png", pathToTrain + "piston/2.png", 
             pathToTrain + "piston/3.png", pathToTrain + "piston/4.png",
             pathToTrain + "piston/5.png", pathToTrain + "piston/6.png", 
             pathToTrain + "piston/7.png", pathToTrain + "piston/8.png",
         ]);
-        piston.Anim._slow = 4;
+        piston.slow = 4;
         const gears  = new SpriteStack();
         gears.push(
             wheels,
@@ -85,7 +85,6 @@ export class Engine extends SpriteStack{
         );
         this.push(gears.moveTo(10*tSize, 71*tSize)).moveTo(0, 0);
 
-        console.warn(piston.Anim._slow)
     }
 
     /** /// render() ///
@@ -105,7 +104,7 @@ export class Engine extends SpriteStack{
         });
     }
 }
-const engine = new Engine().moveTo(1000,);
+const engine = new Engine().moveTo(1000,500);
 
 ////---------//                Cart                       ////
 export class Cart extends SpriteStack{
@@ -120,14 +119,14 @@ export class Cart extends SpriteStack{
         const cRoof = new Sprite(0, 0, 126*tSize, 10*tSize, pathToTrain + "roof/s.png");
         cTop.push(cRoof); cTop.moveTo(3*tSize, 0*tSize);
 
-        const cMidBase = new SpriteAnim(0, 0, 124*tSize, 46*tSize,[pathToTrain + "cart/t1.png"       , pathToTrain + "cart/t2.png"       ]);
-        const cDoor    = new SpriteAnim(0, 0,  30*tSize, 46*tSize,[pathToTrain + "cart/door/t1.png"  , pathToTrain + "cart/door/t2.png"  ]);
-        const cWin1    = new SpriteAnim(0, 0,  11*tSize,  7*tSize,[pathToTrain + "cart/window/t1.png", pathToTrain + "cart/window/t2.png"]);
-        const topRail  = new SpriteAnim(0, 0, 126*tSize,  5*tSize,[pathToTrain + "topRail/1.png"     , pathToTrain + "topRail/2.png"     ]);
-        const botRail  = new SpriteAnim(0, 0, 126*tSize,  7*tSize,[pathToTrain + "botRail/1.png"]);
-        const cInside  = new SpriteAnim(0, 0, 124*tSize, 46*tSize,[pathToTrain + "cart/1.png"   ]);
-        const cShadow  = new SpriteAnim(0, 0, 124*tSize, 46*tSize,["../Game_01_Ledvadva/sprites/Hub/shadow.png"]);
-        const cBars    = new SpriteAnim(0, 0,  18*tSize, 15*tSize,[
+        const cMidBase = new SpriteA(0, 0, 124*tSize, 46*tSize,[pathToTrain + "cart/t1.png"       , pathToTrain + "cart/t2.png"       ]);
+        const cDoor    = new SpriteA(0, 0,  30*tSize, 46*tSize,[pathToTrain + "cart/door/t1.png"  , pathToTrain + "cart/door/t2.png"  ]);
+        const cWin1    = new SpriteA(0, 0,  11*tSize,  7*tSize,[pathToTrain + "cart/window/t1.png", pathToTrain + "cart/window/t2.png"]);
+        const topRail  = new SpriteA(0, 0, 126*tSize,  5*tSize,[pathToTrain + "topRail/1.png"     , pathToTrain + "topRail/2.png"     ]);
+        const botRail  = new SpriteA(0, 0, 126*tSize,  7*tSize,[pathToTrain + "botRail/1.png"]);
+        const cInside  = new SpriteA(0, 0, 124*tSize, 46*tSize,[pathToTrain + "cart/1.png"   ]);
+        const cShadow  = new SpriteA(0, 0, 124*tSize, 46*tSize,["../Game_01_Ledvadva/sprites/Hub/shadow.png"]);
+        const cBars    = new SpriteA(0, 0,  18*tSize, 15*tSize,[
             pathToTrain + "cart/bars/1.png", pathToTrain + "cart/bars/2.png", 
             pathToTrain + "cart/bars/3.png", pathToTrain + "cart/bars/4.png", 
             pathToTrain + "cart/bars/5.png", pathToTrain + "cart/bars/6.png",
@@ -139,7 +138,7 @@ export class Cart extends SpriteStack{
 
         cMiddle.push(cInside, cShadow, cMidBase, botRail, cDoor, cWin1, cWin2, cBars, topRail); 
         cMiddle.moveTo(4*tSize, 10*tSize);
-        cMiddle.forEach(part => {part.Anim._slow = 8;});  
+        cMiddle.forEach(part => {part.slow = 8;});  
 
 
         const cg = new Sprite(17*tSize, 2*tSize,  28*tSize, 12*tSize, pathToTrain + "gear.png");
@@ -180,6 +179,7 @@ export function RESTART_04(){
         infoM = Ledvadva.modes.infoMode;
         pauseM = Ledvadva.modes.pause;
 
+        /*
         if (Ledvadva.shouldRestart){
             Ledvadva.iris.zoomDir = 1;
             Ledvadva.iris.lockedOn = Ledvadva.players[0];
@@ -187,16 +187,16 @@ export function RESTART_04(){
             RESTART_04();
         }
         RENDER_IRIS(ctx);
-
-        ctx.fillStyle = 'grey';
+        */
+        ctx.fillStyle = 'white';
         ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-
-        engine.render(ctx, infoM);
         engine.updateImage();
+        engine.render(ctx, infoM);
 
-        cart.render(ctx, infoM);
         cart.updateImage();
+        cart.render(ctx, infoM);
+
 
         RENDER_MODES(ctx, Hitboxes);
     }
